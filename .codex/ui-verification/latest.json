@@ -1,12 +1,2119 @@
 {
-  "verified_at": "2026-06-28T01:57:08.611469+00:00",
-  "cwd": "/home/graham/workspace/experiments/pi-mono",
-  "root": "/home/graham/workspace/experiments/pi-mono",
-  "output_root": "/tmp/codex-ui-verification/pi-mono",
   "url": "http://127.0.0.1:3002/#tau",
-  "name": "tau-research-auditor-authorization-gate",
-  "screenshot": "/tmp/codex-ui-verification/pi-mono/tau-research-auditor-authorization-gate/20260628T015700Z.png",
-  "read_json": "/tmp/codex-ui-verification/pi-mono/tau-research-auditor-authorization-gate/20260628T015700Z.read.json",
-  "marker_created_by": "codex",
-  "marker_scope": "repo-local latest pointer for Tau research-auditor authorization gate UI verification"
+  "title": "UX Lab — Embry OS",
+  "text": "T’AU EXPERIMENT CHAT\nReceipt-backed chat shell for T’au loop, Memory, evidence, Watch-style media, and Embry voice.\n\nThis is an integration surface inside UX Lab. It reads the T’au-owned UX contract and uses the shared Sparta/Watch chat renderer without claiming live production chat.\n\nT’au-owned UX contract\n\nUX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.\n\nLOADED\nSCHEMA\ntau.chat_ux_contract_view.v1\nSOURCE REPO\ngrahama1970/tau\nSOURCE PATH\nui/tau-chat-contract.json\nUX-LAB ROLE\nintegration_viewer\n/home/graham/workspace/experiments/tau/ui/tau-chat-contract.json\nSpecial mode: orchestrated subagent loop\n\nThis mode is activated by a start handoff parameter, not by an ordinary chat turn. Tau owns the runner; UX Lab only renders the contract and receipts.\n\nparameter_driven_orchestrated_loop\nRUNNER\nhandoff-command-loop\nSCHEDULER\ndocker/tau-cron.sh\nACTIVATION\nTAU_ORCHESTRATOR_START\n\nEach tick validates one handoff, runs one selected bounded subagent command, validates the emitted tau.agent_handoff.v1, writes receipts, and stops at human or an explicit failure condition.\n\nProvide a tau.agent_handoff.v1 start handoff through --start or TAU_ORCHESTRATOR_START.\nExtract entities\nPASS\n\nLive Memory /extract-entities stage ran before recall and selected create-evidence-case.\n\nexperiments/loop2-alignment/reliability-stress-20260626T211653Z-extract-hardening/cwe-287-extract-receipt.json\nPeer message\nREADY\n\nTau publishes tau.loop_harness_peer_message.v1 for pi-mono and other harness consumers.\n\nexperiments/loop2-alignment/reliability-stress-20260626T205339Z/math_add/.loop2/runs/loop2-tau-stress-math_add-1782507220-da39d0/harness-peer-message.json\nSwitchboard push\nPUSHED\n\nLive pi-mono Switchboard WebSocket received the Tau peer handoff with claims.does_not_prove preserved.\n\nexperiments/loop2-alignment/proofs/inter_harness_switchboard/live-switchboard-websocket-push-proof.json\nSwitchboard ack\nACKED\n\nA pi-mono WebSocket consumer acknowledged the Tau peer handoff and the Switchboard inbox was empty afterward.\n\nexperiments/loop2-alignment/proofs/inter_harness_switchboard/live-switchboard-websocket-ack-proof.json\nGoal audit\nSATISFIED\n\nRequirement audit records fresh 255-test Tau run, fresh Tau CDP proof, Switchboard ack, and explicit non-claims.\n\nexperiments/loop2-alignment/proofs/final_goal_audit/tau_goal_audit_20260626T223412Z.json\nFresh loop stress\n3 / 3\n\nLive Tau loop2-run subset passed with mocked=false.\n\nexperiments/loop2-alignment/reliability-stress-20260626T205339Z/stress-summary.json\nHarness branches\n5 / 5\n\nBrave, evidence-case, clarify, and Embry persona metadata receipts passed.\n\nexperiments/loop2-alignment/reliability-stress-20260626T205200Z/sparta-chat-contract/summary.json\nFull prior stress\n12 / 12\n\nEarlier same-day full non-mocked loop stress pass.\n\nexperiments/loop2-alignment/reliability-stress-20260626T193829Z/stress-summary.json\nGitHub projection\n2 commands\n\nTau command loop carried an explicit ticket source into goal-guardian reconciliation and rendered dry-run GitHub comment/edit commands.\n\n/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json\nStage Contract\nRendered through shared ThinkingTrace\nGetting Intent\nExtracting Entities\nAccessing Memory\nSearching Web\nCreating Evidence Case\nPreparing Persona Voice\nReceipt-backed current stage\nClarifying...\nGetting Intent...\nPASS\nExtracting Entities...\nPASS\nAccessing Memory...\nPASS\nClarifying...\nPASS\n/tmp/tau-memory-stage-trace/live-memory-stage-trace-summary.json\nLive Peer Envelope\n\nReads Tau monitor `/peer-message` when `loop2:lastRunId` is set or `?loop2RunId=` is supplied.\n\nUNCONFIGURED\nSOURCE\ndefault\nBASE URL\nhttp://127.0.0.1:4321\nRUN ID\nnot configured\nPROOF SCOPE\nnot available\nSWITCHBOARD TO\nnot advertised\nSWITCHBOARD SUBJECT\nnot advertised\n\nSet loop2:lastRunId or add ?loop2RunId=<run_id> to read a Tau peer envelope.\n\nLive Loop Replay\n\nReads Tau monitor `/summary` and `/events` so the chat can show actual loop state and replayable event counts.\n\nUNAVAILABLE\nRUN STATE\nnot available\nRECEIPT\nnot available\nEVENTS\n0\nLAST EVENT\nnot available\n\nSet loop2:lastRunId or add ?loop2RunId=<run_id> to read Tau summary/events.\n\nLive Event Stream\n\nSubscribes to Tau monitor `event: loop2_event` and `event: end` from `/events/stream`.\n\nSTREAMING\nSTREAMED EVENTS\n0\nLAST STREAM EVENT\nwaiting\nEND REASON\nopen\nEND COUNT\n0\n\nWaiting for Loop2 stream events.\n\nWatch UX\n\nMedia evidence remains first-class: scene context, clips, frames, and report questions share the same chat shell.\n\nSparta Chat UX\n\nEvidence-case turns disclose gates and receipts instead of generic hidden reasoning.\n\nPeer Harness\n\nTau publishes a fail-closed peer envelope so pi-mono can consume Loop2 summary, events, and DAG evidence without scraping.\n\nEmbry Voice\n\nPersonaPlex is represented as fail-closed voice metadata until a real cache replay receipt is attached.\n\nTau Chat\nCompliance\nPersona\nAgent analysis\nEVIDENCE\n04:53 PM\nCHECKED RECEIPT GATES (5/5)\n\nTau Chat is mounted as an experiment surface. It reads the loop/harness/TUI contract and shows receipt-backed state; it does not claim production Sparta Chat readiness.\n\nCompliance\n04:53 PM\nAuto",
+  "elements": [
+    {
+      "index": 0,
+      "tag": "div",
+      "text": "T’AU EXPERIMENT CHAT\nReceipt-backed chat shell for T’au loop, Memory, evidence, Watch-style media, and Embry voice.\n\nThis is an integration surface inside UX Lab. It reads the T’au-owned UX contract and uses the shared Sparta/Watch chat renderer without claiming live production chat.\n\nT’au-owned UX contract\n\nUX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.\n\nLOADED\nSCHEMA\ntau.chat_ux_contract_view.v1\nSOURCE REPO\ngrahama1970/tau\nSOURCE PATH\nui/tau-c",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 1,
+      "tag": "div",
+      "text": "T’AU EXPERIMENT CHAT\nReceipt-backed chat shell for T’au loop, Memory, evidence, Watch-style media, and Embry voice.\n\nThis is an integration surface inside UX Lab. It reads the T’au-owned UX contract and uses the shared Sparta/Watch chat renderer without claiming live production chat.\n\nT’au-owned UX contract\n\nUX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.\n\nLOADED\nSCHEMA\ntau.chat_ux_contract_view.v1\nSOURCE REPO\ngrahama1970/tau\nSOURCE PATH\nui/tau-c",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 2,
+      "tag": "div",
+      "text": "T’AU EXPERIMENT CHAT\nReceipt-backed chat shell for T’au loop, Memory, evidence, Watch-style media, and Embry voice.\n\nThis is an integration surface inside UX Lab. It reads the T’au-owned UX contract and uses the shared Sparta/Watch chat renderer without claiming live production chat.\n\nT’au-owned UX contract\n\nUX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.\n\nLOADED\nSCHEMA\ntau.chat_ux_contract_view.v1\nSOURCE REPO\ngrahama1970/tau\nSOURCE PATH\nui/tau-c",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 3,
+      "tag": "main",
+      "text": "T’AU EXPERIMENT CHAT\nReceipt-backed chat shell for T’au loop, Memory, evidence, Watch-style media, and Embry voice.\n\nThis is an integration surface inside UX Lab. It reads the T’au-owned UX contract and uses the shared Sparta/Watch chat renderer without claiming live production chat.\n\nT’au-owned UX contract\n\nUX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.\n\nLOADED\nSCHEMA\ntau.chat_ux_contract_view.v1\nSOURCE REPO\ngrahama1970/tau\nSOURCE PATH\nui/tau-c",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 4,
+      "tag": "div",
+      "text": "T’AU EXPERIMENT CHAT\nReceipt-backed chat shell for T’au loop, Memory, evidence, Watch-style media, and Embry voice.\n\nThis is an integration surface inside UX Lab. It reads the T’au-owned UX contract and uses the shared Sparta/Watch chat renderer without claiming live production chat.\n\nT’au-owned UX contract\n\nUX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.\n\nLOADED\nSCHEMA\ntau.chat_ux_contract_view.v1\nSOURCE REPO\ngrahama1970/tau\nSOURCE PATH\nui/tau-c",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 5,
+      "tag": "section",
+      "text": "T’AU EXPERIMENT CHAT\nReceipt-backed chat shell for T’au loop, Memory, evidence, Watch-style media, and Embry voice.\n\nThis is an integration surface inside UX Lab. It reads the T’au-owned UX contract and uses the shared Sparta/Watch chat renderer without claiming live production chat.\n\nT’au-owned UX contract\n\nUX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.\n\nLOADED\nSCHEMA\ntau.chat_ux_contract_view.v1\nSOURCE REPO\ngrahama1970/tau\nSOURCE PATH\nui/tau-c",
+      "qid": "tau:chat:surface",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 6,
+      "tag": "main",
+      "text": "T’AU EXPERIMENT CHAT\nReceipt-backed chat shell for T’au loop, Memory, evidence, Watch-style media, and Embry voice.\n\nThis is an integration surface inside UX Lab. It reads the T’au-owned UX contract and uses the shared Sparta/Watch chat renderer without claiming live production chat.\n\nT’au-owned UX contract\n\nUX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.\n\nLOADED\nSCHEMA\ntau.chat_ux_contract_view.v1\nSOURCE REPO\ngrahama1970/tau\nSOURCE PATH\nui/tau-c",
+      "qid": "tau:chat:workspace",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 7,
+      "tag": "div",
+      "text": "T’AU EXPERIMENT CHAT\nReceipt-backed chat shell for T’au loop, Memory, evidence, Watch-style media, and Embry voice.\n\nThis is an integration surface inside UX Lab. It reads the T’au-owned UX contract and uses the shared Sparta/Watch chat renderer without claiming live production chat.\n\nT’au-owned UX contract\n\nUX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.\n\nLOADED\nSCHEMA\ntau.chat_ux_contract_view.v1\nSOURCE REPO\ngrahama1970/tau\nSOURCE PATH\nui/tau-c",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 8,
+      "tag": "header",
+      "text": "T’AU EXPERIMENT CHAT\nReceipt-backed chat shell for T’au loop, Memory, evidence, Watch-style media, and Embry voice.\n\nThis is an integration surface inside UX Lab. It reads the T’au-owned UX contract and uses the shared Sparta/Watch chat renderer without claiming live production chat.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 9,
+      "tag": "div",
+      "text": "T’AU EXPERIMENT CHAT",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 13,
+      "tag": "h1",
+      "text": "Receipt-backed chat shell for T’au loop, Memory, evidence, Watch-style media, and Embry voice.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 14,
+      "tag": "p",
+      "text": "This is an integration surface inside UX Lab. It reads the T’au-owned UX contract and uses the shared Sparta/Watch chat renderer without claiming live production chat.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 15,
+      "tag": "section",
+      "text": "T’au-owned UX contract\n\nUX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.\n\nLOADED\nSCHEMA\ntau.chat_ux_contract_view.v1\nSOURCE REPO\ngrahama1970/tau\nSOURCE PATH\nui/tau-chat-contract.json\nUX-LAB ROLE\nintegration_viewer\n/home/graham/workspace/experiments/tau/ui/tau-chat-contract.json",
+      "qid": "tau:chat:owned-contract",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 16,
+      "tag": "div",
+      "text": "T’au-owned UX contract\n\nUX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.\n\nLOADED",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 17,
+      "tag": "div",
+      "text": "T’au-owned UX contract\n\nUX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 18,
+      "tag": "h2",
+      "text": "T’au-owned UX contract",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 19,
+      "tag": "p",
+      "text": "UX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 20,
+      "tag": "span",
+      "text": "LOADED",
+      "qid": "tau:chat:owned-contract-status",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 21,
+      "tag": "div",
+      "text": "SCHEMA\ntau.chat_ux_contract_view.v1\nSOURCE REPO\ngrahama1970/tau\nSOURCE PATH\nui/tau-chat-contract.json\nUX-LAB ROLE\nintegration_viewer",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 22,
+      "tag": "div",
+      "text": "SCHEMA\ntau.chat_ux_contract_view.v1",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 23,
+      "tag": "div",
+      "text": "SCHEMA",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 24,
+      "tag": "div",
+      "text": "tau.chat_ux_contract_view.v1",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 25,
+      "tag": "div",
+      "text": "SOURCE REPO\ngrahama1970/tau",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 26,
+      "tag": "div",
+      "text": "SOURCE REPO",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 27,
+      "tag": "div",
+      "text": "grahama1970/tau",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 28,
+      "tag": "div",
+      "text": "SOURCE PATH\nui/tau-chat-contract.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 29,
+      "tag": "div",
+      "text": "SOURCE PATH",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 30,
+      "tag": "div",
+      "text": "ui/tau-chat-contract.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 31,
+      "tag": "div",
+      "text": "UX-LAB ROLE\nintegration_viewer",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 32,
+      "tag": "div",
+      "text": "UX-LAB ROLE",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 33,
+      "tag": "div",
+      "text": "integration_viewer",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 34,
+      "tag": "code",
+      "text": "/home/graham/workspace/experiments/tau/ui/tau-chat-contract.json",
+      "qid": "tau:chat:owned-contract-path",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 35,
+      "tag": "section",
+      "text": "Special mode: orchestrated subagent loop\n\nThis mode is activated by a start handoff parameter, not by an ordinary chat turn. Tau owns the runner; UX Lab only renders the contract and receipts.\n\nparameter_driven_orchestrated_loop\nRUNNER\nhandoff-command-loop\nSCHEDULER\ndocker/tau-cron.sh\nACTIVATION\nTAU_ORCHESTRATOR_START\n\nEach tick validates one handoff, runs one selected bounded subagent command, validates the emitted tau.agent_handoff.v1, writes receipts, and stops at human or an explicit failure",
+      "qid": "tau:chat:orchestrated-loop-mode",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 36,
+      "tag": "div",
+      "text": "Special mode: orchestrated subagent loop\n\nThis mode is activated by a start handoff parameter, not by an ordinary chat turn. Tau owns the runner; UX Lab only renders the contract and receipts.\n\nparameter_driven_orchestrated_loop",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 37,
+      "tag": "div",
+      "text": "Special mode: orchestrated subagent loop\n\nThis mode is activated by a start handoff parameter, not by an ordinary chat turn. Tau owns the runner; UX Lab only renders the contract and receipts.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 38,
+      "tag": "h2",
+      "text": "Special mode: orchestrated subagent loop",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 39,
+      "tag": "p",
+      "text": "This mode is activated by a start handoff parameter, not by an ordinary chat turn. Tau owns the runner; UX Lab only renders the contract and receipts.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 40,
+      "tag": "span",
+      "text": "parameter_driven_orchestrated_loop",
+      "qid": "tau:chat:orchestrated-loop-mode-name",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 41,
+      "tag": "div",
+      "text": "RUNNER\nhandoff-command-loop\nSCHEDULER\ndocker/tau-cron.sh\nACTIVATION\nTAU_ORCHESTRATOR_START",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 42,
+      "tag": "div",
+      "text": "RUNNER\nhandoff-command-loop",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 43,
+      "tag": "div",
+      "text": "RUNNER",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 44,
+      "tag": "div",
+      "text": "handoff-command-loop",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 45,
+      "tag": "div",
+      "text": "SCHEDULER\ndocker/tau-cron.sh",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 46,
+      "tag": "div",
+      "text": "SCHEDULER",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 47,
+      "tag": "div",
+      "text": "docker/tau-cron.sh",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 48,
+      "tag": "div",
+      "text": "ACTIVATION\nTAU_ORCHESTRATOR_START",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 49,
+      "tag": "div",
+      "text": "ACTIVATION",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 50,
+      "tag": "div",
+      "text": "TAU_ORCHESTRATOR_START",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 51,
+      "tag": "p",
+      "text": "Each tick validates one handoff, runs one selected bounded subagent command, validates the emitted tau.agent_handoff.v1, writes receipts, and stops at human or an explicit failure condition.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 52,
+      "tag": "code",
+      "text": "Provide a tau.agent_handoff.v1 start handoff through --start or TAU_ORCHESTRATOR_START.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 53,
+      "tag": "section",
+      "text": "Extract entities\nPASS\n\nLive Memory /extract-entities stage ran before recall and selected create-evidence-case.\n\nexperiments/loop2-alignment/reliability-stress-20260626T211653Z-extract-hardening/cwe-287-extract-receipt.json\nPeer message\nREADY\n\nTau publishes tau.loop_harness_peer_message.v1 for pi-mono and other harness consumers.\n\nexperiments/loop2-alignment/reliability-stress-20260626T205339Z/math_add/.loop2/runs/loop2-tau-stress-math_add-1782507220-da39d0/harness-peer-message.json\nSwitchboard ",
+      "qid": "tau:chat:receipts",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 54,
+      "tag": "article",
+      "text": "Extract entities\nPASS\n\nLive Memory /extract-entities stage ran before recall and selected create-evidence-case.\n\nexperiments/loop2-alignment/reliability-stress-20260626T211653Z-extract-hardening/cwe-287-extract-receipt.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 55,
+      "tag": "div",
+      "text": "Extract entities\nPASS",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 56,
+      "tag": "span",
+      "text": "Extract entities",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 57,
+      "tag": "span",
+      "text": "PASS",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 58,
+      "tag": "p",
+      "text": "Live Memory /extract-entities stage ran before recall and selected create-evidence-case.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 59,
+      "tag": "code",
+      "text": "experiments/loop2-alignment/reliability-stress-20260626T211653Z-extract-hardening/cwe-287-extract-receipt.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 60,
+      "tag": "article",
+      "text": "Peer message\nREADY\n\nTau publishes tau.loop_harness_peer_message.v1 for pi-mono and other harness consumers.\n\nexperiments/loop2-alignment/reliability-stress-20260626T205339Z/math_add/.loop2/runs/loop2-tau-stress-math_add-1782507220-da39d0/harness-peer-message.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 61,
+      "tag": "div",
+      "text": "Peer message\nREADY",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 62,
+      "tag": "span",
+      "text": "Peer message",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 63,
+      "tag": "span",
+      "text": "READY",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 64,
+      "tag": "p",
+      "text": "Tau publishes tau.loop_harness_peer_message.v1 for pi-mono and other harness consumers.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 65,
+      "tag": "code",
+      "text": "experiments/loop2-alignment/reliability-stress-20260626T205339Z/math_add/.loop2/runs/loop2-tau-stress-math_add-1782507220-da39d0/harness-peer-message.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 66,
+      "tag": "article",
+      "text": "Switchboard push\nPUSHED\n\nLive pi-mono Switchboard WebSocket received the Tau peer handoff with claims.does_not_prove preserved.\n\nexperiments/loop2-alignment/proofs/inter_harness_switchboard/live-switchboard-websocket-push-proof.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 67,
+      "tag": "div",
+      "text": "Switchboard push\nPUSHED",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 68,
+      "tag": "span",
+      "text": "Switchboard push",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 69,
+      "tag": "span",
+      "text": "PUSHED",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 70,
+      "tag": "p",
+      "text": "Live pi-mono Switchboard WebSocket received the Tau peer handoff with claims.does_not_prove preserved.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 71,
+      "tag": "code",
+      "text": "experiments/loop2-alignment/proofs/inter_harness_switchboard/live-switchboard-websocket-push-proof.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 72,
+      "tag": "article",
+      "text": "Switchboard ack\nACKED\n\nA pi-mono WebSocket consumer acknowledged the Tau peer handoff and the Switchboard inbox was empty afterward.\n\nexperiments/loop2-alignment/proofs/inter_harness_switchboard/live-switchboard-websocket-ack-proof.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 73,
+      "tag": "div",
+      "text": "Switchboard ack\nACKED",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 74,
+      "tag": "span",
+      "text": "Switchboard ack",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 75,
+      "tag": "span",
+      "text": "ACKED",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 76,
+      "tag": "p",
+      "text": "A pi-mono WebSocket consumer acknowledged the Tau peer handoff and the Switchboard inbox was empty afterward.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 77,
+      "tag": "code",
+      "text": "experiments/loop2-alignment/proofs/inter_harness_switchboard/live-switchboard-websocket-ack-proof.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 78,
+      "tag": "article",
+      "text": "Goal audit\nSATISFIED\n\nRequirement audit records fresh 255-test Tau run, fresh Tau CDP proof, Switchboard ack, and explicit non-claims.\n\nexperiments/loop2-alignment/proofs/final_goal_audit/tau_goal_audit_20260626T223412Z.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 79,
+      "tag": "div",
+      "text": "Goal audit\nSATISFIED",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 80,
+      "tag": "span",
+      "text": "Goal audit",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 81,
+      "tag": "span",
+      "text": "SATISFIED",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 82,
+      "tag": "p",
+      "text": "Requirement audit records fresh 255-test Tau run, fresh Tau CDP proof, Switchboard ack, and explicit non-claims.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 83,
+      "tag": "code",
+      "text": "experiments/loop2-alignment/proofs/final_goal_audit/tau_goal_audit_20260626T223412Z.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 84,
+      "tag": "article",
+      "text": "Fresh loop stress\n3 / 3\n\nLive Tau loop2-run subset passed with mocked=false.\n\nexperiments/loop2-alignment/reliability-stress-20260626T205339Z/stress-summary.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 85,
+      "tag": "div",
+      "text": "Fresh loop stress\n3 / 3",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 86,
+      "tag": "span",
+      "text": "Fresh loop stress",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 87,
+      "tag": "span",
+      "text": "3 / 3",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 88,
+      "tag": "p",
+      "text": "Live Tau loop2-run subset passed with mocked=false.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 89,
+      "tag": "code",
+      "text": "experiments/loop2-alignment/reliability-stress-20260626T205339Z/stress-summary.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 90,
+      "tag": "article",
+      "text": "Harness branches\n5 / 5\n\nBrave, evidence-case, clarify, and Embry persona metadata receipts passed.\n\nexperiments/loop2-alignment/reliability-stress-20260626T205200Z/sparta-chat-contract/summary.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 91,
+      "tag": "div",
+      "text": "Harness branches\n5 / 5",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 92,
+      "tag": "span",
+      "text": "Harness branches",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 93,
+      "tag": "span",
+      "text": "5 / 5",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 94,
+      "tag": "p",
+      "text": "Brave, evidence-case, clarify, and Embry persona metadata receipts passed.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 95,
+      "tag": "code",
+      "text": "experiments/loop2-alignment/reliability-stress-20260626T205200Z/sparta-chat-contract/summary.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 96,
+      "tag": "article",
+      "text": "Full prior stress\n12 / 12\n\nEarlier same-day full non-mocked loop stress pass.\n\nexperiments/loop2-alignment/reliability-stress-20260626T193829Z/stress-summary.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 97,
+      "tag": "div",
+      "text": "Full prior stress\n12 / 12",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 98,
+      "tag": "span",
+      "text": "Full prior stress",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 99,
+      "tag": "span",
+      "text": "12 / 12",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 100,
+      "tag": "p",
+      "text": "Earlier same-day full non-mocked loop stress pass.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 101,
+      "tag": "code",
+      "text": "experiments/loop2-alignment/reliability-stress-20260626T193829Z/stress-summary.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 102,
+      "tag": "article",
+      "text": "GitHub projection\n2 commands\n\nTau command loop carried an explicit ticket source into goal-guardian reconciliation and rendered dry-run GitHub comment/edit commands.\n\n/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 103,
+      "tag": "div",
+      "text": "GitHub projection\n2 commands",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 104,
+      "tag": "span",
+      "text": "GitHub projection",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 105,
+      "tag": "span",
+      "text": "2 commands",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 106,
+      "tag": "p",
+      "text": "Tau command loop carried an explicit ticket source into goal-guardian reconciliation and rendered dry-run GitHub comment/edit commands.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 107,
+      "tag": "code",
+      "text": "/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 108,
+      "tag": "section",
+      "text": "Stage Contract\nRendered through shared ThinkingTrace\nGetting Intent\nExtracting Entities\nAccessing Memory\nSearching Web\nCreating Evidence Case\nPreparing Persona Voice\nReceipt-backed current stage\nClarifying...\nGetting Intent...\nPASS\nExtracting Entities...\nPASS\nAccessing Memory...\nPASS\nClarifying...\nPASS\n/tmp/tau-memory-stage-trace/live-memory-stage-trace-summary.json",
+      "qid": "tau:chat:pipeline",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 109,
+      "tag": "div",
+      "text": "Stage Contract\nRendered through shared ThinkingTrace",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 110,
+      "tag": "h2",
+      "text": "Stage Contract",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 111,
+      "tag": "span",
+      "text": "Rendered through shared ThinkingTrace",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 112,
+      "tag": "div",
+      "text": "Getting Intent\nExtracting Entities\nAccessing Memory\nSearching Web\nCreating Evidence Case\nPreparing Persona Voice",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 113,
+      "tag": "div",
+      "text": "Getting Intent",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 121,
+      "tag": "span",
+      "text": "Getting Intent",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 122,
+      "tag": "div",
+      "text": "Extracting Entities",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 129,
+      "tag": "span",
+      "text": "Extracting Entities",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 130,
+      "tag": "div",
+      "text": "Accessing Memory",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 133,
+      "tag": "span",
+      "text": "Accessing Memory",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 134,
+      "tag": "div",
+      "text": "Searching Web",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 138,
+      "tag": "span",
+      "text": "Searching Web",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 139,
+      "tag": "div",
+      "text": "Creating Evidence Case",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 143,
+      "tag": "span",
+      "text": "Creating Evidence Case",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 144,
+      "tag": "div",
+      "text": "Preparing Persona Voice",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 149,
+      "tag": "span",
+      "text": "Preparing Persona Voice",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 150,
+      "tag": "div",
+      "text": "Receipt-backed current stage\nClarifying...\nGetting Intent...\nPASS\nExtracting Entities...\nPASS\nAccessing Memory...\nPASS\nClarifying...\nPASS\n/tmp/tau-memory-stage-trace/live-memory-stage-trace-summary.json",
+      "qid": "tau:chat:receipt-current-stage",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 151,
+      "tag": "div",
+      "text": "Receipt-backed current stage\nClarifying...",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 152,
+      "tag": "span",
+      "text": "Receipt-backed current stage",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 153,
+      "tag": "span",
+      "text": "Clarifying...",
+      "qid": "tau:chat:receipt-current-stage-label",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 154,
+      "tag": "div",
+      "text": "Getting Intent...\nPASS\nExtracting Entities...\nPASS\nAccessing Memory...\nPASS\nClarifying...\nPASS",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 155,
+      "tag": "div",
+      "text": "Getting Intent...\nPASS",
+      "qid": "tau:chat:receipt-stage:intent",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 156,
+      "tag": "div",
+      "text": "Getting Intent...",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 157,
+      "tag": "div",
+      "text": "PASS",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 158,
+      "tag": "div",
+      "text": "Extracting Entities...\nPASS",
+      "qid": "tau:chat:receipt-stage:extract_entities",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 159,
+      "tag": "div",
+      "text": "Extracting Entities...",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 160,
+      "tag": "div",
+      "text": "PASS",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 161,
+      "tag": "div",
+      "text": "Accessing Memory...\nPASS",
+      "qid": "tau:chat:receipt-stage:recall",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 162,
+      "tag": "div",
+      "text": "Accessing Memory...",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 163,
+      "tag": "div",
+      "text": "PASS",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 164,
+      "tag": "div",
+      "text": "Clarifying...\nPASS",
+      "qid": "tau:chat:receipt-stage:clarify",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 165,
+      "tag": "div",
+      "text": "Clarifying...",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 166,
+      "tag": "div",
+      "text": "PASS",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 167,
+      "tag": "code",
+      "text": "/tmp/tau-memory-stage-trace/live-memory-stage-trace-summary.json",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 168,
+      "tag": "section",
+      "text": "Live Peer Envelope\n\nReads Tau monitor `/peer-message` when `loop2:lastRunId` is set or `?loop2RunId=` is supplied.\n\nUNCONFIGURED\nSOURCE\ndefault\nBASE URL\nhttp://127.0.0.1:4321\nRUN ID\nnot configured\nPROOF SCOPE\nnot available\nSWITCHBOARD TO\nnot advertised\nSWITCHBOARD SUBJECT\nnot advertised\n\nSet loop2:lastRunId or add ?loop2RunId=<run_id> to read a Tau peer envelope.",
+      "qid": "tau:chat:peer-monitor",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 169,
+      "tag": "div",
+      "text": "Live Peer Envelope\n\nReads Tau monitor `/peer-message` when `loop2:lastRunId` is set or `?loop2RunId=` is supplied.\n\nUNCONFIGURED",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 170,
+      "tag": "div",
+      "text": "Live Peer Envelope\n\nReads Tau monitor `/peer-message` when `loop2:lastRunId` is set or `?loop2RunId=` is supplied.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 171,
+      "tag": "h2",
+      "text": "Live Peer Envelope",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 172,
+      "tag": "p",
+      "text": "Reads Tau monitor `/peer-message` when `loop2:lastRunId` is set or `?loop2RunId=` is supplied.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 173,
+      "tag": "span",
+      "text": "UNCONFIGURED",
+      "qid": "tau:chat:peer-status",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 174,
+      "tag": "div",
+      "text": "SOURCE\ndefault\nBASE URL\nhttp://127.0.0.1:4321\nRUN ID\nnot configured\nPROOF SCOPE\nnot available\nSWITCHBOARD TO\nnot advertised\nSWITCHBOARD SUBJECT\nnot advertised",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 175,
+      "tag": "div",
+      "text": "SOURCE\ndefault",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 176,
+      "tag": "div",
+      "text": "SOURCE",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 177,
+      "tag": "div",
+      "text": "default",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 178,
+      "tag": "div",
+      "text": "BASE URL\nhttp://127.0.0.1:4321",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 179,
+      "tag": "div",
+      "text": "BASE URL",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 180,
+      "tag": "div",
+      "text": "http://127.0.0.1:4321",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 181,
+      "tag": "div",
+      "text": "RUN ID\nnot configured",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 182,
+      "tag": "div",
+      "text": "RUN ID",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 183,
+      "tag": "div",
+      "text": "not configured",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 184,
+      "tag": "div",
+      "text": "PROOF SCOPE\nnot available",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 185,
+      "tag": "div",
+      "text": "PROOF SCOPE",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 186,
+      "tag": "div",
+      "text": "not available",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 187,
+      "tag": "div",
+      "text": "SWITCHBOARD TO\nnot advertised",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 188,
+      "tag": "div",
+      "text": "SWITCHBOARD TO",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 189,
+      "tag": "div",
+      "text": "not advertised",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 190,
+      "tag": "div",
+      "text": "SWITCHBOARD SUBJECT\nnot advertised",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 191,
+      "tag": "div",
+      "text": "SWITCHBOARD SUBJECT",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 192,
+      "tag": "div",
+      "text": "not advertised",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 193,
+      "tag": "p",
+      "text": "Set loop2:lastRunId or add ?loop2RunId=<run_id> to read a Tau peer envelope.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 194,
+      "tag": "section",
+      "text": "Live Loop Replay\n\nReads Tau monitor `/summary` and `/events` so the chat can show actual loop state and replayable event counts.\n\nUNAVAILABLE\nRUN STATE\nnot available\nRECEIPT\nnot available\nEVENTS\n0\nLAST EVENT\nnot available\n\nSet loop2:lastRunId or add ?loop2RunId=<run_id> to read Tau summary/events.",
+      "qid": "tau:chat:loop-monitor",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 195,
+      "tag": "div",
+      "text": "Live Loop Replay\n\nReads Tau monitor `/summary` and `/events` so the chat can show actual loop state and replayable event counts.\n\nUNAVAILABLE",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 196,
+      "tag": "div",
+      "text": "Live Loop Replay\n\nReads Tau monitor `/summary` and `/events` so the chat can show actual loop state and replayable event counts.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 197,
+      "tag": "h2",
+      "text": "Live Loop Replay",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 198,
+      "tag": "p",
+      "text": "Reads Tau monitor `/summary` and `/events` so the chat can show actual loop state and replayable event counts.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 199,
+      "tag": "span",
+      "text": "UNAVAILABLE",
+      "qid": "tau:chat:loop-status",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 200,
+      "tag": "div",
+      "text": "RUN STATE\nnot available\nRECEIPT\nnot available\nEVENTS\n0\nLAST EVENT\nnot available",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 201,
+      "tag": "div",
+      "text": "RUN STATE\nnot available",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 202,
+      "tag": "div",
+      "text": "RUN STATE",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 203,
+      "tag": "div",
+      "text": "not available",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 204,
+      "tag": "div",
+      "text": "RECEIPT\nnot available",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 205,
+      "tag": "div",
+      "text": "RECEIPT",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 206,
+      "tag": "div",
+      "text": "not available",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 207,
+      "tag": "div",
+      "text": "EVENTS\n0",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 208,
+      "tag": "div",
+      "text": "EVENTS",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 209,
+      "tag": "div",
+      "text": "0",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 210,
+      "tag": "div",
+      "text": "LAST EVENT\nnot available",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 211,
+      "tag": "div",
+      "text": "LAST EVENT",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 212,
+      "tag": "div",
+      "text": "not available",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 213,
+      "tag": "p",
+      "text": "Set loop2:lastRunId or add ?loop2RunId=<run_id> to read Tau summary/events.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 214,
+      "tag": "section",
+      "text": "Live Event Stream\n\nSubscribes to Tau monitor `event: loop2_event` and `event: end` from `/events/stream`.\n\nSTREAMING\nSTREAMED EVENTS\n0\nLAST STREAM EVENT\nwaiting\nEND REASON\nopen\nEND COUNT\n0\n\nWaiting for Loop2 stream events.",
+      "qid": "tau:chat:loop-stream",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 215,
+      "tag": "div",
+      "text": "Live Event Stream\n\nSubscribes to Tau monitor `event: loop2_event` and `event: end` from `/events/stream`.\n\nSTREAMING",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 216,
+      "tag": "div",
+      "text": "Live Event Stream\n\nSubscribes to Tau monitor `event: loop2_event` and `event: end` from `/events/stream`.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 217,
+      "tag": "h2",
+      "text": "Live Event Stream",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 218,
+      "tag": "p",
+      "text": "Subscribes to Tau monitor `event: loop2_event` and `event: end` from `/events/stream`.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 219,
+      "tag": "span",
+      "text": "STREAMING",
+      "qid": "tau:chat:stream-status",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 220,
+      "tag": "div",
+      "text": "STREAMED EVENTS\n0\nLAST STREAM EVENT\nwaiting\nEND REASON\nopen\nEND COUNT\n0",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 221,
+      "tag": "div",
+      "text": "STREAMED EVENTS\n0",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 222,
+      "tag": "div",
+      "text": "STREAMED EVENTS",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 223,
+      "tag": "div",
+      "text": "0",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 224,
+      "tag": "div",
+      "text": "LAST STREAM EVENT\nwaiting",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 225,
+      "tag": "div",
+      "text": "LAST STREAM EVENT",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 226,
+      "tag": "div",
+      "text": "waiting",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 227,
+      "tag": "div",
+      "text": "END REASON\nopen",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 228,
+      "tag": "div",
+      "text": "END REASON",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 229,
+      "tag": "div",
+      "text": "open",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 230,
+      "tag": "div",
+      "text": "END COUNT\n0",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 231,
+      "tag": "div",
+      "text": "END COUNT",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 232,
+      "tag": "div",
+      "text": "0",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 233,
+      "tag": "p",
+      "text": "Waiting for Loop2 stream events.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 234,
+      "tag": "section",
+      "text": "Watch UX\n\nMedia evidence remains first-class: scene context, clips, frames, and report questions share the same chat shell.\n\nSparta Chat UX\n\nEvidence-case turns disclose gates and receipts instead of generic hidden reasoning.\n\nPeer Harness\n\nTau publishes a fail-closed peer envelope so pi-mono can consume Loop2 summary, events, and DAG evidence without scraping.\n\nEmbry Voice\n\nPersonaPlex is represented as fail-closed voice metadata until a real cache replay receipt is attached.",
+      "qid": "tau:chat:watch-sparta-voice",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 235,
+      "tag": "article",
+      "text": "Watch UX\n\nMedia evidence remains first-class: scene context, clips, frames, and report questions share the same chat shell.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 236,
+      "tag": "div",
+      "text": "Watch UX",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 240,
+      "tag": "p",
+      "text": "Media evidence remains first-class: scene context, clips, frames, and report questions share the same chat shell.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 241,
+      "tag": "article",
+      "text": "Sparta Chat UX\n\nEvidence-case turns disclose gates and receipts instead of generic hidden reasoning.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 242,
+      "tag": "div",
+      "text": "Sparta Chat UX",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 245,
+      "tag": "p",
+      "text": "Evidence-case turns disclose gates and receipts instead of generic hidden reasoning.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 246,
+      "tag": "article",
+      "text": "Peer Harness\n\nTau publishes a fail-closed peer envelope so pi-mono can consume Loop2 summary, events, and DAG evidence without scraping.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 247,
+      "tag": "div",
+      "text": "Peer Harness",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 252,
+      "tag": "p",
+      "text": "Tau publishes a fail-closed peer envelope so pi-mono can consume Loop2 summary, events, and DAG evidence without scraping.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 253,
+      "tag": "article",
+      "text": "Embry Voice\n\nPersonaPlex is represented as fail-closed voice metadata until a real cache replay receipt is attached.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 254,
+      "tag": "div",
+      "text": "Embry Voice",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 259,
+      "tag": "p",
+      "text": "PersonaPlex is represented as fail-closed voice metadata until a real cache replay receipt is attached.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 260,
+      "tag": "aside",
+      "text": "Tau Chat\nCompliance\nPersona\nAgent analysis\nEVIDENCE\n04:53 PM\nCHECKED RECEIPT GATES (5/5)\n\nTau Chat is mounted as an experiment surface. It reads the loop/harness/TUI contract and shows receipt-backed state; it does not claim production Sparta Chat readiness.\n\nCompliance\n04:53 PM\nAuto",
+      "qid": "tau:chat:sidebar",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 261,
+      "tag": "section",
+      "text": "Tau Chat\nCompliance\nPersona\nAgent analysis\nEVIDENCE\n04:53 PM\nCHECKED RECEIPT GATES (5/5)\n\nTau Chat is mounted as an experiment surface. It reads the loop/harness/TUI contract and shows receipt-backed state; it does not claim production Sparta Chat readiness.\n\nCompliance\n04:53 PM\nAuto",
+      "qid": "tau:chat:shell",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 262,
+      "tag": "header",
+      "text": "Tau Chat\nCompliance\nPersona",
+      "qid": "tau:chat:shell:header",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 263,
+      "tag": "div",
+      "text": "Tau Chat",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 264,
+      "tag": "div",
+      "text": "Tau Chat",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 265,
+      "tag": "div",
+      "text": "Compliance\nPersona",
+      "qid": "sparta:chat:mode-toggle",
+      "testid": null,
+      "role": "tablist"
+    },
+    {
+      "index": 266,
+      "tag": "button",
+      "text": "Compliance",
+      "qid": "sparta:chat:mode:compliance",
+      "testid": null,
+      "role": "tab"
+    },
+    {
+      "index": 269,
+      "tag": "span",
+      "text": "Compliance",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 270,
+      "tag": "button",
+      "text": "Persona",
+      "qid": "sparta:chat:mode:personaplex",
+      "testid": null,
+      "role": "tab"
+    },
+    {
+      "index": 275,
+      "tag": "span",
+      "text": "Persona",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 276,
+      "tag": "section",
+      "text": "Agent analysis\nEVIDENCE\n04:53 PM\nCHECKED RECEIPT GATES (5/5)\n\nTau Chat is mounted as an experiment surface. It reads the loop/harness/TUI contract and shows receipt-backed state; it does not claim production Sparta Chat readiness.\n\nCompliance\n04:53 PM\nAuto",
+      "qid": "tau:chat:shell:well",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 277,
+      "tag": "div",
+      "text": "Agent analysis\nEVIDENCE\n04:53 PM\nCHECKED RECEIPT GATES (5/5)\n\nTau Chat is mounted as an experiment surface. It reads the loop/harness/TUI contract and shows receipt-backed state; it does not claim production Sparta Chat readiness.\n\nCompliance\n04:53 PM",
+      "qid": "tau:chat:shell:well:messages",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 278,
+      "tag": "article",
+      "text": "Agent analysis\nEVIDENCE\n04:53 PM\nCHECKED RECEIPT GATES (5/5)\n\nTau Chat is mounted as an experiment surface. It reads the loop/harness/TUI contract and shows receipt-backed state; it does not claim production Sparta Chat readiness.\n\nCompliance\n04:53 PM",
+      "qid": "shared-chat:message:assistant",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 279,
+      "tag": "div",
+      "text": "Agent analysis\nEVIDENCE\n04:53 PM\nCHECKED RECEIPT GATES (5/5)\n\nTau Chat is mounted as an experiment surface. It reads the loop/harness/TUI contract and shows receipt-backed state; it does not claim production Sparta Chat readiness.\n\nCompliance\n04:53 PM",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 280,
+      "tag": "div",
+      "text": "Agent analysis\nEVIDENCE\n04:53 PM",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 281,
+      "tag": "div",
+      "text": "Agent analysis\nEVIDENCE",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 298,
+      "tag": "span",
+      "text": "Agent analysis",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 299,
+      "tag": "span",
+      "text": "EVIDENCE",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 306,
+      "tag": "div",
+      "text": "04:53 PM",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 307,
+      "tag": "span",
+      "text": "04:53 PM",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 309,
+      "tag": "div",
+      "text": "CHECKED RECEIPT GATES (5/5)",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 310,
+      "tag": "section",
+      "text": "CHECKED RECEIPT GATES (5/5)",
+      "qid": "shared-chat:message:thinking-trace",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 311,
+      "tag": "button",
+      "text": "CHECKED RECEIPT GATES (5/5)",
+      "qid": "shared-chat:message:thinking-trace:toggle",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 315,
+      "tag": "span",
+      "text": "CHECKED RECEIPT GATES (5/5)",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 316,
+      "tag": "span",
+      "text": "CHECKED RECEIPT GATES (5/5)",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 319,
+      "tag": "div",
+      "text": "Tau Chat is mounted as an experiment surface. It reads the loop/harness/TUI contract and shows receipt-backed state; it does not claim production Sparta Chat readiness.\n\nCompliance\n04:53 PM",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 320,
+      "tag": "div",
+      "text": "Tau Chat is mounted as an experiment surface. It reads the loop/harness/TUI contract and shows receipt-backed state; it does not claim production Sparta Chat readiness.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 321,
+      "tag": "div",
+      "text": "Tau Chat is mounted as an experiment surface. It reads the loop/harness/TUI contract and shows receipt-backed state; it does not claim production Sparta Chat readiness.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 322,
+      "tag": "p",
+      "text": "Tau Chat is mounted as an experiment surface. It reads the loop/harness/TUI contract and shows receipt-backed state; it does not claim production Sparta Chat readiness.",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 323,
+      "tag": "span",
+      "text": "/harness",
+      "qid": "skill:harness:ref",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 324,
+      "tag": "span",
+      "text": "/TUI",
+      "qid": "skill:TUI:ref",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 325,
+      "tag": "footer",
+      "text": "Compliance\n04:53 PM",
+      "qid": "shared-chat:message-footer",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 328,
+      "tag": "span",
+      "text": "Compliance",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 329,
+      "tag": "span",
+      "text": "04:53 PM",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 333,
+      "tag": "div",
+      "text": "",
+      "qid": "shared-chat:message-response-actions",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 351,
+      "tag": "div",
+      "text": "Auto",
+      "qid": "tau:chat:shell:well:composer",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 352,
+      "tag": "div",
+      "text": "Auto",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 353,
+      "tag": "textarea",
+      "text": "",
+      "qid": "tau:chat:shell:well:input",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 354,
+      "tag": "div",
+      "text": "Auto",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 360,
+      "tag": "div",
+      "text": "Auto",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 361,
+      "tag": "span",
+      "text": "Auto",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 362,
+      "tag": "button",
+      "text": "",
+      "qid": "tau:chat:shell:well:voice",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 367,
+      "tag": "button",
+      "text": "",
+      "qid": "tau:chat:shell:well:send",
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 371,
+      "tag": "style",
+      "text": "@keyframes pulse {\n          0%, 100% { opacity: 0.4; transform: scale(1); }\n          50% { opacity: 1; transform: scale(1.2); }\n        }\n        .markdown-table-wrapper { overflow-x: auto; }\n        .markdown-table-wrapper table { width: 100%; border-collapse: collapse; font-size: 12px; }\n        .markdown-table-wrapper th, .markdown-table-wrapper td { padding: 6px 8px; border: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }\n        .markdown-table-wrapper th { background: rgba(255,2",
+      "qid": null,
+      "testid": null,
+      "role": null
+    },
+    {
+      "index": 373,
+      "tag": "script",
+      "text": "window.__crashes = [];\n      window.onerror = function(msg, src, line, col, err) {\n        var text = msg + ' @ ' + (src||'').split('/').pop() + ':' + line;\n        if (err && err.stack) text += '\\n' + err.stack.split('\\n').slice(0,3).join('\\n');\n        window.__crashes.push(text);\n        var el = document.getElementById('crash-log');\n        el.style.display = 'block';\n        el.innerHTML = '<b>CRASH LOG</b><br>' + window.__crashes.join('<br><br>');\n      };\n      window.addEventListener('un",
+      "qid": null,
+      "testid": null,
+      "role": null
+    }
+  ]
 }
