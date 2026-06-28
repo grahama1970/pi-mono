@@ -17,6 +17,13 @@ const TAU_SUBAGENT_EXPECTATION_PROOF_ROOT = resolve(
 const TAU_CHAT_UX_CONTRACT_PATH = resolve(
 	process.env.TAU_CHAT_UX_CONTRACT_PATH ?? '/home/graham/workspace/experiments/tau/ui/tau-chat-contract.json',
 )
+const TAU_MEMORY_ROUTE_PROOF_ROOT = resolve(
+	process.env.TAU_MEMORY_ROUTE_PROOF_ROOT
+		?? '/home/graham/workspace/experiments/tau/experiments/goal-locked-subagents/proofs/live-memory-route-failclosed-20260628T140048Z',
+)
+const TAU_MEMORY_ROUTE_PROOF_MANIFEST = resolve(
+	process.env.TAU_MEMORY_ROUTE_PROOF_MANIFEST ?? resolve(TAU_MEMORY_ROUTE_PROOF_ROOT, 'manifest.json'),
+)
 
 function isPathInside(root: string, absolutePath: string): boolean {
 	const normalizedRoot = root.endsWith('/') ? root : `${root}/`
@@ -303,6 +310,116 @@ export async function normalizeTauCommandLoopProjection(
 			regenerate: asNumber(counts?.regenerate) ?? 0,
 		},
 		commands,
+	}
+}
+
+export async function normalizeTauMemoryRouteProof(
+	manifestPath = TAU_MEMORY_ROUTE_PROOF_MANIFEST,
+	proofRoot = TAU_MEMORY_ROUTE_PROOF_ROOT,
+): Promise<JsonRecord> {
+	const absoluteManifestPath = resolve(manifestPath)
+	const absoluteProofRoot = resolve(proofRoot)
+	if (!isPathInside(absoluteProofRoot, absoluteManifestPath)) {
+		throw new Error('Tau Memory route proof manifest path escapes proof root')
+	}
+	if (!existsSync(absoluteManifestPath)) throw new Error('Tau Memory route proof manifest not found')
+
+	const manifestStat = await stat(absoluteManifestPath)
+	if (!manifestStat.isFile()) throw new Error('Tau Memory route proof manifest path is not a file')
+
+	const manifest = await readJson(absoluteManifestPath)
+	if (manifest.schema !== 'tau.live_memory_route_failclosed_proof.v1') {
+		throw new Error('unexpected Tau Memory route proof manifest schema')
+	}
+	if (manifest.ok !== true) throw new Error('Tau Memory route proof manifest is not ok')
+	if (manifest.mocked !== false) throw new Error('Tau Memory route proof manifest must be mocked=false')
+	if (manifest.live !== true) throw new Error('Tau Memory route proof manifest must be live=true')
+
+	const routes = Array.isArray(manifest.routes) ? manifest.routes.map(asRecord) : []
+	const routeCount = asNumber(manifest.route_count)
+	if (!Number.isInteger(routeCount) || routeCount !== routes.length || routeCount < 1) {
+		throw new Error('Tau Memory route proof route_count does not match routes')
+	}
+
+	const normalizedRoutes = routes.map((route, index) => {
+		if (!route) throw new Error(`Tau Memory route proof route ${index} is not an object`)
+		const routeName = asString(route.route)
+		const branchStatus = asString(route.branch_status)
+		const receipt = asString(route.receipt)
+		if (!routeName) throw new Error(`Tau Memory route proof route ${index} missing route`)
+		if (!branchStatus) throw new Error(`Tau Memory route proof route ${routeName} missing branch_status`)
+		if (route.live !== true || route.mocked !== false) {
+			throw new Error(`Tau Memory route proof route ${routeName} must be live=true and mocked=false`)
+		}
+		if (typeof route.fail_closed !== 'boolean') {
+			throw new Error(`Tau Memory route proof route ${routeName} missing fail_closed boolean`)
+		}
+		if (!receipt) throw new Error(`Tau Memory route proof route ${routeName} missing receipt`)
+		const receiptPath = resolve(absoluteProofRoot, receipt)
+		if (!isPathInside(absoluteProofRoot, receiptPath)) {
+			throw new Error(`Tau Memory route proof receipt path escapes proof root: ${receipt}`)
+		}
+		const currentStage = asRecord(route.current_stage)
+		return {
+			route: routeName,
+			query: asString(route.query) ?? '',
+			selectedSkill: asString(route.selected_skill),
+			intentAction: asString(route.intent_action),
+			branchSchema: asString(route.branch_schema),
+			branchStatus,
+			failClosed: route.fail_closed,
+			live: true,
+			mocked: false,
+			memoryProductSchema: asString(route.memory_product_schema),
+			currentStage: currentStage
+				? {
+						stage: asString(currentStage.stage),
+						label: asString(currentStage.label),
+						status: asString(currentStage.status),
+						source: asString(currentStage.source),
+					}
+				: null,
+			receipt,
+			receiptPath,
+			selectionReasons: stringArray(route.selection_reasons),
+			validationErrors: stringArray(route.validation_errors),
+		}
+	})
+
+	const routeNames = normalizedRoutes.map((route) => route.route)
+	for (const requiredRoute of ['CLARIFY', 'DEFLECT', 'ANSWER_SELECTOR_ATTEMPT', 'ANSWER_DIRECT_PRODUCT', 'RESEARCH_BRAVE_DISABLED']) {
+		if (!routeNames.includes(requiredRoute)) throw new Error(`Tau Memory route proof missing route ${requiredRoute}`)
+	}
+	const researchRoute = normalizedRoutes.find((route) => route.route === 'RESEARCH_BRAVE_DISABLED')
+	if (!researchRoute?.failClosed || researchRoute.branchStatus !== 'FAILED') {
+		throw new Error('Tau Memory route proof must show RESEARCH_BRAVE_DISABLED failed closed')
+	}
+	const answerSelector = normalizedRoutes.find((route) => route.route === 'ANSWER_SELECTOR_ATTEMPT')
+	if (answerSelector?.selectedSkill !== 'memory.clarify') {
+		throw new Error('Tau Memory route proof must preserve ANSWER selector limitation')
+	}
+	const answerDirect = normalizedRoutes.find((route) => route.route === 'ANSWER_DIRECT_PRODUCT')
+	if (answerDirect?.memoryProductSchema !== 'memory.answer.v1' || answerDirect.branchStatus !== 'PASS') {
+		throw new Error('Tau Memory route proof must include a direct memory.answer.v1 product')
+	}
+
+	const claims = asRecord(manifest.claims)
+	return {
+		schema: 'tau.memory_route_failclosed_view.v1',
+		ok: true,
+		manifestPath: absoluteManifestPath,
+		proofRoot: absoluteProofRoot,
+		sourceSchema: manifest.schema,
+		createdUtc: asString(manifest.created_utc),
+		mocked: false,
+		live: true,
+		routeCount,
+		proofScope: asString(manifest.proof_scope),
+		routes: normalizedRoutes,
+		claims: {
+			proves: stringArray(claims?.proves),
+			does_not_prove: stringArray(claims?.does_not_prove),
+		},
 	}
 }
 
@@ -905,6 +1022,21 @@ export function registerTauRoutes(app: Express): void {
 				detail: error instanceof Error ? error.message : String(error),
 				summaryPath: TAU_COMMAND_LOOP_SUMMARY_PATH,
 				proofRoot: TAU_COMMAND_LOOP_PROOF_ROOT,
+			})
+		}
+	})
+
+	app.get('/api/tau/memory/routes/failclosed-proof', async (_req: Request, res: Response) => {
+		try {
+			const receipt = await normalizeTauMemoryRouteProof(TAU_MEMORY_ROUTE_PROOF_MANIFEST)
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(404).json({
+				ok: false,
+				error: 'tau_memory_route_failclosed_proof_unavailable',
+				detail: error instanceof Error ? error.message : String(error),
+				manifestPath: TAU_MEMORY_ROUTE_PROOF_MANIFEST,
+				proofRoot: TAU_MEMORY_ROUTE_PROOF_ROOT,
 			})
 		}
 	})

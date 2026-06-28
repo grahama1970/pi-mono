@@ -9,6 +9,7 @@ import {
 	normalizeTauCommandLoopProjection,
 	normalizeTauExternalSubagentGithubProjection,
 	normalizeTauExternalSubagentReceiptIntake,
+	normalizeTauMemoryRouteProof,
 	normalizeTauSubagentHandoffValidation,
 	normalizeTauSubagentReceiptExpectation,
 	persistTauSubagentReceiptExpectation,
@@ -72,6 +73,111 @@ function validSummary(root: string) {
 	}
 }
 
+function validMemoryRouteManifest(root: string) {
+	const receipt = (name: string) => `proof/${name}.json`
+	return {
+		schema: 'tau.live_memory_route_failclosed_proof.v1',
+		ok: true,
+		mocked: false,
+		live: true,
+		created_utc: '2026-06-28T14:00:48Z',
+		proof_scope: 'Fresh live Memory service route products plus fail-closed RESEARCH-disabled branch after adapter hardening.',
+		route_count: 5,
+		claims: {
+			proves: ['CLARIFY and DEFLECT live route products still pass through Memory-first harness receipts.'],
+			does_not_prove: ['Selector-selected ANSWER route for the natural-language answer probes.'],
+		},
+		routes: [
+			{
+				route: 'CLARIFY',
+				query: 'What does it mean?',
+				selected_skill: 'memory.clarify',
+				intent_action: 'QUERY',
+				branch_schema: 'tau.loop2_memory_clarify_branch.v1',
+				branch_status: 'PASS',
+				fail_closed: false,
+				live: true,
+				mocked: false,
+				memory_product_schema: 'memory.clarify.v1',
+				current_stage: { stage: 'clarify', label: 'Clarifying...', status: 'PASS', source: 'memory.clarify' },
+				receipt: receipt('clarify-harness-receipt'),
+				selection_reasons: ['unresolved_or_missing_entities'],
+				validation_errors: [],
+			},
+			{
+				route: 'DEFLECT',
+				query: "tell me today's weather in Tokyo",
+				selected_skill: 'memory.deflect',
+				intent_action: 'NO_MATCH',
+				branch_schema: 'tau.loop2_memory_deflect_branch.v1',
+				branch_status: 'PASS',
+				fail_closed: false,
+				live: true,
+				mocked: false,
+				memory_product_schema: 'memory.deflect.v1',
+				current_stage: {
+					stage: 'personaplex',
+					label: 'Preparing Persona Voice...',
+					status: 'REQUESTED_NO_PERSONAPLEX_RECEIPT',
+					source: 'personaplex',
+				},
+				receipt: receipt('deflect-harness-receipt'),
+				selection_reasons: ['memory_intent_no_match'],
+				validation_errors: [],
+			},
+			{
+				route: 'ANSWER_SELECTOR_ATTEMPT',
+				query: 'What is Tau project knowledge?',
+				selected_skill: 'memory.clarify',
+				intent_action: 'QUERY',
+				branch_schema: 'tau.loop2_memory_clarify_branch.v1',
+				branch_status: 'PASS',
+				fail_closed: false,
+				live: true,
+				mocked: false,
+				memory_product_schema: 'memory.clarify.v1',
+				current_stage: { stage: 'clarify', label: 'Clarifying...', status: 'PASS', source: 'memory.clarify' },
+				receipt: receipt('answer-harness-receipt'),
+				selection_reasons: ['unresolved_or_missing_entities'],
+				validation_errors: [],
+			},
+			{
+				route: 'ANSWER_DIRECT_PRODUCT',
+				query: 'What does memory know about Tau project watchdog apply transport proof?',
+				selected_skill: null,
+				intent_action: null,
+				branch_schema: 'tau.loop2_memory_answer_branch.v1',
+				branch_status: 'PASS',
+				fail_closed: false,
+				live: true,
+				mocked: false,
+				memory_product_schema: 'memory.answer.v1',
+				current_stage: null,
+				receipt: receipt('answer-direct-memory-product'),
+				selection_reasons: null,
+				validation_errors: [],
+			},
+			{
+				route: 'RESEARCH_BRAVE_DISABLED',
+				query: 'Find current Tau harness research sources',
+				selected_skill: 'brave-search',
+				intent_action: 'RESEARCH',
+				branch_schema: 'tau.loop2_brave_search.v1',
+				branch_status: 'FAILED',
+				fail_closed: true,
+				live: true,
+				mocked: false,
+				memory_product_schema: null,
+				current_stage: { stage: 'brave_search', label: 'Searching Web...', status: 'FAILED', source: 'brave-search' },
+				receipt: receipt('research-disabled-harness-receipt'),
+				selection_reasons: ['memory_intent_research'],
+				validation_errors: null,
+			},
+		],
+		_test_root: root,
+	}
+}
+
 afterEach(async () => {
 	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })))
 })
@@ -130,6 +236,120 @@ describe('normalizeTauCommandLoopProjection', () => {
 
 		await expect(normalizeTauCommandLoopProjection(summaryPath, root)).rejects.toThrow(
 			'Tau command-loop projection path escapes proof root',
+		)
+	})
+})
+
+describe('normalizeTauMemoryRouteProof', () => {
+	it('normalizes a live Tau Memory route fail-closed proof for the chat view', async () => {
+		const root = await makeRoot()
+		const manifestPath = resolve(root, 'manifest.json')
+		await writeJson(manifestPath, validMemoryRouteManifest(root))
+
+		const receipt = await normalizeTauMemoryRouteProof(manifestPath, root)
+
+		expect(receipt).toMatchObject({
+			schema: 'tau.memory_route_failclosed_view.v1',
+			ok: true,
+			manifestPath,
+			proofRoot: root,
+			sourceSchema: 'tau.live_memory_route_failclosed_proof.v1',
+			mocked: false,
+			live: true,
+			routeCount: 5,
+			proofScope: 'Fresh live Memory service route products plus fail-closed RESEARCH-disabled branch after adapter hardening.',
+			routes: [
+				{
+					route: 'CLARIFY',
+					branchStatus: 'PASS',
+					failClosed: false,
+					selectedSkill: 'memory.clarify',
+					memoryProductSchema: 'memory.clarify.v1',
+					currentStage: { stage: 'clarify', label: 'Clarifying...', status: 'PASS' },
+					receiptPath: resolve(root, 'proof/clarify-harness-receipt.json'),
+				},
+				{
+					route: 'DEFLECT',
+					branchStatus: 'PASS',
+					failClosed: false,
+					selectedSkill: 'memory.deflect',
+					memoryProductSchema: 'memory.deflect.v1',
+				},
+				{
+					route: 'ANSWER_SELECTOR_ATTEMPT',
+					branchStatus: 'PASS',
+					failClosed: false,
+					selectedSkill: 'memory.clarify',
+					memoryProductSchema: 'memory.clarify.v1',
+				},
+				{
+					route: 'ANSWER_DIRECT_PRODUCT',
+					branchStatus: 'PASS',
+					failClosed: false,
+					memoryProductSchema: 'memory.answer.v1',
+				},
+				{
+					route: 'RESEARCH_BRAVE_DISABLED',
+					branchStatus: 'FAILED',
+					failClosed: true,
+					selectedSkill: 'brave-search',
+					currentStage: { stage: 'brave_search', status: 'FAILED' },
+				},
+			],
+			claims: {
+				does_not_prove: ['Selector-selected ANSWER route for the natural-language answer probes.'],
+			},
+		})
+	})
+
+	it('fails closed when the route proof is mocked', async () => {
+		const root = await makeRoot()
+		const manifestPath = resolve(root, 'manifest.json')
+		const payload = validMemoryRouteManifest(root)
+		payload.mocked = true
+		await writeJson(manifestPath, payload)
+
+		await expect(normalizeTauMemoryRouteProof(manifestPath, root)).rejects.toThrow(
+			'Tau Memory route proof manifest must be mocked=false',
+		)
+	})
+
+	it('fails closed when a required route is absent', async () => {
+		const root = await makeRoot()
+		const manifestPath = resolve(root, 'manifest.json')
+		const payload = validMemoryRouteManifest(root)
+		payload.routes = payload.routes.filter((route) => route.route !== 'DEFLECT')
+		payload.route_count = payload.routes.length
+		await writeJson(manifestPath, payload)
+
+		await expect(normalizeTauMemoryRouteProof(manifestPath, root)).rejects.toThrow(
+			'Tau Memory route proof missing route DEFLECT',
+		)
+	})
+
+	it('fails closed when RESEARCH does not preserve the Brave-disabled failure boundary', async () => {
+		const root = await makeRoot()
+		const manifestPath = resolve(root, 'manifest.json')
+		const payload = validMemoryRouteManifest(root)
+		const route = payload.routes.find((item) => item.route === 'RESEARCH_BRAVE_DISABLED')
+		if (route) route.branch_status = 'PASS'
+		await writeJson(manifestPath, payload)
+
+		await expect(normalizeTauMemoryRouteProof(manifestPath, root)).rejects.toThrow(
+			'Tau Memory route proof must show RESEARCH_BRAVE_DISABLED failed closed',
+		)
+	})
+
+	it('fails closed when the ANSWER selector limitation is erased', async () => {
+		const root = await makeRoot()
+		const manifestPath = resolve(root, 'manifest.json')
+		const payload = validMemoryRouteManifest(root)
+		const route = payload.routes.find((item) => item.route === 'ANSWER_SELECTOR_ATTEMPT')
+		if (route) route.selected_skill = 'memory.answer'
+		await writeJson(manifestPath, payload)
+
+		await expect(normalizeTauMemoryRouteProof(manifestPath, root)).rejects.toThrow(
+			'Tau Memory route proof must preserve ANSWER selector limitation',
 		)
 	})
 })
