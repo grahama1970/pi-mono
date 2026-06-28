@@ -1,5 +1,21 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Bot, CheckCircle2, FileText, GitBranch, Mic, Search, Shield, Terminal, Video } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { FitAddon } from '@xterm/addon-fit'
+import { Terminal as XTerm } from '@xterm/xterm'
+import '@xterm/xterm/css/xterm.css'
+import {
+  AudioLines,
+  Bot,
+  CheckCircle2,
+  FileText,
+  GitBranch,
+  Mic,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Search,
+  Shield,
+  Terminal,
+  Video,
+} from 'lucide-react'
 import { SharedChatShell } from '../shared-chat/SharedChatShell'
 import {
   loadLoop2Events,
@@ -49,6 +65,7 @@ import {
   type TauCommandLoopGithubProjectionState,
 } from './tauCommandLoopProjection'
 import { apiUrl } from '../../lib/apiBase'
+import { useHorizontalPaneResize } from '../../hooks/useHorizontalPaneResize'
 
 const RECEIPTS = [
   {
@@ -1882,7 +1899,7 @@ function receiptPathsForCommandLoopProjection(projection?: TauCommandLoopGithubP
 
 export function stageTraceFromStreamingSteps(steps: StreamingStep[]): TauPipelineStageReceipt[] {
   return steps
-    .filter((step) => step.liveStatusLabel)
+    .filter((step) => step.kind !== 'final' && step.liveStatusLabel)
     .map((step) => ({
       schema: 'tau.loop2_pipeline_stage.v1',
       stage: normalizeTauStage(step.liveStatusLabel ?? step.label),
@@ -1914,12 +1931,368 @@ function normalizeStageStatus(status: StreamingStep['status']): string {
   return 'UNKNOWN'
 }
 
+export type TauTuiMirrorState = {
+  runId: string
+  active: boolean
+  currentStage: TauPipelineStageReceipt
+  trace: TauPipelineStageReceipt[]
+  route: string
+  nextAgent: string
+  personaVoice: string
+}
+
+export type TauTuiReceiptStreamView = {
+  schema: 'tau.tui_receipt_stream_view.v1'
+  ok: true
+  mocked: false
+  live: true
+  runId: string
+  runDir: string
+  eventsPath: string
+  finalReceiptPath: string
+  eventCount: number
+  status: string
+  proofScope: string | null
+  transportRunId: string | null
+  streamEventCount: number | null
+  latestEventType: string | null
+  terminalLines: string[]
+  claims: {
+    proves: string[]
+    does_not_prove: string[]
+  }
+}
+
+type TauTuiReceiptStreamState =
+  | { ok: true; receipt: TauTuiReceiptStreamView }
+  | { ok: false; detail: string; runDir?: string }
+
+export type TauTextualTuiProofView = {
+  schema: 'tau.textual_tui_proof_view.v1'
+  ok: true
+  mocked: true
+  live: false
+  manifestPath: string
+  proofRoot: string
+  sourceSchema: string
+  runId: string
+  prompt: string
+  status: string | null
+  entrypoint: string | null
+  sourceType: string | null
+  receiptPath: string
+  screenshotSvg: string
+  screenshotPng: string
+  visibleAssertions: string[]
+  textAssertions: string[]
+  doesNotProve: string[]
+  claims: {
+    proves: string[]
+    does_not_prove: string[]
+  }
+}
+
+type TauTextualTuiProofState =
+  | { ok: true; receipt: TauTextualTuiProofView }
+  | { ok: false; detail: string; manifestPath?: string; proofRoot?: string }
+
+export type TauPersonaplexEmbryReceiptGate = {
+  schema: 'tau.personaplex_embry_receipt_gate.v1'
+  ok: true
+  available: boolean
+  failClosed: boolean
+  persona: 'embry'
+  voiceEngine: 'personaplex'
+  requiredSchema: 'personaplex.publish_receipt.v1'
+  requiredStatus: 'CACHE_REPLAY_PASS'
+  receiptPath: string
+  metadataReceiptPath: string
+  metadataVoiceStatus?: string
+  reason?: string
+  status?: string
+  publicationStatus?: string
+  humanReviewStatus?: string
+  promptCount?: number
+  reviewHtml?: string | null
+  claims: {
+    proves: string[]
+    does_not_prove: string[]
+  }
+}
+
+type TauPersonaplexEmbryReceiptState =
+  | { ok: true; receipt: TauPersonaplexEmbryReceiptGate }
+  | { ok: false; detail: string; receiptPath?: string; receipt?: TauPersonaplexEmbryReceiptGate }
+
+function isTauTuiReceiptStreamView(value: unknown): value is TauTuiReceiptStreamView {
+  if (!isRecord(value)) return false
+  return (
+    value.schema === 'tau.tui_receipt_stream_view.v1' &&
+    value.ok === true &&
+    value.mocked === false &&
+    value.live === true &&
+    typeof value.runId === 'string' &&
+    typeof value.runDir === 'string' &&
+    typeof value.eventsPath === 'string' &&
+    typeof value.finalReceiptPath === 'string' &&
+    typeof value.eventCount === 'number' &&
+    typeof value.status === 'string' &&
+    Array.isArray(value.terminalLines) &&
+    value.terminalLines.every((line) => typeof line === 'string') &&
+    isRecord(value.claims) &&
+    Array.isArray(value.claims.proves) &&
+    Array.isArray(value.claims.does_not_prove)
+  )
+}
+
+async function loadTauTuiReceiptStream(): Promise<TauTuiReceiptStreamState> {
+  const response = await fetch(apiUrl('/api/tau/tui/receipt-stream'))
+  const payload = (await response.json()) as unknown
+  if (!response.ok || !isRecord(payload) || payload.ok !== true || !isTauTuiReceiptStreamView(payload.receipt)) {
+    const detail = isRecord(payload) && typeof payload.detail === 'string'
+      ? payload.detail
+      : `Tau TUI receipt stream unavailable: HTTP ${response.status}`
+    return {
+      ok: false,
+      detail,
+      runDir: isRecord(payload) && typeof payload.runDir === 'string' ? payload.runDir : undefined,
+    }
+  }
+  return { ok: true, receipt: payload.receipt }
+}
+
+function isTauTextualTuiProofView(value: unknown): value is TauTextualTuiProofView {
+  if (!isRecord(value)) return false
+  return (
+    value.schema === 'tau.textual_tui_proof_view.v1' &&
+    value.ok === true &&
+    value.mocked === true &&
+    value.live === false &&
+    typeof value.manifestPath === 'string' &&
+    typeof value.proofRoot === 'string' &&
+    typeof value.sourceSchema === 'string' &&
+    typeof value.runId === 'string' &&
+    typeof value.prompt === 'string' &&
+    typeof value.receiptPath === 'string' &&
+    typeof value.screenshotSvg === 'string' &&
+    typeof value.screenshotPng === 'string' &&
+    Array.isArray(value.visibleAssertions) &&
+    value.visibleAssertions.every((item) => typeof item === 'string') &&
+    Array.isArray(value.textAssertions) &&
+    value.textAssertions.every((item) => typeof item === 'string') &&
+    Array.isArray(value.doesNotProve) &&
+    value.doesNotProve.every((item) => typeof item === 'string') &&
+    isRecord(value.claims) &&
+    Array.isArray(value.claims.proves) &&
+    Array.isArray(value.claims.does_not_prove)
+  )
+}
+
+async function loadTauTextualTuiProof(): Promise<TauTextualTuiProofState> {
+  const response = await fetch(apiUrl('/api/tau/tui/textual-proof'))
+  const payload = (await response.json()) as unknown
+  if (!response.ok || !isRecord(payload) || payload.ok !== true || !isTauTextualTuiProofView(payload.receipt)) {
+    const detail = isRecord(payload) && typeof payload.detail === 'string'
+      ? payload.detail
+      : `Tau Textual TUI proof unavailable: HTTP ${response.status}`
+    return {
+      ok: false,
+      detail,
+      manifestPath: isRecord(payload) && typeof payload.manifestPath === 'string' ? payload.manifestPath : undefined,
+      proofRoot: isRecord(payload) && typeof payload.proofRoot === 'string' ? payload.proofRoot : undefined,
+    }
+  }
+  return { ok: true, receipt: payload.receipt }
+}
+
+export function textualTuiProofCardSummary(state: TauTextualTuiProofState | null): {
+  label: string
+  detail: string
+  artifact: string
+  mocked: string
+  live: string
+} {
+  if (!state) {
+    return {
+      label: 'LOADING',
+      detail: 'Checking for a repeatable Tau Textual TUI renderer proof.',
+      artifact: 'manifest path pending',
+      mocked: 'unknown',
+      live: 'unknown',
+    }
+  }
+  if (!state.ok) {
+    return {
+      label: 'UNAVAILABLE',
+      detail: `Fail-closed: ${state.detail}`,
+      artifact: state.manifestPath ?? state.proofRoot ?? 'manifest path unavailable',
+      mocked: 'unknown',
+      live: 'unknown',
+    }
+  }
+  return {
+    label: 'FIXTURE PROOF',
+    detail: 'Real Tau Textual renderer proof is attached, but it uses a fixture session and does not claim a live TUI process.',
+    artifact: state.receipt.screenshotPng,
+    mocked: String(state.receipt.mocked),
+    live: String(state.receipt.live),
+  }
+}
+
+function isTauPersonaplexEmbryReceiptGate(value: unknown): value is TauPersonaplexEmbryReceiptGate {
+  if (!isRecord(value)) return false
+  return (
+    value.schema === 'tau.personaplex_embry_receipt_gate.v1' &&
+    value.ok === true &&
+    typeof value.available === 'boolean' &&
+    typeof value.failClosed === 'boolean' &&
+    value.persona === 'embry' &&
+    value.voiceEngine === 'personaplex' &&
+    value.requiredSchema === 'personaplex.publish_receipt.v1' &&
+    value.requiredStatus === 'CACHE_REPLAY_PASS' &&
+    typeof value.receiptPath === 'string' &&
+    typeof value.metadataReceiptPath === 'string' &&
+    isRecord(value.claims) &&
+    Array.isArray(value.claims.proves) &&
+    Array.isArray(value.claims.does_not_prove)
+  )
+}
+
+async function loadTauPersonaplexEmbryReceipt(): Promise<TauPersonaplexEmbryReceiptState> {
+  const response = await fetch(apiUrl('/api/tau/personaplex/embry-receipt'))
+  const payload = (await response.json()) as unknown
+  const receipt = isRecord(payload) && isTauPersonaplexEmbryReceiptGate(payload.receipt) ? payload.receipt : null
+  if (receipt?.available) return { ok: true, receipt }
+  if (receipt) {
+    return {
+      ok: false,
+      receipt,
+      detail: receipt.reason ?? 'PersonaPlex Embry receipt gate unavailable.',
+      receiptPath: receipt.receiptPath,
+    }
+  }
+  return {
+    ok: false,
+    detail: isRecord(payload) && typeof payload.detail === 'string'
+      ? payload.detail
+      : `PersonaPlex Embry receipt gate unavailable: HTTP ${response.status}`,
+    receiptPath: isRecord(payload) && typeof payload.receiptPath === 'string' ? payload.receiptPath : undefined,
+  }
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
+}
+
+function isTauStageReceipt(value: unknown): value is TauPipelineStageReceipt {
+  return (
+    isRecord(value) &&
+    value.schema === 'tau.loop2_pipeline_stage.v1' &&
+    typeof value.stage === 'string' &&
+    typeof value.label === 'string' &&
+    typeof value.status === 'string' &&
+    typeof value.source === 'string'
+  )
+}
+
+function readStringFromRecord(value: unknown, key: string): string | null {
+  if (!isRecord(value)) return null
+  const found = value[key]
+  return typeof found === 'string' && found.trim() ? found : null
+}
+
+function readStoredPaneWidth(key: string, fallback: number, min: number, max: number): number {
+  if (typeof window === 'undefined') return fallback
+  const raw = window.localStorage.getItem(key)
+  const parsed = raw ? Number.parseInt(raw, 10) : Number.NaN
+  if (!Number.isFinite(parsed)) return fallback
+  return Math.max(min, Math.min(max, parsed))
+}
+
+export function deriveTauTuiMirrorState(
+  messages: ChatMessage[],
+  streamingSteps: StreamingStep[],
+  isStreaming: boolean,
+  configuredRunId?: string | null,
+): TauTuiMirrorState {
+  const streamingTrace = stageTraceFromStreamingSteps(streamingSteps)
+  const latestAssistant = [...messages].reverse().find((message) => message.role === 'assistant' && isRecord(message.metadata))
+  const metadata = latestAssistant?.metadata
+  const metadataTrace = Array.isArray(metadata?.tauStageTrace)
+    ? metadata.tauStageTrace.filter(isTauStageReceipt)
+    : []
+  const metadataCurrentStage = isTauStageReceipt(metadata?.tauCurrentStage) ? metadata.tauCurrentStage : null
+  const trace = streamingTrace.length > 0 ? streamingTrace : metadataTrace.length > 0 ? metadataTrace : TAU_MEMORY_STAGE_TRACE
+  const currentStage = streamingTrace[streamingTrace.length - 1] ?? metadataCurrentStage ?? trace[trace.length - 1] ?? TAU_MEMORY_STAGE_TRACE[0]
+  const memoryIntent = metadata?.memoryIntent
+  const handoffValidation = metadata?.tauAgentHandoffValidation
+  return {
+    runId: configuredRunId || latestAssistant?.id || 'no-active-turn',
+    active: isStreaming || streamingTrace.some((stage) => stage.status === 'RUNNING'),
+    currentStage,
+    trace,
+    route: readStringFromRecord(memoryIntent, 'action') ?? readStringFromRecord(memoryIntent, 'response_mode') ?? 'waiting',
+    nextAgent: readStringFromRecord(handoffValidation, 'nextAgent') ?? 'not routed',
+    personaVoice: readStringFromRecord(metadata, 'personaVoiceStatus') ?? 'not requested',
+  }
+}
+
+export function terminalLinesFromTauTuiMirrorState(state: TauTuiMirrorState): string[] {
+  const routeText = state.route === 'waiting' ? 'awaiting-memory-intent' : state.route
+  const nextAgentText = state.nextAgent === 'not routed' ? 'none' : state.nextAgent
+  return [
+    '\x1b[36mtau@ux-lab\x1b[0m:\x1b[35m~/loop\x1b[0m$ run --memory-first --same-turn',
+    `run_id=${state.runId}`,
+    `route=${routeText} next_agent=${nextAgentText}`,
+    `personaplex=${state.personaVoice}`,
+    '',
+    'memory pipeline:',
+    ...state.trace.map((stage, index) => {
+      const glyph = stage.status === 'FAILED' ? 'x' : stage.status === 'RUNNING' ? '>' : stage.status === 'SKIPPED' ? '-' : '+'
+      const color = stage.status === 'FAILED' ? '\x1b[31m' : stage.status === 'RUNNING' ? '\x1b[33m' : stage.status === 'SKIPPED' ? '\x1b[38;5;208m' : '\x1b[32m'
+      const current = stage.stage === state.currentStage.stage ? '\x1b[46;30m current \x1b[0m ' : ''
+      return `${color}${glyph}\x1b[0m ${String(index + 1).padStart(2, '0')}. ${stage.label} \x1b[90m${stage.source}\x1b[0m ${current}\x1b[90m${stage.status}\x1b[0m`
+    }),
+    '',
+    '\x1b[90msame-turn telemetry; PersonaPlex audio fail-closed until receipt\x1b[0m',
+  ]
+}
+
+export function terminalLinesFromTauTuiReceiptStream(receipt: TauTuiReceiptStreamView): string[] {
+  return receipt.terminalLines.map((line) => {
+    if (line.startsWith('mocked=false live=true')) return `\x1b[32m${line}\x1b[0m`
+    if (line.startsWith('event stream tail:')) return `\x1b[36m${line}\x1b[0m`
+    if (line.startsWith('claims.does_not_prove=')) return `\x1b[38;5;208m${line}\x1b[0m`
+    return line
+  })
+}
+
 export function TauChatView(): JSX.Element {
   const [commandLoopProjectionState, setCommandLoopProjectionState] =
     useState<TauCommandLoopGithubProjectionState | null>(null)
   const [chatUxContractState, setChatUxContractState] = useState<TauChatUxContractState | null>(null)
   const [memoryRouteProofState, setMemoryRouteProofState] = useState<TauMemoryRouteProofState | null>(null)
   const [watchdogReceiptChainState, setWatchdogReceiptChainState] = useState<TauWatchdogReceiptChainState | null>(null)
+  const [tuiReceiptStreamState, setTuiReceiptStreamState] = useState<TauTuiReceiptStreamState | null>(null)
+  const [textualTuiProofState, setTextualTuiProofState] = useState<TauTextualTuiProofState | null>(null)
+  const [personaplexEmbryReceiptState, setPersonaplexEmbryReceiptState] =
+    useState<TauPersonaplexEmbryReceiptState | null>(null)
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(sampleMessages)
+  const [chatStreamingSteps, setChatStreamingSteps] = useState<StreamingStep[]>([])
+  const [chatStreaming, setChatStreaming] = useState(false)
+  const [evidenceRailCollapsed, setEvidenceRailCollapsed] = useState(() =>
+    typeof window === 'undefined' ? false : window.localStorage.getItem('tau:evidenceRailCollapsed') === 'true',
+  )
+  const proofRailResize = useHorizontalPaneResize({
+    initial: readStoredPaneWidth('tau:proofRailWidth', 720, 420, 980),
+    min: 420,
+    max: 980,
+  })
+  const tuiPaneResize = useHorizontalPaneResize({
+    initial: readStoredPaneWidth('tau:tuiPaneWidth', 300, 240, 620),
+    min: 240,
+    max: 620,
+  })
   const adapter = useMemo(
     () => new TauReceiptAdapter(postMemoryProduct, commandLoopProjectionState?.ok ? commandLoopProjectionState.receipt : undefined),
     [commandLoopProjectionState],
@@ -1960,6 +2333,14 @@ export function TauChatView(): JSX.Element {
   }, [])
 
   useEffect(() => {
+    window.localStorage.setItem('tau:proofRailWidth', String(proofRailResize.width))
+  }, [proofRailResize.width])
+
+  useEffect(() => {
+    window.localStorage.setItem('tau:tuiPaneWidth', String(tuiPaneResize.width))
+  }, [tuiPaneResize.width])
+
+  useEffect(() => {
     const controller = new AbortController()
     void loadTauMemoryRouteProof(controller.signal)
       .then((state) => setMemoryRouteProofState(state))
@@ -1987,6 +2368,63 @@ export function TauChatView(): JSX.Element {
         })
       })
     return () => controller.abort()
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    void loadTauTuiReceiptStream()
+      .then((state) => {
+        if (!cancelled) setTuiReceiptStreamState(state)
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          setTuiReceiptStreamState({
+            ok: false,
+            detail: error instanceof Error ? error.message : String(error),
+          })
+        }
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    void loadTauTextualTuiProof()
+      .then((state) => {
+        if (!cancelled) setTextualTuiProofState(state)
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          setTextualTuiProofState({
+            ok: false,
+            detail: error instanceof Error ? error.message : String(error),
+          })
+        }
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    void loadTauPersonaplexEmbryReceipt()
+      .then((state) => {
+        if (!cancelled) setPersonaplexEmbryReceiptState(state)
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          setPersonaplexEmbryReceiptState({
+            ok: false,
+            detail: error instanceof Error ? error.message : String(error),
+          })
+        }
+      })
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   useEffect(() => {
@@ -2106,6 +2544,11 @@ export function TauChatView(): JSX.Element {
   const memoryRouteProofStatusLabel = memoryRouteProofState?.ok ? 'LIVE RECEIPT' : memoryRouteProofState ? 'UNAVAILABLE' : 'LOADING'
   const watchdogReceiptChainStatusColor = watchdogReceiptChainState?.ok ? '#22c55e' : watchdogReceiptChainState ? '#f97316' : '#38bdf8'
   const watchdogReceiptChainStatusLabel = watchdogReceiptChainState?.ok ? 'CRON RECEIPT' : watchdogReceiptChainState ? 'UNAVAILABLE' : 'LOADING'
+  const textualTuiProofSummary = textualTuiProofCardSummary(textualTuiProofState)
+  const textualTuiProofStatusColor = textualTuiProofState?.ok ? '#facc15' : textualTuiProofState ? '#f97316' : '#38bdf8'
+  const personaplexStatusColor = personaplexEmbryReceiptState?.ok ? '#22c55e' : personaplexEmbryReceiptState ? '#f97316' : '#38bdf8'
+  const personaplexStatusLabel = personaplexEmbryReceiptState?.ok ? 'CACHE REPLAY' : personaplexEmbryReceiptState ? 'FAIL-CLOSED' : 'CHECKING'
+  const personaplexReceipt = personaplexEmbryReceiptState?.receipt
   const receiptCards = useMemo(
     () =>
       RECEIPTS.map((receipt) => {
@@ -2131,6 +2574,22 @@ export function TauChatView(): JSX.Element {
       }),
     [commandLoopProjectionState],
   )
+  const tuiMirror = useMemo(
+    () =>
+      deriveTauTuiMirrorState(
+        chatMessages,
+        chatStreamingSteps,
+        chatStreaming,
+        peerSummary.runId || peerConfig.runId || null,
+      ),
+    [chatMessages, chatStreamingSteps, chatStreaming, peerConfig.runId, peerSummary.runId],
+  )
+
+  function toggleEvidenceRail(): void {
+    const nextCollapsed = !evidenceRailCollapsed
+    setEvidenceRailCollapsed(nextCollapsed)
+    window.localStorage.setItem('tau:evidenceRailCollapsed', String(nextCollapsed))
+  }
 
   return (
     <section
@@ -2139,13 +2598,62 @@ export function TauChatView(): JSX.Element {
         height: '100%',
         minHeight: 0,
         display: 'grid',
-        gridTemplateColumns: 'minmax(360px, 0.92fr) minmax(390px, 0.72fr)',
+        gridTemplateColumns: evidenceRailCollapsed ? '64px 6px minmax(720px, 1fr)' : `${proofRailResize.width}px 6px minmax(520px, 1fr)`,
         background: '#090a0f',
         color: '#e5e7eb',
         overflow: 'hidden',
       }}
     >
-      <main data-qid="tau:chat:workspace" style={{ minHeight: 0, overflow: 'auto', padding: 24 }}>
+      <main
+        data-qid="tau:chat:workspace"
+        data-collapsed={evidenceRailCollapsed ? 'true' : 'false'}
+        style={{
+          minHeight: 0,
+          overflow: evidenceRailCollapsed ? 'hidden' : 'auto',
+          padding: evidenceRailCollapsed ? 10 : 24,
+          borderRight: '1px solid rgba(255,255,255,0.05)',
+          background: evidenceRailCollapsed ? '#08090d' : 'transparent',
+        }}
+      >
+        <button
+          type="button"
+          data-qid="tau:chat:evidence-rail-toggle"
+          data-qs-action={evidenceRailCollapsed ? 'TAU_EXPAND_EVIDENCE_RAIL' : 'TAU_COLLAPSE_EVIDENCE_RAIL'}
+          title={evidenceRailCollapsed ? 'Expand T’au proof rail' : 'Collapse T’au proof rail'}
+          onClick={toggleEvidenceRail}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 34,
+            height: 34,
+            border: '1px solid rgba(148,163,184,0.22)',
+            borderRadius: 8,
+            color: '#cbd5e1',
+            background: 'rgba(15,23,42,0.78)',
+            cursor: 'pointer',
+          }}
+        >
+          {evidenceRailCollapsed ? <PanelLeftOpen size={17} aria-hidden="true" /> : <PanelLeftClose size={17} aria-hidden="true" />}
+        </button>
+        {evidenceRailCollapsed ? (
+          <div
+            data-qid="tau:chat:evidence-rail-collapsed"
+            title="T’au proof rail collapsed"
+            style={{
+              marginTop: 18,
+              writingMode: 'vertical-rl',
+              transform: 'rotate(180deg)',
+              color: '#94a3b8',
+              fontSize: 10,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            T’au proofs
+          </div>
+        ) : (
         <div style={{ display: 'grid', gap: 20, maxWidth: 980 }}>
           <header style={{ display: 'grid', gap: 10 }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#9ca3af', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
@@ -2695,33 +3203,397 @@ export function TauChatView(): JSX.Element {
             <Capability icon={<Video size={16} />} title="Watch UX" text="Media evidence remains first-class: scene context, clips, frames, and report questions share the same chat shell." />
             <Capability icon={<Shield size={16} />} title="Sparta Chat UX" text="Evidence-case turns disclose gates and receipts instead of generic hidden reasoning." />
             <Capability icon={<GitBranch size={16} />} title="Peer Harness" text="Tau publishes a fail-closed peer envelope so pi-mono can consume Loop2 summary, events, and DAG evidence without scraping." />
-            <Capability icon={<Mic size={16} />} title="Embry Voice" text="PersonaPlex is represented as fail-closed voice metadata until a real cache replay receipt is attached." />
+            <article
+              data-qid="tau:textual-tui:proof-card"
+              style={{
+                border: `1px solid ${textualTuiProofStatusColor}55`,
+                background: `${textualTuiProofStatusColor}0f`,
+                borderRadius: 8,
+                padding: 14,
+                minWidth: 0,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#e2e8f0', fontSize: 13, fontWeight: 700 }}>
+                  <Terminal size={16} />
+                  Textual TUI Proof
+                </div>
+                <span
+                  data-qid="tau:textual-tui:proof-status"
+                  style={{ color: textualTuiProofStatusColor, fontSize: 11, fontFamily: 'monospace', whiteSpace: 'nowrap' }}
+                >
+                  {textualTuiProofSummary.label}
+                </span>
+              </div>
+              <p style={{ margin: '10px 0 0', color: '#94a3b8', fontSize: 12, lineHeight: 1.5 }}>
+                {textualTuiProofSummary.detail}
+              </p>
+              {textualTuiProofState?.ok ? (
+                <figure
+                  data-qid="tau:textual-tui:screenshot-preview"
+                  style={{
+                    margin: '10px 0 0',
+                    border: '1px solid rgba(250,204,21,0.22)',
+                    background: '#020617',
+                    borderRadius: 6,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <img
+                    src={apiUrl('/api/tau/tui/textual-proof/screenshot')}
+                    alt="Fixture-backed Tau Textual TUI proof screenshot"
+                    title="Fixture-backed Tau Textual TUI screenshot; mocked=true live=false"
+                    style={{ display: 'block', width: '100%', aspectRatio: '1 / 1.12', objectFit: 'cover', objectPosition: 'top left' }}
+                  />
+                  <figcaption style={{ padding: '7px 9px', color: '#fde68a', fontSize: 10, lineHeight: 1.35 }}>
+                    Screenshot artifact from `uv run tau tui-proof`; not a live embedded TUI.
+                  </figcaption>
+                </figure>
+              ) : null}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8, marginTop: 10 }}>
+                <PeerFact label="mocked" value={textualTuiProofSummary.mocked} />
+                <PeerFact label="live" value={textualTuiProofSummary.live} />
+              </div>
+              {textualTuiProofState?.ok ? (
+                <div data-qid="tau:textual-tui:proof-boundaries" style={{ marginTop: 10, display: 'grid', gap: 5 }}>
+                  {textualTuiProofState.receipt.doesNotProve.slice(0, 2).map((item) => (
+                    <div key={item} style={{ color: '#fde68a', fontSize: 10, lineHeight: 1.35 }}>
+                      does not prove: {item}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+              <code
+                data-qid="tau:textual-tui:proof-artifact"
+                style={{ display: 'block', marginTop: 10, color: '#64748b', fontSize: 10, lineHeight: 1.35, wordBreak: 'break-word' }}
+              >
+                {textualTuiProofSummary.artifact}
+              </code>
+            </article>
+            <article
+              data-qid="tau:personaplex:embry-receipt-gate"
+              style={{ border: `1px solid ${personaplexStatusColor}55`, background: `${personaplexStatusColor}0f`, borderRadius: 8, padding: 14 }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#e2e8f0', fontSize: 13, fontWeight: 700 }}>
+                  <Mic size={16} />
+                  Embry Voice
+                </div>
+                <span
+                  data-qid="tau:personaplex:embry-receipt-status"
+                  style={{ color: personaplexStatusColor, fontSize: 11, fontFamily: 'monospace' }}
+                >
+                  {personaplexStatusLabel}
+                </span>
+              </div>
+              <p style={{ margin: '10px 0 0', color: '#94a3b8', fontSize: 12, lineHeight: 1.5 }}>
+                {personaplexEmbryReceiptState?.ok
+                  ? `PersonaPlex cache replay receipt is attached (${personaplexReceipt?.promptCount ?? 0} prompt cache).`
+                  : personaplexEmbryReceiptState
+                    ? 'Audio activation is disabled until a personaplex.publish_receipt.v1 with CACHE_REPLAY_PASS is attached.'
+                    : 'Checking for PersonaPlex cache replay receipt...'}
+              </p>
+              <code
+                data-qid="tau:personaplex:embry-receipt-path"
+                style={{ display: 'block', marginTop: 10, color: '#64748b', fontSize: 10, lineHeight: 1.35, wordBreak: 'break-word' }}
+              >
+                {personaplexReceipt?.receiptPath ?? personaplexEmbryReceiptState?.receiptPath ?? 'receipt path pending'}
+              </code>
+            </article>
           </section>
         </div>
+        )}
       </main>
 
-      <aside data-qid="tau:chat:sidebar" style={{ minWidth: 0, minHeight: 0, borderLeft: '1px solid rgba(148,163,184,0.16)', background: '#101014', padding: 8 }}>
-        <SharedChatShell
-          projectLabel="Tau Chat"
-          surface="shared-chat"
-          shellQid="tau:chat:shell"
-          defaultMode="compliance"
-          showModeToggle
-          adapter={adapter}
-          initialMessages={sampleMessages}
-          emptyTitle="Tau Loop and Memory Harness"
-          emptyDescription="Ask about the Tau loop stage contract, Sparta evidence cases, Watch embeds, or Embry voice readiness."
-          placeholder="Ask Tau about loop evidence, SPARTA, Watch, or Embry..."
-          chatTitle="Tau Loop Chat"
-          agentStatus="ready"
-          starterChips={[
-            { label: 'Show loop evidence', prompt: 'What loop evidence is available?', dataQid: 'tau:chat:chip:loop-evidence' },
-            { label: 'Peer handoff', prompt: 'How does Tau communicate with pi-mono and peer harnesses?', dataQid: 'tau:chat:chip:peer-handoff' },
-            { label: 'Explain Embry voice', prompt: 'How does Embry PersonaPlex voice work here?', dataQid: 'tau:chat:chip:embry-voice' },
-            { label: 'SPARTA evidence case', prompt: 'How does Tau handle a CWE-287 SPARTA evidence case?', dataQid: 'tau:chat:chip:sparta-evidence' },
-          ]}
+      <div
+        data-qid="tau:chat:proof-rail-resize"
+        data-qs-action="TAU_RESIZE_PROOF_RAIL"
+        title="Drag to resize T’au proof rail"
+        role="separator"
+        aria-orientation="vertical"
+        onMouseDown={proofRailResize.onDragStart}
+        style={{
+          width: 6,
+          minWidth: 6,
+          height: '100%',
+          cursor: 'col-resize',
+          background: proofRailResize.dragging.current ? '#22d3ee' : 'rgba(148,163,184,0.18)',
+          borderLeft: '1px solid rgba(255,255,255,0.04)',
+          borderRight: '1px solid rgba(255,255,255,0.04)',
+        }}
+      />
+
+      <aside
+        data-qid="tau:chat:sidebar"
+        style={{
+          minWidth: 0,
+          minHeight: 0,
+          borderLeft: '1px solid rgba(255,255,255,0.05)',
+          background: '#0d0d12',
+          padding: 8,
+          display: 'grid',
+          gridTemplateColumns: `${tuiPaneResize.width}px 6px minmax(330px, 1fr)`,
+          gap: 8,
+          overflow: 'hidden',
+        }}
+      >
+        <TauTuiMirrorPanel
+          state={tuiMirror}
+          receiptStreamState={tuiReceiptStreamState}
+          textualTuiProofState={textualTuiProofState}
         />
+        <div
+          data-qid="tau:chat:tui-chat-resize"
+          data-qs-action="TAU_RESIZE_TUI_CHAT_SPLIT"
+          title="Drag to resize T’au receipt terminal and chat panes"
+          role="separator"
+          aria-orientation="vertical"
+          onMouseDown={tuiPaneResize.onDragStart}
+          style={{
+            width: 6,
+            minWidth: 6,
+            height: '100%',
+            cursor: 'col-resize',
+            background: tuiPaneResize.dragging.current ? '#22d3ee' : 'rgba(148,163,184,0.18)',
+            borderRadius: 999,
+          }}
+        />
+        <div style={{ minWidth: 0, minHeight: 0 }}>
+          <SharedChatShell
+            projectLabel="Tau Chat"
+            surface="shared-chat"
+            shellQid="tau:chat:shell"
+            defaultMode="compliance"
+            modeLabels={{ compliance: 'Evidence', personaplex: 'Embry voice' }}
+            modeTitles={{
+              compliance: 'Use Tau Memory and SPARTA evidence receipts',
+              personaplex: 'Activate Embry PersonaPlex voice metadata mode',
+            }}
+            showModeToggle
+            adapter={adapter}
+            messages={chatMessages}
+            onMessagesChange={setChatMessages}
+            onStreamingStepsChange={setChatStreamingSteps}
+            onStreamingChange={setChatStreaming}
+            emptyTitle="Tau Loop and Memory Harness"
+            emptyDescription="Ask about the Tau loop stage contract, Sparta evidence cases, Watch embeds, or Embry voice readiness."
+            placeholder="Ask Tau about loop evidence, SPARTA, Watch, or Embry..."
+            chatTitle="Tau Loop Chat"
+            agentStatus={chatStreaming ? tuiMirror.currentStage.label : 'ready'}
+            starterChips={[
+              { label: 'Show loop evidence', prompt: 'What loop evidence is available?', dataQid: 'tau:chat:chip:loop-evidence' },
+              { label: 'Peer handoff', prompt: 'How does Tau communicate with pi-mono and peer harnesses?', dataQid: 'tau:chat:chip:peer-handoff' },
+              { label: 'Explain Embry voice', prompt: 'How does Embry PersonaPlex voice work here?', dataQid: 'tau:chat:chip:embry-voice' },
+              { label: 'SPARTA evidence case', prompt: 'How does Tau handle a CWE-287 SPARTA evidence case?', dataQid: 'tau:chat:chip:sparta-evidence' },
+            ]}
+          />
+        </div>
       </aside>
+    </section>
+  )
+}
+
+function TauTuiMirrorPanel({
+  state,
+  receiptStreamState,
+  textualTuiProofState,
+}: {
+  state: TauTuiMirrorState
+  receiptStreamState: TauTuiReceiptStreamState | null
+  textualTuiProofState: TauTextualTuiProofState | null
+}): JSX.Element {
+  const terminalHostRef = useRef<HTMLDivElement | null>(null)
+  const terminalRef = useRef<XTerm | null>(null)
+  const fitAddonRef = useRef<FitAddon | null>(null)
+  const receiptStream = receiptStreamState?.ok ? receiptStreamState.receipt : null
+  const lines = useMemo(
+    () => (receiptStream ? terminalLinesFromTauTuiReceiptStream(receiptStream) : terminalLinesFromTauTuiMirrorState(state)),
+    [receiptStream, state],
+  )
+  const sourceLabel = receiptStream ? 'receipt-stream' : 'chat-mirror'
+  const sourceStatus = receiptStream ? receiptStream.status : state.currentStage.status
+  const sourceStage = receiptStream ? receiptStream.latestEventType ?? 'loop2-events' : state.currentStage.stage
+  const hasTextualTuiProof = textualTuiProofState?.ok === true
+
+  useEffect(() => {
+    const host = terminalHostRef.current
+    if (!host) return undefined
+    const terminal = new XTerm({
+      cursorBlink: state.active,
+      cursorStyle: 'block',
+      disableStdin: true,
+      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace',
+      fontSize: 12,
+      lineHeight: 1.2,
+      scrollback: 500,
+      theme: {
+        background: '#020617',
+        foreground: '#dbeafe',
+        cursor: '#22d3ee',
+        black: '#020617',
+        brightBlack: '#64748b',
+        blue: '#38bdf8',
+        brightBlue: '#67e8f9',
+        cyan: '#22d3ee',
+        brightCyan: '#67e8f9',
+        green: '#22c55e',
+        brightGreen: '#86efac',
+        magenta: '#a78bfa',
+        brightMagenta: '#c4b5fd',
+        red: '#ef4444',
+        brightRed: '#f87171',
+        white: '#e5e7eb',
+        brightWhite: '#f8fafc',
+        yellow: '#facc15',
+        brightYellow: '#fde68a',
+      },
+    })
+    const fitAddon = new FitAddon()
+    terminal.loadAddon(fitAddon)
+    terminal.open(host)
+    fitAddon.fit()
+    terminalRef.current = terminal
+    fitAddonRef.current = fitAddon
+    const resizeObserver = new ResizeObserver(() => fitAddon.fit())
+    resizeObserver.observe(host)
+    return () => {
+      resizeObserver.disconnect()
+      terminal.dispose()
+      terminalRef.current = null
+      fitAddonRef.current = null
+    }
+  }, [])
+
+  useEffect(() => {
+    const terminal = terminalRef.current
+    if (!terminal) return
+    terminal.options.cursorBlink = state.active
+    terminal.write('\x1b[2J\x1b[H')
+    for (const line of lines) terminal.writeln(line)
+  }, [lines, state.active])
+
+  return (
+    <section
+      data-qid="tau:tui-mirror:pane"
+      title="T’au receipt terminal mirror; not the interactive Textual TUI"
+      style={{
+        minWidth: 0,
+        minHeight: 0,
+        overflow: 'auto',
+        border: '1px solid rgba(34,211,238,0.26)',
+        background: '#020617',
+        borderRadius: 6,
+        padding: 0,
+        display: 'grid',
+        alignContent: 'stretch',
+        gridTemplateRows: hasTextualTuiProof ? 'auto 170px auto minmax(220px, 1fr) auto' : 'auto minmax(0, 1fr) auto',
+        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 10,
+          padding: '10px 12px',
+          borderBottom: '1px solid rgba(34,211,238,0.18)',
+          background: '#030712',
+        }}
+      >
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, color: '#67e8f9', fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+          <Terminal size={13} aria-hidden="true" /> {hasTextualTuiProof ? 'tau tui proof + receipts' : 'tau receipt terminal'}
+        </div>
+        <span
+          data-qid="tau:tui-mirror:current-stage"
+          style={{
+            color: state.active ? '#fde68a' : '#86efac',
+            fontSize: 11,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          [{sourceStatus.toLowerCase()}] {sourceStage}
+        </span>
+      </div>
+
+      {hasTextualTuiProof ? (
+        <>
+          <div
+            data-qid="tau:textual-tui:side-by-side-preview"
+            style={{
+              minHeight: 0,
+              overflow: 'hidden',
+              borderBottom: '1px solid rgba(34,211,238,0.16)',
+              background: '#020617',
+              display: 'grid',
+              gridTemplateRows: 'minmax(0, 1fr)',
+            }}
+          >
+            <img
+              src={apiUrl('/api/tau/tui/textual-proof/screenshot')}
+              alt="Fixture-backed Tau Textual TUI proof screenshot"
+              title="Fixture-backed Tau Textual TUI screenshot; mocked=true live=false"
+              style={{ display: 'block', width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'top left', background: '#020617' }}
+            />
+          </div>
+          <div
+            data-qid="tau:textual-tui:side-by-side-label"
+            style={{
+              padding: '8px 12px',
+              borderBottom: '1px solid rgba(34,211,238,0.16)',
+              color: '#fde68a',
+              fontSize: 10,
+              lineHeight: 1.35,
+              background: 'rgba(69,26,3,0.28)',
+            }}
+          >
+            Textual TUI artifact from `uv run tau tui-proof`; fixture-backed, mocked=true, live=false. Receipt terminal below is the live event tail.
+          </div>
+        </>
+      ) : null}
+
+      <div
+        data-qid="tau:tui-mirror:shared-run"
+        ref={terminalHostRef}
+        style={{
+          minHeight: 0,
+          padding: 10,
+          overflow: 'hidden',
+        }}
+      />
+      <div data-qid="tau:tui-mirror:stage-list" style={{ display: 'none' }}>
+        {state.trace.map((stage, index) => (
+          <span key={`${stage.stage}-${index}`} data-qid={`tau:tui-mirror:stage:${stage.stage}`}>
+            {stage.label} {stage.source} {stage.status}
+          </span>
+        ))}
+      </div>
+      <div data-qid="tau:tui-mirror:receipt-stream" style={{ display: 'none' }}>
+        {receiptStream
+          ? `${receiptStream.schema} ${receiptStream.runId} events=${receiptStream.eventCount} ${receiptStream.status}`
+          : `unavailable ${receiptStreamState?.ok === false ? receiptStreamState.detail : 'loading'}`}
+      </div>
+
+      <div
+        data-qid="tau:tui-mirror:chat-parity"
+        style={{
+          borderTop: '1px solid rgba(148,163,184,0.12)',
+          padding: '10px 12px',
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: 8,
+          color: '#94a3b8',
+          fontSize: 11,
+          lineHeight: 1.4,
+        }}
+      >
+        <AudioLines size={14} color="#a78bfa" aria-hidden="true" />
+        <span>
+          {sourceLabel}; PersonaPlex audio fail-closed until receipt
+          ; not an interactive Textual TUI
+          {receiptStreamState?.ok === false ? `; fallback reason: ${receiptStreamState.detail}` : ''}
+        </span>
+      </div>
     </section>
   )
 }

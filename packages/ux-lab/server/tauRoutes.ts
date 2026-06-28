@@ -32,6 +32,25 @@ const TAU_WATCHDOG_RECEIPT_CHAIN_PROOF_ROOT = resolve(
 const TAU_WATCHDOG_RECEIPT_CHAIN_MANIFEST = resolve(
 	process.env.TAU_WATCHDOG_RECEIPT_CHAIN_MANIFEST ?? resolve(TAU_WATCHDOG_RECEIPT_CHAIN_PROOF_ROOT, 'manifest.json'),
 )
+const TAU_TUI_RECEIPT_STREAM_RUN_DIR = resolve(
+	process.env.TAU_TUI_RECEIPT_STREAM_RUN_DIR
+		?? '/home/graham/workspace/experiments/tau/experiments/loop2-alignment/reliability-stress-20260626T205339Z/math_add/.loop2/runs/loop2-tau-stress-math_add-1782507220-da39d0',
+)
+const TAU_PERSONAPLEX_EMBRY_RECEIPT_PATH = resolve(
+	process.env.TAU_PERSONAPLEX_EMBRY_RECEIPT_PATH
+		?? '/home/graham/workspace/experiments/tau/experiments/loop2-alignment/reliability-stress-20260626T205025Z/persona-voice/personaplex-publish-receipt.json',
+)
+const TAU_PERSONAPLEX_EMBRY_METADATA_RECEIPT_PATH = resolve(
+	process.env.TAU_PERSONAPLEX_EMBRY_METADATA_RECEIPT_PATH
+		?? '/home/graham/workspace/experiments/tau/experiments/loop2-alignment/reliability-stress-20260626T205025Z/persona-voice/embry-memory-receipt.json',
+)
+const TAU_TEXTUAL_TUI_PROOF_ROOT = resolve(
+	process.env.TAU_TEXTUAL_TUI_PROOF_ROOT
+		?? '/home/graham/workspace/experiments/tau/experiments/goal-locked-subagents/proofs/textual-tui-proof-cli-20260628T204400Z',
+)
+const TAU_TEXTUAL_TUI_PROOF_MANIFEST = resolve(
+	process.env.TAU_TEXTUAL_TUI_PROOF_MANIFEST ?? resolve(TAU_TEXTUAL_TUI_PROOF_ROOT, 'manifest.json'),
+)
 
 function isPathInside(root: string, absolutePath: string): boolean {
 	const normalizedRoot = root.endsWith('/') ? root : `${root}/`
@@ -62,6 +81,14 @@ function commandToText(command: unknown): string | null {
 function stringArray(value: unknown): string[] {
 	if (!Array.isArray(value)) return []
 	return value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+}
+
+function readJsonlRecords(text: string): JsonRecord[] {
+	return text
+		.split(/\r?\n/)
+		.filter((line) => line.trim().length > 0)
+		.map((line) => asRecord(JSON.parse(line)))
+		.filter((record): record is JsonRecord => record !== null)
 }
 
 function resolveTauProofArtifact(path: string, proofRoot: string): string {
@@ -255,6 +282,306 @@ export async function normalizeTauChatUxContract(contractPath = TAU_CHAT_UX_CONT
 				'Final Sparta Chat readiness.',
 				'Live GitHub mutation.',
 				'Actual external subagent execution from the browser chat.',
+			],
+		},
+	}
+}
+
+export async function normalizeTauTuiReceiptStream(
+	runDir = TAU_TUI_RECEIPT_STREAM_RUN_DIR,
+	repoRoot = TAU_REPO_ROOT,
+): Promise<JsonRecord> {
+	const absoluteRunDir = resolve(runDir)
+	const absoluteRepoRoot = resolve(repoRoot)
+	if (!isPathInside(absoluteRepoRoot, absoluteRunDir)) {
+		throw new Error('Tau TUI receipt stream run directory must be inside the Tau repository')
+	}
+	const eventsPath = resolve(absoluteRunDir, 'events.jsonl')
+	const finalReceiptPath = resolve(absoluteRunDir, 'final-receipt.json')
+	if (!existsSync(eventsPath)) throw new Error('Tau TUI receipt stream events.jsonl not found')
+	if (!existsSync(finalReceiptPath)) throw new Error('Tau TUI receipt stream final-receipt.json not found')
+
+	const [eventsText, finalReceiptText] = await Promise.all([
+		readFile(eventsPath, 'utf8'),
+		readFile(finalReceiptPath, 'utf8'),
+	])
+	const events = readJsonlRecords(eventsText)
+	const finalReceipt = asRecord(JSON.parse(finalReceiptText))
+	if (!finalReceipt) throw new Error('Tau TUI receipt stream final receipt must be a JSON object')
+	const runId = asString(finalReceipt.run_id)
+	if (!runId) throw new Error('Tau TUI receipt stream final receipt missing run_id')
+	if (finalReceipt.schema !== 'loop2.final_receipt.v1') {
+		throw new Error('Tau TUI receipt stream final receipt schema mismatch')
+	}
+	if (finalReceipt.mocked !== false || finalReceipt.live !== true) {
+		throw new Error('Tau TUI receipt stream must be backed by mocked=false live=true final receipt')
+	}
+	if (!events.length) throw new Error('Tau TUI receipt stream events are empty')
+	for (const [index, event] of events.entries()) {
+		if (event.schema !== 'loop2.event.v1') throw new Error(`Tau TUI receipt stream event ${index + 1} schema mismatch`)
+		if (asString(event.run_id) !== runId) throw new Error(`Tau TUI receipt stream event ${index + 1} run_id mismatch`)
+		if (!asString(event.event_id)) throw new Error(`Tau TUI receipt stream event ${index + 1} missing event_id`)
+		if (!asString(event.event_type)) throw new Error(`Tau TUI receipt stream event ${index + 1} missing event_type`)
+	}
+
+	const status = asString(finalReceipt.status) ?? 'UNKNOWN'
+	const streamEventCount = asNumber(asRecord(finalReceipt.scillm)?.stream_event_count)
+	const transportRunId = asString(asRecord(finalReceipt.scillm)?.transport_run_id)
+	const proves = stringArray(asRecord(finalReceipt.claims)?.proves)
+	const doesNotProve = stringArray(asRecord(finalReceipt.claims)?.does_not_prove)
+	const tailEvents = events.slice(-8)
+	const terminalLines = [
+		'tau@receipt-stream:~/loop2$ tail --schema loop2.event.v1 events.jsonl',
+		`run_id=${runId}`,
+		`source=${eventsPath}`,
+		`mocked=false live=true status=${status}`,
+		transportRunId ? `transport_run_id=${transportRunId}` : null,
+		streamEventCount === null ? null : `scillm_stream_event_count=${streamEventCount}`,
+		'',
+		'event stream tail:',
+		...tailEvents.map((event, index) => {
+			const sequence = events.length - tailEvents.length + index + 1
+			const eventType = asString(event.event_type) ?? 'unknown_event'
+			const eventStatus = asString(event.status) ?? 'unknown'
+			const message = asString(event.message) ?? ''
+			return `${String(sequence).padStart(3, '0')} ${eventType} ${eventStatus}${message ? ` - ${message}` : ''}`
+		}),
+		'',
+		`claims.proves=${proves.length}`,
+		`claims.does_not_prove=${doesNotProve.length}`,
+	].filter((line): line is string => typeof line === 'string')
+
+	return {
+		schema: 'tau.tui_receipt_stream_view.v1',
+		ok: true,
+		mocked: false,
+		live: true,
+		runId,
+		runDir: absoluteRunDir,
+		eventsPath,
+		finalReceiptPath,
+		eventCount: events.length,
+		status,
+		proofScope: asString(finalReceipt.proof_scope) ?? null,
+		transportRunId,
+		streamEventCount,
+		latestEventType: asString(events[events.length - 1].event_type),
+		terminalLines,
+		claims: {
+			proves,
+			does_not_prove: doesNotProve,
+		},
+	}
+}
+
+export async function normalizeTauTextualTuiProof(
+	manifestPath = TAU_TEXTUAL_TUI_PROOF_MANIFEST,
+	proofRoot = TAU_TEXTUAL_TUI_PROOF_ROOT,
+	repoRoot = TAU_REPO_ROOT,
+): Promise<JsonRecord> {
+	const absoluteManifestPath = resolve(manifestPath)
+	const absoluteProofRoot = resolve(proofRoot)
+	const absoluteRepoRoot = resolve(repoRoot)
+	if (!isPathInside(absoluteRepoRoot, absoluteProofRoot)) {
+		throw new Error('Tau Textual TUI proof root must be inside the Tau repository')
+	}
+	if (!isPathInside(absoluteProofRoot, absoluteManifestPath)) {
+		throw new Error('Tau Textual TUI proof manifest path escapes proof root')
+	}
+	if (!existsSync(absoluteManifestPath)) throw new Error('Tau Textual TUI proof manifest not found')
+	const manifestStat = await stat(absoluteManifestPath)
+	if (!manifestStat.isFile()) throw new Error('Tau Textual TUI proof manifest path is not a file')
+
+	const manifest = await readJson(absoluteManifestPath)
+	if (manifest.schema !== 'tau.proof_manifest.v1') {
+		throw new Error('unexpected Tau Textual TUI proof manifest schema')
+	}
+	if (asString(manifest.surface) !== 'tau:textual-tui') {
+		throw new Error('Tau Textual TUI proof manifest surface mismatch')
+	}
+	if (manifest.mocked !== true || manifest.live !== false) {
+		throw new Error('Tau Textual TUI proof must be mocked=true live=false')
+	}
+	const implementationScope = asRecord(manifest.implementation_scope)
+	const evidence = asRecord(manifest.evidence)
+	const cliProof = asRecord(evidence?.cli_proof)
+	if (!implementationScope) throw new Error('Tau Textual TUI proof missing implementation_scope')
+	if (!cliProof) throw new Error('Tau Textual TUI proof missing cli_proof evidence')
+	const runId = asString(implementationScope.shared_run_id)
+	const prompt = asString(implementationScope.fixture_prompt)
+	const receiptPath = asString(cliProof.receipt)
+	const screenshotSvg = asString(cliProof.screenshot_svg)
+	const screenshotPng = asString(cliProof.screenshot_png)
+	if (!runId) throw new Error('Tau Textual TUI proof missing shared_run_id')
+	if (!prompt) throw new Error('Tau Textual TUI proof missing fixture_prompt')
+	if (!receiptPath) throw new Error('Tau Textual TUI proof missing receipt path')
+	if (!screenshotSvg) throw new Error('Tau Textual TUI proof missing screenshot_svg')
+	if (!screenshotPng) throw new Error('Tau Textual TUI proof missing screenshot_png')
+	if (cliProof.ok !== true || cliProof.mocked !== true || cliProof.live !== false) {
+		throw new Error('Tau Textual TUI cli proof must be ok mocked=true live=false')
+	}
+
+	const absoluteReceiptPath = resolve(receiptPath)
+	const absoluteScreenshotSvg = resolve(screenshotSvg)
+	const absoluteScreenshotPng = resolve(screenshotPng)
+	for (const path of [absoluteReceiptPath, absoluteScreenshotSvg, absoluteScreenshotPng]) {
+		if (!existsSync(path)) throw new Error(`Tau Textual TUI proof artifact missing: ${path}`)
+	}
+	const receipt = await readJson(absoluteReceiptPath)
+	if (receipt.schema !== 'tau.textual_tui_render_proof.v1') {
+		throw new Error('Tau Textual TUI render receipt schema mismatch')
+	}
+	if (receipt.ok !== true || receipt.mocked !== true || receipt.live !== false) {
+		throw new Error('Tau Textual TUI render receipt must be ok mocked=true live=false')
+	}
+	if (asString(receipt.run_id) !== runId) {
+		throw new Error('Tau Textual TUI render receipt run_id mismatch')
+	}
+	const assertions = asRecord(receipt.visible_assertions)
+	if (assertions?.accessing_memory !== true) {
+		throw new Error('Tau Textual TUI render receipt must assert accessing_memory=true')
+	}
+	if (assertions?.hidden_reasoning_absent !== true) {
+		throw new Error('Tau Textual TUI render receipt must assert hidden_reasoning_absent=true')
+	}
+	const claims = asRecord(manifest.claims)
+	return {
+		schema: 'tau.textual_tui_proof_view.v1',
+		ok: true,
+		manifestPath: absoluteManifestPath,
+		proofRoot: absoluteProofRoot,
+		sourceSchema: manifest.schema,
+		runId,
+		prompt,
+		mocked: true,
+		live: false,
+		status: asString(manifest.status),
+		entrypoint: asString(implementationScope.entrypoint),
+		sourceType: asString(implementationScope.source_type),
+		receiptPath: absoluteReceiptPath,
+		screenshotSvg: absoluteScreenshotSvg,
+		screenshotPng: absoluteScreenshotPng,
+		visibleAssertions: stringArray(cliProof.visible_assertions),
+		textAssertions: stringArray(cliProof.text_assertions),
+		doesNotProve: stringArray(receipt.does_not_prove),
+		claims: {
+			proves: stringArray(claims?.proves),
+			does_not_prove: stringArray(claims?.does_not_prove),
+		},
+	}
+}
+
+export async function resolveTauTextualTuiProofScreenshot(
+	manifestPath = TAU_TEXTUAL_TUI_PROOF_MANIFEST,
+	proofRoot = TAU_TEXTUAL_TUI_PROOF_ROOT,
+	repoRoot = TAU_REPO_ROOT,
+): Promise<{ path: string; contentType: 'image/png' }> {
+	const proof = await normalizeTauTextualTuiProof(manifestPath, proofRoot, repoRoot)
+	const screenshotPng = asString(proof.screenshotPng)
+	if (!screenshotPng) throw new Error('Tau Textual TUI proof view missing screenshotPng')
+	if (!screenshotPng.toLowerCase().endsWith('.png')) {
+		throw new Error('Tau Textual TUI proof screenshot must be a PNG artifact')
+	}
+	return { path: screenshotPng, contentType: 'image/png' }
+}
+
+export async function normalizeTauPersonaplexEmbryReceipt(
+	receiptPath = TAU_PERSONAPLEX_EMBRY_RECEIPT_PATH,
+	metadataReceiptPath = TAU_PERSONAPLEX_EMBRY_METADATA_RECEIPT_PATH,
+	repoRoot = TAU_REPO_ROOT,
+): Promise<JsonRecord> {
+	const absoluteReceiptPath = resolve(receiptPath)
+	const absoluteMetadataReceiptPath = resolve(metadataReceiptPath)
+	const absoluteRepoRoot = resolve(repoRoot)
+	if (!isPathInside(absoluteRepoRoot, absoluteReceiptPath)) {
+		throw new Error('PersonaPlex Embry receipt path must be inside the Tau repository')
+	}
+	if (!isPathInside(absoluteRepoRoot, absoluteMetadataReceiptPath)) {
+		throw new Error('PersonaPlex Embry metadata receipt path must be inside the Tau repository')
+	}
+
+	let metadataVoice: JsonRecord | null = null
+	if (existsSync(absoluteMetadataReceiptPath)) {
+		const metadataReceipt = asRecord(JSON.parse(await readFile(absoluteMetadataReceiptPath, 'utf8')))
+		metadataVoice = asRecord(metadataReceipt?.persona_voice)
+	}
+
+	if (!existsSync(absoluteReceiptPath)) {
+		return {
+			schema: 'tau.personaplex_embry_receipt_gate.v1',
+			ok: true,
+			available: false,
+			failClosed: true,
+			persona: 'embry',
+			voiceEngine: 'personaplex',
+			requiredSchema: 'personaplex.publish_receipt.v1',
+			requiredStatus: 'CACHE_REPLAY_PASS',
+			receiptPath: absoluteReceiptPath,
+			metadataReceiptPath: absoluteMetadataReceiptPath,
+			metadataVoiceStatus: asString(metadataVoice?.voice_status) ?? 'UNKNOWN',
+			reason: 'PersonaPlex Embry publish receipt is not present; audio activation remains disabled.',
+			claims: {
+				proves: [
+					'Tau refuses to enable Embry PersonaPlex audio without a real publish receipt.',
+				],
+				does_not_prove: [
+					'PersonaPlex audio synthesis',
+					'published PersonaPlex voice identity',
+					'live full-duplex PersonaPlex readiness',
+				],
+			},
+		}
+	}
+
+	const receipt = asRecord(JSON.parse(await readFile(absoluteReceiptPath, 'utf8')))
+	if (!receipt) throw new Error('PersonaPlex Embry receipt must be a JSON object')
+	if (receipt.schema !== 'personaplex.publish_receipt.v1') {
+		throw new Error('PersonaPlex Embry receipt schema mismatch')
+	}
+	if (asString(receipt.persona) !== 'embry') {
+		throw new Error('PersonaPlex Embry receipt persona mismatch')
+	}
+	if (asString(receipt.status) !== 'CACHE_REPLAY_PASS') {
+		throw new Error('PersonaPlex Embry receipt status must be CACHE_REPLAY_PASS')
+	}
+	const generatedVoicePrompts = Array.isArray(receipt.generated_voice_prompts) ? receipt.generated_voice_prompts : []
+	if (!generatedVoicePrompts.length) throw new Error('PersonaPlex Embry receipt missing generated_voice_prompts')
+	const prompts = generatedVoicePrompts.map(asRecord)
+	for (const [index, prompt] of prompts.entries()) {
+		if (!prompt) throw new Error(`PersonaPlex Embry voice prompt ${index + 1} must be a JSON object`)
+		if (!asString(prompt.pt)) throw new Error(`PersonaPlex Embry voice prompt ${index + 1} missing pt`)
+		if (!asRecord(prompt.pt_schema)) throw new Error(`PersonaPlex Embry voice prompt ${index + 1} missing pt_schema`)
+		if (!asString(prompt.replay_output_wav)) {
+			throw new Error(`PersonaPlex Embry voice prompt ${index + 1} missing replay_output_wav`)
+		}
+		if (!asString(prompt.replay_output_text)) {
+			throw new Error(`PersonaPlex Embry voice prompt ${index + 1} missing replay_output_text`)
+		}
+	}
+
+	return {
+		schema: 'tau.personaplex_embry_receipt_gate.v1',
+		ok: true,
+		available: true,
+		failClosed: false,
+		persona: 'embry',
+		voiceEngine: 'personaplex',
+		requiredSchema: 'personaplex.publish_receipt.v1',
+		requiredStatus: 'CACHE_REPLAY_PASS',
+		receiptPath: absoluteReceiptPath,
+		metadataReceiptPath: absoluteMetadataReceiptPath,
+		status: asString(receipt.status),
+		publicationStatus: asString(receipt.publication_status),
+		humanReviewStatus: asString(receipt.human_review_status),
+		promptCount: prompts.length,
+		reviewHtml: asString(receipt.review_html),
+		claims: {
+			proves: [
+				'Embry has a PersonaPlex native cache replay receipt with generated voice prompt artifacts.',
+			],
+			does_not_prove: [
+				'Human approval of the voice identity',
+				'live full-duplex PersonaPlex readiness',
 			],
 		},
 	}
@@ -1221,6 +1548,68 @@ export function registerTauRoutes(app: Express): void {
 				detail: error instanceof Error ? error.message : String(error),
 				manifestPath: TAU_WATCHDOG_RECEIPT_CHAIN_MANIFEST,
 				proofRoot: TAU_WATCHDOG_RECEIPT_CHAIN_PROOF_ROOT,
+			})
+		}
+	})
+
+	app.get('/api/tau/tui/receipt-stream', async (_req: Request, res: Response) => {
+		try {
+			const receipt = await normalizeTauTuiReceiptStream(TAU_TUI_RECEIPT_STREAM_RUN_DIR)
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(404).json({
+				ok: false,
+				error: 'tau_tui_receipt_stream_unavailable',
+				detail: error instanceof Error ? error.message : String(error),
+				runDir: TAU_TUI_RECEIPT_STREAM_RUN_DIR,
+			})
+		}
+	})
+
+	app.get('/api/tau/tui/textual-proof', async (_req: Request, res: Response) => {
+		try {
+			const receipt = await normalizeTauTextualTuiProof(TAU_TEXTUAL_TUI_PROOF_MANIFEST)
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(404).json({
+				ok: false,
+				error: 'tau_textual_tui_proof_unavailable',
+				detail: error instanceof Error ? error.message : String(error),
+				manifestPath: TAU_TEXTUAL_TUI_PROOF_MANIFEST,
+				proofRoot: TAU_TEXTUAL_TUI_PROOF_ROOT,
+			})
+		}
+	})
+
+	app.get('/api/tau/tui/textual-proof/screenshot', async (_req: Request, res: Response) => {
+		try {
+			const screenshot = await resolveTauTextualTuiProofScreenshot(TAU_TEXTUAL_TUI_PROOF_MANIFEST)
+			res.type(screenshot.contentType).sendFile(screenshot.path)
+		} catch (error) {
+			res.status(404).json({
+				ok: false,
+				error: 'tau_textual_tui_proof_screenshot_unavailable',
+				detail: error instanceof Error ? error.message : String(error),
+				manifestPath: TAU_TEXTUAL_TUI_PROOF_MANIFEST,
+				proofRoot: TAU_TEXTUAL_TUI_PROOF_ROOT,
+			})
+		}
+	})
+
+	app.get('/api/tau/personaplex/embry-receipt', async (_req: Request, res: Response) => {
+		try {
+			const receipt = await normalizeTauPersonaplexEmbryReceipt(
+				TAU_PERSONAPLEX_EMBRY_RECEIPT_PATH,
+				TAU_PERSONAPLEX_EMBRY_METADATA_RECEIPT_PATH,
+			)
+			res.json({ ok: receipt.available !== false, receipt })
+		} catch (error) {
+			res.status(400).json({
+				ok: false,
+				error: 'tau_personaplex_embry_receipt_invalid',
+				detail: error instanceof Error ? error.message : String(error),
+				receiptPath: TAU_PERSONAPLEX_EMBRY_RECEIPT_PATH,
+				metadataReceiptPath: TAU_PERSONAPLEX_EMBRY_METADATA_RECEIPT_PATH,
 			})
 		}
 	})

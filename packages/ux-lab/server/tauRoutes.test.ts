@@ -1,4 +1,6 @@
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'fs/promises'
+import express from 'express'
+import type { AddressInfo } from 'net'
 import { tmpdir } from 'os'
 import { resolve } from 'path'
 import { afterEach, describe, expect, it } from 'vitest'
@@ -10,10 +12,15 @@ import {
 	normalizeTauExternalSubagentGithubProjection,
 	normalizeTauExternalSubagentReceiptIntake,
 	normalizeTauMemoryRouteProof,
+	normalizeTauPersonaplexEmbryReceipt,
+	normalizeTauTextualTuiProof,
+	normalizeTauTuiReceiptStream,
 	normalizeTauWatchdogReceiptChain,
+	resolveTauTextualTuiProofScreenshot,
 	normalizeTauSubagentHandoffValidation,
 	normalizeTauSubagentReceiptExpectation,
 	persistTauSubagentReceiptExpectation,
+	registerTauRoutes,
 } from './tauRoutes'
 
 const roots: string[] = []
@@ -32,6 +39,48 @@ async function makeRoot(): Promise<string> {
 async function writeJson(path: string, payload: unknown): Promise<void> {
 	await mkdir(resolve(path, '..'), { recursive: true })
 	await writeFile(path, `${JSON.stringify(payload, null, 2)}\n`, 'utf8')
+}
+
+async function writeTauTuiReceiptRun(root: string): Promise<string> {
+	const runDir = resolve(root, 'loop2-test-run')
+	await mkdir(runDir, { recursive: true })
+	const runId = 'loop2-test-run'
+	const events = [
+		{
+			schema: 'loop2.event.v1',
+			run_id: runId,
+			event_id: `${runId}:0001:aaaa`,
+			event_type: 'contract_loaded',
+			status: 'running',
+			message: 'contract loaded',
+		},
+		{
+			schema: 'loop2.event.v1',
+			run_id: runId,
+			event_id: `${runId}:0002:bbbb`,
+			event_type: 'agent_end',
+			status: 'completed',
+			message: 'agent completed',
+		},
+	]
+	await writeFile(resolve(runDir, 'events.jsonl'), `${events.map((event) => JSON.stringify(event)).join('\n')}\n`, 'utf8')
+	await writeJson(resolve(runDir, 'final-receipt.json'), {
+		schema: 'loop2.final_receipt.v1',
+		run_id: runId,
+		status: 'PASS',
+		mocked: false,
+		live: true,
+		proof_scope: 'one bounded test loop',
+		claims: {
+			proves: ['loop events can be rendered as terminal lines'],
+			does_not_prove: ['production PTY attachment'],
+		},
+		scillm: {
+			stream_event_count: 2,
+			transport_run_id: 'otr-test',
+		},
+	})
+	return runDir
 }
 
 function validSummary(root: string) {
@@ -1415,5 +1464,266 @@ describe('normalizeTauExternalSubagentGithubProjection', () => {
 				},
 			}),
 		).toThrow('next_agent does not match intake')
+	})
+})
+
+describe('normalizeTauTuiReceiptStream', () => {
+	it('normalizes a real Tau loop receipt run into terminal lines', async () => {
+		const root = await makeRoot()
+		const runDir = await writeTauTuiReceiptRun(root)
+
+		const receipt = await normalizeTauTuiReceiptStream(runDir, root)
+
+		expect(receipt).toMatchObject({
+			schema: 'tau.tui_receipt_stream_view.v1',
+			ok: true,
+			mocked: false,
+			live: true,
+			runId: 'loop2-test-run',
+			eventCount: 2,
+			status: 'PASS',
+			proofScope: 'one bounded test loop',
+			transportRunId: 'otr-test',
+			streamEventCount: 2,
+			latestEventType: 'agent_end',
+		})
+		expect(receipt.terminalLines).toEqual(
+			expect.arrayContaining([
+				'tau@receipt-stream:~/loop2$ tail --schema loop2.event.v1 events.jsonl',
+				'run_id=loop2-test-run',
+				'mocked=false live=true status=PASS',
+				'transport_run_id=otr-test',
+				'claims.proves=1',
+				'claims.does_not_prove=1',
+			]),
+		)
+		expect(receipt.terminalLines).toContain('001 contract_loaded running - contract loaded')
+		expect(receipt.terminalLines).toContain('002 agent_end completed - agent completed')
+	})
+
+	it('fails closed when receipt stream events are missing', async () => {
+		const root = await makeRoot()
+		const runDir = resolve(root, 'missing-events')
+		await mkdir(runDir, { recursive: true })
+		await writeJson(resolve(runDir, 'final-receipt.json'), {
+			schema: 'loop2.final_receipt.v1',
+			run_id: 'missing-events',
+			status: 'PASS',
+			mocked: false,
+			live: true,
+		})
+
+		await expect(normalizeTauTuiReceiptStream(runDir, root)).rejects.toThrow('events.jsonl not found')
+	})
+})
+
+describe('normalizeTauTextualTuiProof', () => {
+	async function writeTextualTuiProof(root: string, overrides: Record<string, unknown> = {}): Promise<string> {
+		const proofRoot = resolve(root, 'textual-tui-proof')
+		const receiptPath = resolve(proofRoot, 'proof.json')
+		const screenshotSvg = resolve(proofRoot, 'tau-textual-tui-memory-stage.svg')
+		const screenshotPng = resolve(proofRoot, 'tau-textual-tui-memory-stage.png')
+		await writeJson(receiptPath, {
+			schema: 'tau.textual_tui_render_proof.v1',
+			ok: true,
+			mocked: true,
+			live: false,
+			run_id: 'loop2-test-run',
+			visible_assertions: {
+				accessing_memory: true,
+				hidden_reasoning_absent: true,
+			},
+			does_not_prove: [
+				'live provider call',
+				'live Memory backend call from the TUI process',
+			],
+		})
+		await writeFile(screenshotSvg, '<svg />\n', 'utf8')
+		await writeFile(screenshotPng, 'png fixture\n', 'utf8')
+		const manifestPath = resolve(proofRoot, 'manifest.json')
+		await writeJson(manifestPath, {
+			schema: 'tau.proof_manifest.v1',
+			run_id: 'textual-tui-proof-test',
+			surface: 'tau:textual-tui',
+			mocked: true,
+			live: false,
+			status: 'evidence-recorded',
+			implementation_scope: {
+				entrypoint: 'uv run tau tui-proof',
+				source_type: 'repeatable real TauTuiApp Textual rendering proof with fixture session',
+				fixture_prompt: 'How does Tau handle a CWE-287 SPARTA evidence case?',
+				shared_run_id: 'loop2-test-run',
+			},
+			evidence: {
+				cli_proof: {
+					ok: true,
+					mocked: true,
+					live: false,
+					receipt: receiptPath,
+					screenshot_svg: screenshotSvg,
+					screenshot_png: screenshotPng,
+					visible_assertions: ['Accessing Memory...', 'memory recall started'],
+					text_assertions: ['tau.agent_handoff.v1', 'next_agent=reviewer', 'loop2-test-run'],
+				},
+			},
+			claims: {
+				proves: ['Tau can produce a repeatable Textual TUI proof command.'],
+				does_not_prove: ['live provider call'],
+			},
+			...overrides,
+		})
+		return manifestPath
+	}
+
+	it('normalizes a fixture-backed real Textual TUI proof without upgrading it to live', async () => {
+		const root = await makeRoot()
+		const manifestPath = await writeTextualTuiProof(root)
+
+		const view = await normalizeTauTextualTuiProof(manifestPath, resolve(root, 'textual-tui-proof'), root)
+
+		expect(view).toMatchObject({
+			schema: 'tau.textual_tui_proof_view.v1',
+			ok: true,
+			mocked: true,
+			live: false,
+			runId: 'loop2-test-run',
+			entrypoint: 'uv run tau tui-proof',
+			prompt: 'How does Tau handle a CWE-287 SPARTA evidence case?',
+		})
+		expect(view.visibleAssertions).toContain('Accessing Memory...')
+		expect(view.textAssertions).toContain('tau.agent_handoff.v1')
+		expect(view.doesNotProve).toContain('live provider call')
+	})
+
+	it('fails closed if a Textual TUI proof manifest claims live evidence', async () => {
+		const root = await makeRoot()
+		const manifestPath = await writeTextualTuiProof(root, { mocked: false, live: true })
+
+		await expect(normalizeTauTextualTuiProof(manifestPath, resolve(root, 'textual-tui-proof'), root)).rejects.toThrow(
+			'Tau Textual TUI proof must be mocked=true live=false',
+		)
+	})
+
+	it('resolves the Textual TUI proof screenshot only through the normalized PNG artifact', async () => {
+		const root = await makeRoot()
+		const manifestPath = await writeTextualTuiProof(root)
+
+		const screenshot = await resolveTauTextualTuiProofScreenshot(manifestPath, resolve(root, 'textual-tui-proof'), root)
+
+		expect(screenshot).toEqual({
+			path: resolve(root, 'textual-tui-proof/tau-textual-tui-memory-stage.png'),
+			contentType: 'image/png',
+		})
+	})
+})
+
+describe('normalizeTauPersonaplexEmbryReceipt', () => {
+	it('returns a fail-closed unavailable gate when no PersonaPlex receipt exists', async () => {
+		const root = await makeRoot()
+		const metadataPath = resolve(root, 'embry-memory-receipt.json')
+		const receiptPath = resolve(root, 'personaplex-publish-receipt.json')
+		await writeJson(metadataPath, {
+			schema: 'tau.loop2_memory_skill_selector_harness.v1',
+			persona_voice: {
+				schema: 'tau.sparta_chat_persona_voice.v1',
+				persona_id: 'embry',
+				voice_engine: 'personaplex',
+				voice_requested: true,
+				voice_status: 'REQUESTED_NO_PERSONAPLEX_RECEIPT',
+				personaplex_receipt: null,
+			},
+		})
+
+		const gate = await normalizeTauPersonaplexEmbryReceipt(receiptPath, metadataPath, root)
+
+		expect(gate).toMatchObject({
+			schema: 'tau.personaplex_embry_receipt_gate.v1',
+			ok: true,
+			available: false,
+			failClosed: true,
+			persona: 'embry',
+			voiceEngine: 'personaplex',
+			requiredSchema: 'personaplex.publish_receipt.v1',
+			requiredStatus: 'CACHE_REPLAY_PASS',
+			metadataVoiceStatus: 'REQUESTED_NO_PERSONAPLEX_RECEIPT',
+		})
+		expect(gate.claims).toMatchObject({
+			does_not_prove: [
+				'PersonaPlex audio synthesis',
+				'published PersonaPlex voice identity',
+				'live full-duplex PersonaPlex readiness',
+			],
+		})
+	})
+
+	it('accepts an Embry PersonaPlex cache replay publish receipt', async () => {
+		const root = await makeRoot()
+		const metadataPath = resolve(root, 'embry-memory-receipt.json')
+		const receiptPath = resolve(root, 'personaplex-publish-receipt.json')
+		await writeJson(metadataPath, { persona_voice: { voice_status: 'REQUESTED_NO_PERSONAPLEX_RECEIPT' } })
+		await writeJson(receiptPath, {
+			schema: 'personaplex.publish_receipt.v1',
+			status: 'CACHE_REPLAY_PASS',
+			publication_status: 'NOT_PUBLISHED',
+			human_review_status: 'NOT_REVIEWED',
+			persona: 'embry',
+			generated_voice_prompts: [
+				{
+					register: 'neutral',
+					pt: '/tmp/embry-neutral.pt',
+					pt_schema: { keys: ['embeddings', 'cache'] },
+					replay_output_wav: '/tmp/replay.wav',
+					replay_output_text: '/tmp/replay.json',
+				},
+			],
+			review_html: '/tmp/index.html',
+		})
+
+		const gate = await normalizeTauPersonaplexEmbryReceipt(receiptPath, metadataPath, root)
+
+		expect(gate).toMatchObject({
+			schema: 'tau.personaplex_embry_receipt_gate.v1',
+			ok: true,
+			available: true,
+			failClosed: false,
+			persona: 'embry',
+			status: 'CACHE_REPLAY_PASS',
+			publicationStatus: 'NOT_PUBLISHED',
+			humanReviewStatus: 'NOT_REVIEWED',
+			promptCount: 1,
+		})
+	})
+})
+
+describe('registerTauRoutes PersonaPlex Embry gate', () => {
+	it('returns HTTP 200 with an explicit fail-closed payload when the publish receipt is unavailable', async () => {
+		const app = express()
+		registerTauRoutes(app)
+		const server = await new Promise<ReturnType<typeof app.listen>>((resolveServer) => {
+			const listeningServer = app.listen(0, () => resolveServer(listeningServer))
+		})
+		try {
+			const address = server.address() as AddressInfo
+			const response = await fetch(`http://127.0.0.1:${address.port}/api/tau/personaplex/embry-receipt`)
+			const body = await response.json()
+
+			expect(response.status).toBe(200)
+			expect(body).toMatchObject({
+				ok: false,
+				receipt: {
+					schema: 'tau.personaplex_embry_receipt_gate.v1',
+					available: false,
+					failClosed: true,
+					voiceEngine: 'personaplex',
+				},
+			})
+		} finally {
+			await new Promise<void>((resolveClose, rejectClose) => {
+				server.close((error) => {
+					if (error) rejectClose(error)
+					else resolveClose()
+				})
+			})
+		}
 	})
 })

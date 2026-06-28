@@ -1,6 +1,11 @@
+/**
+ * SharedChatShell — Active Intelligence Dashboard Shell
+ * 
+ * Passes through all props to ComplianceChatWell for the dashboard experience
+ */
 import React, { useMemo, useRef, useState } from 'react'
 import { Mic, Shield } from 'lucide-react'
-import ComplianceChatWell, { type ComplianceChatWellProps, type StarterChip } from './ComplianceChatWell'
+import ComplianceChatWell, { type ComplianceChatWellProps, type StarterChip, type InputMode } from './ComplianceChatWell'
 import {
   createAdapterRegistry,
   errorToMessage,
@@ -11,6 +16,7 @@ import {
   type PersonaPlexAdapterOptions,
   type SpartaComplianceAdapterOptions,
   type StreamingStep,
+  type TurnBranch,
   type TurnInput,
   type TurnSurface,
   type WatchChatAdapterOptions,
@@ -32,13 +38,17 @@ export type SharedChatShellProps = Omit<
   messages?: ChatMessage[]
   initialMessages?: ChatMessage[]
   onMessagesChange?: (messages: ChatMessage[]) => void
-  onSend?: (text: string) => void | Promise<void>
+  onSend?: (text: string, mode?: InputMode) => void | Promise<void>
   streamingSteps?: StreamingStep[]
   isStreaming?: boolean
   activeBranch?: TurnBranch
   showModeToggle?: boolean
   defaultMode?: PersonaPlexChatMode
+  modeLabels?: Partial<Record<PersonaPlexChatMode, string>>
+  modeTitles?: Partial<Record<PersonaPlexChatMode, string>>
   onModeChange?: (mode: PersonaPlexChatMode) => void
+  onStreamingStepsChange?: (steps: StreamingStep[]) => void
+  onStreamingChange?: (isStreaming: boolean) => void
   surface?: TurnSurface
   adapter?: MemoryTurnAdapter
   adapterOptions?: SharedChatAdapterOptions
@@ -47,10 +57,12 @@ export type SharedChatShellProps = Omit<
   context?: TurnInput['context']
   matrixContext?: TurnInput['matrixContext']
   starterChips?: StarterChip[]
+  /** Optional: convert filesystem paths to URLs for inline media (image=/path, clip=/path, audio=/path) */
+  mediaUrl?: (path: string) => string
 }
 
 export function SharedChatShell({
-  projectLabel = 'SPARTA Chat',
+  projectLabel = 'Chat',
   messages,
   initialMessages = [],
   onMessagesChange,
@@ -60,7 +72,11 @@ export function SharedChatShell({
   activeBranch: externalActiveBranch,
   showModeToggle = true,
   defaultMode = 'compliance',
+  modeLabels,
+  modeTitles,
   onModeChange,
+  onStreamingStepsChange,
+  onStreamingChange,
   surface = 'shared-chat',
   adapter,
   adapterOptions,
@@ -77,6 +93,16 @@ export function SharedChatShell({
   emptyDescription,
   qid,
   className,
+  sidebar,
+  recentChats,
+  promptTemplates,
+  onDeleteMessage,
+  onCopyMessage,
+  onDownloadMessage,
+  onEditTitle,
+  chatTitle,
+  agentStatus,
+  mediaUrl,
 }: SharedChatShellProps): JSX.Element {
   const [mode, setModeState] = useState<PersonaPlexChatMode>(defaultMode)
   const [internalMessages, setInternalMessages] = useState<ChatMessage[]>(initialMessages)
@@ -112,13 +138,12 @@ export function SharedChatShell({
     onMessagesChange?.(nextMessages)
   }
 
-
-  async function handleSend(text: string): Promise<void> {
+  async function handleSend(text: string, inputMode?: InputMode): Promise<void> {
     const trimmed = text.trim()
-    if (!trimmed || isStreaming) return
+    if (!trimmed || displayIsStreaming) return
 
     if (onSend) {
-      await onSend(trimmed)
+      await onSend(trimmed, inputMode)
       return
     }
 
@@ -133,7 +158,9 @@ export function SharedChatShell({
     const baseMessages = [...displayMessages, userMessage]
     replaceMessages(baseMessages)
     setInternalStreamingSteps([])
+    onStreamingStepsChange?.([])
     setIsInternalStreaming(true)
+    onStreamingChange?.(true)
 
     const abortController = new AbortController()
     abortRef.current = abortController
@@ -162,6 +189,7 @@ export function SharedChatShell({
       const awaited = await result
       if (isAsyncIterable<StreamingStep>(awaited)) {
         const iterator = awaited[Symbol.asyncIterator]()
+        let streamingStepsSnapshot: StreamingStep[] = []
         for (;;) {
           const next = await iterator.next()
           if (next.done) {
@@ -170,7 +198,9 @@ export function SharedChatShell({
             break
           }
           const step = next.value as StreamingStep
-          setInternalStreamingSteps((previous) => [...previous, step])
+          streamingStepsSnapshot = [...streamingStepsSnapshot, step]
+          setInternalStreamingSteps(streamingStepsSnapshot)
+          onStreamingStepsChange?.(streamingStepsSnapshot)
           if (step.kind === 'final' && step.message) finalMessage = step.message
         }
       } else {
@@ -191,9 +221,11 @@ export function SharedChatShell({
       ])
     } finally {
       setIsInternalStreaming(false)
+      onStreamingChange?.(false)
       abortRef.current = null
     }
   }
+
   const shellId = shellQid ?? (surface === 'watch' ? 'watch:chat:shell' : surface === 'sparta-explorer' ? 'sparta:chat:shell:slideover' : 'shared-chat:shell')
 
   return (
@@ -202,7 +234,7 @@ export function SharedChatShell({
       data-surface={surface}
       data-mode={mode}
       className={className}
-      style={{ minHeight: 0, height: '100%', display: 'grid', gridTemplateRows: hideHeader ? '1fr' : 'auto 1fr', gap: hideHeader ? 0 : 12 }}
+      style={{ minHeight: 0, height: '100%', display: 'grid', gridTemplateRows: hideHeader ? '1fr' : 'auto 1fr', gap: hideHeader ? 0 : 8 }}
     >
       {!hideHeader && (
         <header
@@ -213,19 +245,19 @@ export function SharedChatShell({
             justifyContent: 'space-between',
             gap: 12,
             minWidth: 0,
+            padding: '8px 12px',
           }}
         >
           <div style={{ minWidth: 0 }}>
-            <div style={{ color: '#eef5ff', fontWeight: 760, letterSpacing: '-0.02em' }}>{projectLabel}</div>
-            <div style={{ marginTop: 2, color: '#8e9aab', fontSize: 12 }}>Shared ComplianceChatWell renderer</div>
+            <div style={{ color: '#e2e8f0', fontWeight: 600, fontSize: 14, letterSpacing: '-0.02em' }}>{projectLabel}</div>
           </div>
-          {showModeToggle && <ModeToggle mode={mode} onModeChange={setMode} />}
+          {showModeToggle && <ModeToggle mode={mode} labels={modeLabels} titles={modeTitles} onModeChange={setMode} />}
         </header>
       )}
 
       {hideHeader && showModeToggle && (
-        <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: 10 }}>
-          <ModeToggle mode={mode} onModeChange={setMode} />
+        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '8px 12px' }}>
+          <ModeToggle mode={mode} labels={modeLabels} titles={modeTitles} onModeChange={setMode} />
         </div>
       )}
 
@@ -234,16 +266,26 @@ export function SharedChatShell({
         streamingSteps={displayStreamingSteps}
         isStreaming={displayIsStreaming}
         activeBranch={displayActiveBranch}
-        onSend={(value) => void handleSend(value)}
-        placeholder={placeholder ?? (mode === 'personaplex' ? 'Ask Embry…' : 'Ask SPARTA…')}
+        onSend={(text) => void handleSend(text)}
+        placeholder={placeholder ?? (mode === 'personaplex' ? 'Ask Embry…' : 'Ask a question…')}
         disabled={disabled}
         composerDisabled={composerDisabled}
         showComposer={showComposer}
-        emptyTitle={emptyTitle ?? (surface === 'watch' ? 'Hello, Graham' : 'Ask anything')}
+        emptyTitle={emptyTitle ?? (surface === 'watch' ? 'Hello, Graham' : 'How can I help?')}
         emptyDescription={emptyDescription}
         starterChips={starterChips}
         qid={qid ?? `${shellId}:well`}
         surface={surface}
+        sidebar={sidebar}
+        recentChats={recentChats}
+        promptTemplates={promptTemplates}
+        onDeleteMessage={onDeleteMessage}
+        onCopyMessage={onCopyMessage}
+        onDownloadMessage={onDownloadMessage}
+        onEditTitle={onEditTitle}
+        chatTitle={chatTitle}
+        agentStatus={agentStatus}
+        mediaUrl={mediaUrl}
       />
     </section>
   )
@@ -251,9 +293,13 @@ export function SharedChatShell({
 
 function ModeToggle({
   mode,
+  labels,
+  titles,
   onModeChange,
 }: {
   mode: PersonaPlexChatMode
+  labels?: Partial<Record<PersonaPlexChatMode, string>>
+  titles?: Partial<Record<PersonaPlexChatMode, string>>
   onModeChange: (mode: PersonaPlexChatMode) => void
 }): JSX.Element {
   return (
@@ -265,14 +311,28 @@ function ModeToggle({
         display: 'inline-flex',
         alignItems: 'center',
         gap: 4,
-        padding: 4,
-        borderRadius: 999,
-        border: '1px solid rgba(255,255,255,0.1)',
-        background: 'rgba(255,255,255,0.045)',
+        padding: 3,
+        borderRadius: 8,
+        border: '1px solid rgba(255,255,255,0.08)',
+        background: 'rgba(255,255,255,0.03)',
       }}
     >
-      <ModeButton mode="compliance" active={mode === 'compliance'} label="Compliance" title="SPARTA compliance chat with evidence receipts" qid="sparta:chat:mode:compliance" onClick={onModeChange} />
-      <ModeButton mode="personaplex" active={mode === 'personaplex'} label="Persona" title="Embry PersonaPlex voice chat" qid="sparta:chat:mode:personaplex" onClick={onModeChange} />
+      <ModeButton
+        mode="compliance"
+        active={mode === 'compliance'}
+        label={labels?.compliance ?? 'Compliance'}
+        title={titles?.compliance ?? 'SPARTA compliance chat with evidence receipts'}
+        qid="sparta:chat:mode:compliance"
+        onClick={onModeChange}
+      />
+      <ModeButton
+        mode="personaplex"
+        active={mode === 'personaplex'}
+        label={labels?.personaplex ?? 'Persona'}
+        title={titles?.personaplex ?? 'Embry PersonaPlex voice chat'}
+        qid="sparta:chat:mode:personaplex"
+        onClick={onModeChange}
+      />
     </div>
   )
 }
@@ -304,19 +364,19 @@ function ModeButton({
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: 7,
+        gap: 6,
         border: 0,
-        borderRadius: 999,
-        padding: '7px 11px',
-        background: active ? '#00ff88' : 'transparent',
-        color: active ? '#06130d' : '#c8d2e1',
+        borderRadius: 6,
+        padding: '5px 10px',
+        background: active ? '#4f46e5' : 'transparent',
+        color: active ? 'white' : '#94a3b8',
         cursor: 'pointer',
         font: 'inherit',
-        fontSize: 12,
-        fontWeight: 720,
+        fontSize: 11,
+        fontWeight: 600,
       }}
     >
-      {mode === 'compliance' ? <Shield size={15} strokeWidth={1.8} aria-hidden="true" /> : <Mic size={15} strokeWidth={1.8} aria-hidden="true" />}
+      {mode === 'compliance' ? <Shield size={13} strokeWidth={2} aria-hidden="true" /> : <Mic size={13} strokeWidth={2} aria-hidden="true" />}
       <span>{label}</span>
     </button>
   )

@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { collectMemoryTurn } from "../shared-chat/memory-turn";
-import { stageTraceFromStreamingSteps, TauReceiptAdapter } from "./TauChatView";
+import {
+	deriveTauTuiMirrorState,
+	stageTraceFromStreamingSteps,
+	TauReceiptAdapter,
+	terminalLinesFromTauTuiMirrorState,
+	terminalLinesFromTauTuiReceiptStream,
+	textualTuiProofCardSummary,
+} from "./TauChatView";
 import type { TauCommandLoopGithubProjectionReceipt } from "./tauCommandLoopProjection";
 
 type MemoryCall = {
@@ -421,9 +428,7 @@ describe("TauReceiptAdapter Memory routing", () => {
 			},
 		);
 
-		const { message, steps } = await collectMemoryTurn(
-			adapter.sendTurn({ text: "How does Tau handle CWE-287?" }),
-		);
+		const { message, steps } = await collectMemoryTurn(adapter.sendTurn({ text: "How does Tau handle CWE-287?" }));
 
 		expect(calls.map((call) => call.path)).toEqual(["/intent", "/clarify"]);
 		expect(calls.some((call) => call.path === "/recall")).toBe(false);
@@ -436,7 +441,9 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.content).toContain("| action | COMPLIANCE |");
 		expect(message.content).toContain("| confidence | 0.42 |");
 		expect(message.content).toContain("| next agent | human |");
-		expect(message.content).not.toContain("Tau routed this turn through Memory intent into a compliance evidence path.");
+		expect(message.content).not.toContain(
+			"Tau routed this turn through Memory intent into a compliance evidence path.",
+		);
 		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: "human" });
 	});
 
@@ -469,7 +476,9 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.content).toContain("| confidence | 0.45 |");
 		expect(message.content).toContain('"name": "human"');
 		expect(message.content).not.toContain('"name": "research-auditor"');
-		expect(message.content).not.toContain("Tau identified a research route and stopped before unsupported web claims.");
+		expect(message.content).not.toContain(
+			"Tau identified a research route and stopped before unsupported web claims.",
+		);
 		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: "human" });
 	});
 
@@ -495,9 +504,7 @@ describe("TauReceiptAdapter Memory routing", () => {
 			},
 		);
 
-		const { message } = await collectMemoryTurn(
-			adapter.sendTurn({ text: "What does Tau know about CWE-287?" }),
-		);
+		const { message } = await collectMemoryTurn(adapter.sendTurn({ text: "What does Tau know about CWE-287?" }));
 
 		expect(calls.map((call) => call.path)).toEqual(["/intent", "/clarify"]);
 		expect(calls.some((call) => call.path === "/recall")).toBe(false);
@@ -505,7 +512,9 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.content).toContain("| action | COMPLIANCE |");
 		expect(message.content).toContain("| confidence | 0.66 |");
 		expect(message.content).toContain("| next agent | human |");
-		expect(message.content).not.toContain("Tau routed this turn through Memory intent into a compliance evidence path.");
+		expect(message.content).not.toContain(
+			"Tau routed this turn through Memory intent into a compliance evidence path.",
+		);
 		expect(message.metadata?.tauAgentHandoffValidation).toMatchObject({ ok: true, nextAgent: "human" });
 	});
 
@@ -1230,6 +1239,14 @@ describe("TauReceiptAdapter Memory routing", () => {
 				label: "Searching Web",
 				liveStatusLabel: "Searching Web...",
 			},
+			{
+				kind: "final",
+				id: "answering",
+				branch: "compliance",
+				status: "completed",
+				label: "Final answer",
+				liveStatusLabel: "Thinking…",
+			},
 		]);
 
 		expect(trace).toEqual([
@@ -1248,5 +1265,200 @@ describe("TauReceiptAdapter Memory routing", () => {
 				source: "getting-results",
 			},
 		]);
+	});
+
+	it("drives the TUI mirror from the same streaming stage telemetry as the chat turn", () => {
+		const mirror = deriveTauTuiMirrorState(
+			[],
+			[
+				{
+					id: "getting-results",
+					branch: "compliance",
+					status: "running",
+					label: "Searching Web",
+					liveStatusLabel: "Searching Web...",
+				},
+			],
+			true,
+			"loop2-run-123",
+		);
+
+		expect(mirror.runId).toBe("loop2-run-123");
+		expect(mirror.active).toBe(true);
+		expect(mirror.currentStage).toMatchObject({
+			schema: "tau.loop2_pipeline_stage.v1",
+			stage: "brave_search",
+			label: "Searching Web...",
+			status: "RUNNING",
+			source: "getting-results",
+		});
+		expect(mirror.trace).toHaveLength(1);
+	});
+
+	it("falls the TUI mirror back to final assistant metadata after the chat turn finishes", () => {
+		const mirror = deriveTauTuiMirrorState(
+			[
+				{
+					id: "assistant-answer",
+					role: "assistant",
+					content: "Tau routed this turn to Memory answer.",
+					createdAt: "2026-06-28T15:20:45Z",
+					metadata: {
+						memoryIntent: { action: "ANSWER" },
+						tauCurrentStage: {
+							schema: "tau.loop2_pipeline_stage.v1",
+							stage: "answer",
+							label: "Answering...",
+							status: "PASS",
+							source: "answering",
+						},
+						tauStageTrace: [
+							{
+								schema: "tau.loop2_pipeline_stage.v1",
+								stage: "intent",
+								label: "Getting Intent...",
+								status: "PASS",
+								source: "getting-intent",
+							},
+							{
+								schema: "tau.loop2_pipeline_stage.v1",
+								stage: "answer",
+								label: "Answering...",
+								status: "PASS",
+								source: "answering",
+							},
+						],
+						tauAgentHandoffValidation: { ok: true, nextAgent: "reviewer" },
+						personaVoiceStatus: "REQUESTED_NO_PERSONAPLEX_RECEIPT",
+					},
+				},
+			],
+			[],
+			false,
+			null,
+		);
+
+		expect(mirror.active).toBe(false);
+		expect(mirror.currentStage.stage).toBe("answer");
+		expect(mirror.route).toBe("ANSWER");
+		expect(mirror.nextAgent).toBe("reviewer");
+		expect(mirror.personaVoice).toBe("REQUESTED_NO_PERSONAPLEX_RECEIPT");
+		expect(mirror.trace.map((stage) => stage.stage)).toEqual(["intent", "answer"]);
+	});
+
+	it("renders the TUI mirror state as terminal transcript lines for xterm", () => {
+		const lines = terminalLinesFromTauTuiMirrorState({
+			runId: "loop2-run-123",
+			active: false,
+			currentStage: {
+				schema: "tau.loop2_pipeline_stage.v1",
+				stage: "brave_search",
+				label: "Searching Web...",
+				status: "SKIPPED",
+				source: "getting-results",
+			},
+			trace: [
+				{
+					schema: "tau.loop2_pipeline_stage.v1",
+					stage: "intent",
+					label: "Getting Intent...",
+					status: "PASS",
+					source: "getting-intent",
+				},
+				{
+					schema: "tau.loop2_pipeline_stage.v1",
+					stage: "brave_search",
+					label: "Searching Web...",
+					status: "SKIPPED",
+					source: "getting-results",
+				},
+			],
+			route: "RESEARCH",
+			nextAgent: "research-auditor",
+			personaVoice: "not requested",
+		});
+
+		expect(lines.join("\n")).toContain("tau@ux-lab");
+		expect(lines.join("\n")).toContain("route=RESEARCH next_agent=research-auditor");
+		expect(lines.join("\n")).toContain("02. Searching Web...");
+		expect(lines.join("\n")).toContain("current");
+	});
+
+	it("renders a real Tau receipt stream view as terminal transcript lines for xterm", () => {
+		const lines = terminalLinesFromTauTuiReceiptStream({
+			schema: "tau.tui_receipt_stream_view.v1",
+			ok: true,
+			mocked: false,
+			live: true,
+			runId: "loop2-real-run",
+			runDir: "/home/graham/workspace/experiments/tau/.loop2/runs/loop2-real-run",
+			eventsPath: "/home/graham/workspace/experiments/tau/.loop2/runs/loop2-real-run/events.jsonl",
+			finalReceiptPath: "/home/graham/workspace/experiments/tau/.loop2/runs/loop2-real-run/final-receipt.json",
+			eventCount: 2,
+			status: "PASS",
+			proofScope: "one bounded loop2 repair node",
+			transportRunId: "otr-real",
+			streamEventCount: 13,
+			latestEventType: "agent_end",
+			terminalLines: [
+				"tau@receipt-stream:~/loop2$ tail --schema loop2.event.v1 events.jsonl",
+				"run_id=loop2-real-run",
+				"mocked=false live=true status=PASS",
+				"event stream tail:",
+				"001 contract_loaded running - contract loaded",
+				"002 agent_end completed - agent completed",
+				"claims.proves=1",
+				"claims.does_not_prove=1",
+			],
+			claims: {
+				proves: ["receipt stream is renderable"],
+				does_not_prove: ["PTY attachment"],
+			},
+		});
+
+		expect(lines.join("\n")).toContain("tau@receipt-stream");
+		expect(lines.join("\n")).toContain("loop2-real-run");
+		expect(lines.join("\n")).toContain("agent_end completed");
+		expect(lines.join("\n")).toContain("mocked=false live=true status=PASS");
+	});
+
+	it("labels Textual TUI renderer proof as fixture-backed and not live", () => {
+		const summary = textualTuiProofCardSummary({
+			ok: true,
+			receipt: {
+				schema: "tau.textual_tui_proof_view.v1",
+				ok: true,
+				mocked: true,
+				live: false,
+				manifestPath:
+					"/home/graham/workspace/experiments/tau/experiments/goal-locked-subagents/proofs/textual-tui-proof-cli/manifest.json",
+				proofRoot:
+					"/home/graham/workspace/experiments/tau/experiments/goal-locked-subagents/proofs/textual-tui-proof-cli",
+				sourceSchema: "tau.proof_manifest.v1",
+				runId: "loop2-real-run",
+				prompt: "How does Tau handle a CWE-287 SPARTA evidence case?",
+				status: "evidence-recorded",
+				entrypoint: "uv run tau tui-proof",
+				sourceType: "repeatable real TauTuiApp Textual rendering proof with fixture session",
+				receiptPath: "/tmp/tau-tui-proof/proof.json",
+				screenshotSvg: "/tmp/tau-tui-proof/tau-textual-tui-memory-stage.svg",
+				screenshotPng: "/tmp/tau-tui-proof/tau-textual-tui-memory-stage.png",
+				visibleAssertions: ["Accessing Memory..."],
+				textAssertions: ["tau.agent_handoff.v1"],
+				doesNotProve: ["live provider call"],
+				claims: {
+					proves: ["Tau can produce a repeatable Textual TUI proof command."],
+					does_not_prove: ["live provider call"],
+				},
+			},
+		});
+
+		expect(summary).toMatchObject({
+			label: "FIXTURE PROOF",
+			mocked: "true",
+			live: "false",
+			artifact: "/tmp/tau-tui-proof/tau-textual-tui-memory-stage.png",
+		});
+		expect(summary.detail).toContain("does not claim a live TUI process");
 	});
 });
