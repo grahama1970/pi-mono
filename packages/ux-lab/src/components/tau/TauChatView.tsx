@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import type { CSSProperties, PointerEvent } from 'react'
 import { FitAddon } from '@xterm/addon-fit'
 import { Terminal as XTerm } from '@xterm/xterm'
 import '@xterm/xterm/css/xterm.css'
@@ -8,13 +9,19 @@ import {
   CheckCircle2,
   FileText,
   GitBranch,
+  Maximize2,
   Mic,
   PanelLeftClose,
   PanelLeftOpen,
+  Plus,
   Search,
   Shield,
+  SquareDashedMousePointer,
   Terminal,
+  Trash2,
+  UserRound,
   Video,
+  X,
 } from 'lucide-react'
 import { SharedChatShell } from '../shared-chat/SharedChatShell'
 import {
@@ -66,6 +73,7 @@ import {
 } from './tauCommandLoopProjection'
 import { apiUrl } from '../../lib/apiBase'
 import { useHorizontalPaneResize } from '../../hooks/useHorizontalPaneResize'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 const RECEIPTS = [
   {
@@ -2209,6 +2217,146 @@ function readStoredPaneWidth(key: string, fallback: number, min: number, max: nu
   return Math.max(min, Math.min(max, parsed))
 }
 
+export type TauAnnotationBbox = [number, number, number, number]
+
+export type TauAnnotationBox = {
+  id: string
+  bbox: TauAnnotationBbox
+  characterName: string
+  actorName: string
+  status: 'draft' | 'local_receipt_ready'
+}
+
+type TauAnnotationSegment = {
+  id: string
+  label: string
+  startSeconds: number
+  endSeconds: number
+}
+
+export type TauAnnotationDraft = {
+  segmentId: string
+  characterName: string
+  actorName: string
+  playheadSeconds: number
+  draftBbox: TauAnnotationBbox | null
+  boxes: TauAnnotationBox[]
+  status: string
+}
+
+const TAU_ANNOTATION_DRAFT_PREFIX = 'ux-lab:tau:annotation-draft'
+
+const TAU_ANNOTATION_SEGMENTS: TauAnnotationSegment[] = [
+  { id: 'seg-001', label: '01:36-02:00 · identity reference', startSeconds: 96, endSeconds: 120 },
+  { id: 'seg-002', label: '02:00-02:24 · dialogue turn', startSeconds: 120, endSeconds: 144 },
+  { id: 'seg-003', label: '02:24-02:48 · reaction shot', startSeconds: 144, endSeconds: 168 },
+]
+
+const TAU_CHARACTER_OPTIONS: Array<{ character: string; actor: string }> = [
+  { character: 'Willie', actor: 'Billy Bob Thornton' },
+  { character: 'Marcus', actor: 'Tony Cox' },
+  { character: 'The Kid', actor: 'Brett Kelly' },
+  { character: 'Sue', actor: 'Lauren Graham' },
+]
+
+function clamp01(value: number): number {
+  return Math.max(0, Math.min(1, value))
+}
+
+function normalizeTauDragBbox(
+  start: { x: number; y: number },
+  current: { x: number; y: number },
+  rect: DOMRect,
+): TauAnnotationBbox {
+  const x1 = clamp01(Math.min(start.x, current.x) / rect.width)
+  const y1 = clamp01(Math.min(start.y, current.y) / rect.height)
+  const x2 = clamp01(Math.max(start.x, current.x) / rect.width)
+  const y2 = clamp01(Math.max(start.y, current.y) / rect.height)
+  return [x1, y1, x2, y2]
+}
+
+function tauBboxStyle(bbox: TauAnnotationBbox): CSSProperties {
+  const [x1, y1, x2, y2] = bbox
+  return {
+    left: `${x1 * 100}%`,
+    top: `${y1 * 100}%`,
+    width: `${(x2 - x1) * 100}%`,
+    height: `${(y2 - y1) * 100}%`,
+  }
+}
+
+export function tauAnnotationLabelStyle(bbox: TauAnnotationBbox): CSSProperties {
+  const [x1, y1] = bbox
+  return {
+    position: 'absolute',
+    left: `${x1 * 100}%`,
+    top: `${y1 * 100}%`,
+    transform: y1 < 0.12 ? 'translate(0, 2px)' : 'translate(0, -100%)',
+    maxWidth: 'calc(100% - 12px)',
+    zIndex: 50,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  }
+}
+
+export function tauAnnotationDraftStorageKey(segmentId: string): string {
+  return `${TAU_ANNOTATION_DRAFT_PREFIX}:${segmentId.replace(/[^a-zA-Z0-9:._-]+/g, '_')}`
+}
+
+function initialTauAnnotationDraft(segment: TauAnnotationSegment): TauAnnotationDraft {
+  const firstCharacter = TAU_CHARACTER_OPTIONS[0]
+  return {
+    segmentId: segment.id,
+    characterName: firstCharacter.character,
+    actorName: firstCharacter.actor,
+    playheadSeconds: segment.startSeconds,
+    draftBbox: null,
+    boxes: [],
+    status: 'Move the playhead, select the character, then draw a face/body box.',
+  }
+}
+
+function readTauAnnotationDraft(segment: TauAnnotationSegment): TauAnnotationDraft {
+  if (typeof window === 'undefined') return initialTauAnnotationDraft(segment)
+  try {
+    const raw = window.localStorage.getItem(tauAnnotationDraftStorageKey(segment.id))
+    if (!raw) return initialTauAnnotationDraft(segment)
+    const parsed = JSON.parse(raw) as Partial<TauAnnotationDraft>
+    if (!parsed || typeof parsed !== 'object') return initialTauAnnotationDraft(segment)
+    return {
+      ...initialTauAnnotationDraft(segment),
+      ...parsed,
+      segmentId: segment.id,
+      boxes: Array.isArray(parsed.boxes) ? parsed.boxes : [],
+      draftBbox: Array.isArray(parsed.draftBbox) && parsed.draftBbox.length === 4 ? parsed.draftBbox as TauAnnotationBbox : null,
+      playheadSeconds: typeof parsed.playheadSeconds === 'number' ? parsed.playheadSeconds : segment.startSeconds,
+    }
+  } catch {
+    return initialTauAnnotationDraft(segment)
+  }
+}
+
+function writeTauAnnotationDraft(draft: TauAnnotationDraft): void {
+  if (typeof window === 'undefined') return
+  window.localStorage.setItem(tauAnnotationDraftStorageKey(draft.segmentId), JSON.stringify(draft))
+}
+
+export function tauAnnotationReceiptPreview(draft: TauAnnotationDraft): Record<string, unknown> {
+  return {
+    schema: 'tau.watch_annotation_local_draft.v1',
+    persisted: 'localStorage',
+    receiptEndpointAttached: false,
+    segmentId: draft.segmentId,
+    playheadSeconds: draft.playheadSeconds,
+    boxCount: draft.boxes.length + (draft.draftBbox ? 1 : 0),
+    claims: {
+      proves: ['Tau annotation UI can preserve a local draft per segment.'],
+      does_not_prove: ['Watch annotation endpoint write', 'movie-library persistence', 'model identity correctness'],
+    },
+  }
+}
+
 export function deriveTauTuiMirrorState(
   messages: ChatMessage[],
   streamingSteps: StreamingStep[],
@@ -2280,6 +2428,7 @@ export function TauChatView(): JSX.Element {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(sampleMessages)
   const [chatStreamingSteps, setChatStreamingSteps] = useState<StreamingStep[]>([])
   const [chatStreaming, setChatStreaming] = useState(false)
+  const [annotationModalOpen, setAnnotationModalOpen] = useState(false)
   const [evidenceRailCollapsed, setEvidenceRailCollapsed] = useState(() =>
     typeof window === 'undefined' ? false : window.localStorage.getItem('tau:evidenceRailCollapsed') === 'true',
   )
@@ -2316,6 +2465,28 @@ export function TauChatView(): JSX.Element {
     summarizeTauLoopMonitor(null, null, 'loop monitor not checked yet'),
   )
   const [peerLoading, setPeerLoading] = useState(false)
+
+  useRegisterAction('tau:annotation:open-modal', {
+    app: 'ux-lab',
+    action: 'TAU_OPEN_ANNOTATION_MODAL',
+    label: 'Open Tau annotation workspace',
+    description: 'Open the focused movie annotation modal for playhead, character selection, and bbox drafting',
+    tags: ['tau', 'watch', 'annotation'],
+  })
+  useRegisterAction('tau:annotation:close-modal', {
+    app: 'ux-lab',
+    action: 'TAU_CLOSE_ANNOTATION_MODAL',
+    label: 'Close Tau annotation workspace',
+    description: 'Close the focused Tau annotation modal',
+    tags: ['tau', 'watch', 'annotation'],
+  })
+  useRegisterAction('tau:annotation:approve-draft', {
+    app: 'ux-lab',
+    action: 'TAU_APPROVE_ANNOTATION_DRAFT',
+    label: 'Approve Tau annotation draft',
+    description: 'Mark the local Tau annotation draft as ready for a future receipt-backed endpoint',
+    tags: ['tau', 'watch', 'annotation'],
+  })
 
   useEffect(() => {
     const controller = new AbortController()
@@ -2771,6 +2942,94 @@ export function TauChatView(): JSX.Element {
               </code>
             </section>
           ) : null}
+
+          <section
+            data-qid="tau:annotation:workspace-card"
+            style={{
+              border: '1px solid rgba(45,212,191,0.24)',
+              background: 'rgba(8,47,73,0.18)',
+              borderRadius: 8,
+              padding: 16,
+              display: 'grid',
+              gap: 12,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#67e8f9', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 850 }}>
+                  <Video size={15} aria-hidden="true" /> Movie Annotation TUI
+                </div>
+                <h2 style={{ margin: '8px 0 0', color: '#ecfeff', fontSize: 18, lineHeight: 1.15 }}>
+                  Scrub the frame, select the character, draw the bbox.
+                </h2>
+                <p style={{ margin: '8px 0 0', color: '#bae6fd', fontSize: 12, lineHeight: 1.5 }}>
+                  This is the focused annotation workflow Tau needs from Watch: playhead first, character dropdown second, normalized box third. Local drafts persist per segment; endpoint-backed annotation receipts remain a separate integration rung.
+                </p>
+              </div>
+              <button
+                type="button"
+                data-qid="tau:annotation:open-modal"
+                data-qs-action="TAU_OPEN_ANNOTATION_MODAL"
+                title="Open the focused T’au movie annotation workspace"
+                onClick={() => setAnnotationModalOpen(true)}
+                style={{
+                  minHeight: 44,
+                  minWidth: 44,
+                  border: '1px solid rgba(45,212,191,0.34)',
+                  borderRadius: 7,
+                  background: 'rgba(45,212,191,0.12)',
+                  color: '#67e8f9',
+                  padding: '0 12px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 8,
+                  cursor: 'pointer',
+                  fontSize: 11,
+                  fontWeight: 850,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <Maximize2 size={15} aria-hidden="true" /> Open
+              </button>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 12, alignItems: 'stretch' }}>
+              <div
+                data-qid="tau:annotation:card-media-preview"
+                title="Tau annotation media preview"
+                style={{
+                  position: 'relative',
+                  minHeight: 168,
+                  aspectRatio: '16 / 9',
+                  border: '1px solid rgba(103,232,249,0.22)',
+                  borderRadius: 8,
+                  overflow: 'hidden',
+                  background:
+                    'linear-gradient(135deg, rgba(2,6,23,0.2), rgba(8,47,73,0.55)), radial-gradient(circle at 72% 38%, rgba(148,163,184,0.42), transparent 17%), radial-gradient(circle at 38% 44%, rgba(45,212,191,0.26), transparent 22%), #030712',
+                }}
+              >
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.22), transparent 36%, rgba(0,0,0,0.34))' }} />
+                <div style={{ position: 'absolute', left: '18%', top: '26%', width: '20%', height: '48%', border: '2px dashed #facc15', background: 'rgba(250,204,21,0.08)', zIndex: 5 }} />
+                <div style={{ position: 'absolute', left: '18%', top: 'calc(26% - 24px)', maxWidth: '70%', height: 22, lineHeight: '22px', padding: '0 8px', background: '#facc15', color: '#111827', fontSize: 11, fontWeight: 900, letterSpacing: '0.08em', textTransform: 'uppercase', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', zIndex: 30, boxShadow: '0 3px 14px rgba(0,0,0,0.5)' }}>
+                  Willie · Billy Bob Thornton
+                </div>
+                <div style={{ position: 'absolute', left: 12, right: 12, bottom: 12, height: 28, display: 'grid', gridTemplateColumns: '44px 1fr 48px', alignItems: 'center', gap: 10, zIndex: 10 }}>
+                  <span style={{ color: '#bae6fd', fontSize: 10, fontFamily: 'monospace' }}>01:36</span>
+                  <div style={{ height: 5, borderRadius: 999, background: 'rgba(148,163,184,0.26)', overflow: 'hidden' }}>
+                    <div style={{ width: '34%', height: '100%', background: '#22d3ee' }} />
+                  </div>
+                  <span style={{ color: '#bae6fd', fontSize: 10, fontFamily: 'monospace', textAlign: 'right' }}>02:00</span>
+                </div>
+              </div>
+              <div style={{ display: 'grid', gap: 8, alignContent: 'center' }}>
+                <PeerFact label="Primary action" value="Open modal, scrub playhead, draw bbox" />
+                <PeerFact label="State" value="local draft per movie segment" />
+                <PeerFact label="Receipt boundary" value="annotation endpoint not attached" />
+              </div>
+            </div>
+          </section>
 
           <section data-qid="tau:chat:receipts" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 10 }}>
             {receiptCards.map((receipt) => (
@@ -3389,8 +3648,495 @@ export function TauChatView(): JSX.Element {
           />
         </div>
       </aside>
+      {annotationModalOpen ? (
+        <TauAnnotationModal onClose={() => setAnnotationModalOpen(false)} />
+      ) : null}
     </section>
   )
+}
+
+function TauAnnotationModal({ onClose }: { onClose: () => void }): JSX.Element {
+  const [segmentId, setSegmentId] = useState(TAU_ANNOTATION_SEGMENTS[0].id)
+  const activeSegment = TAU_ANNOTATION_SEGMENTS.find((segment) => segment.id === segmentId) ?? TAU_ANNOTATION_SEGMENTS[0]
+  const [draft, setDraft] = useState<TauAnnotationDraft>(() => readTauAnnotationDraft(activeSegment))
+  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null)
+  const receiptPreview = tauAnnotationReceiptPreview(draft)
+  const currentCharacter = TAU_CHARACTER_OPTIONS.find((option) => option.character === draft.characterName)
+  const segmentDuration = Math.max(1, activeSegment.endSeconds - activeSegment.startSeconds)
+  const progressPercent = ((draft.playheadSeconds - activeSegment.startSeconds) / segmentDuration) * 100
+
+  useRegisterAction('tau:annotation:add-box', {
+    app: 'ux-lab',
+    action: 'TAU_ADD_ANNOTATION_BOX',
+    label: 'Add Tau annotation box',
+    description: 'Add the current normalized bbox to the local Tau annotation draft',
+    tags: ['tau', 'watch', 'annotation'],
+  })
+
+  useEffect(() => {
+    const nextSegment = TAU_ANNOTATION_SEGMENTS.find((segment) => segment.id === segmentId) ?? TAU_ANNOTATION_SEGMENTS[0]
+    setDraft(readTauAnnotationDraft(nextSegment))
+    setDragStart(null)
+  }, [segmentId])
+
+  useEffect(() => {
+    writeTauAnnotationDraft(draft)
+  }, [draft])
+
+  function patchDraft(patch: Partial<TauAnnotationDraft>): void {
+    setDraft((current) => ({ ...current, ...patch }))
+  }
+
+  function updateCharacter(characterName: string): void {
+    const next = TAU_CHARACTER_OPTIONS.find((option) => option.character === characterName)
+    patchDraft({
+      characterName,
+      actorName: next?.actor ?? draft.actorName,
+      status: `Selected ${characterName}. Draw or adjust the box on the current frame.`,
+    })
+  }
+
+  function pointerPosition(event: PointerEvent<HTMLDivElement>): { rect: DOMRect; point: { x: number; y: number } } {
+    const rect = event.currentTarget.getBoundingClientRect()
+    return {
+      rect,
+      point: {
+        x: clamp01((event.clientX - rect.left) / rect.width) * rect.width,
+        y: clamp01((event.clientY - rect.top) / rect.height) * rect.height,
+      },
+    }
+  }
+
+  function onPointerDown(event: PointerEvent<HTMLDivElement>): void {
+    const { point } = pointerPosition(event)
+    setDragStart(point)
+    patchDraft({ draftBbox: null })
+    event.currentTarget.setPointerCapture(event.pointerId)
+  }
+
+  function onPointerMove(event: PointerEvent<HTMLDivElement>): void {
+    if (!dragStart) return
+    const { rect, point } = pointerPosition(event)
+    patchDraft({ draftBbox: normalizeTauDragBbox(dragStart, point, rect) })
+  }
+
+  function onPointerUp(event: PointerEvent<HTMLDivElement>): void {
+    if (!dragStart) return
+    const { rect, point } = pointerPosition(event)
+    const bbox = normalizeTauDragBbox(dragStart, point, rect)
+    setDragStart(null)
+    if ((bbox[2] - bbox[0]) < 0.02 || (bbox[3] - bbox[1]) < 0.02) {
+      patchDraft({ draftBbox: null, status: 'Draw a larger face/body box.' })
+      return
+    }
+    patchDraft({ draftBbox: bbox, status: 'Draft box ready. Add it to the segment or approve the local draft.' })
+  }
+
+  function addDraftBox(): void {
+    if (!draft.draftBbox) {
+      patchDraft({ status: 'Draw a box on the current frame first.' })
+      return
+    }
+    const box: TauAnnotationBox = {
+      id: `${draft.segmentId}-${Date.now()}-${Math.round(draft.draftBbox[0] * 1000)}`,
+      bbox: draft.draftBbox,
+      characterName: draft.characterName,
+      actorName: draft.actorName,
+      status: 'draft',
+    }
+    patchDraft({
+      boxes: [...draft.boxes, box],
+      draftBbox: null,
+      status: `Added ${box.characterName} box to ${activeSegment.label}.`,
+    })
+  }
+
+  function deleteBox(id: string): void {
+    patchDraft({
+      boxes: draft.boxes.filter((box) => box.id !== id),
+      status: 'Removed annotation box from this segment draft.',
+    })
+  }
+
+  function approveLocalDraft(): void {
+    const boxes = [
+      ...draft.boxes,
+      ...(draft.draftBbox
+        ? [{
+          id: `${draft.segmentId}-${Date.now()}-inline`,
+          bbox: draft.draftBbox,
+          characterName: draft.characterName,
+          actorName: draft.actorName,
+          status: 'local_receipt_ready' as const,
+        }]
+        : []),
+    ].map((box) => ({ ...box, status: 'local_receipt_ready' as const }))
+    if (boxes.length === 0) {
+      patchDraft({ status: 'Draw or add at least one box before approving the local draft.' })
+      return
+    }
+    patchDraft({
+      boxes,
+      draftBbox: null,
+      status: 'Local annotation receipt preview is ready. Tau still needs a real annotation endpoint before this becomes durable project evidence.',
+    })
+  }
+
+  return (
+    <div
+      data-qid="tau:annotation:modal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="T’au movie annotation workspace"
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 2147483647,
+        isolation: 'isolate',
+        background: 'rgba(1,4,8,0.96)',
+        display: 'grid',
+        placeItems: 'center',
+        padding: 24,
+      }}
+    >
+      <div
+        data-qid="tau:annotation:modal-panel"
+        style={{
+          width: 'min(1280px, 96vw)',
+          maxHeight: '94vh',
+          minHeight: 'min(760px, 92vh)',
+          overflow: 'auto',
+          background: '#070b12',
+          border: '1px solid rgba(45,212,191,0.3)',
+          borderRadius: 10,
+          boxShadow: '0 28px 90px rgba(0,0,0,0.66)',
+          padding: 18,
+          display: 'grid',
+          gridTemplateRows: 'auto minmax(0, 1fr) auto',
+          gap: 14,
+        }}
+      >
+        <header style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14 }}>
+          <div style={{ minWidth: 0 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#67e8f9', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 900 }}>
+              <SquareDashedMousePointer size={15} aria-hidden="true" /> T’au Movie Annotation
+            </div>
+            <h2 style={{ margin: '6px 0 0', color: '#f8fafc', fontSize: 24, lineHeight: 1.15 }}>
+              Playhead, character, bbox.
+            </h2>
+            <p style={{ margin: '7px 0 0', color: '#94a3b8', fontSize: 13, lineHeight: 1.45 }}>
+              This modal is intentionally opaque and wide so the annotation task has room. Chat and receipt logs remain behind it.
+            </p>
+          </div>
+          <button
+            type="button"
+            data-qid="tau:annotation:close-modal"
+            data-qs-action="TAU_CLOSE_ANNOTATION_MODAL"
+            title="Close T’au annotation workspace"
+            aria-label="Close T’au annotation workspace"
+            onClick={onClose}
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: 7,
+              border: '1px solid rgba(255,255,255,0.12)',
+              background: 'rgba(255,255,255,0.05)',
+              color: '#e5e7eb',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <X size={18} aria-hidden="true" />
+          </button>
+        </header>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(560px, 1.5fr) minmax(300px, 0.8fr)', gap: 14, minHeight: 0 }}>
+          <section style={{ minWidth: 0, display: 'grid', gap: 12, alignContent: 'start' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(160px, 0.28fr)', gap: 10 }}>
+              <label style={{ display: 'grid', gap: 5, minWidth: 0, color: '#94a3b8', fontSize: 10, fontWeight: 850, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                Segment
+                <select
+                  data-qid="tau:annotation:segment-select"
+                  data-qs-action="TAU_SELECT_ANNOTATION_SEGMENT"
+                  title="Select movie segment"
+                  value={segmentId}
+                  onChange={(event) => setSegmentId(event.target.value)}
+                  style={tauInputStyle}
+                >
+                  {TAU_ANNOTATION_SEGMENTS.map((segment) => (
+                    <option key={segment.id} value={segment.id}>{segment.label}</option>
+                  ))}
+                </select>
+              </label>
+              <div style={{ display: 'grid', gap: 5, color: '#94a3b8', fontSize: 10, fontWeight: 850, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                Playhead
+                <div style={{ ...tauInputStyle, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace', color: '#67e8f9' }}>
+                  {draft.playheadSeconds.toFixed(2)}s
+                </div>
+              </div>
+            </div>
+
+            <div
+              data-qid="tau:annotation:movie-frame"
+              title="Draw normalized character bbox on the selected movie frame"
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              style={{
+                position: 'relative',
+                width: '100%',
+                aspectRatio: '16 / 9',
+                borderRadius: 8,
+                overflow: 'hidden',
+                border: '1px solid rgba(103,232,249,0.24)',
+                background:
+                  'linear-gradient(135deg, rgba(2,6,23,0.1), rgba(8,47,73,0.64)), radial-gradient(circle at 72% 40%, rgba(226,232,240,0.42), transparent 15%), radial-gradient(circle at 40% 42%, rgba(45,212,191,0.25), transparent 20%), radial-gradient(circle at 28% 62%, rgba(15,23,42,0.72), transparent 26%), #020617',
+                cursor: 'crosshair',
+                userSelect: 'none',
+                touchAction: 'none',
+              }}
+            >
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.36), transparent 42%, rgba(0,0,0,0.28))' }} />
+              <div style={{ position: 'absolute', left: 18, top: 18, zIndex: 20, color: '#bae6fd', fontSize: 11, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace', background: 'rgba(2,6,23,0.72)', border: '1px solid rgba(103,232,249,0.18)', borderRadius: 6, padding: '5px 7px' }}>
+                {activeSegment.label}
+              </div>
+              <div style={{ position: 'absolute', left: `${progressPercent}%`, top: 0, bottom: 0, width: 2, background: '#22d3ee', zIndex: 8, boxShadow: '0 0 16px rgba(34,211,238,0.55)' }} />
+              {[...draft.boxes, ...(draft.draftBbox ? [{
+                id: 'active-draft',
+                bbox: draft.draftBbox,
+                characterName: draft.characterName,
+                actorName: draft.actorName,
+                status: 'draft' as const,
+              }] : [])].map((box) => {
+                const isDraft = box.id === 'active-draft'
+                return (
+                  <div key={box.id}>
+                    <div
+                      style={{
+                        position: 'absolute',
+                        ...tauBboxStyle(box.bbox),
+                        border: isDraft ? '2px dashed #facc15' : '2px solid #2dd4bf',
+                        background: isDraft ? 'rgba(250,204,21,0.08)' : 'rgba(45,212,191,0.1)',
+                        boxShadow: isDraft ? '0 0 0 1px rgba(250,204,21,0.25)' : '0 0 0 1px rgba(45,212,191,0.18)',
+                        pointerEvents: 'none',
+                        zIndex: 14,
+                      }}
+                    />
+                    <div
+                      title={`${box.characterName}${box.actorName ? ` · ${box.actorName}` : ''}`}
+                      style={{
+                        ...tauAnnotationLabelStyle(box.bbox),
+                        height: 23,
+                        lineHeight: '23px',
+                        padding: '0 8px',
+                        background: isDraft ? '#facc15' : '#2dd4bf',
+                        color: '#03110f',
+                        fontSize: 11,
+                        fontWeight: 900,
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                        boxShadow: '0 3px 14px rgba(0,0,0,0.58)',
+                        pointerEvents: 'none',
+                      }}
+                    >
+                      {box.characterName}{box.actorName ? ` · ${box.actorName}` : ''}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
+            <label style={{ display: 'grid', gap: 6, color: '#94a3b8', fontSize: 10, fontWeight: 850, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              Move playhead
+              <input
+                data-qid="tau:annotation:playhead"
+                data-qs-action="TAU_SET_ANNOTATION_PLAYHEAD"
+                title="Move movie playhead"
+                type="range"
+                min={activeSegment.startSeconds}
+                max={activeSegment.endSeconds}
+                step={0.1}
+                value={draft.playheadSeconds}
+                onChange={(event) => patchDraft({ playheadSeconds: Number(event.target.value), status: 'Playhead moved. Draw or redraw the bbox on this frame.' })}
+                style={{ width: '100%', accentColor: '#22d3ee' }}
+              />
+            </label>
+          </section>
+
+          <aside style={{ minWidth: 0, display: 'grid', gap: 12, alignContent: 'start' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: 10 }}>
+              <label style={tauFieldLabelStyle}>
+                Character
+                <select
+                  data-qid="tau:annotation:character-select"
+                  data-qs-action="TAU_SELECT_ANNOTATION_CHARACTER"
+                  title="Select character identity for the annotation box"
+                  value={draft.characterName}
+                  onChange={(event) => updateCharacter(event.target.value)}
+                  style={tauInputStyle}
+                >
+                  {TAU_CHARACTER_OPTIONS.map((option) => (
+                    <option key={option.character} value={option.character}>{option.character}</option>
+                  ))}
+                </select>
+              </label>
+              <label style={tauFieldLabelStyle}>
+                Actor
+                <input
+                  data-qid="tau:annotation:actor-input"
+                  data-qs-action="TAU_SET_ANNOTATION_ACTOR"
+                  title="Set actor identity for the annotation box"
+                  value={draft.actorName}
+                  onChange={(event) => patchDraft({ actorName: event.target.value, status: 'Actor label updated for the current draft.' })}
+                  style={tauInputStyle}
+                />
+              </label>
+            </div>
+
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                data-qid="tau:annotation:add-box"
+                data-qs-action="TAU_ADD_ANNOTATION_BOX"
+                title="Add current bbox to the local segment draft"
+                onClick={addDraftBox}
+                disabled={!draft.draftBbox}
+                style={tauActionButtonStyle(Boolean(draft.draftBbox), '#facc15')}
+              >
+                <Plus size={14} aria-hidden="true" /> Add box
+              </button>
+              <button
+                type="button"
+                data-qid="tau:annotation:approve-draft"
+                data-qs-action="TAU_APPROVE_ANNOTATION_DRAFT"
+                title="Approve local Tau annotation draft preview"
+                onClick={approveLocalDraft}
+                style={tauActionButtonStyle(Boolean(draft.draftBbox || draft.boxes.length), '#2dd4bf')}
+              >
+                <CheckCircle2 size={14} aria-hidden="true" /> Approve local draft
+              </button>
+            </div>
+
+            <section data-qid="tau:annotation:box-list" style={{ border: '1px solid rgba(148,163,184,0.14)', borderRadius: 8, background: 'rgba(15,23,42,0.64)', padding: 12, display: 'grid', gap: 9 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, color: '#e0f2fe', fontSize: 12, fontWeight: 850 }}>
+                  <UserRound size={14} aria-hidden="true" /> Boxes
+                </div>
+                <span style={{ color: '#67e8f9', fontSize: 11, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' }}>
+                  {draft.boxes.length + (draft.draftBbox ? 1 : 0)}
+                </span>
+              </div>
+              {draft.boxes.length === 0 ? (
+                <p style={{ margin: 0, color: '#94a3b8', fontSize: 12, lineHeight: 1.45 }}>
+                  Draw a box on the frame, then add it to this segment.
+                </p>
+              ) : (
+                <div style={{ display: 'grid', gap: 8 }}>
+                  {draft.boxes.map((box, index) => (
+                    <div key={box.id} data-qid="tau:annotation:box-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', alignItems: 'center', gap: 8, border: '1px solid rgba(148,163,184,0.12)', borderRadius: 7, background: 'rgba(2,6,23,0.42)', padding: 9 }}>
+                      <div style={{ minWidth: 0 }}>
+                        <div title={`${box.characterName}${box.actorName ? ` · ${box.actorName}` : ''}`} style={{ color: '#f8fafc', fontSize: 12, fontWeight: 820, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {index + 1}. {box.characterName}{box.actorName ? ` · ${box.actorName}` : ''}
+                        </div>
+                        <div title={box.status} style={{ color: box.status === 'local_receipt_ready' ? '#2dd4bf' : '#facc15', fontSize: 10, marginTop: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {box.status}
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        data-qid="tau:annotation:delete-box"
+                        data-qs-action="TAU_DELETE_ANNOTATION_BOX"
+                        title="Delete annotation box from local draft"
+                        onClick={() => deleteBox(box.id)}
+                        style={{
+                          width: 44,
+                          height: 44,
+                          borderRadius: 6,
+                          border: '1px solid rgba(248,113,113,0.25)',
+                          background: 'rgba(248,113,113,0.08)',
+                          color: '#fca5a5',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Trash2 size={14} aria-hidden="true" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+
+            <section data-qid="tau:annotation:receipt-preview" style={{ border: '1px solid rgba(250,204,21,0.18)', borderRadius: 8, background: 'rgba(69,26,3,0.24)', padding: 12 }}>
+              <div style={{ color: '#fde68a', fontSize: 11, fontWeight: 900, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Receipt Preview</div>
+              <pre style={{ margin: '9px 0 0', color: '#fef3c7', fontSize: 10, lineHeight: 1.45, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                {JSON.stringify(receiptPreview, null, 2)}
+              </pre>
+            </section>
+          </aside>
+        </div>
+
+        <footer style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, borderTop: '1px solid rgba(148,163,184,0.14)', paddingTop: 12 }}>
+          <span data-qid="tau:annotation:status" style={{ color: draft.status.includes('endpoint') ? '#fde68a' : '#bae6fd', fontSize: 12, lineHeight: 1.45 }}>
+            {draft.status}
+          </span>
+          <span style={{ color: currentCharacter ? '#2dd4bf' : '#f97316', fontSize: 11, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' }}>
+            {currentCharacter ? 'character-selected' : 'custom-actor-label'}
+          </span>
+        </footer>
+      </div>
+    </div>
+  )
+}
+
+const tauInputStyle: CSSProperties = {
+  minWidth: 0,
+  width: '100%',
+  boxSizing: 'border-box',
+  background: '#0b1120',
+  border: '1px solid rgba(148,163,184,0.2)',
+  borderRadius: 7,
+  color: '#e5e7eb',
+  padding: '9px 10px',
+  fontSize: 12,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+}
+
+const tauFieldLabelStyle: CSSProperties = {
+  display: 'grid',
+  gap: 5,
+  minWidth: 0,
+  color: '#94a3b8',
+  fontSize: 10,
+  fontWeight: 850,
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+}
+
+function tauActionButtonStyle(active: boolean, color: string): CSSProperties {
+  return {
+    minHeight: 44,
+    border: `1px solid ${active ? `${color}66` : 'rgba(148,163,184,0.16)'}`,
+    borderRadius: 7,
+    background: active ? `${color}18` : 'rgba(148,163,184,0.06)',
+    color: active ? color : '#64748b',
+    padding: '0 11px',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 7,
+    cursor: active ? 'pointer' : 'default',
+    fontSize: 11,
+    fontWeight: 850,
+    letterSpacing: '0.06em',
+    textTransform: 'uppercase',
+  }
 }
 
 function TauTuiMirrorPanel({

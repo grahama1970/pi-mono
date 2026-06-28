@@ -3,11 +3,15 @@ import { collectMemoryTurn } from "../shared-chat/memory-turn";
 import {
 	deriveTauTuiMirrorState,
 	stageTraceFromStreamingSteps,
+	tauAnnotationDraftStorageKey,
+	tauAnnotationLabelStyle,
+	tauAnnotationReceiptPreview,
 	TauReceiptAdapter,
 	terminalLinesFromTauTuiMirrorState,
 	terminalLinesFromTauTuiReceiptStream,
 	textualTuiProofCardSummary,
 } from "./TauChatView";
+import type { TauAnnotationDraft } from "./TauChatView";
 import type { TauCommandLoopGithubProjectionReceipt } from "./tauCommandLoopProjection";
 
 type MemoryCall = {
@@ -1460,5 +1464,49 @@ describe("TauReceiptAdapter Memory routing", () => {
 			artifact: "/tmp/tau-tui-proof/tau-textual-tui-memory-stage.png",
 		});
 		expect(summary.detail).toContain("does not claim a live TUI process");
+	});
+
+	it("keeps Tau annotation draft storage scoped to each movie segment", () => {
+		expect(tauAnnotationDraftStorageKey("seg-001")).toBe("ux-lab:tau:annotation-draft:seg-001");
+		expect(tauAnnotationDraftStorageKey("scene 02: Willie / Marcus")).toBe(
+			"ux-lab:tau:annotation-draft:scene_02:_Willie_Marcus",
+		);
+	});
+
+	it("renders Tau annotation labels above bbox overlays with truncation enabled", () => {
+		const style = tauAnnotationLabelStyle([0.18, 0.26, 0.38, 0.74]);
+
+		expect(style.zIndex).toBe(50);
+		expect(style.overflow).toBe("hidden");
+		expect(style.textOverflow).toBe("ellipsis");
+		expect(style.whiteSpace).toBe("nowrap");
+	});
+
+	it("marks Tau annotation receipt preview as local draft only", () => {
+		const draft: TauAnnotationDraft = {
+			segmentId: "seg-001",
+			characterName: "Willie",
+			actorName: "Billy Bob Thornton",
+			playheadSeconds: 101.2,
+			draftBbox: [0.18, 0.26, 0.38, 0.74],
+			boxes: [],
+			status: "Draft box ready.",
+		};
+
+		expect(tauAnnotationReceiptPreview(draft)).toMatchObject({
+			schema: "tau.watch_annotation_local_draft.v1",
+			persisted: "localStorage",
+			receiptEndpointAttached: false,
+			segmentId: "seg-001",
+			playheadSeconds: 101.2,
+			boxCount: 1,
+			claims: {
+				does_not_prove: [
+					"Watch annotation endpoint write",
+					"movie-library persistence",
+					"model identity correctness",
+				],
+			},
+		});
 	});
 });
