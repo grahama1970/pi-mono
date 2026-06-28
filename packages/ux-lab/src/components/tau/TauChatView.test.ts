@@ -1476,7 +1476,10 @@ describe("TauReceiptAdapter Memory routing", () => {
 	it("renders Tau annotation labels above bbox overlays with truncation enabled", () => {
 		const style = tauAnnotationLabelStyle([0.18, 0.26, 0.38, 0.74]);
 
-		expect(style.zIndex).toBe(50);
+		expect(style.zIndex).toBe(90);
+		expect(style.display).toBe("block");
+		expect(style.boxSizing).toBe("border-box");
+		expect(style.maxWidth).toBe("min(280px, calc(82% - 8px))");
 		expect(style.overflow).toBe("hidden");
 		expect(style.textOverflow).toBe("ellipsis");
 		expect(style.whiteSpace).toBe("nowrap");

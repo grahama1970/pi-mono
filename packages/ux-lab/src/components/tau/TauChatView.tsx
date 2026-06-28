@@ -2344,13 +2344,16 @@ function tauBboxStyle(bbox: TauAnnotationBbox): CSSProperties {
 
 export function tauAnnotationLabelStyle(bbox: TauAnnotationBbox): CSSProperties {
   const [x1, y1] = bbox
+  const remainingWidthPercent = Math.max(12, (1 - x1) * 100)
   return {
     position: 'absolute',
     left: `${x1 * 100}%`,
     top: `${y1 * 100}%`,
     transform: y1 < 0.12 ? 'translate(0, 2px)' : 'translate(0, -100%)',
-    maxWidth: 'calc(100% - 12px)',
-    zIndex: 50,
+    maxWidth: `min(280px, calc(${remainingWidthPercent}% - 8px))`,
+    boxSizing: 'border-box',
+    zIndex: 90,
+    display: 'block',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -4088,6 +4091,7 @@ function TauAnnotationModal({ onClose }: { onClose: () => void }): JSX.Element {
                 background:
                   'linear-gradient(135deg, rgba(2,6,23,0.1), rgba(8,47,73,0.64)), radial-gradient(circle at 72% 40%, rgba(226,232,240,0.42), transparent 15%), radial-gradient(circle at 40% 42%, rgba(45,212,191,0.25), transparent 20%), radial-gradient(circle at 28% 62%, rgba(15,23,42,0.72), transparent 26%), #020617',
                 cursor: 'crosshair',
+                isolation: 'isolate',
                 userSelect: 'none',
                 touchAction: 'none',
               }}
@@ -4160,7 +4164,7 @@ function TauAnnotationModal({ onClose }: { onClose: () => void }): JSX.Element {
           </section>
 
           <aside style={{ minWidth: 0, display: 'grid', gap: 12, alignContent: 'start' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: 10 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 10 }}>
               <label style={tauFieldLabelStyle}>
                 Character
                 <select
