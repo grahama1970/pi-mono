@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 
@@ -39,7 +40,7 @@ async function readJson(filePath) {
 	return parsed;
 }
 
-function validateBrowserProof(proof) {
+export function validateBrowserProof(proof) {
 	const errors = [];
 	if (proof.schema !== "tau.live_memory_chat_browser_proof.v1") {
 		errors.push("browser proof schema must be tau.live_memory_chat_browser_proof.v1");
@@ -63,7 +64,7 @@ function validateBrowserProof(proof) {
 	return { errors, handoff };
 }
 
-function validateCommandLoop(loopReceipt, expected) {
+export function validateCommandLoop(loopReceipt, expected) {
 	const errors = [];
 	if (loopReceipt.schema !== "tau.agent_handoff_command_loop_receipt.v1") {
 		errors.push("command loop receipt schema mismatch");
@@ -108,7 +109,7 @@ function validateCommandLoop(loopReceipt, expected) {
 	return { errors, firstDispatch, firstCommand };
 }
 
-async function main() {
+export async function main() {
 	await mkdir(outputRoot, { recursive: true });
 	const summaryPath = path.join(outputRoot, "summary.json");
 
@@ -268,15 +269,17 @@ async function main() {
 	process.exit(ok ? 0 : 1);
 }
 
-main().catch(async (error) => {
-	await mkdir(outputRoot, { recursive: true });
-	const summaryPath = path.join(outputRoot, "summary.json");
-	const summary = fail("unexpected proof runner error", {
-		outputRoot,
-		summaryPath,
-		detail: error instanceof Error ? error.stack ?? error.message : String(error),
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+	main().catch(async (error) => {
+		await mkdir(outputRoot, { recursive: true });
+		const summaryPath = path.join(outputRoot, "summary.json");
+		const summary = fail("unexpected proof runner error", {
+			outputRoot,
+			summaryPath,
+			detail: error instanceof Error ? error.stack ?? error.message : String(error),
+		});
+		await writeFile(summaryPath, `${JSON.stringify(summary, null, 2)}\n`, "utf8");
+		console.error(JSON.stringify(summary, null, 2));
+		process.exit(1);
 	});
-	await writeFile(summaryPath, `${JSON.stringify(summary, null, 2)}\n`, "utf8");
-	console.error(JSON.stringify(summary, null, 2));
-	process.exit(1);
-});
+}
