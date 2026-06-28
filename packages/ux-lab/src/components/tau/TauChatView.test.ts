@@ -224,7 +224,9 @@ function makeAdapter(
 			"external_receipt_accepted",
 		],
 		claims: {
-			proves: ["Tau can ingest an externally supplied tau.agent_handoff.v1 receipt against the persisted expectation."],
+			proves: [
+				"Tau can ingest an externally supplied tau.agent_handoff.v1 receipt against the persisted expectation.",
+			],
 			does_not_prove: [
 				"The external subagent actually executed in this browser proof.",
 				"The external receipt was posted to GitHub.",
@@ -232,7 +234,10 @@ function makeAdapter(
 			],
 		},
 	}),
-	externalSubagentGithubProjection: ConstructorParameters<typeof TauReceiptAdapter>[7] = async ({ intake, receipt }) => ({
+	externalSubagentGithubProjection: ConstructorParameters<typeof TauReceiptAdapter>[7] = async ({
+		intake,
+		receipt,
+	}) => ({
 		schema: "tau.external_subagent_github_projection.v1",
 		ok: true,
 		dryRun: true,
