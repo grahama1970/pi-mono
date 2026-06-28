@@ -173,6 +173,7 @@ describe('normalizeTauChatUxContract', () => {
 				non_claims: [
 					'The browser chat does not execute real subagents.',
 					'Dry-run projections do not mutate GitHub.',
+					'Cron scheduling is not proof that a task succeeded.',
 				],
 			},
 			proof_boundaries: {
@@ -252,6 +253,18 @@ describe('normalizeTauChatUxContract', () => {
 		)
 	})
 
+	it('fails closed when the special orchestration activation omits --start', async () => {
+		const root = await makeRoot()
+		const contractPath = resolve(root, 'ui/tau-chat-contract.json')
+		const payload = validContract()
+		payload.orchestration_mode.activation = 'Provide a tau.agent_handoff.v1 start handoff through TAU_ORCHESTRATOR_START.'
+		await writeJson(contractPath, payload)
+
+		await expect(normalizeTauChatUxContract(contractPath)).rejects.toThrow(
+			'must document --start and TAU_ORCHESTRATOR_START activation',
+		)
+	})
+
 	it('fails closed when the special orchestration activation omits TAU_ORCHESTRATOR_START', async () => {
 		const root = await makeRoot()
 		const contractPath = resolve(root, 'ui/tau-chat-contract.json')
@@ -260,7 +273,7 @@ describe('normalizeTauChatUxContract', () => {
 		await writeJson(contractPath, payload)
 
 		await expect(normalizeTauChatUxContract(contractPath)).rejects.toThrow(
-			'must document TAU_ORCHESTRATOR_START activation',
+			'must document --start and TAU_ORCHESTRATOR_START activation',
 		)
 	})
 
@@ -297,6 +310,51 @@ describe('normalizeTauChatUxContract', () => {
 
 		await expect(normalizeTauChatUxContract(contractPath)).rejects.toThrow(
 			'must document bounded subagent command ticks',
+		)
+	})
+
+	it('fails closed when the special orchestration mode omits browser/subagent non-claims', async () => {
+		const root = await makeRoot()
+		const contractPath = resolve(root, 'ui/tau-chat-contract.json')
+		const payload = validContract()
+		payload.orchestration_mode.non_claims = [
+			'Dry-run projections do not mutate GitHub.',
+			'Cron scheduling is not proof that a task succeeded.',
+		]
+		await writeJson(contractPath, payload)
+
+		await expect(normalizeTauChatUxContract(contractPath)).rejects.toThrow(
+			'missing non-claim: The browser chat does not execute real subagents.',
+		)
+	})
+
+	it('fails closed when the special orchestration mode omits dry-run mutation non-claims', async () => {
+		const root = await makeRoot()
+		const contractPath = resolve(root, 'ui/tau-chat-contract.json')
+		const payload = validContract()
+		payload.orchestration_mode.non_claims = [
+			'The browser chat does not execute real subagents.',
+			'Cron scheduling is not proof that a task succeeded.',
+		]
+		await writeJson(contractPath, payload)
+
+		await expect(normalizeTauChatUxContract(contractPath)).rejects.toThrow(
+			'missing non-claim: Dry-run projections do not mutate GitHub.',
+		)
+	})
+
+	it('fails closed when the special orchestration mode omits cron proof-boundary non-claims', async () => {
+		const root = await makeRoot()
+		const contractPath = resolve(root, 'ui/tau-chat-contract.json')
+		const payload = validContract()
+		payload.orchestration_mode.non_claims = [
+			'The browser chat does not execute real subagents.',
+			'Dry-run projections do not mutate GitHub.',
+		]
+		await writeJson(contractPath, payload)
+
+		await expect(normalizeTauChatUxContract(contractPath)).rejects.toThrow(
+			'missing non-claim: Cron scheduling is not proof that a task succeeded.',
 		)
 	})
 })

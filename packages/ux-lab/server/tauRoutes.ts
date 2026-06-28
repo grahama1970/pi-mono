@@ -173,8 +173,9 @@ export async function normalizeTauChatUxContract(contractPath = TAU_CHAT_UX_CONT
 	const runner = asString(orchestrationMode.runner)
 	const scheduler = asString(orchestrationMode.scheduler)
 	const loopRule = asString(orchestrationMode.loop_rule)
-	if (!activation || !activation.includes('TAU_ORCHESTRATOR_START')) {
-		throw new Error('Tau orchestration mode must document TAU_ORCHESTRATOR_START activation')
+	const nonClaims = stringArray(orchestrationMode.non_claims)
+	if (!activation || !activation.includes('--start') || !activation.includes('TAU_ORCHESTRATOR_START')) {
+		throw new Error('Tau orchestration mode must document --start and TAU_ORCHESTRATOR_START activation')
 	}
 	if (runner !== 'handoff-command-loop') {
 		throw new Error('Tau orchestration mode runner must be handoff-command-loop')
@@ -184,6 +185,14 @@ export async function normalizeTauChatUxContract(contractPath = TAU_CHAT_UX_CONT
 	}
 	if (!loopRule || !loopRule.includes('one selected bounded subagent command')) {
 		throw new Error('Tau orchestration mode must document bounded subagent command ticks')
+	}
+	const requiredNonClaims = [
+		'The browser chat does not execute real subagents.',
+		'Dry-run projections do not mutate GitHub.',
+		'Cron scheduling is not proof that a task succeeded.',
+	]
+	for (const nonClaim of requiredNonClaims) {
+		if (!nonClaims.includes(nonClaim)) throw new Error(`Tau orchestration mode missing non-claim: ${nonClaim}`)
 	}
 
 	return {
@@ -210,7 +219,7 @@ export async function normalizeTauChatUxContract(contractPath = TAU_CHAT_UX_CONT
 			loopRule,
 			agentSource: asString(orchestrationMode.agent_source),
 			githubTransport: asString(orchestrationMode.github_transport),
-			nonClaims: stringArray(orchestrationMode.non_claims),
+			nonClaims,
 		},
 		claims: {
 			proves: [
