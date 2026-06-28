@@ -4431,7 +4431,7 @@ function TauTuiMirrorPanel({
         padding: 0,
         display: 'grid',
         alignContent: 'stretch',
-        gridTemplateRows: hasTextualTuiProof ? 'auto 170px auto minmax(220px, 1fr) auto' : 'auto minmax(0, 1fr) auto',
+        gridTemplateRows: hasTextualTuiProof ? 'auto 170px auto auto minmax(220px, 1fr) auto' : 'auto auto minmax(0, 1fr) auto',
         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace',
       }}
     >
@@ -4496,6 +4496,62 @@ function TauTuiMirrorPanel({
           </div>
         </>
       ) : null}
+
+      <div
+        data-qid="tau:tui-mirror:same-turn-summary"
+        title="Same-turn Memory stage mirror from the active Tau chat turn"
+        style={{
+          borderBottom: '1px solid rgba(34,211,238,0.16)',
+          background: 'rgba(8,47,73,0.3)',
+          padding: '9px 12px',
+          display: 'grid',
+          gap: 8,
+        }}
+      >
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 6 }}>
+          <PeerFact label="run id" value={state.runId} />
+          <PeerFact label="route" value={state.route} />
+          <PeerFact label="next agent" value={state.nextAgent} />
+        </div>
+        <div style={{ display: 'grid', gap: 5 }}>
+          {state.trace.map((stage, index) => {
+            const current = stage.stage === state.currentStage.stage
+            return (
+              <div
+                key={`${stage.stage}-${index}`}
+                data-qid={`tau:tui-mirror:visible-stage:${index}:${stage.stage}`}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'auto minmax(0, 1fr) auto',
+                  alignItems: 'center',
+                  gap: 7,
+                  border: current ? '1px solid rgba(34,211,238,0.44)' : '1px solid rgba(148,163,184,0.12)',
+                  background: current ? 'rgba(14,116,144,0.26)' : 'rgba(15,23,42,0.42)',
+                  borderRadius: 6,
+                  padding: '7px 8px',
+                }}
+              >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: 999,
+                    background: stage.status === 'FAILED' ? '#ef4444' : stage.status === 'SKIPPED' ? '#f97316' : stage.status === 'RUNNING' ? '#facc15' : '#22c55e',
+                    boxShadow: current ? '0 0 12px rgba(34,211,238,0.5)' : 'none',
+                  }}
+                />
+                <span style={{ minWidth: 0, color: current ? '#e0f2fe' : '#cbd5e1', fontSize: 11, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {stage.label}
+                </span>
+                <span style={{ color: stage.status === 'FAILED' ? '#fca5a5' : stage.status === 'SKIPPED' ? '#fdba74' : stage.status === 'RUNNING' ? '#fde68a' : '#86efac', fontSize: 10 }}>
+                  {stage.status}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
 
       <div
         data-qid="tau:tui-mirror:shared-run"
