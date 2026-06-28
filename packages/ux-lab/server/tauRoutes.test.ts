@@ -9,6 +9,7 @@ import {
 	normalizeTauChatHandoffTransportReceipt,
 	normalizeTauChatUxContract,
 	normalizeTauCommandLoopProjection,
+	normalizeTauAnswerRouteBrowserProof,
 	normalizeTauExternalSubagentGithubProjection,
 	normalizeTauExternalSubagentReceiptIntake,
 	normalizeTauMemoryRouteProof,
@@ -525,6 +526,117 @@ describe('normalizeTauMemoryRouteProof', () => {
 
 		await expect(normalizeTauMemoryRouteProof(manifestPath, root)).rejects.toThrow(
 			'Tau Memory route proof must preserve ANSWER selector limitation',
+		)
+	})
+})
+
+async function writeValidAnswerRouteBrowserProof(root: string): Promise<{ proofRoot: string; manifestPath: string }> {
+	const proofRoot = resolve(root, 'answer-proof')
+	const browserRoot = resolve(proofRoot, 'browser-answer')
+	await mkdir(browserRoot, { recursive: true })
+	const proofJson = resolve(browserRoot, 'proof.json')
+	const screenshot = resolve(browserRoot, 'tau-live-memory-chat.png')
+	const manifestPath = resolve(proofRoot, 'manifest.json')
+	await writeJson(proofJson, {
+		schema: 'tau.ux_lab_answer_route_browser_proof.v1',
+		ok: true,
+		mocked: false,
+		live: true,
+	})
+	await writeFile(screenshot, 'png-placeholder', 'utf8')
+	await writeJson(manifestPath, {
+		schema: 'tau.answer_route_browser_proof_manifest.v1',
+		created_at: '2026-06-28T15:22:30Z',
+		mocked: false,
+		live: true,
+		ok: true,
+		scope: 'Tau UX Lab chat ANSWER route via Memory intent response_mode=memory_grounded_answer',
+		success_proof: {
+			proof_json: proofJson,
+			screenshot,
+			url: 'http://127.0.0.1:3002/?tauAnswer=20260628T152045Z#tau',
+			prompt: 'What is the current project status?',
+			memory_requests: [
+				{ method: 'GET', url: 'http://127.0.0.1:3002/api/memory/health', status: 200 },
+				{ method: 'POST', url: 'http://127.0.0.1:3002/api/memory/intent', status: 200 },
+				{ method: 'POST', url: 'http://127.0.0.1:3002/api/memory/answer', status: 200 },
+			],
+			visible_assertions_subset: {
+				answer_product_visible: true,
+				can_answer_visible: true,
+				handoff_schema_valid: true,
+				handoff_github_transport_receipt_dry_run: true,
+				handoff_orchestrator_intake_accepted: true,
+				subagent_receipt_expectation_persisted: true,
+				external_subagent_receipt_intake_accepted: true,
+			},
+		},
+		prior_fail_closed_proof: {
+			ok: false,
+			memory_requests: [
+				{ method: 'POST', url: 'http://127.0.0.1:3002/api/memory/answer', status: 502 },
+			],
+		},
+		claims: {
+			proves: ['Tau chat can route a live Memory intent with response_mode=memory_grounded_answer through /api/memory/answer.'],
+			does_not_prove: ['Natural live Memory action=ANSWER emission; this proof uses QUERY plus response_mode=memory_grounded_answer.'],
+		},
+	})
+	return { proofRoot, manifestPath }
+}
+
+describe('normalizeTauAnswerRouteBrowserProof', () => {
+	it('normalizes a live Tau ANSWER browser route proof for the chat view', async () => {
+		const root = await makeRoot()
+		const { proofRoot, manifestPath } = await writeValidAnswerRouteBrowserProof(root)
+
+		const receipt = await normalizeTauAnswerRouteBrowserProof(manifestPath, proofRoot)
+
+		expect(receipt).toMatchObject({
+			schema: 'tau.answer_route_browser_proof_view.v1',
+			ok: true,
+			manifestPath,
+			proofRoot,
+			sourceSchema: 'tau.answer_route_browser_proof_manifest.v1',
+			mocked: false,
+			live: true,
+			prompt: 'What is the current project status?',
+			memoryRequestCount: 3,
+			hasIntent200: true,
+			hasAnswer200: true,
+			priorFailClosed: {
+				present: true,
+				answer502: true,
+			},
+			claims: {
+				does_not_prove: ['Natural live Memory action=ANSWER emission; this proof uses QUERY plus response_mode=memory_grounded_answer.'],
+			},
+		})
+	})
+
+	it('fails closed when the Tau ANSWER browser proof lacks /answer HTTP 200 evidence', async () => {
+		const root = await makeRoot()
+		const { proofRoot, manifestPath } = await writeValidAnswerRouteBrowserProof(root)
+		const payload = JSON.parse(await readFile(manifestPath, 'utf8'))
+		payload.success_proof.memory_requests = payload.success_proof.memory_requests.filter(
+			(request: { url: string }) => !request.url.includes('/api/memory/answer'),
+		)
+		await writeJson(manifestPath, payload)
+
+		await expect(normalizeTauAnswerRouteBrowserProof(manifestPath, proofRoot)).rejects.toThrow(
+			'Tau ANSWER route proof must include /api/memory/answer HTTP 200',
+		)
+	})
+
+	it('fails closed when the Tau ANSWER browser proof lacks visible answer assertions', async () => {
+		const root = await makeRoot()
+		const { proofRoot, manifestPath } = await writeValidAnswerRouteBrowserProof(root)
+		const payload = JSON.parse(await readFile(manifestPath, 'utf8'))
+		payload.success_proof.visible_assertions_subset.can_answer_visible = false
+		await writeJson(manifestPath, payload)
+
+		await expect(normalizeTauAnswerRouteBrowserProof(manifestPath, proofRoot)).rejects.toThrow(
+			'Tau ANSWER route proof missing visible assertion can_answer_visible=true',
 		)
 	})
 })

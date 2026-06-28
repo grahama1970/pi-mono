@@ -541,6 +541,38 @@ type TauMemoryRouteProofState =
   | { ok: true; receipt: TauMemoryRouteProofView }
   | { ok: false; error: string; detail?: string; manifestPath?: string; proofRoot?: string }
 
+type TauAnswerRouteBrowserProofView = {
+  schema: 'tau.answer_route_browser_proof_view.v1'
+  ok: boolean
+  manifestPath: string
+  proofRoot: string
+  sourceSchema: string
+  createdAt?: string | null
+  mocked: false
+  live: true
+  scope?: string | null
+  prompt: string
+  url: string
+  proofJson: string
+  screenshot: string
+  memoryRequestCount: number
+  hasIntent200: boolean
+  hasAnswer200: boolean
+  visibleAssertions: Record<string, unknown>
+  priorFailClosed: {
+    present: boolean
+    answer502: boolean
+  }
+  claims: {
+    proves: string[]
+    does_not_prove: string[]
+  }
+}
+
+type TauAnswerRouteBrowserProofState =
+  | { ok: true; receipt: TauAnswerRouteBrowserProofView }
+  | { ok: false; error: string; detail?: string; manifestPath?: string; proofRoot?: string }
+
 type TauWatchdogReceiptChainView = {
   schema: 'tau.watchdog_receipt_chain_view.v1'
   ok: true
@@ -1375,6 +1407,28 @@ export async function loadTauMemoryRouteProof(signal?: AbortSignal): Promise<Tau
     return {
       ok: false,
       error: payload.error ?? `tau_memory_route_proof_http_${response.status}`,
+      detail: payload.detail,
+      manifestPath: payload.manifestPath,
+      proofRoot: payload.proofRoot,
+    }
+  }
+  return { ok: true, receipt: payload.receipt }
+}
+
+export async function loadTauAnswerRouteBrowserProof(signal?: AbortSignal): Promise<TauAnswerRouteBrowserProofState> {
+  const response = await fetch(apiUrl('/tau/memory/routes/answer-browser-proof'), { signal })
+  const payload = await response.json().catch(() => ({})) as {
+    ok?: boolean
+    receipt?: TauAnswerRouteBrowserProofView
+    error?: string
+    detail?: string
+    manifestPath?: string
+    proofRoot?: string
+  }
+  if (!response.ok || !payload.ok || !payload.receipt) {
+    return {
+      ok: false,
+      error: payload.error ?? `tau_answer_route_proof_http_${response.status}`,
       detail: payload.detail,
       manifestPath: payload.manifestPath,
       proofRoot: payload.proofRoot,
@@ -2430,6 +2484,7 @@ export function TauChatView(): JSX.Element {
     useState<TauCommandLoopGithubProjectionState | null>(null)
   const [chatUxContractState, setChatUxContractState] = useState<TauChatUxContractState | null>(null)
   const [memoryRouteProofState, setMemoryRouteProofState] = useState<TauMemoryRouteProofState | null>(null)
+  const [answerRouteProofState, setAnswerRouteProofState] = useState<TauAnswerRouteBrowserProofState | null>(null)
   const [watchdogReceiptChainState, setWatchdogReceiptChainState] = useState<TauWatchdogReceiptChainState | null>(null)
   const [tuiReceiptStreamState, setTuiReceiptStreamState] = useState<TauTuiReceiptStreamState | null>(null)
   const [textualTuiProofState, setTextualTuiProofState] = useState<TauTextualTuiProofState | null>(null)
@@ -2492,9 +2547,9 @@ export function TauChatView(): JSX.Element {
   })
   useRegisterAction('tau:annotation:approve-draft', {
     app: 'ux-lab',
-    action: 'TAU_APPROVE_ANNOTATION_DRAFT',
-    label: 'Approve Tau annotation draft',
-    description: 'Mark the local Tau annotation draft as ready for a future receipt-backed endpoint',
+    action: 'TAU_WRITE_ANNOTATION_RECEIPT',
+    label: 'Write Tau annotation receipt',
+    description: 'Submit the Tau annotation draft to the Tau receipt endpoint',
     tags: ['tau', 'watch', 'annotation'],
   })
 
@@ -2530,6 +2585,21 @@ export function TauChatView(): JSX.Element {
         setMemoryRouteProofState({
           ok: false,
           error: 'tau_memory_route_failclosed_proof_unavailable',
+          detail: error instanceof Error ? error.message : String(error),
+        })
+      })
+    return () => controller.abort()
+  }, [])
+
+  useEffect(() => {
+    const controller = new AbortController()
+    void loadTauAnswerRouteBrowserProof(controller.signal)
+      .then((state) => setAnswerRouteProofState(state))
+      .catch((error) => {
+        if (controller.signal.aborted) return
+        setAnswerRouteProofState({
+          ok: false,
+          error: 'tau_answer_route_browser_proof_unavailable',
           detail: error instanceof Error ? error.message : String(error),
         })
       })
@@ -2723,6 +2793,8 @@ export function TauChatView(): JSX.Element {
   const streamStatusLabel = streamError ? 'ERROR' : streamEnd ? 'STREAM READY' : 'STREAMING'
   const memoryRouteProofStatusColor = memoryRouteProofState?.ok ? '#22c55e' : memoryRouteProofState ? '#f97316' : '#38bdf8'
   const memoryRouteProofStatusLabel = memoryRouteProofState?.ok ? 'LIVE RECEIPT' : memoryRouteProofState ? 'UNAVAILABLE' : 'LOADING'
+  const answerRouteProofStatusColor = answerRouteProofState?.ok ? '#22c55e' : answerRouteProofState ? '#f97316' : '#38bdf8'
+  const answerRouteProofStatusLabel = answerRouteProofState?.ok ? 'ANSWER PROOF' : answerRouteProofState ? 'UNAVAILABLE' : 'LOADING'
   const watchdogReceiptChainStatusColor = watchdogReceiptChainState?.ok ? '#22c55e' : watchdogReceiptChainState ? '#f97316' : '#38bdf8'
   const watchdogReceiptChainStatusLabel = watchdogReceiptChainState?.ok ? 'CRON RECEIPT' : watchdogReceiptChainState ? 'UNAVAILABLE' : 'LOADING'
   const textualTuiProofSummary = textualTuiProofCardSummary(textualTuiProofState)
@@ -3147,6 +3219,77 @@ export function TauChatView(): JSX.Element {
             ) : (
               <p style={{ margin: 0, color: '#fed7aa', fontSize: 12, lineHeight: 1.45 }}>
                 Fail-closed: {memoryRouteProofState?.detail ?? 'waiting for /api/tau/memory/routes/failclosed-proof'}
+              </p>
+            )}
+          </section>
+
+          <section
+            data-qid="tau:chat:answer-route-proof"
+            style={{
+              border: '1px solid rgba(34,197,94,0.2)',
+              background: 'rgba(5,46,22,0.18)',
+              borderRadius: 8,
+              padding: 16,
+              display: 'grid',
+              gap: 12,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+              <div>
+                <h2 style={{ margin: 0, fontSize: 14, color: '#dcfce7' }}>Fresh ANSWER Browser Proof</h2>
+                <p style={{ margin: '8px 0 0', color: '#bbf7d0', fontSize: 12, lineHeight: 1.48 }}>
+                  This separate receipt covers the newer browser turn that called Memory `/answer`; it does not rewrite the older route-coverage limitation above.
+                </p>
+              </div>
+              <span
+                data-qid="tau:chat:answer-route-proof-status"
+                style={{
+                  color: answerRouteProofStatusColor,
+                  border: `1px solid ${answerRouteProofStatusColor}55`,
+                  background: `${answerRouteProofStatusColor}14`,
+                  borderRadius: 999,
+                  padding: '5px 9px',
+                  fontSize: 11,
+                  fontFamily: 'monospace',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {answerRouteProofStatusLabel}
+              </span>
+            </div>
+
+            {answerRouteProofState?.ok ? (
+              <>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10 }}>
+                  <PeerFact label="mocked" value={String(answerRouteProofState.receipt.mocked)} />
+                  <PeerFact label="live" value={String(answerRouteProofState.receipt.live)} />
+                  <PeerFact label="memory calls" value={String(answerRouteProofState.receipt.memoryRequestCount)} />
+                  <PeerFact label="/answer" value={answerRouteProofState.receipt.hasAnswer200 ? 'HTTP 200' : 'missing'} />
+                </div>
+                <p data-qid="tau:chat:answer-route-proof-scope" style={{ margin: 0, color: '#d1fae5', fontSize: 12, lineHeight: 1.5 }}>
+                  {answerRouteProofState.receipt.scope}
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 8 }}>
+                  <PeerFact label="prompt" value={answerRouteProofState.receipt.prompt} />
+                  <PeerFact label="/intent" value={answerRouteProofState.receipt.hasIntent200 ? 'HTTP 200' : 'missing'} />
+                  <PeerFact label="visible can_answer" value={String(Boolean(answerRouteProofState.receipt.visibleAssertions.can_answer_visible))} />
+                  <PeerFact label="prior failure" value={answerRouteProofState.receipt.priorFailClosed.answer502 ? '/answer 502 fail-closed' : 'not recorded'} />
+                </div>
+                <div data-qid="tau:chat:answer-route-proof-boundaries" style={{ display: 'grid', gap: 5 }}>
+                  <div style={{ color: '#86efac', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase' }}>Does not prove</div>
+                  {answerRouteProofState.receipt.claims.does_not_prove.slice(0, 4).map((item) => (
+                    <div key={item} style={{ color: '#bbf7d0', fontSize: 11, lineHeight: 1.4 }}>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+                <code style={{ color: '#86efac', fontSize: 10, lineHeight: 1.35, wordBreak: 'break-word' }}>
+                  {answerRouteProofState.receipt.manifestPath}
+                </code>
+              </>
+            ) : (
+              <p style={{ margin: 0, color: '#fed7aa', fontSize: 12, lineHeight: 1.45 }}>
+                Fail-closed: {answerRouteProofState?.detail ?? 'waiting for /api/tau/memory/routes/answer-browser-proof'}
               </p>
             )}
           </section>

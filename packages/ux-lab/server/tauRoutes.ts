@@ -26,6 +26,13 @@ const TAU_MEMORY_ROUTE_PROOF_ROOT = resolve(
 const TAU_MEMORY_ROUTE_PROOF_MANIFEST = resolve(
 	process.env.TAU_MEMORY_ROUTE_PROOF_MANIFEST ?? resolve(TAU_MEMORY_ROUTE_PROOF_ROOT, 'manifest.json'),
 )
+const TAU_ANSWER_ROUTE_PROOF_ROOT = resolve(
+	process.env.TAU_ANSWER_ROUTE_PROOF_ROOT
+		?? '/home/graham/workspace/experiments/tau/experiments/goal-locked-subagents/proofs/fresh-answer-browser-route-20260628T152045Z',
+)
+const TAU_ANSWER_ROUTE_PROOF_MANIFEST = resolve(
+	process.env.TAU_ANSWER_ROUTE_PROOF_MANIFEST ?? resolve(TAU_ANSWER_ROUTE_PROOF_ROOT, 'manifest.json'),
+)
 const TAU_WATCHDOG_RECEIPT_CHAIN_PROOF_ROOT = resolve(
 	process.env.TAU_WATCHDOG_RECEIPT_CHAIN_PROOF_ROOT
 		?? '/home/graham/workspace/experiments/tau/experiments/goal-locked-subagents/proofs/project-watchdog-fresh-compliance-ui-handoff-20260628T143800Z',
@@ -857,6 +864,112 @@ export async function normalizeTauMemoryRouteProof(
 	}
 }
 
+export async function normalizeTauAnswerRouteBrowserProof(
+	manifestPath = TAU_ANSWER_ROUTE_PROOF_MANIFEST,
+	proofRoot = TAU_ANSWER_ROUTE_PROOF_ROOT,
+): Promise<JsonRecord> {
+	const absoluteManifestPath = resolve(manifestPath)
+	const absoluteProofRoot = resolve(proofRoot)
+	if (!isPathInside(absoluteProofRoot, absoluteManifestPath)) {
+		throw new Error('Tau ANSWER route proof manifest path escapes proof root')
+	}
+	if (!existsSync(absoluteManifestPath)) throw new Error('Tau ANSWER route proof manifest not found')
+
+	const manifestStat = await stat(absoluteManifestPath)
+	if (!manifestStat.isFile()) throw new Error('Tau ANSWER route proof manifest path is not a file')
+
+	const manifest = await readJson(absoluteManifestPath)
+	if (manifest.schema !== 'tau.answer_route_browser_proof_manifest.v1') {
+		throw new Error('unexpected Tau ANSWER route proof manifest schema')
+	}
+	if (manifest.ok !== true) throw new Error('Tau ANSWER route proof manifest is not ok')
+	if (manifest.mocked !== false) throw new Error('Tau ANSWER route proof manifest must be mocked=false')
+	if (manifest.live !== true) throw new Error('Tau ANSWER route proof manifest must be live=true')
+
+	const successProof = asRecord(manifest.success_proof)
+	if (!successProof) throw new Error('Tau ANSWER route proof missing success_proof')
+	const proofJson = asString(successProof.proof_json)
+	const screenshot = asString(successProof.screenshot)
+	const url = asString(successProof.url)
+	const prompt = asString(successProof.prompt)
+	if (!proofJson) throw new Error('Tau ANSWER route success proof missing proof_json')
+	if (!screenshot) throw new Error('Tau ANSWER route success proof missing screenshot')
+	if (!url) throw new Error('Tau ANSWER route success proof missing url')
+	if (!prompt) throw new Error('Tau ANSWER route success proof missing prompt')
+
+	const proofJsonPath = resolve(proofJson)
+	const screenshotPath = resolve(screenshot)
+	if (!isPathInside(absoluteProofRoot, proofJsonPath)) {
+		throw new Error('Tau ANSWER route proof_json path escapes proof root')
+	}
+	if (!isPathInside(absoluteProofRoot, screenshotPath)) {
+		throw new Error('Tau ANSWER route screenshot path escapes proof root')
+	}
+	if (!existsSync(proofJsonPath)) throw new Error('Tau ANSWER route proof_json not found')
+	if (!existsSync(screenshotPath)) throw new Error('Tau ANSWER route screenshot not found')
+
+	const proof = await readJson(proofJsonPath)
+	if (proof.ok !== true || proof.mocked !== false || proof.live !== true) {
+		throw new Error('Tau ANSWER route browser proof must be ok mocked=false live=true')
+	}
+
+	const memoryRequests = Array.isArray(successProof.memory_requests) ? successProof.memory_requests.map(asRecord) : []
+	const hasIntent200 = memoryRequests.some((request) => asString(request?.url)?.includes('/api/memory/intent') && request?.status === 200)
+	const hasAnswer200 = memoryRequests.some((request) => asString(request?.url)?.includes('/api/memory/answer') && request?.status === 200)
+	if (!hasIntent200) throw new Error('Tau ANSWER route proof must include /api/memory/intent HTTP 200')
+	if (!hasAnswer200) throw new Error('Tau ANSWER route proof must include /api/memory/answer HTTP 200')
+
+	const visibleAssertions = asRecord(successProof.visible_assertions_subset)
+	const requiredAssertions = [
+		'answer_product_visible',
+		'can_answer_visible',
+		'handoff_schema_valid',
+		'handoff_github_transport_receipt_dry_run',
+		'handoff_orchestrator_intake_accepted',
+	]
+	for (const assertion of requiredAssertions) {
+		if (visibleAssertions?.[assertion] !== true) {
+			throw new Error(`Tau ANSWER route proof missing visible assertion ${assertion}=true`)
+		}
+	}
+
+	const claims = asRecord(manifest.claims)
+	const priorFailClosed = asRecord(manifest.prior_fail_closed_proof)
+	const priorRequests = Array.isArray(priorFailClosed?.memory_requests) ? priorFailClosed.memory_requests.map(asRecord) : []
+	const priorAnswer502 = priorRequests.some((request) => asString(request?.url)?.includes('/api/memory/answer') && request?.status === 502)
+	if (priorFailClosed && priorFailClosed.ok !== false) {
+		throw new Error('Tau ANSWER route prior fail-closed proof must remain ok=false when present')
+	}
+
+	return {
+		schema: 'tau.answer_route_browser_proof_view.v1',
+		ok: true,
+		manifestPath: absoluteManifestPath,
+		proofRoot: absoluteProofRoot,
+		sourceSchema: manifest.schema,
+		createdAt: asString(manifest.created_at),
+		mocked: false,
+		live: true,
+		scope: asString(manifest.scope),
+		prompt,
+		url,
+		proofJson: proofJsonPath,
+		screenshot: screenshotPath,
+		memoryRequestCount: memoryRequests.length,
+		hasIntent200,
+		hasAnswer200,
+		visibleAssertions,
+		priorFailClosed: {
+			present: Boolean(priorFailClosed),
+			answer502: priorAnswer502,
+		},
+		claims: {
+			proves: stringArray(claims?.proves),
+			does_not_prove: stringArray(claims?.does_not_prove),
+		},
+	}
+}
+
 export async function normalizeTauWatchdogReceiptChain(
 	manifestPath = TAU_WATCHDOG_RECEIPT_CHAIN_MANIFEST,
 	proofRoot = TAU_WATCHDOG_RECEIPT_CHAIN_PROOF_ROOT,
@@ -1624,6 +1737,21 @@ export function registerTauRoutes(app: Express): void {
 				detail: error instanceof Error ? error.message : String(error),
 				manifestPath: TAU_MEMORY_ROUTE_PROOF_MANIFEST,
 				proofRoot: TAU_MEMORY_ROUTE_PROOF_ROOT,
+			})
+		}
+	})
+
+	app.get('/api/tau/memory/routes/answer-browser-proof', async (_req: Request, res: Response) => {
+		try {
+			const receipt = await normalizeTauAnswerRouteBrowserProof(TAU_ANSWER_ROUTE_PROOF_MANIFEST)
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(404).json({
+				ok: false,
+				error: 'tau_answer_route_browser_proof_unavailable',
+				detail: error instanceof Error ? error.message : String(error),
+				manifestPath: TAU_ANSWER_ROUTE_PROOF_MANIFEST,
+				proofRoot: TAU_ANSWER_ROUTE_PROOF_ROOT,
 			})
 		}
 	})
