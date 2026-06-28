@@ -498,11 +498,24 @@ function extractTauExternalSubagentReceipt(rawText) {
 
 function extractTauExternalSubagentReceiptIntake(rawText) {
 	const intake = renderedJsonObjects(rawText).find(
-		(item) => item?.schema === "tau.external_subagent_receipt_intake.v1",
+		(item) =>
+			item?.schema === "tau.external_subagent_receipt_intake.v1"
+			&& item?.goal
+			&& item?.nextAgent
+			&& item?.sourceValidation,
 	);
 	return intake
 		? { ok: true, error: null, json: intake }
 		: { ok: false, error: "external subagent receipt intake JSON object not found", json: null };
+}
+
+function extractTauExternalSubagentGithubProjection(rawText) {
+	const projection = renderedJsonObjects(rawText).find(
+		(item) => item?.schema === "tau.external_subagent_github_projection.v1",
+	);
+	return projection
+		? { ok: true, error: null, json: projection }
+		: { ok: false, error: "external subagent GitHub projection JSON object not found", json: null };
 }
 
 function extractTauGithubProjection(rawText) {
@@ -593,6 +606,7 @@ function handoffProofAssertions(
 	subagentHandoffValidationExtraction,
 	externalSubagentReceiptExtraction,
 	externalSubagentReceiptIntakeExtraction,
+	externalSubagentGithubProjectionExtraction,
 	transportValidation,
 	expectedNextAgent,
 ) {
@@ -606,6 +620,7 @@ function handoffProofAssertions(
 	const subagentHandoffValidation = subagentHandoffValidationExtraction.json;
 	const externalSubagentReceipt = externalSubagentReceiptExtraction.json;
 	const externalSubagentReceiptIntake = externalSubagentReceiptIntakeExtraction.json;
+	const externalSubagentGithubProjection = externalSubagentGithubProjectionExtraction.json;
 	const validationReceipt = transportValidation?.body?.receipt;
 	return {
 		handoff_json_extracted: handoffExtraction.ok,
@@ -714,6 +729,17 @@ function handoffProofAssertions(
 			externalSubagentReceiptIntake?.executed === false,
 		external_subagent_receipt_intake_goal_matches_expectation:
 			externalSubagentReceiptIntake?.goal?.goal_hash === subagentReceiptExpectation?.goal?.goal_hash,
+		external_subagent_github_projection_extracted: externalSubagentGithubProjectionExtraction.ok,
+		external_subagent_github_projection_schema:
+			externalSubagentGithubProjection?.schema === "tau.external_subagent_github_projection.v1",
+		external_subagent_github_projection_dry_run:
+			externalSubagentGithubProjection?.dryRun === true && externalSubagentGithubProjection?.applied === false,
+		external_subagent_github_projection_next_matches_intake:
+			externalSubagentGithubProjection?.nextAgent === externalSubagentReceiptIntake?.nextAgent,
+		external_subagent_github_projection_goal_matches_intake:
+			externalSubagentGithubProjection?.goal?.goal_hash === externalSubagentReceiptIntake?.goal?.goal_hash,
+		external_subagent_github_projection_embeds_receipt:
+			externalSubagentGithubProjection?.comment?.body_embeds_handoff_json === true,
 		handoff_github_transport_server_validation_ok: transportValidation?.ok === true,
 		handoff_github_transport_server_validation_schema:
 			validationReceipt?.schema === "tau.handoff_github_transport_validation.v1",
@@ -843,6 +869,11 @@ async function main() {
 				null,
 				{ timeout: 30_000 },
 			);
+			await page.waitForFunction(
+				() => document.body.innerText.includes("Tau external subagent GitHub projection JSON contract"),
+				null,
+				{ timeout: 30_000 },
+			);
 		}
 
 		const rawChatText = await page.locator('[data-qid="tau:chat:shell:well"]').innerText();
@@ -857,6 +888,7 @@ async function main() {
 		const subagentHandoffValidationExtraction = extractTauSubagentHandoffValidation(rawChatText);
 		const externalSubagentReceiptExtraction = extractTauExternalSubagentReceipt(rawChatText);
 		const externalSubagentReceiptIntakeExtraction = extractTauExternalSubagentReceiptIntake(rawChatText);
+		const externalSubagentGithubProjectionExtraction = extractTauExternalSubagentGithubProjection(rawChatText);
 		const githubTransportValidation =
 			scenario.waitForHandoff === false
 				? { ok: false, status: null, body: null, error: "handoff not expected" }
@@ -875,6 +907,7 @@ async function main() {
 						subagentHandoffValidationExtraction,
 						externalSubagentReceiptExtraction,
 						externalSubagentReceiptIntakeExtraction,
+						externalSubagentGithubProjectionExtraction,
 						githubTransportValidation,
 						scenario.expectedNextAgent,
 					);
@@ -919,6 +952,9 @@ async function main() {
 			externalSubagentReceiptIntake: externalSubagentReceiptIntakeExtraction.ok
 				? externalSubagentReceiptIntakeExtraction.json
 				: null,
+			externalSubagentGithubProjection: externalSubagentGithubProjectionExtraction.ok
+				? externalSubagentGithubProjectionExtraction.json
+				: null,
 			githubTransportValidation,
 			handoffExtractionError: handoffExtraction.error,
 			githubProjectionExtractionError: githubProjectionExtraction.error,
@@ -930,6 +966,7 @@ async function main() {
 			subagentHandoffValidationExtractionError: subagentHandoffValidationExtraction.error,
 			externalSubagentReceiptExtractionError: externalSubagentReceiptExtraction.error,
 			externalSubagentReceiptIntakeExtractionError: externalSubagentReceiptIntakeExtraction.error,
+			externalSubagentGithubProjectionExtractionError: externalSubagentGithubProjectionExtraction.error,
 			memoryRequests,
 			errors,
 			screenshot,

@@ -1,11 +1,13 @@
-import { mkdtemp, readFile, rm, writeFile } from 'fs/promises'
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'fs/promises'
 import { tmpdir } from 'os'
 import { resolve } from 'path'
 import { afterEach, describe, expect, it } from 'vitest'
 import {
 	normalizeTauChatHandoffOrchestratorIntake,
 	normalizeTauChatHandoffTransportReceipt,
+	normalizeTauChatUxContract,
 	normalizeTauCommandLoopProjection,
+	normalizeTauExternalSubagentGithubProjection,
 	normalizeTauExternalSubagentReceiptIntake,
 	normalizeTauSubagentHandoffValidation,
 	normalizeTauSubagentReceiptExpectation,
@@ -26,6 +28,7 @@ async function makeRoot(): Promise<string> {
 }
 
 async function writeJson(path: string, payload: unknown): Promise<void> {
+	await mkdir(resolve(path, '..'), { recursive: true })
 	await writeFile(path, `${JSON.stringify(payload, null, 2)}\n`, 'utf8')
 }
 
@@ -127,6 +130,125 @@ describe('normalizeTauCommandLoopProjection', () => {
 
 		await expect(normalizeTauCommandLoopProjection(summaryPath, root)).rejects.toThrow(
 			'Tau command-loop projection path escapes proof root',
+		)
+	})
+})
+
+describe('normalizeTauChatUxContract', () => {
+	function validContract() {
+		return {
+			schema: 'tau.chat_ux_contract.v1',
+			project_name: 'T’au',
+			source_of_truth: {
+				repository: 'grahama1970/tau',
+				path: 'ui/tau-chat-contract.json',
+				owns: ['Memory-first chat route contract'],
+			},
+			integration_surfaces: [
+				{
+					host: 'ux-lab',
+					route: 'http://127.0.0.1:3002/#tau',
+					role: 'integration_viewer',
+					must_not_own: ['canonical T’au chat contract'],
+				},
+			],
+			memory_pipeline: {
+				entrypoint: 'memory.intent',
+				stages: ['Getting Intent...', 'Extracting Entities...', 'Accessing Memory...'],
+				supported_routes: ['CLARIFY', 'DEFLECT', 'ANSWER', 'RESEARCH', 'COMPLIANCE'],
+				fail_closed_rules: ['Do not fabricate a Memory product when a route endpoint fails.'],
+			},
+			handoff_contracts: [
+				'tau.agent_handoff.v1',
+				'tau.external_subagent_github_projection.v1',
+			],
+			orchestration_mode: {
+				name: 'parameter_driven_orchestrated_loop',
+				activation: 'Provide a tau.agent_handoff.v1 start handoff through --start or TAU_ORCHESTRATOR_START.',
+				runner: 'handoff-command-loop',
+				scheduler: 'docker/tau-cron.sh',
+				loop_rule: 'Each tick validates one handoff, runs one selected bounded subagent command, validates the emitted tau.agent_handoff.v1, writes receipts, and stops at human or an explicit failure condition.',
+				agent_source: '/home/graham/workspace/experiments/agent-skills/agents plus Tau command-spec overlays',
+				github_transport: 'Dry-run comment and label projections are rendered by default; live mutation requires explicit --apply and preflight checks.',
+				non_claims: [
+					'The browser chat does not execute real subagents.',
+					'Dry-run projections do not mutate GitHub.',
+				],
+			},
+			proof_boundaries: {
+				proves: ['UX Lab can render and exercise the T’au chat contract as an integration viewer.'],
+				does_not_prove: ['Final Sparta Chat readiness.'],
+			},
+		}
+	}
+
+	it('normalizes the T’au-owned chat UX contract for UX Lab integration', async () => {
+		const root = await makeRoot()
+		const contractPath = resolve(root, 'ui/tau-chat-contract.json')
+		await writeJson(contractPath, validContract())
+
+		const receipt = await normalizeTauChatUxContract(contractPath)
+
+		expect(receipt).toMatchObject({
+			schema: 'tau.chat_ux_contract_view.v1',
+			ok: true,
+			sourcePath: contractPath,
+			sourceOfTruth: {
+				repository: 'grahama1970/tau',
+				path: 'ui/tau-chat-contract.json',
+			},
+			integrationSurface: {
+				host: 'ux-lab',
+				role: 'integration_viewer',
+				route: 'http://127.0.0.1:3002/#tau',
+			},
+			supportedRoutes: ['CLARIFY', 'DEFLECT', 'ANSWER', 'RESEARCH', 'COMPLIANCE'],
+			handoffContracts: [
+				'tau.agent_handoff.v1',
+				'tau.external_subagent_github_projection.v1',
+			],
+			orchestrationMode: {
+				name: 'parameter_driven_orchestrated_loop',
+				activation: 'Provide a tau.agent_handoff.v1 start handoff through --start or TAU_ORCHESTRATOR_START.',
+				runner: 'handoff-command-loop',
+				scheduler: 'docker/tau-cron.sh',
+			},
+		})
+		expect(receipt.claims).toMatchObject({
+			does_not_prove: [
+				'The full T’au UX source has moved out of UX Lab.',
+				'Final Sparta Chat readiness.',
+				'Live GitHub mutation.',
+				'Actual external subagent execution from the browser chat.',
+			],
+		})
+	})
+
+	it('fails closed when the T’au-owned contract is malformed', async () => {
+		const root = await makeRoot()
+		const contractPath = resolve(root, 'ui/tau-chat-contract.json')
+		await writeJson(contractPath, {
+			...validContract(),
+			memory_pipeline: {
+				...validContract().memory_pipeline,
+				supported_routes: ['CLARIFY'],
+			},
+		})
+
+		await expect(normalizeTauChatUxContract(contractPath)).rejects.toThrow(
+			'missing supported route DEFLECT',
+		)
+	})
+
+	it('fails closed when the T’au-owned contract omits the special orchestration mode', async () => {
+		const root = await makeRoot()
+		const contractPath = resolve(root, 'ui/tau-chat-contract.json')
+		const payload = validContract()
+		delete (payload as Record<string, unknown>).orchestration_mode
+		await writeJson(contractPath, payload)
+
+		await expect(normalizeTauChatUxContract(contractPath)).rejects.toThrow(
+			'missing parameter-driven orchestration mode',
 		)
 	})
 })
@@ -642,5 +764,135 @@ describe('normalizeTauExternalSubagentReceiptIntake', () => {
 				},
 			}),
 		).toThrow('missing required fields')
+	})
+})
+
+describe('normalizeTauExternalSubagentGithubProjection', () => {
+	function expectation() {
+		return normalizeTauSubagentReceiptExpectation(
+			normalizeTauChatHandoffOrchestratorIntake(
+				normalizeTauChatHandoffTransportReceipt({
+					schema: 'tau.handoff_github_transport_receipt.v1',
+					ok: true,
+					dryRun: true,
+					applied: false,
+					target: {
+						repo: 'grahama1970/tau',
+						target: 'issue#123',
+					},
+					goal: ACTIVE_GOAL,
+					labels: {
+						add: ['agent-work', 'next:reviewer', 'executor:either'],
+						remove: ['agent-active', 'agent-blocked'],
+					},
+					commandCount: 2,
+					commands: [
+						'gh issue comment 123 --repo grahama1970/tau --body-file -',
+						'gh issue edit 123 --repo grahama1970/tau --add-label agent-work,next:reviewer,executor:either --remove-label agent-active,agent-blocked',
+					],
+					errors: [],
+					sourceProjectionContract: 'tau.handoff_github_projection.rendered.v1',
+				}),
+			),
+		)
+	}
+
+	function externalReceipt() {
+		return {
+			schema: 'tau.agent_handoff.v1',
+			github: { repo: 'grahama1970/tau', target: 'issue#123' },
+			goal: { ...ACTIVE_GOAL },
+			previous_subagent: 'reviewer',
+			context: {
+				summary: 'Reviewer inspected the dry-run Tau receipt contract.',
+				artifacts: ['/tmp/tau-subagent-receipt-expectations/example.json'],
+			},
+			result: {
+				status: 'COMPLETED',
+				summary: 'External reviewer receipt was supplied for harness intake validation.',
+				evidence: ['/tmp/tau-subagent-receipts/reviewer.receipt.json'],
+			},
+			rationale: 'The next route should return to the human after an accepted external receipt fixture.',
+			next_agent: {
+				name: 'human',
+				executor: 'human',
+				reason: 'Human decides whether to dispatch a real subagent execution rung.',
+			},
+			required_evidence: ['Human-approved live subagent execution receipt.'],
+			stop_condition: 'Human approves the next live execution step.',
+		}
+	}
+
+	it('projects an accepted external receipt into dry-run GitHub comment and label commands', () => {
+		const receipt = externalReceipt()
+		const intake = normalizeTauExternalSubagentReceiptIntake({
+			expectation: expectation(),
+			receipt,
+			externalReceiptId: 'reviewer-fixture-001',
+		})
+		const projection = normalizeTauExternalSubagentGithubProjection({ intake, receipt })
+
+		expect(projection).toMatchObject({
+			schema: 'tau.external_subagent_github_projection.v1',
+			ok: true,
+			dryRun: true,
+			applied: false,
+			mutation: 'not_applied',
+			target: { repo: 'grahama1970/tau', target: 'issue#123' },
+			goal: ACTIVE_GOAL,
+			previousSubagent: 'reviewer',
+			nextAgent: 'human',
+			executor: 'human',
+			resultStatus: 'COMPLETED',
+			labels: {
+				add: ['agent-work', 'next:human', 'executor:human'],
+				remove: ['agent-active', 'agent-blocked', 'next:reviewer'],
+			},
+			commandCount: 2,
+			commands: [
+				'gh issue comment 123 --repo grahama1970/tau --body-file -',
+				'gh issue edit 123 --repo grahama1970/tau --add-label agent-work,next:human,executor:human --remove-label agent-active,agent-blocked,next:reviewer',
+			],
+			sourceIntake: {
+				schema: 'tau.external_subagent_receipt_intake.v1',
+				accepted: true,
+				externalReceipt: true,
+				executed: false,
+				externalReceiptId: 'reviewer-fixture-001',
+			},
+		})
+		expect(projection.comment).toMatchObject({
+			body_format: 'github-markdown',
+			body_marker: '<!-- tau-agent-handoff:v1 -->',
+			body_embeds_handoff_json: true,
+		})
+		expect(String(projection.comment.body)).toContain('## Tau External Subagent Receipt')
+		expect(String(projection.comment.body)).toContain('"schema": "tau.agent_handoff.v1"')
+		expect(projection.checks).toContain('comment_embeds_receipt_json')
+		expect(projection.claims).toMatchObject({
+			does_not_prove: [
+				'The external subagent actually executed in this browser proof.',
+				'The external receipt was posted to GitHub.',
+				'Live GitHub mutation.',
+			],
+		})
+	})
+
+	it('fails closed when the projection receipt no longer matches intake', () => {
+		const receipt = externalReceipt()
+		const intake = normalizeTauExternalSubagentReceiptIntake({
+			expectation: expectation(),
+			receipt,
+		})
+
+		expect(() =>
+			normalizeTauExternalSubagentGithubProjection({
+				intake,
+				receipt: {
+					...receipt,
+					next_agent: { name: 'releaser', executor: 'either', reason: 'drifted' },
+				},
+			}),
+		).toThrow('next_agent does not match intake')
 	})
 })

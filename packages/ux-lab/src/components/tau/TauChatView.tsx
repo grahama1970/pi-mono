@@ -217,6 +217,13 @@ type TauExternalSubagentReceiptIntakePoster = (
   },
   signal?: AbortSignal,
 ) => Promise<TauExternalSubagentReceiptIntake>
+type TauExternalSubagentGithubProjectionPoster = (
+  payload: {
+    intake: TauExternalSubagentReceiptIntake
+    receipt: TauAgentCandidateHandoff
+  },
+  signal?: AbortSignal,
+) => Promise<TauExternalSubagentGithubProjection>
 
 type TauHandoffGithubTransportValidation = {
   schema: 'tau.handoff_github_transport_validation.v1'
@@ -388,6 +395,82 @@ type TauExternalSubagentReceiptIntake = {
   }
 }
 
+type TauExternalSubagentGithubProjection = {
+  schema: 'tau.external_subagent_github_projection.v1'
+  ok: boolean
+  dryRun: true
+  applied: false
+  mutation: 'not_applied'
+  target: {
+    repo: string
+    target: string
+  }
+  goal: TauGoalRef
+  previousSubagent: string
+  nextAgent: string
+  executor: string
+  resultStatus: string
+  labels: {
+    add: string[]
+    remove: string[]
+  }
+  comment: {
+    body: string
+    body_format: string
+    body_marker: string
+    body_embeds_handoff_json: boolean
+  }
+  commandCount: number
+  commands: string[]
+  sourceIntake: {
+    schema: string
+    accepted: boolean
+    externalReceipt: boolean
+    executed: boolean
+    externalReceiptId?: string | null
+  }
+  checks: string[]
+  claims: {
+    proves: string[]
+    does_not_prove: string[]
+  }
+}
+
+type TauChatUxContractView = {
+  schema: 'tau.chat_ux_contract_view.v1'
+  ok: boolean
+  sourcePath: string
+  sourceOfTruth: {
+    repository: string
+    path: string
+  }
+  integrationSurface: {
+    host: string
+    role: string
+    route: string
+  }
+  supportedRoutes: string[]
+  handoffContracts: string[]
+  orchestrationMode: {
+    name: string
+    activation: string
+    runner: string
+    scheduler: string
+    loopRule: string
+    agentSource?: string | null
+    githubTransport?: string | null
+    nonClaims: string[]
+  }
+  claims?: {
+    proves: string[]
+    does_not_prove: string[]
+  }
+}
+
+type TauChatUxContractState =
+  | { ok: true; receipt: TauChatUxContractView }
+  | { ok: false; error: string; detail?: string; contractPath?: string }
+
 export class TauReceiptAdapter implements MemoryTurnAdapter {
   readonly name = 'TauReceiptAdapter'
   readonly branch: TurnBranch = 'compliance'
@@ -400,6 +483,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     private readonly subagentReceiptExpectationPoster: TauSubagentReceiptExpectationPoster = postTauSubagentReceiptExpectation,
     private readonly subagentHandoffValidator: TauSubagentHandoffValidator = postTauSubagentHandoffValidation,
     private readonly externalSubagentReceiptIntakePoster: TauExternalSubagentReceiptIntakePoster = postTauExternalSubagentReceiptIntake,
+    private readonly externalSubagentGithubProjectionPoster: TauExternalSubagentGithubProjectionPoster = postTauExternalSubagentGithubProjection,
   ) {}
 
   async *sendTurn(input: TurnInput): MemoryTurnStream {
@@ -674,6 +758,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
     let subagentHandoffValidation: TauSubagentHandoffValidation | null = null
     let externalSubagentReceipt: TauAgentCandidateHandoff | null = null
     let externalSubagentReceiptIntake: TauExternalSubagentReceiptIntake | null = null
+    let externalSubagentGithubProjection: TauExternalSubagentGithubProjection | null = null
     try {
       handoffGithubTransportValidation = await this.handoffTransportValidator(
         handoffGithubTransportReceipt,
@@ -718,6 +803,16 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       )
       if (!externalSubagentReceiptIntake.ok || !externalSubagentReceiptIntake.accepted) {
         throw new Error('Tau external subagent receipt intake returned ok=false')
+      }
+      externalSubagentGithubProjection = await this.externalSubagentGithubProjectionPoster(
+        {
+          intake: externalSubagentReceiptIntake,
+          receipt: externalSubagentReceipt,
+        },
+        input.abortSignal,
+      )
+      if (!externalSubagentGithubProjection.ok) {
+        throw new Error('Tau external subagent GitHub projection returned ok=false')
       }
     } catch (error) {
       const validationError = error instanceof Error ? error.message : String(error)
@@ -769,6 +864,9 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
           tauExternalSubagentReceipt: externalSubagentReceipt,
           tauExternalSubagentReceiptIntake: externalSubagentReceiptIntake
             ? externalSubagentReceiptIntake
+            : { ok: false, error: validationError },
+          tauExternalSubagentGithubProjection: externalSubagentGithubProjection
+            ? externalSubagentGithubProjection
             : { ok: false, error: validationError },
           tauCommandLoopGithubProjection: this.commandLoopGithubProjection ?? null,
           tauReceiptPaths,
@@ -824,6 +922,8 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
       '',
       renderTauExternalSubagentReceiptIntakeJsonBlock(externalSubagentReceiptIntake),
       '',
+      renderTauExternalSubagentGithubProjectionJsonBlock(externalSubagentGithubProjection),
+      '',
       summarizeTauCommandLoopGithubProjection(this.commandLoopGithubProjection),
       '',
       renderTauHandoffJsonBlock(handoff),
@@ -854,6 +954,7 @@ export class TauReceiptAdapter implements MemoryTurnAdapter {
         tauSubagentHandoffValidation: subagentHandoffValidation,
         tauExternalSubagentReceipt: externalSubagentReceipt,
         tauExternalSubagentReceiptIntake: externalSubagentReceiptIntake,
+        tauExternalSubagentGithubProjection: externalSubagentGithubProjection,
         tauCommandLoopGithubProjection: this.commandLoopGithubProjection ?? null,
         contentType: wantsEvidence ? 'evidence' : 'qra',
         tauReceiptPaths,
@@ -1075,6 +1176,60 @@ async function postTauExternalSubagentReceiptIntake(
   return receiptPayload as TauExternalSubagentReceiptIntake
 }
 
+async function postTauExternalSubagentGithubProjection(
+  payload: {
+    intake: TauExternalSubagentReceiptIntake
+    receipt: TauAgentCandidateHandoff
+  },
+  signal?: AbortSignal,
+): Promise<TauExternalSubagentGithubProjection> {
+  const response = await fetch(apiUrl('/tau/handoff/subagent-receipt/github-projection'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    signal,
+  })
+  const text = await response.text()
+  let parsed: unknown = {}
+  try {
+    parsed = text ? JSON.parse(text) : {}
+  } catch {
+    parsed = { raw: text }
+  }
+  if (!response.ok) {
+    const detail = typeof parsed === 'object' && parsed && 'detail' in parsed ? (parsed as { detail?: unknown }).detail : text
+    throw new Error(`Tau external subagent GitHub projection failed with ${response.status}: ${typeof detail === 'string' ? detail : JSON.stringify(detail)}`)
+  }
+  const receiptPayload =
+    typeof parsed === 'object' && parsed && 'receipt' in parsed
+      ? (parsed as { receipt?: unknown }).receipt
+      : null
+  if (!receiptPayload || typeof receiptPayload !== 'object') {
+    throw new Error('Tau external subagent GitHub projection returned no receipt')
+  }
+  return receiptPayload as TauExternalSubagentGithubProjection
+}
+
+export async function loadTauChatUxContract(signal?: AbortSignal): Promise<TauChatUxContractState> {
+  const response = await fetch(apiUrl('/tau/chat/ux-contract'), { signal })
+  const payload = await response.json().catch(() => ({})) as {
+    ok?: boolean
+    receipt?: TauChatUxContractView
+    error?: string
+    detail?: string
+    contractPath?: string
+  }
+  if (!response.ok || !payload.ok || !payload.receipt) {
+    return {
+      ok: false,
+      error: payload.error ?? `tau_chat_ux_contract_http_${response.status}`,
+      detail: payload.detail,
+      contractPath: payload.contractPath,
+    }
+  }
+  return { ok: true, receipt: payload.receipt }
+}
+
 function renderTauHandoffGithubTransportValidationJsonBlock(
   validation: TauHandoffGithubTransportValidation,
 ): string {
@@ -1155,6 +1310,28 @@ function renderTauExternalSubagentReceiptIntakeJsonBlock(
     '',
     '```json',
     JSON.stringify(intake, null, 2),
+    '```',
+  ].join('\n')
+}
+
+function renderTauExternalSubagentGithubProjectionJsonBlock(
+  projection: TauExternalSubagentGithubProjection,
+): string {
+  const renderedProjection = {
+    ...projection,
+    comment: {
+      body_format: projection.comment.body_format,
+      body_marker: projection.comment.body_marker,
+      body_embeds_handoff_json: projection.comment.body_embeds_handoff_json,
+      body_length: projection.comment.body.length,
+      body_preview: projection.comment.body.slice(0, 160),
+    },
+  }
+  return [
+    '### Tau external subagent GitHub projection JSON contract',
+    '',
+    '```json',
+    JSON.stringify(renderedProjection, null, 2),
     '```',
   ].join('\n')
 }
@@ -1541,6 +1718,7 @@ function normalizeStageStatus(status: StreamingStep['status']): string {
 export function TauChatView(): JSX.Element {
   const [commandLoopProjectionState, setCommandLoopProjectionState] =
     useState<TauCommandLoopGithubProjectionState | null>(null)
+  const [chatUxContractState, setChatUxContractState] = useState<TauChatUxContractState | null>(null)
   const adapter = useMemo(
     () => new TauReceiptAdapter(postMemoryProduct, commandLoopProjectionState?.ok ? commandLoopProjectionState.receipt : undefined),
     [commandLoopProjectionState],
@@ -1564,6 +1742,21 @@ export function TauChatView(): JSX.Element {
     summarizeTauLoopMonitor(null, null, 'loop monitor not checked yet'),
   )
   const [peerLoading, setPeerLoading] = useState(false)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    void loadTauChatUxContract(controller.signal)
+      .then((state) => setChatUxContractState(state))
+      .catch((error) => {
+        if (controller.signal.aborted) return
+        setChatUxContractState({
+          ok: false,
+          error: 'tau_chat_ux_contract_unavailable',
+          detail: error instanceof Error ? error.message : String(error),
+        })
+      })
+    return () => controller.abort()
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -1721,15 +1914,120 @@ export function TauChatView(): JSX.Element {
         <div style={{ display: 'grid', gap: 20, maxWidth: 980 }}>
           <header style={{ display: 'grid', gap: 10 }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#9ca3af', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
-              <Terminal size={14} /> Tau Experiment Chat
+              <Terminal size={14} /> T’au Experiment Chat
             </div>
             <h1 style={{ margin: 0, maxWidth: 760, fontSize: 34, lineHeight: 1.05, letterSpacing: '-0.03em', color: '#f8fafc' }}>
-              Receipt-backed chat shell for Tau loop, Memory, evidence, Watch-style media, and Embry voice.
+              Receipt-backed chat shell for T’au loop, Memory, evidence, Watch-style media, and Embry voice.
             </h1>
             <p style={{ margin: 0, maxWidth: 760, color: '#94a3b8', lineHeight: 1.55, fontSize: 14 }}>
-              This is an experiment surface inside UX Lab. It uses the shared Sparta/Watch chat renderer and shows the Tau contract without claiming live production chat.
+              This is an integration surface inside UX Lab. It reads the T’au-owned UX contract and uses the shared Sparta/Watch chat renderer without claiming live production chat.
             </p>
           </header>
+
+          <section
+            data-qid="tau:chat:owned-contract"
+            style={{
+              border: '1px solid rgba(56,189,248,0.24)',
+              background: 'rgba(8,47,73,0.26)',
+              borderRadius: 8,
+              padding: 14,
+              display: 'grid',
+              gap: 10,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14 }}>
+              <div>
+                <h2 style={{ margin: 0, color: '#e0f2fe', fontSize: 14 }}>T’au-owned UX contract</h2>
+                <p style={{ margin: '7px 0 0', color: '#94a3b8', fontSize: 12, lineHeight: 1.45 }}>
+                  UX Lab is the integration viewer. The canonical chat contract is loaded from the T’au repository.
+                </p>
+              </div>
+              <span
+                data-qid="tau:chat:owned-contract-status"
+                style={{
+                  color: chatUxContractState?.ok ? '#22c55e' : chatUxContractState ? '#f97316' : '#38bdf8',
+                  border: `1px solid ${chatUxContractState?.ok ? '#22c55e55' : chatUxContractState ? '#f9731655' : '#38bdf855'}`,
+                  background: chatUxContractState?.ok ? '#22c55e14' : chatUxContractState ? '#f9731614' : '#38bdf814',
+                  borderRadius: 999,
+                  padding: '5px 9px',
+                  fontSize: 11,
+                  fontFamily: 'monospace',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {chatUxContractState?.ok ? 'LOADED' : chatUxContractState ? 'UNAVAILABLE' : 'LOADING'}
+              </span>
+            </div>
+            {chatUxContractState?.ok ? (
+              <>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10 }}>
+                  <PeerFact label="schema" value={chatUxContractState.receipt.schema} />
+                  <PeerFact label="source repo" value={chatUxContractState.receipt.sourceOfTruth.repository} />
+                  <PeerFact label="source path" value={chatUxContractState.receipt.sourceOfTruth.path} />
+                  <PeerFact label="ux-lab role" value={chatUxContractState.receipt.integrationSurface.role} />
+                </div>
+                <code
+                  data-qid="tau:chat:owned-contract-path"
+                  style={{ color: '#7dd3fc', fontSize: 10, lineHeight: 1.35, wordBreak: 'break-word' }}
+                >
+                  {chatUxContractState.receipt.sourcePath}
+                </code>
+              </>
+            ) : (
+              <p style={{ margin: 0, color: '#fed7aa', fontSize: 12, lineHeight: 1.45 }}>
+                Fail-closed: {chatUxContractState?.detail ?? 'waiting for /api/tau/chat/ux-contract'}
+              </p>
+            )}
+          </section>
+
+          {chatUxContractState?.ok ? (
+            <section
+              data-qid="tau:chat:orchestrated-loop-mode"
+              style={{
+                border: '1px solid rgba(251,191,36,0.22)',
+                background: 'rgba(69,26,3,0.28)',
+                borderRadius: 8,
+                padding: 14,
+                display: 'grid',
+                gap: 10,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14 }}>
+                <div>
+                  <h2 style={{ margin: 0, color: '#fef3c7', fontSize: 14 }}>Special mode: orchestrated subagent loop</h2>
+                  <p style={{ margin: '7px 0 0', color: '#d6d3d1', fontSize: 12, lineHeight: 1.45 }}>
+                    This mode is activated by a start handoff parameter, not by an ordinary chat turn. Tau owns the runner; UX Lab only renders the contract and receipts.
+                  </p>
+                </div>
+                <span
+                  data-qid="tau:chat:orchestrated-loop-mode-name"
+                  style={{
+                    color: '#facc15',
+                    border: '1px solid rgba(250,204,21,0.28)',
+                    background: 'rgba(250,204,21,0.1)',
+                    borderRadius: 999,
+                    padding: '5px 9px',
+                    fontSize: 11,
+                    fontFamily: 'monospace',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {chatUxContractState.receipt.orchestrationMode.name}
+                </span>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
+                <PeerFact label="runner" value={chatUxContractState.receipt.orchestrationMode.runner} />
+                <PeerFact label="scheduler" value={chatUxContractState.receipt.orchestrationMode.scheduler} />
+                <PeerFact label="activation" value="TAU_ORCHESTRATOR_START" />
+              </div>
+              <p style={{ margin: 0, color: '#e7e5e4', fontSize: 12, lineHeight: 1.45 }}>
+                {chatUxContractState.receipt.orchestrationMode.loopRule}
+              </p>
+              <code style={{ color: '#fbbf24', fontSize: 10, lineHeight: 1.35, wordBreak: 'break-word' }}>
+                {chatUxContractState.receipt.orchestrationMode.activation}
+              </code>
+            </section>
+          ) : null}
 
           <section data-qid="tau:chat:receipts" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 10 }}>
             {receiptCards.map((receipt) => (

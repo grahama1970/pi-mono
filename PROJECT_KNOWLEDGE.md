@@ -34,6 +34,7 @@
 ## Infrastructure State
 
 <!-- Auto-populated from /project-state --quick -->
+- 2026-06-26: KDE Plasma/Chrome audio playback can fail from a stale PipeWire/PipeWire-Pulse graph even when UX Lab Watch MP4 range serving is healthy. Proof pattern: Watch media endpoint returned HTTP 206 Partial Content for segment_0024.mp4; journal showed pipewire spa.alsa front:4p Broken pipe and pipewire-pulse Google Chrome Input/output error. Working recovery: systemctl --user restart pipewire-pulse.service wireplumber.service pipewire.service, then verify pipewire.service, pipewire-pulse.service, and wireplumber.service are active. Reload Chrome/YouTube tabs if they keep stale Pulse streams.
 
 ## 2026-04-29 - SPARTA Coverage Continuous Agent Contract
 

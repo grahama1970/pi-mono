@@ -232,6 +232,68 @@ function makeAdapter(
 			],
 		},
 	}),
+	externalSubagentGithubProjection: ConstructorParameters<typeof TauReceiptAdapter>[7] = async ({ intake, receipt }) => ({
+		schema: "tau.external_subagent_github_projection.v1",
+		ok: true,
+		dryRun: true,
+		applied: false,
+		mutation: "not_applied",
+		target: intake.target,
+		goal: intake.goal,
+		previousSubagent: receipt.previous_subagent,
+		nextAgent: receipt.next_agent.name,
+		executor: receipt.next_agent.executor,
+		resultStatus: receipt.result.status,
+		labels: {
+			add: ["agent-work", `next:${receipt.next_agent.name}`, `executor:${receipt.next_agent.executor}`],
+			remove: ["agent-active", "agent-blocked", `next:${receipt.previous_subagent}`],
+		},
+		comment: {
+			body: `## Tau External Subagent Receipt\n\n<!-- tau-agent-handoff:v1 -->\n\`\`\`json\n${JSON.stringify(receipt, null, 2)}\n\`\`\``,
+			body_format: "github-markdown",
+			body_marker: "<!-- tau-agent-handoff:v1 -->",
+			body_embeds_handoff_json: true,
+		},
+		commandCount: intake.target.target === "new" ? 1 : 2,
+		commands:
+			intake.target.target === "new"
+				? [
+						`gh issue create --repo ${intake.target.repo} --title "Tau external subagent receipt: ${receipt.previous_subagent} to ${receipt.next_agent.name}" --body-file - --label agent-work,next:${receipt.next_agent.name},executor:${receipt.next_agent.executor}`,
+					]
+				: [
+						`gh issue comment 123 --repo ${intake.target.repo} --body-file -`,
+						`gh issue edit 123 --repo ${intake.target.repo} --add-label agent-work,next:${receipt.next_agent.name},executor:${receipt.next_agent.executor} --remove-label agent-active,agent-blocked,next:${receipt.previous_subagent}`,
+					],
+		sourceIntake: {
+			schema: intake.schema,
+			accepted: intake.accepted,
+			externalReceipt: intake.externalReceipt,
+			executed: intake.executed,
+			externalReceiptId: intake.externalReceiptId,
+		},
+		checks: [
+			"intake_schema",
+			"intake_accepted",
+			"receipt_schema",
+			"target_match",
+			"goal_preserved",
+			"previous_subagent_match",
+			"next_agent_present",
+			"labels_derived",
+			"comment_embeds_receipt_json",
+			"dry_run_not_applied",
+		],
+		claims: {
+			proves: [
+				"Tau can project an accepted external tau.agent_handoff.v1 receipt into a deterministic GitHub comment and label plan.",
+			],
+			does_not_prove: [
+				"The external subagent actually executed in this browser proof.",
+				"The external receipt was posted to GitHub.",
+				"Live GitHub mutation.",
+			],
+		},
+	}),
 ) {
 	const calls: MemoryCall[] = [];
 	const adapter = new TauReceiptAdapter(
@@ -247,6 +309,7 @@ function makeAdapter(
 		subagentReceiptExpectation,
 		subagentHandoffValidator,
 		externalSubagentReceiptIntake,
+		externalSubagentGithubProjection,
 	);
 	return { adapter, calls };
 }
@@ -634,6 +697,13 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(message.content).toContain('"schema": "tau.external_subagent_receipt_intake.v1"');
 		expect(message.content).toContain('"externalReceipt": true');
 		expect(message.content).toContain('"external_receipt_accepted"');
+		expect(message.content).toContain("### Tau external subagent GitHub projection JSON contract");
+		expect(message.content).toContain('"schema": "tau.external_subagent_github_projection.v1"');
+		expect(message.content).toContain('"mutation": "not_applied"');
+		expect(message.content).toContain('"next:human"');
+		expect(message.content).toContain('"next:reviewer"');
+		expect(message.content).toContain('"body_embeds_handoff_json": true');
+		expect(message.content).toContain("gh issue create --repo grahama1970/tau");
 		expect(message.content).toContain("### Tau command-loop GitHub projection receipt");
 		expect(message.content).toContain("/tmp/tau-command-loop-explicit-ticket-source-proof/summary.json");
 		expect(message.content).toContain(
@@ -780,6 +850,33 @@ describe("TauReceiptAdapter Memory routing", () => {
 			nextRoute: {
 				subagent: "human",
 				executor: "human",
+			},
+		});
+		expect(message.metadata?.tauExternalSubagentGithubProjection).toMatchObject({
+			schema: "tau.external_subagent_github_projection.v1",
+			ok: true,
+			dryRun: true,
+			applied: false,
+			mutation: "not_applied",
+			previousSubagent: "reviewer",
+			nextAgent: "human",
+			executor: "human",
+			resultStatus: "COMPLETED",
+			labels: {
+				add: ["agent-work", "next:human", "executor:human"],
+				remove: ["agent-active", "agent-blocked", "next:reviewer"],
+			},
+			comment: {
+				body_format: "github-markdown",
+				body_marker: "<!-- tau-agent-handoff:v1 -->",
+				body_embeds_handoff_json: true,
+			},
+			commandCount: 1,
+			sourceIntake: {
+				schema: "tau.external_subagent_receipt_intake.v1",
+				accepted: true,
+				externalReceipt: true,
+				executed: false,
 			},
 		});
 		expect(message.metadata?.tauCommandLoopGithubProjection).toMatchObject({

@@ -27,6 +27,7 @@ const scenarios = [
 const timestamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");
 const outputRoot =
 	process.env.TAU_CHAT_SUITE_PROOF_DIR ?? `/tmp/tau-memory-chat-proof-suite-${timestamp}`;
+const suiteUrl = process.env.TAU_CHAT_URL ?? `http://127.0.0.1:3002/?tauSuite=${timestamp}#tau`;
 
 function scenarioProofDir(name) {
 	return path.join(outputRoot, name);
@@ -45,6 +46,7 @@ async function runScenario(scenario) {
 				...process.env,
 				TAU_CHAT_SCENARIO: scenario.name,
 				TAU_CHAT_PROOF_DIR: proofDir,
+				TAU_CHAT_URL: suiteUrl,
 			},
 			maxBuffer: 1024 * 1024 * 8,
 		});
@@ -108,6 +110,13 @@ async function runScenario(scenario) {
 		externalSubagentReceiptIntakeAccepted: proof?.externalSubagentReceiptIntake?.accepted ?? null,
 		externalSubagentReceiptIntakeGoalHashMatches:
 			proof?.externalSubagentReceiptIntake?.goal?.goal_hash === proof?.subagentReceiptExpectation?.goal?.goal_hash,
+		externalSubagentGithubProjectionSchema: proof?.externalSubagentGithubProjection?.schema ?? null,
+		externalSubagentGithubProjectionCommandCount: proof?.externalSubagentGithubProjection?.commandCount ?? null,
+		externalSubagentGithubProjectionDryRun:
+			proof?.externalSubagentGithubProjection?.dryRun === true
+			&& proof?.externalSubagentGithubProjection?.applied === false,
+		externalSubagentGithubProjectionGoalHashMatches:
+			proof?.externalSubagentGithubProjection?.goal?.goal_hash === proof?.externalSubagentReceiptIntake?.goal?.goal_hash,
 		clarifyAvailable: proof?.clarifyAvailable ?? null,
 		screenshot: proof?.screenshot ?? null,
 		assertions,
@@ -217,6 +226,17 @@ function validateScenarioProof(proof, expected) {
 			proof.externalSubagentReceiptIntake?.executed === false;
 		assertions.external_subagent_receipt_intake_goal_matches_expectation =
 			proof.externalSubagentReceiptIntake?.goal?.goal_hash === proof.subagentReceiptExpectation?.goal?.goal_hash;
+		assertions.external_subagent_github_projection_schema =
+			proof.externalSubagentGithubProjection?.schema === "tau.external_subagent_github_projection.v1";
+		assertions.external_subagent_github_projection_dry_run =
+			proof.externalSubagentGithubProjection?.dryRun === true
+			&& proof.externalSubagentGithubProjection?.applied === false;
+		assertions.external_subagent_github_projection_next_matches_intake =
+			proof.externalSubagentGithubProjection?.nextAgent === proof.externalSubagentReceiptIntake?.nextAgent;
+		assertions.external_subagent_github_projection_goal_matches_intake =
+			proof.externalSubagentGithubProjection?.goal?.goal_hash === proof.externalSubagentReceiptIntake?.goal?.goal_hash;
+		assertions.external_subagent_github_projection_embeds_receipt =
+			proof.externalSubagentGithubProjection?.comment?.body_embeds_handoff_json === true;
 		assertions.github_transport_server_validation_ok = proof.githubTransportValidation?.ok === true;
 		assertions.github_transport_server_validation_schema =
 			proof.githubTransportValidation?.body?.receipt?.schema === "tau.handoff_github_transport_validation.v1";
@@ -281,6 +301,7 @@ async function main() {
 				"Successful handoff route proofs validate a candidate next-subagent tau.agent_handoff.v1 without executing that subagent.",
 				"Successful handoff route proofs preserve the accepted goal hash through expectation, candidate receipt, and validation receipt.",
 				"Successful handoff route proofs ingest an external tau.agent_handoff.v1 receipt fixture without claiming subagent execution.",
+				"Successful handoff route proofs project the accepted external receipt into dry-run GitHub comment and label commands.",
 				"Mocked route proofs are labeled mocked=true/live=false and do not upgrade live Memory confidence.",
 			],
 			does_not_prove: [

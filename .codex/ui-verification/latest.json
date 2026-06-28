@@ -1,10 +1,10 @@
 {
-  "verified_at": "2026-05-22T17:42:57.484689+00:00",
-  "cwd": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab",
+  "verified_at": "2026-06-28T00:37:53.996536+00:00",
+  "cwd": "/home/graham/workspace/experiments/pi-mono",
   "root": "/home/graham/workspace/experiments/pi-mono",
-  "output_root": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/pi-mono",
-  "url": "http://127.0.0.1:3002/#pdf-lab/labeling",
-  "name": "pdf-lab-breadcrumb-editor-final",
-  "screenshot": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/pi-mono/pdf-lab-breadcrumb-editor-final/20260522T174252Z.png",
-  "read_json": "/home/graham/workspace/experiments/pi-mono/.codex/ui-verification/pi-mono/pdf-lab-breadcrumb-editor-final/20260522T174252Z.read.json"
+  "output_root": "/tmp/codex-ui-verification/pi-mono",
+  "url": "http://127.0.0.1:3002/#tau",
+  "name": "tau-memory-routes-special-mode-after-suite",
+  "screenshot": "/tmp/codex-ui-verification/pi-mono/tau-memory-routes-special-mode-after-suite/20260628T003746Z.png",
+  "read_json": "/tmp/codex-ui-verification/pi-mono/tau-memory-routes-special-mode-after-suite/20260628T003746Z.read.json"
 }

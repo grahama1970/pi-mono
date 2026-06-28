@@ -14,6 +14,9 @@ const TAU_COMMAND_LOOP_SUMMARY_PATH = resolve(
 const TAU_SUBAGENT_EXPECTATION_PROOF_ROOT = resolve(
 	process.env.TAU_SUBAGENT_EXPECTATION_PROOF_ROOT ?? '/tmp/tau-subagent-receipt-expectations',
 )
+const TAU_CHAT_UX_CONTRACT_PATH = resolve(
+	process.env.TAU_CHAT_UX_CONTRACT_PATH ?? '/home/graham/workspace/experiments/tau/ui/tau-chat-contract.json',
+)
 
 function isPathInside(root: string, absolutePath: string): boolean {
 	const normalizedRoot = root.endsWith('/') ? root : `${root}/`
@@ -77,6 +80,152 @@ function parseGithubTarget(target: string): { kind: 'new' } | { kind: 'issue' | 
 	const match = /^(issue|pr)#([1-9]\d*)$/.exec(target)
 	if (!match) return null
 	return { kind: match[1] as 'issue' | 'pr', number: match[2] }
+}
+
+function isGithubLabel(value: string): boolean {
+	return /^[A-Za-z0-9_.:-]+$/.test(value)
+}
+
+function renderExternalSubagentReceiptComment(receipt: JsonRecord): string {
+	const nextAgent = asRecord(receipt.next_agent)
+	const result = asRecord(receipt.result)
+	const context = asRecord(receipt.context)
+	return [
+		'## Tau External Subagent Receipt',
+		'',
+		`Result: \`${asString(result?.status) ?? 'unknown'}\``,
+		`Previous subagent: \`${asString(receipt.previous_subagent) ?? 'unknown'}\``,
+		`Next agent: \`${asString(nextAgent?.name) ?? 'unknown'}\``,
+		`Executor: \`${asString(nextAgent?.executor) ?? 'either'}\``,
+		'',
+		'### Context',
+		'',
+		asString(context?.summary) ?? 'No context summary supplied.',
+		'',
+		'### Result',
+		'',
+		asString(result?.summary) ?? 'No result summary supplied.',
+		'',
+		'### Required Evidence',
+		'',
+		...(
+			stringArray(receipt.required_evidence).length
+				? stringArray(receipt.required_evidence).map((item) => `- ${item}`)
+				: ['- None specified']
+		),
+		'',
+		'### Stop Condition',
+		'',
+		asString(receipt.stop_condition) ?? 'No stop condition supplied.',
+		'',
+		'<!-- tau-agent-handoff:v1 -->',
+		'```json',
+		JSON.stringify(receipt, null, 2),
+		'```',
+	].join('\n')
+}
+
+export async function normalizeTauChatUxContract(contractPath = TAU_CHAT_UX_CONTRACT_PATH): Promise<JsonRecord> {
+	const absoluteContractPath = resolve(contractPath)
+	if (!absoluteContractPath.endsWith('/ui/tau-chat-contract.json')) {
+		throw new Error('Tau chat UX contract path must end with /ui/tau-chat-contract.json')
+	}
+	if (!existsSync(absoluteContractPath)) throw new Error('Tau chat UX contract not found')
+
+	const contractStat = await stat(absoluteContractPath)
+	if (!contractStat.isFile()) throw new Error('Tau chat UX contract path is not a file')
+
+	const contract = await readJson(absoluteContractPath)
+	if (contract.schema !== 'tau.chat_ux_contract.v1') {
+		throw new Error('unexpected Tau chat UX contract schema')
+	}
+	const sourceOfTruth = asRecord(contract.source_of_truth)
+	const repository = asString(sourceOfTruth?.repository)
+	const path = asString(sourceOfTruth?.path)
+	if (repository !== 'grahama1970/tau') throw new Error('Tau chat UX contract source repository mismatch')
+	if (path !== 'ui/tau-chat-contract.json') throw new Error('Tau chat UX contract source path mismatch')
+
+	const integrationSurfaces = Array.isArray(contract.integration_surfaces) ? contract.integration_surfaces : []
+	const uxLabSurface = integrationSurfaces.map(asRecord).find((surface) => asString(surface?.host) === 'ux-lab')
+	if (!uxLabSurface) throw new Error('Tau chat UX contract missing ux-lab integration surface')
+	if (asString(uxLabSurface.role) !== 'integration_viewer') {
+		throw new Error('Tau chat UX contract ux-lab surface must be integration_viewer')
+	}
+
+	const memoryPipeline = asRecord(contract.memory_pipeline)
+	const supportedRoutes = stringArray(memoryPipeline?.supported_routes)
+	const requiredRoutes = ['CLARIFY', 'DEFLECT', 'ANSWER', 'RESEARCH', 'COMPLIANCE']
+	for (const route of requiredRoutes) {
+		if (!supportedRoutes.includes(route)) throw new Error(`Tau chat UX contract missing supported route ${route}`)
+	}
+
+	const handoffContracts = stringArray(contract.handoff_contracts)
+	for (const schema of ['tau.agent_handoff.v1', 'tau.external_subagent_github_projection.v1']) {
+		if (!handoffContracts.includes(schema)) throw new Error(`Tau chat UX contract missing handoff schema ${schema}`)
+	}
+
+	const orchestrationMode = asRecord(contract.orchestration_mode)
+	const orchestrationModeName = asString(orchestrationMode?.name)
+	if (orchestrationModeName !== 'parameter_driven_orchestrated_loop') {
+		throw new Error('Tau chat UX contract missing parameter-driven orchestration mode')
+	}
+	const activation = asString(orchestrationMode.activation)
+	const runner = asString(orchestrationMode.runner)
+	const scheduler = asString(orchestrationMode.scheduler)
+	const loopRule = asString(orchestrationMode.loop_rule)
+	if (!activation || !activation.includes('TAU_ORCHESTRATOR_START')) {
+		throw new Error('Tau orchestration mode must document TAU_ORCHESTRATOR_START activation')
+	}
+	if (runner !== 'handoff-command-loop') {
+		throw new Error('Tau orchestration mode runner must be handoff-command-loop')
+	}
+	if (scheduler !== 'docker/tau-cron.sh') {
+		throw new Error('Tau orchestration mode scheduler must be docker/tau-cron.sh')
+	}
+	if (!loopRule || !loopRule.includes('one selected bounded subagent command')) {
+		throw new Error('Tau orchestration mode must document bounded subagent command ticks')
+	}
+
+	return {
+		schema: 'tau.chat_ux_contract_view.v1',
+		ok: true,
+		sourcePath: absoluteContractPath,
+		contract,
+		sourceOfTruth: {
+			repository,
+			path,
+		},
+		integrationSurface: {
+			host: asString(uxLabSurface.host),
+			role: asString(uxLabSurface.role),
+			route: asString(uxLabSurface.route),
+		},
+		supportedRoutes,
+		handoffContracts,
+		orchestrationMode: {
+			name: orchestrationModeName,
+			activation,
+			runner,
+			scheduler,
+			loopRule,
+			agentSource: asString(orchestrationMode.agent_source),
+			githubTransport: asString(orchestrationMode.github_transport),
+			nonClaims: stringArray(orchestrationMode.non_claims),
+		},
+		claims: {
+			proves: [
+				'UX Lab can load the T’au-owned chat UX contract from the T’au repository.',
+				'UX Lab is marked as an integration viewer rather than the canonical source of truth.',
+				'UX Lab can surface the T’au-owned parameter-driven orchestration mode without owning it.',
+			],
+			does_not_prove: [
+				'The full T’au UX source has moved out of UX Lab.',
+				'Final Sparta Chat readiness.',
+				'Live GitHub mutation.',
+				'Actual external subagent execution from the browser chat.',
+			],
+		},
+	}
 }
 
 async function readJson(path: string): Promise<JsonRecord> {
@@ -588,7 +737,154 @@ export function normalizeTauExternalSubagentReceiptIntake(payload: unknown): Jso
 	}
 }
 
+export function normalizeTauExternalSubagentGithubProjection(payload: unknown): JsonRecord {
+	const record = asRecord(payload)
+	if (!record) throw new Error('Tau external subagent GitHub projection requires a JSON object')
+	const intake = asRecord(record.intake)
+	const receipt = asRecord(record.receipt)
+	if (!intake) throw new Error('Tau external subagent GitHub projection missing intake')
+	if (!receipt) throw new Error('Tau external subagent GitHub projection missing receipt')
+	if (intake.schema !== 'tau.external_subagent_receipt_intake.v1') {
+		throw new Error('unexpected Tau external subagent receipt intake schema')
+	}
+	if (intake.ok !== true || intake.accepted !== true) {
+		throw new Error('Tau external subagent receipt intake is not accepted')
+	}
+	if (intake.dryRun !== true || intake.applied !== false) {
+		throw new Error('Tau external subagent GitHub projection requires dryRun=true and applied=false')
+	}
+	if (intake.executed !== false || intake.externalReceipt !== true) {
+		throw new Error('Tau external subagent GitHub projection requires external receipt intake without local execution')
+	}
+	if (receipt.schema !== 'tau.agent_handoff.v1') throw new Error('unexpected Tau agent handoff schema')
+
+	const intakeTarget = asRecord(intake.target)
+	const receiptGithub = asRecord(receipt.github)
+	const repo = asString(intakeTarget?.repo)
+	const targetValue = asString(intakeTarget?.target)
+	if (!repo || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repo)) {
+		throw new Error('Tau external subagent GitHub projection target.repo is invalid')
+	}
+	if (!targetValue) throw new Error('Tau external subagent GitHub projection target.target is required')
+	const parsedTarget = parseGithubTarget(targetValue)
+	if (!parsedTarget) throw new Error('Tau external subagent GitHub projection target is unsupported')
+	if (asString(receiptGithub?.repo) !== repo || asString(receiptGithub?.target) !== targetValue) {
+		throw new Error('Tau external subagent GitHub projection receipt target does not match intake')
+	}
+
+	const intakeGoal = normalizeGoal(intake.goal, 'Tau external subagent receipt intake')
+	const receiptGoal = normalizeGoal(receipt.goal, 'Tau external subagent receipt')
+	if (!goalsMatch(receiptGoal, intakeGoal)) {
+		throw new Error('Tau external subagent GitHub projection receipt goal does not match intake')
+	}
+
+	const previousSubagent = asString(receipt.previous_subagent)
+	const intakePrevious = asString(intake.previousSubagent)
+	if (!previousSubagent || previousSubagent !== intakePrevious) {
+		throw new Error('Tau external subagent GitHub projection previous_subagent does not match intake')
+	}
+	const nextAgent = asRecord(receipt.next_agent)
+	const nextName = asString(nextAgent?.name)
+	const executor = asString(nextAgent?.executor) ?? 'either'
+	const reason = asString(nextAgent?.reason)
+	if (!nextName || !reason) {
+		throw new Error('Tau external subagent GitHub projection receipt missing next_agent routing')
+	}
+	if (asString(intake.nextAgent) !== nextName) {
+		throw new Error('Tau external subagent GitHub projection next_agent does not match intake')
+	}
+	for (const label of [`next:${nextName}`, `executor:${executor}`, `next:${previousSubagent}`]) {
+		if (!isGithubLabel(label)) throw new Error(`Tau external subagent GitHub projection has unsafe label: ${label}`)
+	}
+
+	const addLabels = ['agent-work', `next:${nextName}`, `executor:${executor}`]
+	const removeLabels = ['agent-active', 'agent-blocked', `next:${previousSubagent}`]
+	const commentBody = renderExternalSubagentReceiptComment(receipt)
+	const labelCsv = addLabels.join(',')
+	const removeLabelCsv = removeLabels.join(',')
+	const commands =
+		parsedTarget.kind === 'new'
+			? [
+					`gh issue create --repo ${repo} --title "Tau external subagent receipt: ${previousSubagent} to ${nextName}" --body-file - --label ${labelCsv}`,
+				]
+			: [
+					`gh ${parsedTarget.kind} comment ${parsedTarget.number} --repo ${repo} --body-file -`,
+					`gh ${parsedTarget.kind} edit ${parsedTarget.number} --repo ${repo} --add-label ${labelCsv} --remove-label ${removeLabelCsv}`,
+				]
+
+	return {
+		schema: 'tau.external_subagent_github_projection.v1',
+		ok: true,
+		dryRun: true,
+		applied: false,
+		mutation: 'not_applied',
+		target: { repo, target: targetValue },
+		goal: intakeGoal,
+		previousSubagent,
+		nextAgent: nextName,
+		executor,
+		resultStatus: asString(asRecord(receipt.result)?.status),
+		labels: {
+			add: addLabels,
+			remove: removeLabels,
+		},
+		comment: {
+			body: commentBody,
+			body_format: 'github-markdown',
+			body_marker: '<!-- tau-agent-handoff:v1 -->',
+			body_embeds_handoff_json: commentBody.includes('"schema": "tau.agent_handoff.v1"'),
+		},
+		commandCount: commands.length,
+		commands,
+		sourceIntake: {
+			schema: intake.schema,
+			accepted: intake.accepted,
+			externalReceipt: intake.externalReceipt,
+			executed: intake.executed,
+			externalReceiptId: intake.externalReceiptId ?? null,
+		},
+		checks: [
+			'intake_schema',
+			'intake_accepted',
+			'receipt_schema',
+			'target_match',
+			'goal_preserved',
+			'previous_subagent_match',
+			'next_agent_present',
+			'labels_derived',
+			'comment_embeds_receipt_json',
+			'dry_run_not_applied',
+		],
+		claims: {
+			proves: [
+				'Tau can project an accepted external tau.agent_handoff.v1 receipt into a deterministic GitHub comment and label plan.',
+				'Tau derives next labels from the accepted external receipt instead of inventing routing.',
+				'Tau preserves dryRun=true and applied=false while preparing the GitHub projection.',
+			],
+			does_not_prove: [
+				'The external subagent actually executed in this browser proof.',
+				'The external receipt was posted to GitHub.',
+				'Live GitHub mutation.',
+			],
+		},
+	}
+}
+
 export function registerTauRoutes(app: Express): void {
+	app.get('/api/tau/chat/ux-contract', async (_req: Request, res: Response) => {
+		try {
+			const receipt = await normalizeTauChatUxContract()
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(404).json({
+				ok: false,
+				error: 'tau_chat_ux_contract_unavailable',
+				detail: error instanceof Error ? error.message : String(error),
+				contractPath: TAU_CHAT_UX_CONTRACT_PATH,
+			})
+		}
+	})
+
 	app.get('/api/tau/command-loop/github-projection', async (_req: Request, res: Response) => {
 		try {
 			const receipt = await normalizeTauCommandLoopProjection(TAU_COMMAND_LOOP_SUMMARY_PATH)
@@ -664,6 +960,19 @@ export function registerTauRoutes(app: Express): void {
 			res.status(400).json({
 				ok: false,
 				error: 'tau_external_subagent_receipt_intake_invalid',
+				detail: error instanceof Error ? error.message : String(error),
+			})
+		}
+	})
+
+	app.post('/api/tau/handoff/subagent-receipt/github-projection', (req: Request, res: Response) => {
+		try {
+			const receipt = normalizeTauExternalSubagentGithubProjection(req.body)
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(400).json({
+				ok: false,
+				error: 'tau_external_subagent_github_projection_invalid',
 				detail: error instanceof Error ? error.message : String(error),
 			})
 		}
