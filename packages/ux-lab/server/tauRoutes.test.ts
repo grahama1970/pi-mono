@@ -19,6 +19,7 @@ import {
 	resolveTauTextualTuiProofScreenshot,
 	normalizeTauSubagentHandoffValidation,
 	normalizeTauSubagentReceiptExpectation,
+	persistTauWatchAnnotationReceipt,
 	persistTauSubagentReceiptExpectation,
 	registerTauRoutes,
 } from './tauRoutes'
@@ -1716,6 +1717,98 @@ describe('registerTauRoutes PersonaPlex Embry gate', () => {
 					failClosed: true,
 					voiceEngine: 'personaplex',
 				},
+			})
+		} finally {
+			await new Promise<void>((resolveClose, rejectClose) => {
+				server.close((error) => {
+					if (error) rejectClose(error)
+					else resolveClose()
+				})
+			})
+		}
+	})
+})
+
+describe('Tau watch annotation receipts', () => {
+	it('writes a durable receipt for a valid movie annotation approval', async () => {
+		const root = await makeRoot()
+		const receipt = await persistTauWatchAnnotationReceipt({
+			segmentId: 'seg-001',
+			segmentLabel: '01:36-02:00 · identity reference',
+			playheadSeconds: 101.2,
+			boxes: [
+				{
+					id: 'seg-001-box-1',
+					characterName: 'Willie',
+					actorName: 'Billy Bob Thornton',
+					bbox: [0.18, 0.26, 0.38, 0.74],
+				},
+			],
+		}, root)
+
+		expect(receipt).toMatchObject({
+			schema: 'tau.watch_annotation_receipt.v1',
+			ok: true,
+			mocked: false,
+			live: true,
+			boxCount: 1,
+			segment: {
+				id: 'seg-001',
+			},
+			claims: {
+				does_not_prove: expect.arrayContaining(['Watch production annotation persistence']),
+			},
+		})
+		const receiptPath = receipt.receiptPath
+		expect(typeof receiptPath).toBe('string')
+		const written = JSON.parse(await readFile(receiptPath as string, 'utf8'))
+		expect(written).toMatchObject({
+			schema: 'tau.watch_annotation_receipt.v1',
+			boxes: [
+				{
+					characterName: 'Willie',
+					status: 'receipt_written',
+				},
+			],
+		})
+	})
+
+	it('fails closed instead of writing a receipt for empty annotation boxes', async () => {
+		const root = await makeRoot()
+		await expect(persistTauWatchAnnotationReceipt({
+			segmentId: 'seg-001',
+			segmentLabel: '01:36-02:00 · identity reference',
+			playheadSeconds: 101.2,
+			boxes: [],
+		}, root)).rejects.toThrow('at least one annotation box is required')
+	})
+
+	it('returns HTTP 400 when the annotation route receives an invalid approval', async () => {
+		const app = express()
+		app.use(express.json())
+		registerTauRoutes(app)
+		const server = await new Promise<ReturnType<typeof app.listen>>((resolveServer) => {
+			const listeningServer = app.listen(0, () => resolveServer(listeningServer))
+		})
+		try {
+			const address = server.address() as AddressInfo
+			const response = await fetch(`http://127.0.0.1:${address.port}/api/tau/annotations`, {
+				method: 'POST',
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify({
+					segmentId: 'seg-001',
+					segmentLabel: '01:36-02:00 · identity reference',
+					playheadSeconds: 101.2,
+					boxes: [],
+				}),
+			})
+			const body = await response.json()
+
+			expect(response.status).toBe(400)
+			expect(body).toMatchObject({
+				ok: false,
+				error: 'tau_annotation_receipt_invalid',
+				detail: 'at least one annotation box is required',
 			})
 		} finally {
 			await new Promise<void>((resolveClose, rejectClose) => {

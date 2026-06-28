@@ -2224,7 +2224,8 @@ export type TauAnnotationBox = {
   bbox: TauAnnotationBbox
   characterName: string
   actorName: string
-  status: 'draft' | 'local_receipt_ready'
+  status: 'draft' | 'local_receipt_ready' | 'receipt_written'
+  receiptPath?: string
 }
 
 type TauAnnotationSegment = {
@@ -2242,6 +2243,8 @@ export type TauAnnotationDraft = {
   draftBbox: TauAnnotationBbox | null
   boxes: TauAnnotationBox[]
   status: string
+  receiptPath?: string
+  receiptRunId?: string
 }
 
 const TAU_ANNOTATION_DRAFT_PREFIX = 'ux-lab:tau:annotation-draft'
@@ -2343,16 +2346,23 @@ function writeTauAnnotationDraft(draft: TauAnnotationDraft): void {
 }
 
 export function tauAnnotationReceiptPreview(draft: TauAnnotationDraft): Record<string, unknown> {
+  const endpointAttached = Boolean(draft.receiptPath)
   return {
-    schema: 'tau.watch_annotation_local_draft.v1',
-    persisted: 'localStorage',
-    receiptEndpointAttached: false,
+    schema: endpointAttached ? 'tau.watch_annotation_receipt_preview.v1' : 'tau.watch_annotation_local_draft.v1',
+    persisted: endpointAttached ? 'tau_endpoint_receipt' : 'localStorage',
+    receiptEndpointAttached: endpointAttached,
+    receiptPath: draft.receiptPath ?? null,
+    receiptRunId: draft.receiptRunId ?? null,
     segmentId: draft.segmentId,
     playheadSeconds: draft.playheadSeconds,
     boxCount: draft.boxes.length + (draft.draftBbox ? 1 : 0),
     claims: {
-      proves: ['Tau annotation UI can preserve a local draft per segment.'],
-      does_not_prove: ['Watch annotation endpoint write', 'movie-library persistence', 'model identity correctness'],
+      proves: endpointAttached
+        ? ['Tau annotation UI submitted a segment draft to the Tau annotation receipt endpoint.']
+        : ['Tau annotation UI can preserve a local draft per segment.'],
+      does_not_prove: endpointAttached
+        ? ['Watch production annotation persistence', 'movie-library persistence', 'model identity correctness']
+        : ['Watch annotation endpoint write', 'movie-library persistence', 'model identity correctness'],
     },
   }
 }
@@ -3660,6 +3670,7 @@ function TauAnnotationModal({ onClose }: { onClose: () => void }): JSX.Element {
   const activeSegment = TAU_ANNOTATION_SEGMENTS.find((segment) => segment.id === segmentId) ?? TAU_ANNOTATION_SEGMENTS[0]
   const [draft, setDraft] = useState<TauAnnotationDraft>(() => readTauAnnotationDraft(activeSegment))
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null)
+  const [savingReceipt, setSavingReceipt] = useState(false)
   const receiptPreview = tauAnnotationReceiptPreview(draft)
   const currentCharacter = TAU_CHARACTER_OPTIONS.find((option) => option.character === draft.characterName)
   const segmentDuration = Math.max(1, activeSegment.endSeconds - activeSegment.startSeconds)
@@ -3671,6 +3682,13 @@ function TauAnnotationModal({ onClose }: { onClose: () => void }): JSX.Element {
     label: 'Add Tau annotation box',
     description: 'Add the current normalized bbox to the local Tau annotation draft',
     tags: ['tau', 'watch', 'annotation'],
+  })
+  useRegisterAction('tau:annotation:approve-draft', {
+    app: 'ux-lab',
+    action: 'TAU_WRITE_ANNOTATION_RECEIPT',
+    label: 'Write Tau annotation receipt',
+    description: 'Submit the selected playhead, character, and normalized bbox draft to the Tau annotation receipt endpoint',
+    tags: ['tau', 'watch', 'annotation', 'receipt'],
   })
 
   useEffect(() => {
@@ -3758,7 +3776,7 @@ function TauAnnotationModal({ onClose }: { onClose: () => void }): JSX.Element {
     })
   }
 
-  function approveLocalDraft(): void {
+  async function approveLocalDraft(): Promise<void> {
     const boxes = [
       ...draft.boxes,
       ...(draft.draftBbox
@@ -3775,11 +3793,44 @@ function TauAnnotationModal({ onClose }: { onClose: () => void }): JSX.Element {
       patchDraft({ status: 'Draw or add at least one box before approving the local draft.' })
       return
     }
-    patchDraft({
-      boxes,
-      draftBbox: null,
-      status: 'Local annotation receipt preview is ready. Tau still needs a real annotation endpoint before this becomes durable project evidence.',
-    })
+    setSavingReceipt(true)
+    patchDraft({ status: 'Writing Tau annotation receipt...' })
+    try {
+      const response = await fetch(apiUrl('/api/tau/annotations'), {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          segmentId: draft.segmentId,
+          segmentLabel: activeSegment.label,
+          playheadSeconds: draft.playheadSeconds,
+          boxes,
+        }),
+      })
+      const payload = await response.json() as {
+        ok?: boolean
+        receipt?: { receiptPath?: string; runId?: string }
+        detail?: string
+      }
+      if (!response.ok || !payload.ok || !payload.receipt?.receiptPath) {
+        throw new Error(payload.detail ?? `Tau annotation endpoint returned HTTP ${response.status}`)
+      }
+      const receiptPath = payload.receipt.receiptPath
+      patchDraft({
+        boxes: boxes.map((box) => ({ ...box, status: 'receipt_written' as const, receiptPath })),
+        draftBbox: null,
+        receiptPath,
+        receiptRunId: payload.receipt.runId,
+        status: `Tau annotation receipt written: ${receiptPath}`,
+      })
+    } catch (error) {
+      patchDraft({
+        boxes,
+        draftBbox: null,
+        status: `Tau annotation receipt write failed: ${error instanceof Error ? error.message : String(error)}`,
+      })
+    } finally {
+      setSavingReceipt(false)
+    }
   }
 
   return (
@@ -4010,12 +4061,13 @@ function TauAnnotationModal({ onClose }: { onClose: () => void }): JSX.Element {
               <button
                 type="button"
                 data-qid="tau:annotation:approve-draft"
-                data-qs-action="TAU_APPROVE_ANNOTATION_DRAFT"
-                title="Approve local Tau annotation draft preview"
-                onClick={approveLocalDraft}
-                style={tauActionButtonStyle(Boolean(draft.draftBbox || draft.boxes.length), '#2dd4bf')}
+                data-qs-action="TAU_WRITE_ANNOTATION_RECEIPT"
+                title="Write Tau annotation receipt"
+                onClick={() => { void approveLocalDraft() }}
+                disabled={savingReceipt || !Boolean(draft.draftBbox || draft.boxes.length)}
+                style={tauActionButtonStyle(!savingReceipt && Boolean(draft.draftBbox || draft.boxes.length), '#2dd4bf')}
               >
-                <CheckCircle2 size={14} aria-hidden="true" /> Approve local draft
+                <CheckCircle2 size={14} aria-hidden="true" /> {savingReceipt ? 'Writing receipt' : 'Write receipt'}
               </button>
             </div>
 
@@ -4040,7 +4092,7 @@ function TauAnnotationModal({ onClose }: { onClose: () => void }): JSX.Element {
                         <div title={`${box.characterName}${box.actorName ? ` · ${box.actorName}` : ''}`} style={{ color: '#f8fafc', fontSize: 12, fontWeight: 820, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {index + 1}. {box.characterName}{box.actorName ? ` · ${box.actorName}` : ''}
                         </div>
-                        <div title={box.status} style={{ color: box.status === 'local_receipt_ready' ? '#2dd4bf' : '#facc15', fontSize: 10, marginTop: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        <div title={box.receiptPath ?? box.status} style={{ color: box.status === 'receipt_written' ? '#22c55e' : box.status === 'local_receipt_ready' ? '#2dd4bf' : '#facc15', fontSize: 10, marginTop: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {box.status}
                         </div>
                       </div>

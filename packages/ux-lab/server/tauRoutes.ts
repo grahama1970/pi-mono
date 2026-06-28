@@ -1,4 +1,5 @@
 import type { Express, Request, Response } from 'express'
+import { randomUUID } from 'crypto'
 import { existsSync } from 'fs'
 import { mkdir, readFile, stat, writeFile } from 'fs/promises'
 import { resolve } from 'path'
@@ -51,6 +52,9 @@ const TAU_TEXTUAL_TUI_PROOF_ROOT = resolve(
 const TAU_TEXTUAL_TUI_PROOF_MANIFEST = resolve(
 	process.env.TAU_TEXTUAL_TUI_PROOF_MANIFEST ?? resolve(TAU_TEXTUAL_TUI_PROOF_ROOT, 'manifest.json'),
 )
+const TAU_ANNOTATION_RECEIPT_ROOT = resolve(
+	process.env.TAU_ANNOTATION_RECEIPT_ROOT ?? '/tmp/tau-annotation-receipts',
+)
 
 function isPathInside(root: string, absolutePath: string): boolean {
 	const normalizedRoot = root.endsWith('/') ? root : `${root}/`
@@ -81,6 +85,18 @@ function commandToText(command: unknown): string | null {
 function stringArray(value: unknown): string[] {
 	if (!Array.isArray(value)) return []
 	return value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+}
+
+function normalizedBbox(value: unknown, prefix: string): [number, number, number, number] {
+	if (!Array.isArray(value) || value.length !== 4) throw new Error(`${prefix}.bbox must contain four normalized numbers`)
+	const bbox = value.map((part) => asNumber(part))
+	if (bbox.some((part) => part === null)) throw new Error(`${prefix}.bbox must contain four normalized numbers`)
+	const [x1, y1, x2, y2] = bbox as [number, number, number, number]
+	if ([x1, y1, x2, y2].some((part) => part < 0 || part > 1)) {
+		throw new Error(`${prefix}.bbox values must be between 0 and 1`)
+	}
+	if (x2 <= x1 || y2 <= y1) throw new Error(`${prefix}.bbox must have positive width and height`)
+	return [x1, y1, x2, y2]
 }
 
 function readJsonlRecords(text: string): JsonRecord[] {
@@ -585,6 +601,81 @@ export async function normalizeTauPersonaplexEmbryReceipt(
 			],
 		},
 	}
+}
+
+export async function persistTauWatchAnnotationReceipt(
+	value: unknown,
+	receiptRoot = TAU_ANNOTATION_RECEIPT_ROOT,
+): Promise<JsonRecord> {
+	const payload = asRecord(value)
+	if (!payload) throw new Error('Tau annotation payload must be a JSON object')
+
+	const segment = asRecord(payload.segment)
+	const segmentId = asString(payload.segmentId) ?? asString(segment?.id)
+	const segmentLabel = asString(payload.segmentLabel) ?? asString(segment?.label)
+	const playheadSeconds = asNumber(payload.playheadSeconds)
+	const boxes = Array.isArray(payload.boxes) ? payload.boxes : []
+	if (!segmentId) throw new Error('segmentId is required')
+	if (!segmentLabel) throw new Error('segmentLabel is required')
+	if (playheadSeconds === null) throw new Error('playheadSeconds is required')
+	if (boxes.length < 1) throw new Error('at least one annotation box is required')
+
+	const normalizedBoxes = boxes.map((boxValue, index) => {
+		const box = asRecord(boxValue)
+		if (!box) throw new Error(`boxes[${index}] must be an object`)
+		const characterName = asString(box.characterName)
+		const actorName = asString(box.actorName) ?? ''
+		if (!characterName) throw new Error(`boxes[${index}].characterName is required`)
+		return {
+			id: asString(box.id) ?? `box-${index + 1}`,
+			characterName,
+			actorName,
+			bbox: normalizedBbox(box.bbox, `boxes[${index}]`),
+			status: 'receipt_written',
+		}
+	})
+
+	const runId = `tau-annotation-${new Date().toISOString().replace(/[-:.]/g, '').replace('T', 'T').replace('Z', 'Z')}-${randomUUID().slice(0, 8)}`
+	const absoluteReceiptRoot = resolve(receiptRoot)
+	const receiptPath = resolve(absoluteReceiptRoot, `${runId}.json`)
+	if (!isPathInside(absoluteReceiptRoot, receiptPath)) throw new Error('resolved annotation receipt path escaped receipt root')
+
+	const receipt = {
+		schema: 'tau.watch_annotation_receipt.v1',
+		ok: true,
+		live: true,
+		mocked: false,
+		runId,
+		receiptPath,
+		createdUtc: new Date().toISOString(),
+		source: {
+			project: 'ux-lab',
+			surface: 'tau-chat',
+			route: '/api/tau/annotations',
+		},
+		segment: {
+			id: segmentId,
+			label: segmentLabel,
+		},
+		playheadSeconds,
+		boxes: normalizedBoxes,
+		boxCount: normalizedBoxes.length,
+		claims: {
+			proves: [
+				'Tau annotation modal can submit a validated movie annotation payload to a Tau-owned receipt endpoint.',
+				'Tau annotation endpoint writes a durable JSON receipt for the approved segment boxes.',
+			],
+			does_not_prove: [
+				'Watch production annotation persistence',
+				'movie-library identity correctness',
+				'model/VLM character recognition correctness',
+				'final Sparta Chat readiness',
+			],
+		},
+	}
+	await mkdir(absoluteReceiptRoot, { recursive: true })
+	await writeFile(receiptPath, `${JSON.stringify(receipt, null, 2)}\n`, 'utf8')
+	return receipt
 }
 
 async function readJson(path: string): Promise<JsonRecord> {
@@ -1610,6 +1701,20 @@ export function registerTauRoutes(app: Express): void {
 				detail: error instanceof Error ? error.message : String(error),
 				receiptPath: TAU_PERSONAPLEX_EMBRY_RECEIPT_PATH,
 				metadataReceiptPath: TAU_PERSONAPLEX_EMBRY_METADATA_RECEIPT_PATH,
+			})
+		}
+	})
+
+	app.post('/api/tau/annotations', async (req: Request, res: Response) => {
+		try {
+			const receipt = await persistTauWatchAnnotationReceipt(req.body)
+			res.json({ ok: true, receipt })
+		} catch (error) {
+			res.status(400).json({
+				ok: false,
+				error: 'tau_annotation_receipt_invalid',
+				detail: error instanceof Error ? error.message : String(error),
+				receiptRoot: TAU_ANNOTATION_RECEIPT_ROOT,
 			})
 		}
 	})

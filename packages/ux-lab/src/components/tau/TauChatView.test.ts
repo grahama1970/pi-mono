@@ -1,17 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { collectMemoryTurn } from "../shared-chat/memory-turn";
+import type { TauAnnotationDraft } from "./TauChatView";
 import {
 	deriveTauTuiMirrorState,
 	stageTraceFromStreamingSteps,
+	TauReceiptAdapter,
 	tauAnnotationDraftStorageKey,
 	tauAnnotationLabelStyle,
 	tauAnnotationReceiptPreview,
-	TauReceiptAdapter,
 	terminalLinesFromTauTuiMirrorState,
 	terminalLinesFromTauTuiReceiptStream,
 	textualTuiProofCardSummary,
 } from "./TauChatView";
-import type { TauAnnotationDraft } from "./TauChatView";
 import type { TauCommandLoopGithubProjectionReceipt } from "./tauCommandLoopProjection";
 
 type MemoryCall = {
@@ -1503,6 +1503,46 @@ describe("TauReceiptAdapter Memory routing", () => {
 			claims: {
 				does_not_prove: [
 					"Watch annotation endpoint write",
+					"movie-library persistence",
+					"model identity correctness",
+				],
+			},
+		});
+	});
+
+	it("marks Tau annotation receipt preview as endpoint-backed when a receipt path exists", () => {
+		const draft: TauAnnotationDraft = {
+			segmentId: "seg-001",
+			characterName: "Willie",
+			actorName: "Billy Bob Thornton",
+			playheadSeconds: 101.2,
+			draftBbox: null,
+			boxes: [
+				{
+					id: "seg-001-box-1",
+					characterName: "Willie",
+					actorName: "Billy Bob Thornton",
+					bbox: [0.18, 0.26, 0.38, 0.74],
+					status: "receipt_written",
+					receiptPath: "/tmp/tau-annotation-receipts/tau-annotation-test.json",
+				},
+			],
+			status: "Tau annotation receipt written.",
+			receiptPath: "/tmp/tau-annotation-receipts/tau-annotation-test.json",
+			receiptRunId: "tau-annotation-test",
+		};
+
+		expect(tauAnnotationReceiptPreview(draft)).toMatchObject({
+			schema: "tau.watch_annotation_receipt_preview.v1",
+			persisted: "tau_endpoint_receipt",
+			receiptEndpointAttached: true,
+			receiptPath: "/tmp/tau-annotation-receipts/tau-annotation-test.json",
+			receiptRunId: "tau-annotation-test",
+			boxCount: 1,
+			claims: {
+				proves: ["Tau annotation UI submitted a segment draft to the Tau annotation receipt endpoint."],
+				does_not_prove: [
+					"Watch production annotation persistence",
 					"movie-library persistence",
 					"model identity correctness",
 				],
