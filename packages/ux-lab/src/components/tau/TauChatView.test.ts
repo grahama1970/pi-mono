@@ -3,6 +3,7 @@ import { collectMemoryTurn } from "../shared-chat/memory-turn";
 import type { TauAnnotationDraft } from "./TauChatView";
 import {
 	deriveTauTuiMirrorState,
+	deriveTauTuiSourceBoundary,
 	stageTraceFromStreamingSteps,
 	TauReceiptAdapter,
 	tauAnnotationDraftStorageKey,
@@ -1424,6 +1425,120 @@ describe("TauReceiptAdapter Memory routing", () => {
 		expect(lines.join("\n")).toContain("loop2-real-run");
 		expect(lines.join("\n")).toContain("agent_end completed");
 		expect(lines.join("\n")).toContain("mocked=false live=true status=PASS");
+	});
+
+	it("classifies the side pane as a live receipt stream when receipt evidence is attached", () => {
+		const boundary = deriveTauTuiSourceBoundary(
+			{
+				runId: "loop2-run-123",
+				active: false,
+				currentStage: {
+					schema: "tau.loop2_pipeline_stage.v1",
+					stage: "recall",
+					label: "Accessing Memory...",
+					status: "PASS",
+					source: "memory.recall",
+				},
+				trace: [],
+				route: "COMPLIANCE",
+				nextAgent: "reviewer",
+				personaVoice: "not requested",
+			},
+			{
+				ok: true,
+				receipt: {
+					schema: "tau.tui_receipt_stream_view.v1",
+					ok: true,
+					mocked: false,
+					live: true,
+					runId: "loop2-real-run",
+					runDir: "/home/graham/workspace/experiments/tau/.loop2/runs/loop2-real-run",
+					eventsPath: "/home/graham/workspace/experiments/tau/.loop2/runs/loop2-real-run/events.jsonl",
+					finalReceiptPath: "/home/graham/workspace/experiments/tau/.loop2/runs/loop2-real-run/final-receipt.json",
+					eventCount: 2,
+					status: "PASS",
+					proofScope: "one bounded loop2 repair node",
+					transportRunId: "otr-real",
+					streamEventCount: 13,
+					latestEventType: "agent_end",
+					terminalLines: [],
+					claims: {
+						proves: ["receipt stream is renderable"],
+						does_not_prove: ["PTY attachment"],
+					},
+				},
+			},
+			{
+				ok: true,
+				receipt: {
+					schema: "tau.textual_tui_proof_view.v1",
+					ok: true,
+					mocked: true,
+					live: false,
+					manifestPath: "/tmp/manifest.json",
+					proofRoot: "/tmp",
+					sourceSchema: "tau.proof_manifest.v1",
+					runId: "loop2-real-run",
+					prompt: "How does Tau handle a CWE-287 SPARTA evidence case?",
+					status: "evidence-recorded",
+					entrypoint: "uv run tau tui-proof",
+					sourceType: "repeatable real TauTuiApp Textual rendering proof with fixture session",
+					receiptPath: "/tmp/tau-tui-proof/proof.json",
+					screenshotSvg: "/tmp/tau-tui-proof/tau-textual-tui-memory-stage.svg",
+					screenshotPng: "/tmp/tau-tui-proof/tau-textual-tui-memory-stage.png",
+					visibleAssertions: ["Accessing Memory..."],
+					textAssertions: ["tau.agent_handoff.v1"],
+					doesNotProve: ["live provider call"],
+					claims: {
+						proves: ["Tau can produce a repeatable Textual TUI proof command."],
+						does_not_prove: ["live provider call"],
+					},
+				},
+			},
+		);
+
+		expect(boundary).toMatchObject({
+			schema: "tau.tui_source_boundary.v1",
+			activeSource: "receipt-stream",
+			activeSourceLabel: "Live receipt stream",
+			sourceStatus: "PASS",
+			sourceStage: "agent_end",
+			receiptStream: { attached: true, mocked: "false", live: "true" },
+			textualTui: { state: "fixture-proof-attached", mocked: "true", live: "false" },
+		});
+		expect(boundary.claims.does_not_prove).toContain("interactive browser-embedded Textual TUI");
+	});
+
+	it("classifies the side pane as a same-turn chat mirror when receipt stream evidence is absent", () => {
+		const boundary = deriveTauTuiSourceBoundary(
+			{
+				runId: "tau-chat-turn-1",
+				active: true,
+				currentStage: {
+					schema: "tau.loop2_pipeline_stage.v1",
+					stage: "intent",
+					label: "Getting Intent...",
+					status: "RUNNING",
+					source: "memory.intent",
+				},
+				trace: [],
+				route: "waiting",
+				nextAgent: "not routed",
+				personaVoice: "not requested",
+			},
+			{ ok: false, detail: "receipt stream unavailable" },
+			null,
+		);
+
+		expect(boundary).toMatchObject({
+			activeSource: "chat-mirror",
+			activeSourceLabel: "Same-turn chat mirror",
+			sourceStatus: "RUNNING",
+			sourceStage: "intent",
+			receiptStream: { attached: false, mocked: "unknown", live: "unknown" },
+			textualTui: { state: "loading", mocked: "unknown", live: "unknown" },
+		});
+		expect(boundary.claims.proves).toContain("The side terminal mirrors the same browser chat turn state.");
 	});
 
 	it("labels Textual TUI renderer proof as fixture-backed and not live", () => {

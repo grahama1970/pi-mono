@@ -2058,6 +2058,28 @@ type TauTextualTuiProofState =
   | { ok: true; receipt: TauTextualTuiProofView }
   | { ok: false; detail: string; manifestPath?: string; proofRoot?: string }
 
+export type TauTuiSourceBoundary = {
+  schema: 'tau.tui_source_boundary.v1'
+  activeSource: 'receipt-stream' | 'chat-mirror'
+  activeSourceLabel: string
+  sourceStatus: string
+  sourceStage: string
+  receiptStream: {
+    attached: boolean
+    mocked: string
+    live: string
+  }
+  textualTui: {
+    state: 'fixture-proof-attached' | 'unavailable' | 'loading'
+    mocked: string
+    live: string
+  }
+  claims: {
+    proves: string[]
+    does_not_prove: string[]
+  }
+}
+
 export type TauPersonaplexEmbryReceiptGate = {
   schema: 'tau.personaplex_embry_receipt_gate.v1'
   ok: true
@@ -2480,6 +2502,45 @@ export function terminalLinesFromTauTuiReceiptStream(receipt: TauTuiReceiptStrea
     if (line.startsWith('claims.does_not_prove=')) return `\x1b[38;5;208m${line}\x1b[0m`
     return line
   })
+}
+
+export function deriveTauTuiSourceBoundary(
+  state: TauTuiMirrorState,
+  receiptStreamState: TauTuiReceiptStreamState | null,
+  textualTuiProofState: TauTextualTuiProofState | null,
+): TauTuiSourceBoundary {
+  const receiptStream = receiptStreamState?.ok ? receiptStreamState.receipt : null
+  const textualSummary = textualTuiProofCardSummary(textualTuiProofState)
+  const textualState: TauTuiSourceBoundary['textualTui']['state'] =
+    textualTuiProofState?.ok === true ? 'fixture-proof-attached' : textualTuiProofState ? 'unavailable' : 'loading'
+  return {
+    schema: 'tau.tui_source_boundary.v1',
+    activeSource: receiptStream ? 'receipt-stream' : 'chat-mirror',
+    activeSourceLabel: receiptStream ? 'Live receipt stream' : 'Same-turn chat mirror',
+    sourceStatus: receiptStream ? receiptStream.status : state.currentStage.status,
+    sourceStage: receiptStream ? receiptStream.latestEventType ?? 'loop2-events' : state.currentStage.stage,
+    receiptStream: {
+      attached: Boolean(receiptStream),
+      mocked: receiptStream ? String(receiptStream.mocked) : 'unknown',
+      live: receiptStream ? String(receiptStream.live) : 'unknown',
+    },
+    textualTui: {
+      state: textualState,
+      mocked: textualSummary.mocked,
+      live: textualSummary.live,
+    },
+    claims: {
+      proves: receiptStream
+        ? ['The side terminal renders a real Tau receipt event stream.']
+        : ['The side terminal mirrors the same browser chat turn state.'],
+      does_not_prove: [
+        'interactive browser-embedded Textual TUI',
+        'PTY attachment to a running Tau process',
+        'live provider or Memory calls from the Textual renderer',
+        'final Sparta Chat readiness',
+      ],
+    },
+  }
 }
 
 export function TauChatView(): JSX.Element {
@@ -4355,9 +4416,10 @@ function TauTuiMirrorPanel({
     () => (receiptStream ? terminalLinesFromTauTuiReceiptStream(receiptStream) : terminalLinesFromTauTuiMirrorState(state)),
     [receiptStream, state],
   )
-  const sourceLabel = receiptStream ? 'receipt-stream' : 'chat-mirror'
-  const sourceStatus = receiptStream ? receiptStream.status : state.currentStage.status
-  const sourceStage = receiptStream ? receiptStream.latestEventType ?? 'loop2-events' : state.currentStage.stage
+  const sourceBoundary = deriveTauTuiSourceBoundary(state, receiptStreamState, textualTuiProofState)
+  const sourceLabel = sourceBoundary.activeSource
+  const sourceStatus = sourceBoundary.sourceStatus
+  const sourceStage = sourceBoundary.sourceStage
   const hasTextualTuiProof = textualTuiProofState?.ok === true
 
   useEffect(() => {
@@ -4399,10 +4461,19 @@ function TauTuiMirrorPanel({
     fitAddon.fit()
     terminalRef.current = terminal
     fitAddonRef.current = fitAddon
-    const resizeObserver = new ResizeObserver(() => fitAddon.fit())
+    let fitFrame: number | null = null
+    const scheduleFit = () => {
+      if (fitFrame !== null) return
+      fitFrame = window.requestAnimationFrame(() => {
+        fitFrame = null
+        fitAddon.fit()
+      })
+    }
+    const resizeObserver = new ResizeObserver(scheduleFit)
     resizeObserver.observe(host)
     return () => {
       resizeObserver.disconnect()
+      if (fitFrame !== null) window.cancelAnimationFrame(fitFrame)
       terminal.dispose()
       terminalRef.current = null
       fitAddonRef.current = null
@@ -4459,6 +4530,31 @@ function TauTuiMirrorPanel({
         >
           [{sourceStatus.toLowerCase()}] {sourceStage}
         </span>
+      </div>
+
+      <div
+        data-qid="tau:tui-mirror:source-boundary"
+        title="T’au TUI source boundary"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+          gap: 6,
+          padding: '8px 12px',
+          borderBottom: '1px solid rgba(34,211,238,0.16)',
+          background: 'rgba(15,23,42,0.74)',
+        }}
+      >
+        <PeerFact label="active source" value={sourceBoundary.activeSourceLabel} />
+        <PeerFact
+          label="receipt stream"
+          value={sourceBoundary.receiptStream.attached
+            ? `mocked=${sourceBoundary.receiptStream.mocked} live=${sourceBoundary.receiptStream.live}`
+            : 'not attached'}
+        />
+        <PeerFact
+          label="textual tui"
+          value={`${sourceBoundary.textualTui.state}; mocked=${sourceBoundary.textualTui.mocked} live=${sourceBoundary.textualTui.live}`}
+        />
       </div>
 
       {hasTextualTuiProof ? (
@@ -4574,6 +4670,9 @@ function TauTuiMirrorPanel({
           ? `${receiptStream.schema} ${receiptStream.runId} events=${receiptStream.eventCount} ${receiptStream.status}`
           : `unavailable ${receiptStreamState?.ok === false ? receiptStreamState.detail : 'loading'}`}
       </div>
+      <pre data-qid="tau:tui-mirror:source-boundary-json" style={{ display: 'none' }}>
+        {JSON.stringify(sourceBoundary)}
+      </pre>
 
       <div
         data-qid="tau:tui-mirror:chat-parity"
