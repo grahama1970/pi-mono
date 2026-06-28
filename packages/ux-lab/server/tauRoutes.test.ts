@@ -251,6 +251,54 @@ describe('normalizeTauChatUxContract', () => {
 			'missing parameter-driven orchestration mode',
 		)
 	})
+
+	it('fails closed when the special orchestration activation omits TAU_ORCHESTRATOR_START', async () => {
+		const root = await makeRoot()
+		const contractPath = resolve(root, 'ui/tau-chat-contract.json')
+		const payload = validContract()
+		payload.orchestration_mode.activation = 'Provide a tau.agent_handoff.v1 start handoff through --start.'
+		await writeJson(contractPath, payload)
+
+		await expect(normalizeTauChatUxContract(contractPath)).rejects.toThrow(
+			'must document TAU_ORCHESTRATOR_START activation',
+		)
+	})
+
+	it('fails closed when the special orchestration runner is not the Tau command loop', async () => {
+		const root = await makeRoot()
+		const contractPath = resolve(root, 'ui/tau-chat-contract.json')
+		const payload = validContract()
+		payload.orchestration_mode.runner = 'ordinary-chat-turn'
+		await writeJson(contractPath, payload)
+
+		await expect(normalizeTauChatUxContract(contractPath)).rejects.toThrow(
+			'runner must be handoff-command-loop',
+		)
+	})
+
+	it('fails closed when the special orchestration scheduler is not the Tau cron entrypoint', async () => {
+		const root = await makeRoot()
+		const contractPath = resolve(root, 'ui/tau-chat-contract.json')
+		const payload = validContract()
+		payload.orchestration_mode.scheduler = 'ux-lab-chat-shell'
+		await writeJson(contractPath, payload)
+
+		await expect(normalizeTauChatUxContract(contractPath)).rejects.toThrow(
+			'scheduler must be docker/tau-cron.sh',
+		)
+	})
+
+	it('fails closed when the special orchestration loop rule does not require bounded subagent ticks', async () => {
+		const root = await makeRoot()
+		const contractPath = resolve(root, 'ui/tau-chat-contract.json')
+		const payload = validContract()
+		payload.orchestration_mode.loop_rule = 'The chat responds to normal user turns.'
+		await writeJson(contractPath, payload)
+
+		await expect(normalizeTauChatUxContract(contractPath)).rejects.toThrow(
+			'must document bounded subagent command ticks',
+		)
+	})
 })
 
 describe('normalizeTauChatHandoffTransportReceipt', () => {
