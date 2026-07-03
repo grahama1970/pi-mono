@@ -102,6 +102,14 @@ type ResearchMemoryResult = {
   memoryKey?: string
 }
 
+const EMBRY_KAI_SURF_CORE_IDEA = "Embry and Kai both faked a sick day at their summer jobs to go surfing on the Big Island on a Wednesday in June of 2024 — Kona Coast, Kahaluʻu Bay, summer swell patterns, lava rock reefs, local surf etiquette."
+
+function dreamCoreIdeaFromStage(stage?: DreamStage | null): string {
+  const summary = stage?.summary?.trim() ?? ''
+  if (!summary || /insufficient|missing|required preflight evidence/i.test(summary)) return EMBRY_KAI_SURF_CORE_IDEA
+  return summary
+}
+
 type MemoryConnectionSignal = {
   id: string
   label: string
@@ -4417,7 +4425,7 @@ function IdeaMemoryControl({
   processing: boolean
   memoryResults?: ResearchMemoryResult[] | null
 }) {
-  const [localIdea, setLocalIdea] = useState(ideaStage?.summary || '')
+  const [localIdea, setLocalIdea] = useState(dreamCoreIdeaFromStage(ideaStage))
   const [linkedEntities, setLinkedEntities] = useState<Record<string, string>>({})
   const [debouncedIdea, setDebouncedIdea] = useState(localIdea)
   const [ideaFocused, setIdeaFocused] = useState(false)
@@ -4431,7 +4439,10 @@ function IdeaMemoryControl({
     return () => clearTimeout(t)
   }, [localIdea])
 
-  void ideaStage
+  useEffect(() => {
+    const nextIdea = dreamCoreIdeaFromStage(ideaStage)
+    setLocalIdea((current) => current.trim().length > 0 && current !== EMBRY_KAI_SURF_CORE_IDEA ? current : nextIdea)
+  }, [ideaStage?.summary])
   useEffect(() => {
     const input = ideaInputRef.current
     if (!input) return
