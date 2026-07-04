@@ -113,6 +113,16 @@ interface DetectorLabelRejection {
   createdAt: string
 }
 
+interface DetectorTrackAssignmentDocument {
+  key: string
+  id?: string
+  boxId?: string
+  annotationUid?: string
+  characterName: string
+  actorName: string
+  timeSeconds: number
+}
+
 interface DetectorCandidatePayload {
   schema?: string
   candidates?: Array<{
@@ -1207,6 +1217,38 @@ export function WatchAnnotationIsland({
     await clearDetectorCandidateLabel(selectedDetectorCandidate)
   }
 
+  async function fetchPersistedDetectorTrackAssignments(
+    candidate: DetectorCandidate,
+    characterName: string,
+  ): Promise<DetectorTrackAssignmentDocument[]> {
+    const response = await fetch(`/api/projects/watch/annotations/rows/${encodeURIComponent(String(row.index))}`)
+    const payload = await readJsonResponse(response) as { annotations?: Array<Record<string, unknown>>; error?: string; detail?: string }
+    if (!response.ok) throw new Error(payload.error || payload.detail || `watch_row_annotations_http_${response.status}`)
+
+    const targetCharacterKey = characterKey(characterName)
+    return (Array.isArray(payload.annotations) ? payload.annotations : []).flatMap((document): DetectorTrackAssignmentDocument[] => {
+      const detectorRef = document.detector_observation_ref && typeof document.detector_observation_ref === 'object'
+        ? document.detector_observation_ref as Record<string, unknown>
+        : null
+      if (!detectorRef || detectorRef.track_id !== candidate.trackId) return []
+      if (characterKey(String(document.character_name || '')) !== targetCharacterKey) return []
+      if (String(document.lifecycle_status || 'current') !== 'current') return []
+      if (document.kind !== 'watch_keyframe_annotation') return []
+      const key = typeof document._key === 'string' ? document._key : ''
+      if (!key) return []
+      const keyframeSeconds = Number(document.keyframe_time_seconds ?? document.time_seconds ?? candidate.timeSeconds)
+      return [{
+        key,
+        id: typeof document._id === 'string' ? document._id : undefined,
+        boxId: typeof document.box_id === 'string' ? document.box_id : undefined,
+        annotationUid: typeof document.annotation_uid === 'string' ? document.annotation_uid : undefined,
+        characterName: String(document.character_name || characterName),
+        actorName: String(document.actor_name || actorLookup(characterName)),
+        timeSeconds: Number.isFinite(keyframeSeconds) ? keyframeSeconds : candidate.timeSeconds,
+      }]
+    })
+  }
+
   async function clearDetectorCandidateLabel(candidate: DetectorCandidate): Promise<void> {
     if (saving) return
     const savedAssignment = findSavedDetectorAssignment(candidate)
@@ -1269,10 +1311,14 @@ export function WatchAnnotationIsland({
         trackKey,
         {
           ...track,
-          keyframes: track.keyframes.filter((candidate) => (
-            candidate.id !== keyframe.id
-            && candidate.recordId !== keyframe.recordId
-            && candidate.recordKey !== keyframe.recordKey
+          keyframes: track.keyframes.filter((trackKeyframe) => (
+            !(
+              characterKey(trackKeyframe.characterName) === characterKey(assignmentToClear.characterName)
+              && trackKeyframe.detectorObservationRef?.track_id === candidate.trackId
+            )
+            && trackKeyframe.id !== keyframe.id
+            && trackKeyframe.recordId !== keyframe.recordId
+            && trackKeyframe.recordKey !== keyframe.recordKey
           )),
         },
       ]))
@@ -1280,20 +1326,36 @@ export function WatchAnnotationIsland({
     })
 
     try {
-      const receipt = await requestJson('/api/projects/watch/annotations/delete-keyframe', {
-        ...commonMutationBody(keyframe.timeSeconds, keyframe.assetUid || resolvedAssetUid),
-        annotation_id: keyframe.recordId || keyframe.id,
-        key: keyframe.recordKey || keyframe.id,
-        box_id: keyframe.recordId || keyframe.id,
-        character_name: keyframe.characterName,
-        actor_name: keyframe.actorName,
-        reason: `clear_yolo_candidate_label:${candidate.trackId}`,
-      }) as MutationReceipt & { deleted_count?: number }
+      const persistedAssignments = await fetchPersistedDetectorTrackAssignments(candidate, assignmentToClear.characterName)
+      const targets = persistedAssignments.length > 0
+        ? persistedAssignments
+        : [{
+          key: keyframe.recordKey || keyframe.id,
+          id: undefined,
+          boxId: keyframe.recordId || keyframe.id,
+          annotationUid: keyframe.recordId || keyframe.id,
+          characterName: keyframe.characterName,
+          actorName: keyframe.actorName,
+          timeSeconds: keyframe.timeSeconds,
+        }]
+      let deletedCount = 0
+      for (const target of targets) {
+        const receipt = await requestJson('/api/projects/watch/annotations/delete-keyframe', {
+          ...commonMutationBody(target.timeSeconds, keyframe.assetUid || resolvedAssetUid),
+          annotation_id: target.annotationUid || target.boxId || target.key,
+          key: target.key,
+          id: target.id,
+          box_id: target.boxId || target.annotationUid || target.key,
+          character_name: target.characterName,
+          actor_name: target.actorName,
+          reason: `clear_yolo_track_label:${candidate.trackId}:${characterKey(assignmentToClear.characterName)}`,
+        }) as MutationReceipt & { deleted_count?: number }
+        deletedCount += typeof receipt.deleted_count === 'number' ? receipt.deleted_count : 0
+      }
       await hydrateRow()
       await hydrateIdentityReadiness()
-      const deletedCount = typeof receipt.deleted_count === 'number' ? receipt.deleted_count : 0
       setStatus(deletedCount > 0
-        ? `Cleared ${assignmentToClear.characterName} label from ${candidate.trackId}; showing ${detectorBaseLabel(candidate)}.`
+        ? `Cleared ${deletedCount} ${assignmentToClear.characterName} label${deletedCount === 1 ? '' : 's'} from ${candidate.trackId}; showing ${detectorBaseLabel(candidate)}.`
         : `No persisted keyframe was cleared for ${candidate.trackId}; row reloaded.`)
     } catch (error) {
       setStatus(`Clear label failed: ${error instanceof Error ? error.message : String(error)}`)
@@ -1994,6 +2056,12 @@ export function WatchAnnotationIsland({
     const rect = viewportRef.current?.getBoundingClientRect()
     const viewport = viewportRef.current
     if (!rect || !viewport) return
+    if (!manualDrawEnabled) {
+      event.preventDefault()
+      event.stopPropagation()
+      setSession((current) => selectOverlay(current, overlay))
+      return
+    }
     const selectedKey = characterKey(session.selectedCharacterName)
     if (!session.selectedCharacterName || selectedKey === 'unassigned') {
       event.preventDefault()
@@ -2015,6 +2083,10 @@ export function WatchAnnotationIsland({
   function onViewportPointerMove(event: React.PointerEvent<HTMLElement>): void {
     const pending = pendingOverlayPointerRef.current
     if (pending && pending.pointerId === event.pointerId) {
+      if (!manualDrawEnabled) {
+        pendingOverlayPointerRef.current = null
+        return
+      }
       const rect = viewportRef.current?.getBoundingClientRect()
       if (!rect) return
       const point = pointerInElement(event, rect)
@@ -2027,7 +2099,7 @@ export function WatchAnnotationIsland({
       return
     }
 
-    if (!drawStart) return
+    if (!drawStart || !manualDrawEnabled) return
     const rect = viewportRef.current?.getBoundingClientRect()
     if (!rect) return
     const point = pointerInElement(event, rect)
@@ -2044,7 +2116,13 @@ export function WatchAnnotationIsland({
       return
     }
 
-    if (!drawStart) return
+    if (!drawStart || !manualDrawEnabled) {
+      if (drawStart) {
+        setDrawStart(null)
+        setDraftBbox(null)
+      }
+      return
+    }
     const rect = viewportRef.current?.getBoundingClientRect()
     if (!rect) return
     const point = pointerInElement(event, rect)
@@ -2527,6 +2605,7 @@ export function WatchAnnotationIsland({
                   {detectorLabel}
                 </button>
                 {inlineLabelEditorCandidateId === candidate.id ? (
+                  <>
                   <select
                     data-qid="watch:annotation-island:inline-detector-label-select"
                     data-track-id={candidate.trackId}
@@ -2567,6 +2646,39 @@ export function WatchAnnotationIsland({
                       </option>
                     ))}
                   </select>
+                  <button
+                    type="button"
+                    data-qid="watch:annotation-island:inline-detector-label-reset"
+                    data-track-id={candidate.trackId}
+                    onPointerDown={(event) => {
+                      event.preventDefault()
+                      event.stopPropagation()
+                    }}
+                    onClick={() => void clearDetectorCandidateLabel(candidate)}
+                    disabled={saving}
+                    style={{
+                      position: 'absolute',
+                      left: `calc(${x1 * 100}% - 2px)`,
+                      top: `max(76px, calc(${y1 * 100}% + 42px))`,
+                      zIndex: 191,
+                      width: 190,
+                      borderRadius: 8,
+                      border: '1px solid rgba(248,113,113,0.72)',
+                      background: 'rgba(69,10,10,0.94)',
+                      color: '#fecaca',
+                      padding: '7px 10px',
+                      fontSize: 11,
+                      fontWeight: 900,
+                      letterSpacing: '0.06em',
+                      textTransform: 'uppercase',
+                      boxShadow: '0 16px 34px rgba(0,0,0,0.52)',
+                      pointerEvents: saving ? 'none' : 'auto',
+                      cursor: saving ? 'default' : 'pointer',
+                    }}
+                  >
+                    Reset to {detectorBaseLabel(candidate)}
+                  </button>
+                  </>
                 ) : null}
                 </React.Fragment>
               )
@@ -2582,10 +2694,10 @@ export function WatchAnnotationIsland({
               const zIndex = pending && selected
                 ? 60
                 : selected
-                  ? detectorFirstMode ? 18 : 30
+                  ? 120
                 : exact
-                  ? 12
-                  : 8
+                  ? 90
+                  : 80
               const label = exact ? 'Exact keyframe' : pending ? 'New annotation target' : overlay.kind === 'interpolated' ? 'Runtime interpolation' : 'Runtime held'
               return (
                 <div
@@ -2633,7 +2745,7 @@ export function WatchAnnotationIsland({
                       textTransform: 'uppercase',
                       whiteSpace: 'nowrap',
                       boxShadow: '0 6px 18px rgba(0,0,0,0.32)',
-                      zIndex: zIndex + 2,
+                      zIndex: 220,
                       pointerEvents: 'none',
                       cursor: 'inherit',
                     }}
