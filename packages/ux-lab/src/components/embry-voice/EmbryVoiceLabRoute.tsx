@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { CheckCircle2, ChevronDown, ClipboardList, FlaskConical, Mic, PauseCircle, PlayCircle, Radio, SearchCode, XCircle } from 'lucide-react'
+import { CheckCircle2, ChevronDown, ClipboardList, FlaskConical, Folder, Mic, PauseCircle, PlayCircle, Radio, SearchCode, XCircle } from 'lucide-react'
+import { LeftPane, LeftPaneSection, useLeftPaneSearch } from '../common/LeftPane'
+import { SharedChatShell } from '../shared-chat/SharedChatShell'
 import type { ChatMessage } from '../shared-chat/memory-turn'
 
 type AudioArtifact = {
@@ -42,7 +44,21 @@ type VoiceTurn = {
 }
 
 type ReplayPhase = 'idle' | 'request' | 'response'
-type ReplayState = { playing: boolean; activeIndex: number; activeTurnId?: string; phase: ReplayPhase; visibleTurnCount?: number }
+type ReplayState = { playing: boolean; activeIndex: number; activeTurnId?: string; activeSessionId?: string; phase: ReplayPhase; visibleTurnCount?: number }
+
+type TestSession = {
+  id: string
+  title: string
+  subtitle: string
+  turnIds: string[]
+  runIds: string[]
+}
+
+type SessionFolder = {
+  id: string
+  title: string
+  sessions: TestSession[]
+}
 
 const fullSuite = '/tmp/chatterbox-fork-agent-out/voice-chat-e2e/voice-chat-e2e-20260703T214538Z-audible-all-v2'
 const surfaceClass = 'bg-[#121214] text-[#e4e4e7] antialiased'
@@ -262,10 +278,140 @@ const voiceTurns: VoiceTurn[] = [
 
 const initialVisibleTurn = voiceTurns[voiceTurns.length - 1]
 
+const sessionFolders: SessionFolder[] = [
+  {
+    id: 'core-memory-voice',
+    title: 'Core Memory Voice',
+    sessions: [
+      {
+        id: 'horus-memory-known-answer',
+        title: 'Horus memory known answer',
+        subtitle: 'Known speaker, memory recall, Chatterbox response',
+        turnIds: ['known-horus-memory'],
+        runIds: ['full-audible-suite', 'repeat-stress'],
+      },
+      {
+        id: 'embry-horus-core-loop',
+        title: 'Embry / Horus full loop',
+        subtitle: 'All seeded voice turns in chronological chat replay',
+        turnIds: voiceTurns.map((turn) => turn.id),
+        runIds: ['full-audible-suite', 'repeat-stress', 'stream-cancel'],
+      },
+    ],
+  },
+  {
+    id: 'overlap-identity',
+    title: 'Overlap And Identity',
+    sessions: [
+      {
+        id: 'one-at-a-time-boundary',
+        title: 'One-at-a-time boundary',
+        subtitle: 'Two non-Embry speakers overlap; Embry interrupts',
+        turnIds: ['one-at-a-time'],
+        runIds: ['overlap-boundary', 'personality-audition'],
+      },
+      {
+        id: 'unknown-speaker-clarify',
+        title: 'Unknown speaker clarify',
+        subtitle: 'Unknown speaker asks personal-memory question',
+        turnIds: ['unknown-speaker'],
+        runIds: ['personality-audition'],
+      },
+    ],
+  },
+  {
+    id: 'browser-capture',
+    title: 'Browser Capture',
+    sessions: [
+      {
+        id: 'browser-asr-quality-blocker',
+        title: 'Browser ASR quality blocker',
+        subtitle: 'Tracks unresolved browser/WebRTC capture proof boundary',
+        turnIds: ['known-horus-memory'],
+        runIds: ['browser-asr-blocker'],
+      },
+    ],
+  },
+]
+
 function turnStatus(turn: VoiceTurn): 'pass' | 'clarify' | 'warn' {
   if (turn.speaker) return 'pass'
   if (turn.memoryAction === 'CLARIFY') return 'clarify'
   return 'warn'
+}
+
+function entitySpanForToken(content: string, token: string, kind: string): { text: string; span: [number, number]; kind: string; name: string; grounded_to_framework: boolean } | null {
+  const start = content.indexOf(token)
+  if (start < 0) return null
+  return {
+    text: token,
+    span: [start, start + token.length],
+    kind,
+    name: token,
+    grounded_to_framework: true,
+  }
+}
+
+function entitySpansForMessage(content: string, turn: VoiceTurn): Array<{ text: string; span: [number, number]; kind: string; name: string; grounded_to_framework: boolean }> {
+  return [
+    turn.speaker ? entitySpanForToken(content, turn.speaker, 'speaker') : null,
+    turn.memoryAction ? entitySpanForToken(content, turn.memoryAction, 'memory_action') : null,
+    turn.tone ? entitySpanForToken(content, turn.tone, 'tone') : null,
+  ].filter((span): span is { text: string; span: [number, number]; kind: string; name: string; grounded_to_framework: boolean } => Boolean(span))
+}
+
+function chatMessagesForTurn(turn: VoiceTurn, index: number): ChatMessage[] {
+  const createdAt = new Date(Date.UTC(2026, 6, 4, 18, 25 + index, 0)).toISOString()
+  const userContent = `${turn.userText}${turn.speaker ? ` ${turn.speaker}` : ''} ${turn.memoryAction ?? ''} ${turn.tone ?? ''}`.trim()
+  const assistantContent = `${turn.assistantText} ${turn.memoryAction ?? ''} ${turn.tone ?? ''}`.trim()
+  const baseMetadata = {
+    surface: 'ux-lab/embry-voice',
+    inputChannel: 'voice',
+    turnId: turn.id,
+    speaker: turn.speaker ?? 'unknown',
+    tone: turn.tone,
+    memoryAction: turn.memoryAction,
+    componentPath: turn.componentPath,
+    receiptPath: turn.receiptPath,
+    telemetry: turn.telemetry,
+  }
+  return [
+    {
+      id: `${turn.id}:user`,
+      role: 'user',
+      content: userContent,
+      createdAt,
+      metadata: {
+        ...baseMetadata,
+        entitySpans: entitySpansForMessage(userContent, turn),
+      },
+    },
+    {
+      id: `${turn.id}:assistant`,
+      role: 'assistant',
+      content: assistantContent,
+      createdAt,
+      skillUsed: 'embry-chatterbox-voice',
+      reasoningSteps: memoryReasoningTraceForTurn(turn),
+      thinkingTrace: memoryReasoningTraceForTurn(turn),
+      metadata: {
+        ...baseMetadata,
+        branch: 'personaplex',
+        disclosureVariant: 'thinking',
+        entitySpans: entitySpansForMessage(assistantContent, turn),
+        audioArtifacts: turn.audioArtifacts.map((audio) => ({
+          id: `${turn.id}:${audio.id}`,
+          label: audio.label,
+          url: audio.url,
+          path: audio.path,
+        })),
+      },
+    },
+  ]
+}
+
+function chatMessagesFromVoiceTurns(turns: VoiceTurn[]): ChatMessage[] {
+  return turns.flatMap((turn, index) => chatMessagesForTurn(turn, index))
 }
 
 function memoryReasoningTraceForTurn(turn: VoiceTurn): NonNullable<ChatMessage['reasoningSteps']> {
@@ -342,6 +488,8 @@ function decorateText(text: string, turn: VoiceTurn): React.ReactNode {
 export function EmbryVoiceLabRoute(): JSX.Element {
   const [selectedRunId, setSelectedRunId] = useState<string>(initialVisibleTurn?.relatedRunIds[0] ?? sanityRuns[0]?.id ?? '')
   const [selectedTurnId, setSelectedTurnId] = useState<string>(initialVisibleTurn?.id ?? '')
+  const [voiceEnabled, setVoiceEnabled] = useState(true)
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(() => chatMessagesFromVoiceTurns(voiceTurns))
   const [replayState, setReplayState] = useState<ReplayState>({ playing: false, activeIndex: -1, phase: 'idle' })
   const replayStopRef = useRef(false)
   const receiptRefs = useRef<Record<string, HTMLElement | null>>({})
@@ -366,27 +514,34 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     else setSelectedRunId(runId)
   }, [focusTurn])
 
-  const replaySession = useCallback(async () => {
-    if (!voiceTurns.length) return
+  const replaySession = useCallback(async (session?: TestSession) => {
+    const turnsToReplay = session
+      ? session.turnIds.map((turnId) => voiceTurns.find((turn) => turn.id === turnId)).filter((turn): turn is VoiceTurn => Boolean(turn))
+      : voiceTurns
+    if (!turnsToReplay.length) return
     replayStopRef.current = false
-    setReplayState({ playing: true, activeIndex: -1, phase: 'request', visibleTurnCount: 0 })
+    setChatMessages([])
+    setReplayState({ playing: true, activeIndex: -1, activeSessionId: session?.id, phase: 'request', visibleTurnCount: 0 })
+    if (session?.runIds[0]) setSelectedRunId(session.runIds[0])
 
     let audioIndex = 0
-    for (let turnIndex = 0; turnIndex < voiceTurns.length; turnIndex += 1) {
-      const turn = voiceTurns[turnIndex]
+    for (let turnIndex = 0; turnIndex < turnsToReplay.length; turnIndex += 1) {
+      const turn = turnsToReplay[turnIndex]
       if (replayStopRef.current) break
       setSelectedTurnId(turn.id)
       const relatedRun = turn.relatedRunIds[0]
       if (relatedRun) setSelectedRunId(relatedRun)
-      setReplayState({ playing: true, activeIndex: audioIndex - 1, activeTurnId: turn.id, phase: 'request', visibleTurnCount: turnIndex + 1 })
+      setReplayState({ playing: true, activeIndex: audioIndex - 1, activeTurnId: turn.id, activeSessionId: session?.id, phase: 'request', visibleTurnCount: turnIndex + 1 })
+      setChatMessages((messages) => [...messages, ...chatMessagesForTurn(turn, turnIndex)])
       await new Promise((resolve) => window.setTimeout(resolve, 80))
       receiptRefs.current[turn.id]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       await new Promise((resolve) => window.setTimeout(resolve, 900))
 
       for (const artifact of turn.audioArtifacts) {
         if (replayStopRef.current) break
-        const audio = document.querySelector<HTMLAudioElement>(`[data-embry-session-audio="${turn.id}:${artifact.id}"]`)
-        setReplayState({ playing: true, activeIndex: audioIndex, activeTurnId: turn.id, phase: 'response', visibleTurnCount: turnIndex + 1 })
+        const audioElements = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
+        const audio = audioElements[audioIndex]
+        setReplayState({ playing: true, activeIndex: audioIndex, activeTurnId: turn.id, activeSessionId: session?.id, phase: 'response', visibleTurnCount: turnIndex + 1 })
         audioIndex += 1
         if (!audio) {
           await new Promise((resolve) => window.setTimeout(resolve, 450))
@@ -413,20 +568,22 @@ export function EmbryVoiceLabRoute(): JSX.Element {
 
     setReplayState({ playing: false, activeIndex: -1, phase: 'idle' })
     replayStopRef.current = false
+    setChatMessages(chatMessagesFromVoiceTurns(turnsToReplay))
   }, [])
 
   const stopReplay = useCallback(() => {
     replayStopRef.current = true
-    document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio]').forEach((audio) => audio.pause())
+    document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]').forEach((audio) => audio.pause())
     setReplayState({ playing: false, activeIndex: -1, phase: 'idle' })
+    setChatMessages(chatMessagesFromVoiceTurns(voiceTurns))
   }, [])
 
   return (
     <section data-qid="embry-voice:route" className={`h-full min-h-0 grid grid-rows-[auto_minmax(0,1fr)] ${surfaceClass}`}>
       <header className="border-b border-[#2d2d31] px-5 py-4 flex items-center justify-between gap-4">
         <div className="min-w-0">
-          <div className="flex items-center gap-2 text-lg font-bold"><Mic className="w-5 h-5" />Embry Voice Audit Log</div>
-          <div className={`mt-1 text-xs ${mutedTextClass}`}>Immutable turn receipts, Chatterbox audio evidence, memory trace, and state-controller navigation.</div>
+          <div className="flex items-center gap-2 text-lg font-bold"><Mic className="w-5 h-5" />Embry Voice Chat</div>
+          <div className={`mt-1 text-xs ${mutedTextClass}`}>Shared chat UX with synchronized Chatterbox audio, memory trace, and session replay.</div>
         </div>
         <div className="flex shrink-0 flex-wrap justify-end gap-1.5">
           <StatusPill label="memory-first voice lab" tone="good" />
@@ -435,27 +592,46 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         </div>
       </header>
 
-      <div className="min-h-0 grid grid-cols-[260px_minmax(560px,1fr)_320px] gap-3 p-3">
+      <div className="min-h-0 grid grid-cols-[auto_minmax(0,1fr)_320px] gap-3 p-3">
         <SessionController
           turns={voiceTurns}
-          selectedTurnId={selectedTurn?.id ?? ''}
+          folders={sessionFolders}
           replayState={replayState}
           onReplay={replaySession}
           onStopReplay={stopReplay}
-          onSelectTurn={focusTurn}
         />
 
-        <AuditFeed
-          turns={voiceTurns}
-          selectedTurnId={selectedTurn?.id ?? ''}
-          selectedRun={selectedRun}
-          replayState={replayState}
-          sessionArtifacts={sessionArtifacts}
-          gateSummary={gateSummary}
-          receiptRefs={receiptRefs}
-          onSelectTurn={focusTurn}
-          onClearInspect={() => setSelectedRunId('')}
-        />
+        <section data-qid="embry-voice:shared-chat-pane" className={`min-h-0 overflow-hidden ${panelClass}`}>
+          <SharedChatShell
+            projectLabel="Embry Voice"
+            shellQid="embry-voice:shared-chat-shell"
+            qid="embry-voice:shared-chat"
+            surface="shared-chat"
+            defaultMode="personaplex"
+            showModeToggle={false}
+            messages={chatMessages}
+            onMessagesChange={setChatMessages}
+            adapterOptions={{ personaplex: { personaId: 'embry', surface: 'ux-lab/embry-voice' } }}
+            context={{
+              memory_first: true,
+              simultaneous_text_voice: true,
+              renderer: '/home/graham/workspace/experiments/agent-skills/agents/embry-chatterbox-voice',
+            }}
+            emptyTitle="Talk to Embry"
+            emptyDescription="Voice and text share the same turn record. Chatterbox audio artifacts render inside the shared chat timeline."
+            placeholder="Talk to Embry..."
+            starterChips={[
+              { label: 'Known memory answer', prompt: 'Embry, what do you remember about Horus?' },
+              { label: 'One at a time', prompt: 'Two people are talking at once; ask for one speaker.' },
+              { label: 'Factory stress', prompt: 'Run the Horus factory-floor listening check.' },
+            ]}
+            mediaUrl={artifactUrl}
+            voiceEnabled={voiceEnabled}
+            voiceStatus={replayState.playing ? 'speaking' : voiceEnabled ? 'listening' : 'off'}
+            voiceLabel="Embry voice"
+            onVoiceToggle={setVoiceEnabled}
+          />
+        </section>
 
         <aside className="min-h-0">
           <StateController
@@ -477,60 +653,106 @@ export function EmbryVoiceLabRoute(): JSX.Element {
 
 function SessionController({
   turns,
-  selectedTurnId,
+  folders,
   replayState,
   onReplay,
   onStopReplay,
-  onSelectTurn,
 }: {
   turns: VoiceTurn[]
-  selectedTurnId: string
+  folders: SessionFolder[]
   replayState: ReplayState
-  onReplay: () => void
+  onReplay: (session?: TestSession) => void
   onStopReplay: () => void
-  onSelectTurn: (turnId: string) => void
 }): JSX.Element {
   const totalAudio = turns.reduce((count, turn) => count + turn.audioArtifacts.length, 0)
   const replayProgress = replayState.playing ? Math.min(100, Math.max(6, ((replayState.visibleTurnCount ?? 0) / Math.max(1, turns.length)) * 100)) : 0
   return (
-    <aside data-qid="embry-voice:session-controller" className={`min-h-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden ${panelClass}`}>
-      <header className="border-b border-[#2d2d31] p-3">
-        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-500">Session Controller</div>
-        <div className="mt-2 grid gap-2">
-          <SessionItem
-            title="Embry / Horus voice"
-            subtitle={`${turns.length} turns | ${totalAudio} audio | memory-first`}
-            isActive={replayState.playing}
-            progress={replayProgress}
-            onPlay={replayState.playing ? onStopReplay : onReplay}
-          />
-        </div>
-      </header>
-      <div className="min-h-0 overflow-auto p-2">
-        <div className="grid gap-2">
-          {turns.map((turn, index) => (
-            <button
-              key={turn.id}
-              type="button"
-              data-qid="embry-voice:session-turn"
-              data-selected={turn.id === selectedTurnId}
-              onClick={() => onSelectTurn(turn.id)}
-              className={`grid gap-1 border p-3 text-left transition-colors duration-150 ${turn.id === replayState.activeTurnId ? 'border-emerald-300/70 bg-emerald-400/10' : turn.id === selectedTurnId ? 'border-cyan-400/60 bg-cyan-400/10' : 'border-[#2d2d31] bg-[#17171a] hover:border-zinc-600'}`}
-            >
-              <div className="flex items-center justify-between gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">turn {index + 1}</span>
-                <StatusPill label={turn.speaker ?? 'unknown'} tone={turn.speaker ? 'good' : 'warn'} />
-              </div>
-              <div className="line-clamp-2 text-xs font-medium leading-relaxed text-[#e4e4e7]">{turn.userText}</div>
-              <div className="flex flex-wrap gap-1">
-                <StatusPill label={turn.memoryAction ?? 'unknown'} />
-                {turn.tone && <StatusPill label={turn.tone} />}
-              </div>
-            </button>
-          ))}
-        </div>
+    <LeftPane
+      title="Sessions"
+      width={300}
+      searchable
+      searchTestId="embry-voice:sessions:search"
+      searchPlaceholder="Filter sessions"
+    >
+      <div style={{ padding: '8px 12px 12px' }}>
+        <SessionItem
+          title="Embry / Horus voice"
+          subtitle={`${turns.length} turns | ${totalAudio} audio | memory-first`}
+          isActive={replayState.playing && !replayState.activeSessionId}
+          progress={!replayState.activeSessionId ? replayProgress : 0}
+          onPlay={replayState.playing && !replayState.activeSessionId ? onStopReplay : () => onReplay()}
+        />
       </div>
-    </aside>
+      <SessionFolderList
+        turns={turns}
+        folders={folders}
+        replayState={replayState}
+        replayProgress={replayProgress}
+        onReplay={onReplay}
+        onStopReplay={onStopReplay}
+      />
+    </LeftPane>
+  )
+}
+
+function SessionFolderList({
+  turns,
+  folders,
+  replayState,
+  replayProgress,
+  onReplay,
+  onStopReplay,
+}: {
+  turns: VoiceTurn[]
+  folders: SessionFolder[]
+  replayState: ReplayState
+  replayProgress: number
+  onReplay: (session?: TestSession) => void
+  onStopReplay: () => void
+}): JSX.Element {
+  const query = useLeftPaneSearch().trim().toLowerCase()
+  return (
+    <>
+      {folders.map((folder) => {
+        const sessions = folder.sessions.filter((session) => {
+          if (!query) return true
+          return `${folder.title} ${session.title} ${session.subtitle}`.toLowerCase().includes(query)
+        })
+        if (!sessions.length) return null
+        return (
+          <LeftPaneSection
+            key={folder.id}
+            title={(
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <Folder size={13} />
+                {folder.title}
+              </span>
+            )}
+          >
+            <div style={{ display: 'grid', gap: 8, padding: '4px 12px 12px' }}>
+              {sessions.map((session) => {
+                const active = replayState.activeSessionId === session.id
+                const sessionTurnCount = session.turnIds.length
+                const sessionAudioCount = session.turnIds.reduce((count, turnId) => {
+                  const turn = turns.find((candidate) => candidate.id === turnId)
+                  return count + (turn?.audioArtifacts.length ?? 0)
+                }, 0)
+                return (
+                  <SessionItem
+                    key={session.id}
+                    title={session.title}
+                    subtitle={`${sessionTurnCount} turns | ${sessionAudioCount} audio | ${session.subtitle}`}
+                    isActive={active}
+                    progress={active ? replayProgress : 0}
+                    onPlay={active && replayState.playing ? onStopReplay : () => onReplay(session)}
+                  />
+                )
+              })}
+            </div>
+          </LeftPaneSection>
+        )
+      })}
+    </>
   )
 }
 
@@ -548,11 +770,11 @@ function SessionItem({
   onPlay: () => void
 }): JSX.Element {
   return (
-    <div className={`border p-3 ${isActive ? 'border-emerald-300/50 bg-emerald-400/10' : 'border-[#2d2d31] bg-[#17171a]'}`}>
+    <div className={`border p-3 ${isActive ? 'border-emerald-300/50 bg-emerald-400/10' : 'border-[#2d2d31] bg-[#17171a]'}`} style={{ minWidth: 0, overflow: 'hidden' }}>
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
           <div className="truncate text-sm font-semibold text-[#e4e4e7]">{title}</div>
-          <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-zinc-500">{subtitle}</div>
+          <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-zinc-500" style={{ lineHeight: 1.5, overflowWrap: 'anywhere' }}>{subtitle}</div>
         </div>
         <button
           type="button"
