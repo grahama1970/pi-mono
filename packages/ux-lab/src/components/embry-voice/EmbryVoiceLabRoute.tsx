@@ -661,9 +661,11 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           <SharedChatShell
             projectLabel="Embry Voice"
             shellQid="embry-voice:shared-chat-shell"
+            className="ux-lab-watch-chat-shell"
             qid="embry-voice:shared-chat"
-            surface="shared-chat"
-            defaultMode="personaplex"
+            surface="watch"
+            hideHeader
+            defaultMode="compliance"
             showModeToggle={false}
             messages={chatMessages}
             onMessagesChange={setChatMessages}
@@ -690,6 +692,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             voiceStatus={replayState.playing ? 'speaking' : voiceEnabled ? 'listening' : 'off'}
             voiceLabel="Embry voice"
             onVoiceToggle={setVoiceEnabled}
+            sidebar
           />
         </section>
 
