@@ -3,6 +3,8 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { CheckCircle2, ChevronDown, FlaskConical, Folder, Mic, PauseCircle, PlayCircle, Radio, SearchCode, XCircle } from 'lucide-react'
 import { LeftPane, LeftPaneSection, useLeftPaneSearch } from '../common/LeftPane'
 import { SharedChatShell } from '../shared-chat/SharedChatShell'
+import { deriveEmbryVoiceStatus, type EmbryVoiceStatus } from './EmbryVoiceOrb'
+import { IdentityNode } from './IdentityNode'
 import type { ChatMessage, StreamingStep } from '../shared-chat/memory-turn'
 
 type AudioArtifact = {
@@ -43,7 +45,7 @@ type VoiceTurn = {
   relatedRunIds: string[]
 }
 
-type ReplayPhase = 'idle' | 'request' | 'response'
+type ReplayPhase = 'idle' | 'request' | 'thinking' | 'response' | 'complete' | 'interrupted'
 type ReplayState = { playing: boolean; activeIndex: number; activeTurnId?: string; activeSessionId?: string; phase: ReplayPhase; visibleTurnCount?: number }
 
 type TestSession = {
@@ -545,6 +547,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       },
     ])
     setIsStreaming(true)
+    setReplayState((state) => ({ ...state, activeTurnId: voiceTurns[0]?.id, phase: 'request' }))
     const turn = voiceTurns[0]
     for (let stepIndex = 0; stepIndex < 4; stepIndex += 1) {
       setStreamingSteps(replayThinkingStepsForTurn(turn, stepIndex))
@@ -552,6 +555,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     }
     setIsStreaming(false)
     setStreamingSteps([])
+    setReplayState((state) => ({ ...state, activeTurnId: undefined, phase: 'idle' }))
   }, [voiceEnabled])
 
   const replaySession = useCallback(async (session?: TestSession) => {
@@ -577,6 +581,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       setIsStreaming(true)
       for (let stepIndex = 0; stepIndex < 4; stepIndex += 1) {
         if (replayStopRef.current) break
+        setReplayState({ playing: true, activeIndex: audioIndex - 1, activeTurnId: turn.id, activeSessionId: session?.id, phase: 'thinking', visibleTurnCount: turnIndex + 1 })
         setStreamingSteps(replayThinkingStepsForTurn(turn, stepIndex))
         await new Promise((resolve) => window.setTimeout(resolve, 320))
       }
@@ -618,20 +623,18 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       await new Promise((resolve) => window.setTimeout(resolve, 450))
     }
 
-    setReplayState({ playing: false, activeIndex: -1, phase: 'idle' })
+    setReplayState({ playing: false, activeIndex: -1, activeSessionId: session?.id, phase: replayStopRef.current ? 'interrupted' : 'complete', visibleTurnCount: turnsToReplay.length })
     setIsStreaming(false)
     setStreamingSteps([])
     replayStopRef.current = false
-    setChatMessages(chatMessagesFromVoiceTurns(turnsToReplay))
   }, [])
 
   const stopReplay = useCallback(() => {
     replayStopRef.current = true
     document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]').forEach((audio) => audio.pause())
-    setReplayState({ playing: false, activeIndex: -1, phase: 'idle' })
+    setReplayState({ playing: false, activeIndex: -1, phase: 'interrupted' })
     setIsStreaming(false)
     setStreamingSteps([])
-    setChatMessages(chatMessagesFromVoiceTurns(voiceTurns))
   }, [])
 
   return (
@@ -643,6 +646,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         </div>
         <div className="flex shrink-0 flex-wrap justify-end gap-1.5">
           <StatusPill label="memory-first voice lab" tone="good" />
+          <StatusPill label={`replay ${replayState.phase}`} tone={replayState.playing ? 'good' : replayState.phase === 'interrupted' ? 'warn' : undefined} />
           <StatusPill label="Chatterbox Turbo" />
           <StatusPill label="Embry" />
         </div>
@@ -653,11 +657,19 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           turns={voiceTurns}
           folders={sessionFolders}
           replayState={replayState}
+          voiceStatus={deriveEmbryVoiceStatus({ voiceEnabled, replayPhase: replayState.phase })}
+          isStreaming={isStreaming}
+          tone={selectedTurn.tone}
           onReplay={replaySession}
           onStopReplay={stopReplay}
         />
 
-        <section data-qid="embry-voice:shared-chat-pane" className={`min-h-0 overflow-hidden ${panelClass}`}>
+        <section
+          data-qid="embry-voice:evidence-timeline"
+          data-replay-phase={replayState.phase}
+          data-visible-turn-count={replayState.visibleTurnCount ?? chatMessages.length}
+          className={`min-h-0 overflow-hidden ${panelClass}`}
+        >
           <SharedChatShell
             projectLabel="Embry Voice"
             shellQid="embry-voice:shared-chat-shell"
@@ -689,9 +701,13 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             ]}
             mediaUrl={artifactUrl}
             voiceEnabled={voiceEnabled}
-            voiceStatus={replayState.playing ? 'speaking' : voiceEnabled ? 'listening' : 'off'}
+            voiceStatus={deriveEmbryVoiceStatus({ voiceEnabled, replayPhase: replayState.phase })}
             voiceLabel="Embry voice"
             onVoiceToggle={setVoiceEnabled}
+            activeProcessingTurnId={isStreaming ? replayState.activeTurnId : undefined}
+            activeProcessingMessageId={isStreaming && !replayState.activeTurnId
+              ? chatMessages.filter((message) => message.role === 'user').at(-1)?.id
+              : undefined}
             sidebar
           />
         </section>
@@ -718,22 +734,35 @@ function SessionController({
   turns,
   folders,
   replayState,
+  voiceStatus,
+  isStreaming,
+  tone,
   onReplay,
   onStopReplay,
 }: {
   turns: VoiceTurn[]
   folders: SessionFolder[]
   replayState: ReplayState
+  voiceStatus?: EmbryVoiceStatus
+  isStreaming?: boolean
+  tone?: string
   onReplay: (session?: TestSession) => void
   onStopReplay: () => void
 }): JSX.Element {
   const totalAudio = turns.reduce((count, turn) => count + turn.audioArtifacts.length, 0)
   const replayProgress = replayState.playing ? Math.min(100, Math.max(6, ((replayState.visibleTurnCount ?? 0) / Math.max(1, turns.length)) * 100)) : 0
   return (
+    <div
+      data-qid="embry-voice:command-rail"
+      className="flex h-full min-h-0 w-[300px] shrink-0 flex-col border-r border-[#2d2d31] bg-[#121214]"
+    >
+      <IdentityNode voiceStatus={voiceStatus} isStreaming={isStreaming} tone={tone} />
+      <div className="min-h-0 flex-1 [&>div]:h-full">
     <LeftPane
       title="Sessions"
       width={300}
       searchable
+      collapsible={false}
       searchTestId="embry-voice:sessions:search"
       searchPlaceholder="Filter sessions"
     >
@@ -755,6 +784,8 @@ function SessionController({
         onStopReplay={onStopReplay}
       />
     </LeftPane>
+      </div>
+    </div>
   )
 }
 
