@@ -923,7 +923,6 @@ export function WatchAnnotationIsland({
         })[0]
       if (propagatedAssignment && !isRejected(candidate, propagatedAssignment)) {
         const {
-          keyframe: _keyframe,
           keyframeId: _keyframeId,
           keyframeTimeSeconds: _keyframeTimeSeconds,
           ...assignment
@@ -1212,7 +1211,8 @@ export function WatchAnnotationIsland({
     if (saving) return
     const savedAssignment = findSavedDetectorAssignment(candidate)
     const visibleAssignment = detectorCandidateAssignments.get(candidate.id)
-    const keyframe = savedAssignment?.keyframe
+    const assignmentToClear = savedAssignment || (visibleAssignment?.keyframe ? visibleAssignment : null)
+    const keyframe = assignmentToClear?.keyframe
     if (!keyframe) {
       if (visibleAssignment) {
         setDetectorLabelRejections((current) => ({
@@ -1245,11 +1245,11 @@ export function WatchAnnotationIsland({
 
     setDetectorLabelRejections((current) => ({
       ...current,
-      [detectorCandidateLabelKey(candidate, savedAssignment.characterName)]: {
+      [detectorCandidateLabelKey(candidate, assignmentToClear.characterName)]: {
         trackId: candidate.trackId,
-        characterName: savedAssignment.characterName,
-        actorName: savedAssignment.actorName,
-        source: 'saved',
+        characterName: assignmentToClear.characterName,
+        actorName: assignmentToClear.actorName,
+        source: assignmentToClear.source,
         createdAt: new Date().toISOString(),
       },
     }))
@@ -1259,7 +1259,7 @@ export function WatchAnnotationIsland({
       return next
     })
     setSaving(true)
-    setStatus(`Clearing ${savedAssignment.characterName} label from ${candidate.trackId}...`)
+    setStatus(`Clearing ${assignmentToClear.characterName} label from ${candidate.trackId}...`)
     setSelectedDetectorCandidateId(null)
     setInlineLabelEditorCandidateId(null)
     setPendingTargetBbox(null)
@@ -1293,7 +1293,7 @@ export function WatchAnnotationIsland({
       await hydrateIdentityReadiness()
       const deletedCount = typeof receipt.deleted_count === 'number' ? receipt.deleted_count : 0
       setStatus(deletedCount > 0
-        ? `Cleared ${savedAssignment.characterName} label from ${candidate.trackId}; showing ${detectorBaseLabel(candidate)}.`
+        ? `Cleared ${assignmentToClear.characterName} label from ${candidate.trackId}; showing ${detectorBaseLabel(candidate)}.`
         : `No persisted keyframe was cleared for ${candidate.trackId}; row reloaded.`)
     } catch (error) {
       setStatus(`Clear label failed: ${error instanceof Error ? error.message : String(error)}`)
@@ -1314,12 +1314,14 @@ export function WatchAnnotationIsland({
     const option = characterOptions.find((candidateOption) => candidateOption.name === characterName)
     const actorName = option?.actorName || actorLookup(characterName)
     const savedAssignment = findSavedDetectorAssignment(candidate)
-    const labelChanged = Boolean(savedAssignment?.keyframe) && (
-      characterKey(savedAssignment?.characterName || '') !== characterKey(characterName)
-      || (savedAssignment?.actorName || '') !== actorName
+    const visibleAssignment = detectorCandidateAssignments.get(candidate.id)
+    const persistedAssignment = savedAssignment || (visibleAssignment?.keyframe ? visibleAssignment : null)
+    const labelChanged = Boolean(persistedAssignment?.keyframe) && (
+      characterKey(persistedAssignment?.characterName || '') !== characterKey(characterName)
+      || (persistedAssignment?.actorName || '') !== actorName
     )
 
-    if (savedAssignment?.keyframe && !labelChanged) {
+    if (persistedAssignment?.keyframe && !labelChanged) {
       setSaving(true)
       try {
         const materialized = await materializeDetectorTrackExamples(candidate, characterName, actorName)
@@ -1353,7 +1355,7 @@ export function WatchAnnotationIsland({
     }
 
     setSaving(true)
-    setStatus(`${savedAssignment ? 'Updating' : 'Saving'} ${candidate.trackId} label to ${characterName}...`)
+    setStatus(`${persistedAssignment ? 'Updating' : 'Saving'} ${candidate.trackId} label to ${characterName}...`)
     setDetectorLabelRejections((current) => {
       const next = { ...current }
       delete next[detectorCandidateLabelKey(candidate, characterName)]
@@ -1370,8 +1372,8 @@ export function WatchAnnotationIsland({
     setDraftBbox(null)
     setSession((state) => setSelectedCharacter(setPlayheadSeconds(state, candidate.timeSeconds), characterName, actorName))
     try {
-      if (savedAssignment?.keyframe && labelChanged) {
-        const oldKeyframe = savedAssignment.keyframe
+      if (persistedAssignment?.keyframe && labelChanged) {
+        const oldKeyframe = persistedAssignment.keyframe
         await requestJson('/api/projects/watch/annotations/delete-keyframe', {
           ...commonMutationBody(oldKeyframe.timeSeconds, oldKeyframe.assetUid || resolvedAssetUid),
           annotation_id: oldKeyframe.recordId || oldKeyframe.id,
@@ -1900,6 +1902,8 @@ export function WatchAnnotationIsland({
     })
     if (pendingTargetBbox) {
       setStatus(`New annotation target assigned to ${name}. Save the target when ready.`)
+    } else if (selectedDetectorCandidate) {
+      setStatus(`${selectedDetectorCandidate.trackId} assigned to ${name}. Save the YOLO target when ready, or reset to ${detectorBaseLabel(selectedDetectorCandidate)}.`)
     }
   }
 
@@ -1933,11 +1937,11 @@ export function WatchAnnotationIsland({
     setManualAnnotationEnabled(false)
     setInlineLabelEditorCandidateId(null)
     setSelectedDetectorCandidateId(candidate.id)
-    setPendingTargetBbox(candidate.bbox)
-    setDraftBbox(candidate.bbox)
+    setPendingTargetBbox(null)
+    setDraftBbox(null)
     setSession((state) => ({
       ...setSelectedCharacter(setPlayheadSeconds(state, candidate.timeSeconds), nextCharacterName, nextActorName),
-      selectedOverlayId: PENDING_TARGET_OVERLAY_ID,
+      selectedOverlayId: null,
       revision: state.revision + 1,
     }))
     setVideoTime(candidate.timeSeconds)
@@ -1946,7 +1950,6 @@ export function WatchAnnotationIsland({
         ? `${candidate.trackId} suggestion: ${detectorAssignmentLabel(candidate, assignment)}. Accept, change, or reset to ${detectorBaseLabel(candidate)}.`
         : `${candidate.trackId} is ${assignment.source === 'propagated' ? 'propagated as' : 'labeled'} ${assignment.characterName}. Change, save, or reset to ${detectorBaseLabel(candidate)}.`
       : `YOLO ${candidate.detectedClass} box ${candidate.trackId} selected. Choose the character, then save.`)
-    focusCharacterSelect(true)
   }
 
   function openDetectorLabelEditor(candidate: DetectorCandidate): void {
@@ -2781,7 +2784,7 @@ export function WatchAnnotationIsland({
                 padding: '9px 10px',
               }}
             />
-            {pendingTargetBbox ? (
+            {pendingTargetBbox || selectedDetectorCandidate ? (
               <div
                 data-qid="watch:annotation-island:new-target-panel"
                 style={{
@@ -2793,14 +2796,20 @@ export function WatchAnnotationIsland({
                 }}
               >
                 <div style={{ color: '#2dd4bf', fontSize: 11, fontWeight: 900, textTransform: 'uppercase' }}>
-                  New annotation target
+                  {selectedDetectorCandidate ? `YOLO annotation target ${selectedDetectorCandidate.trackId}` : 'New annotation target'}
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                   <button
                     type="button"
                     data-qid="watch:annotation-island:save-new-target"
                     data-qs-action="WATCH_ANNOTATION_SAVE_NEW_TARGET"
-                    onClick={() => void savePendingTarget()}
+                    onClick={() => {
+                      if (selectedDetectorCandidate) {
+                        void saveDetectorCandidateLabel(selectedDetectorCandidate, session.selectedCharacterName)
+                        return
+                      }
+                      void savePendingTarget()
+                    }}
                     disabled={saving || characterKey(session.selectedCharacterName) === 'unassigned'}
                     style={buttonStyle(!saving && characterKey(session.selectedCharacterName) !== 'unassigned')}
                   >
