@@ -223,8 +223,10 @@ function detectorAssignmentLabel(candidate: DetectorCandidate, assignment?: Dete
   return assignment.characterName
 }
 
-const DETECTOR_TRACK_MATERIALIZATION_MAX_EXAMPLES = 12
-const DETECTOR_TRACK_MATERIALIZATION_MIN_SPACING_SECONDS = 0.75
+const DETECTOR_TRACK_MATERIALIZATION_MAX_EXAMPLES = 24
+const DETECTOR_TRACK_MATERIALIZATION_MIN_SPACING_SECONDS = 0.25
+const DETECTOR_TRACK_MATERIALIZATION_SAMPLE_SECONDS = 0.5
+const DETECTOR_TRACK_MATERIALIZATION_MAX_INTERPOLATION_GAP_SECONDS = 1.0
 
 function detectorRuntimeCandidate(candidate: DetectorCandidate, runtimePolicy: DetectorCandidateRuntimePolicy): DetectorCandidate {
   return {
@@ -264,7 +266,7 @@ function interpolateDetectorCandidate(
     ? Math.min(previousConfidence, nextConfidence)
     : previousConfidence ?? nextConfidence
   return {
-    id: `detector-runtime:${rowIndex}:${previous.trackId}:${timeSeconds.toFixed(3)}:${previous.id}:${next.id}`,
+    id: `detector-runtime:${rowIndex}:${previous.trackId}:${timeSeconds.toFixed(3)}`,
     trackId: previous.trackId,
     detectedClass: previous.detectedClass || next.detectedClass,
     bbox: interpolateDetectorBbox(previous.bbox, next.bbox, ratio),
@@ -275,6 +277,77 @@ function interpolateDetectorCandidate(
     sourceCandidateIds: [previous.id, next.id],
     sourceTimeSeconds: [previous.timeSeconds, next.timeSeconds],
   }
+}
+
+function roundedDetectorTimeSeconds(timeSeconds: number): number {
+  return Number(timeSeconds.toFixed(3))
+}
+
+function detectorCandidateTimeKey(candidate: DetectorCandidate): string {
+  return `${candidate.trackId}:${roundedDetectorTimeSeconds(candidate.timeSeconds).toFixed(3)}`
+}
+
+function interpolatedDetectorCandidatesForTrack(rowIndex: number, sameTrack: DetectorCandidate[]): DetectorCandidate[] {
+  const interpolated: DetectorCandidate[] = []
+  if (sameTrack.length < 2) return interpolated
+  const firstTime = sameTrack[0].timeSeconds
+  const lastTime = sameTrack[sameTrack.length - 1].timeSeconds
+  let sampleTime = Math.ceil(firstTime / DETECTOR_TRACK_MATERIALIZATION_SAMPLE_SECONDS) * DETECTOR_TRACK_MATERIALIZATION_SAMPLE_SECONDS
+  let cursor = 0
+  while (sampleTime <= lastTime) {
+    while (cursor < sameTrack.length - 2 && sameTrack[cursor + 1].timeSeconds < sampleTime) {
+      cursor += 1
+    }
+    const previous = sameTrack[cursor]
+    const next = sameTrack[cursor + 1]
+    if (!previous || !next || previous.id === next.id) {
+      sampleTime += DETECTOR_TRACK_MATERIALIZATION_SAMPLE_SECONDS
+      continue
+    }
+    const gap = next.timeSeconds - previous.timeSeconds
+    if (sampleTime > previous.timeSeconds + 0.001 && sampleTime < next.timeSeconds - 0.001 && gap <= DETECTOR_TRACK_MATERIALIZATION_MAX_INTERPOLATION_GAP_SECONDS) {
+      interpolated.push(interpolateDetectorCandidate(rowIndex, previous, next, roundedDetectorTimeSeconds(sampleTime)))
+    }
+    sampleTime += DETECTOR_TRACK_MATERIALIZATION_SAMPLE_SECONDS
+  }
+  return interpolated
+}
+
+function dedupeDetectorCandidatesByTime(candidates: DetectorCandidate[]): DetectorCandidate[] {
+  const byTime = new Map<string, DetectorCandidate>()
+  for (const candidate of candidates) {
+    const key = detectorCandidateTimeKey(candidate)
+    const existing = byTime.get(key)
+    if (!existing || (!existing.runtimePolicy && candidate.runtimePolicy)) {
+      byTime.set(key, candidate)
+    }
+  }
+  return [...byTime.values()].sort((left, right) => left.timeSeconds - right.timeSeconds)
+}
+
+function spreadDetectorCandidates(candidates: DetectorCandidate[], maxExamples: number): DetectorCandidate[] {
+  if (candidates.length <= maxExamples) return candidates
+  const selected: DetectorCandidate[] = []
+  const used = new Set<number>()
+  for (let index = 0; index < maxExamples; index += 1) {
+    const idealIndex = Math.round((index * (candidates.length - 1)) / Math.max(1, maxExamples - 1))
+    let candidateIndex = idealIndex
+    for (let offset = 0; offset < candidates.length; offset += 1) {
+      const left = idealIndex - offset
+      const right = idealIndex + offset
+      if (left >= 0 && !used.has(left)) {
+        candidateIndex = left
+        break
+      }
+      if (right < candidates.length && !used.has(right)) {
+        candidateIndex = right
+        break
+      }
+    }
+    used.add(candidateIndex)
+    selected.push(candidates[candidateIndex])
+  }
+  return selected.sort((left, right) => left.timeSeconds - right.timeSeconds)
 }
 
 function detectorObservationRefForCandidate(
@@ -846,7 +919,7 @@ export function WatchAnnotationIsland({
           const leftDistance = Math.abs(left.keyframeTimeSeconds - candidate.timeSeconds)
           const rightDistance = Math.abs(right.keyframeTimeSeconds - candidate.timeSeconds)
           if (leftDistance !== rightDistance) return leftDistance - rightDistance
-          return right.evidenceCount - left.evidenceCount
+          return (right.evidenceCount ?? 0) - (left.evidenceCount ?? 0)
         })[0]
       if (propagatedAssignment && !isRejected(candidate, propagatedAssignment)) {
         const {
@@ -1033,14 +1106,19 @@ export function WatchAnnotationIsland({
 
   function materializationCandidatesForTrack(seed: DetectorCandidate): DetectorCandidate[] {
     const takenTimes = savedDetectorTimesForTrack(seed.trackId)
-    const selected: DetectorCandidate[] = []
     const sameTrack = detectorCandidates
       .filter((candidate) => candidate.trackId === seed.trackId && candidate.detectedClass === seed.detectedClass)
       .sort((left, right) => left.timeSeconds - right.timeSeconds)
+    const materializationPool = dedupeDetectorCandidatesByTime([
+      ...sameTrack,
+      ...interpolatedDetectorCandidatesForTrack(row.index, sameTrack),
+    ])
+    const selected: DetectorCandidate[] = []
 
-    for (const candidate of sameTrack) {
+    for (const candidate of materializationPool) {
       if (candidate.id === seed.id || Math.abs(candidate.timeSeconds - seed.timeSeconds) < 0.35) continue
-      if (findSavedDetectorAssignment(candidate)) continue
+      const savedAssignment = findSavedDetectorAssignment(candidate)
+      if (savedAssignment && (!candidate.runtimePolicy || Math.abs((savedAssignment.keyframe?.timeSeconds ?? candidate.timeSeconds) - candidate.timeSeconds) < 0.2)) continue
       const tooCloseToSaved = takenTimes.some((timeSeconds) => (
         Math.abs(timeSeconds - candidate.timeSeconds) < DETECTOR_TRACK_MATERIALIZATION_MIN_SPACING_SECONDS
       ))
@@ -1050,9 +1128,8 @@ export function WatchAnnotationIsland({
       ))
       if (tooCloseToSelected) continue
       selected.push(candidate)
-      if (selected.length >= DETECTOR_TRACK_MATERIALIZATION_MAX_EXAMPLES) break
     }
-    return selected
+    return spreadDetectorCandidates(selected, DETECTOR_TRACK_MATERIALIZATION_MAX_EXAMPLES)
   }
 
   async function materializeDetectorTrackExamples(
