@@ -2,9 +2,47 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
+import { createReadStream, statSync } from 'fs'
+import type { Plugin } from 'vite'
+
+function chatterboxArtifactsPlugin(): Plugin {
+  const ROOT = '/tmp/chatterbox-fork-agent-out'
+  return {
+    name: 'chatterbox-artifacts',
+    configureServer(server) {
+      server.middlewares.use('/chatterbox-artifacts', (req, res) => {
+        try {
+          const rawUrl = req.url ?? '/'
+          const pathname = decodeURIComponent(rawUrl.split('?')[0] ?? '/')
+          const relative = pathname.replace(/^\/+/, '')
+          const absolutePath = resolve(ROOT, relative)
+          if (!absolutePath.startsWith(`${ROOT}/`)) {
+            res.statusCode = 403
+            res.end('forbidden')
+            return
+          }
+          const stat = statSync(absolutePath)
+          if (!stat.isFile()) {
+            res.statusCode = 404
+            res.end('not found')
+            return
+          }
+          if (absolutePath.endsWith('.wav')) res.setHeader('Content-Type', 'audio/wav')
+          else if (absolutePath.endsWith('.json')) res.setHeader('Content-Type', 'application/json')
+          else res.setHeader('Content-Type', 'application/octet-stream')
+          res.setHeader('Content-Length', String(stat.size))
+          createReadStream(absolutePath).pipe(res)
+        } catch {
+          res.statusCode = 404
+          res.end('not found')
+        }
+      })
+    },
+  }
+}
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), chatterboxArtifactsPlugin()],
   resolve: {
     alias: {
       // Import skill components directly — no duplication

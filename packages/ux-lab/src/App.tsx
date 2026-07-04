@@ -66,6 +66,7 @@ const PromptLab = React.lazy(() => import('./components/sparta/explorer/PromptLa
 const ClassifierLab = React.lazy(() => import('./components/sparta/explorer/ClassifierLabView').then(m => ({ default: m.ClassifierLabView })));
 const LlmEvalLab = React.lazy(() => import('./components/sparta/explorer/LlmEvalLabView').then(m => ({ default: m.LlmEvalLabView })));
 const ArchitectureView = React.lazy(() => import('./components/architecture/ArchitectureView').then(m => ({ default: m.ArchitectureView })));
+const EmbryVoiceLabRoute = React.lazy(() => import('./components/embry-voice/EmbryVoiceLabRoute').then(m => ({ default: m.EmbryVoiceLabRoute })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { AgentControl } from './components/common/AgentControl';
 import { TestingPanel } from './components/TestingPanel';
@@ -221,7 +222,8 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'llm-eval-lab' && <LlmEvalLab />}
           {projectId === 'classifier-lab' && <ClassifierLab />}
           {projectId === 'architecture' && <ArchitectureView initialProjectId={subpath || undefined} />}
-          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture'].includes(projectId) && (
+          {projectId === 'embry-voice' && <EmbryVoiceLabRoute />}
+          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-voice'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
             </div>
@@ -852,6 +854,7 @@ const ProjectSidebar = ({
   // Real projects with working component routing
   const projects: Project[] = [
     { id: 'sparta-explorer', title: 'SPARTA Explorer', subtitle: 'Security knowledge graph', date: '2026-03-22', type: 'desktop' as const },
+    { id: 'embry-voice', title: 'Embry Voice', subtitle: 'Memory-first chat, Chatterbox audio, and real sanity checks', date: '2026-07-04', type: 'desktop' as const },
     { id: 'binary-explorer', title: 'Binary Explorer', subtitle: 'ELF binary analysis', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/binary-explorer/stitch/6d81147866c74cbd8e20fcf020f3a17e.png' },
     { id: 'music-lab-pipeline', title: 'Music Lab Pipeline', subtitle: '10-stage creation pipeline', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/music-lab-pipeline/stitch/d81f2a555f73455098f59c16379d9517.png' },
     { id: 'prompt-lab', title: 'Prompt Lab', subtitle: 'LLM prompt iteration', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/prompt-lab-optimize/stitch/prompt-optimizer-v1.png' },
