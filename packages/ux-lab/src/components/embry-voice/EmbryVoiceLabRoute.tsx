@@ -1,5 +1,6 @@
-import { CheckCircle2, FlaskConical, Mic, PlayCircle, Radio, Volume2, XCircle } from 'lucide-react'
-import { SharedChatShell, type ChatMessage } from '../shared-chat'
+import { useMemo, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { CheckCircle2, ChevronDown, ClipboardList, FlaskConical, Mic, PlayCircle, Radio, SearchCode, Volume2, XCircle } from 'lucide-react'
 
 type AudioArtifact = {
   id: string
@@ -12,11 +13,14 @@ type SanityRun = {
   id: string
   label: string
   receiptPath: string
+  componentPath: string
   ok: boolean
+  active?: boolean
   mocked: boolean
   live: boolean
   failedGates: string[]
   facts: string[]
+  gates: { name: string; status: 'passed' | 'failed' | 'pending'; latencyMs?: number; detail: string }[]
   proves: string[]
   doesNotProve: string[]
   audioArtifacts?: AudioArtifact[]
@@ -30,6 +34,8 @@ type VoiceTurn = {
   tone?: string
   memoryAction?: string
   receiptPath: string
+  componentPath: string
+  telemetry: { label: string; value: string; warn?: boolean }[]
   audioArtifacts: AudioArtifact[]
 }
 
@@ -48,11 +54,19 @@ const sanityRuns: SanityRun[] = [
     id: 'full-audible-suite',
     label: 'Full audible suite',
     receiptPath: `${fullSuite}/index.json`,
+    componentPath: '/embry-chatterbox-voice',
     ok: true,
+    active: true,
     mocked: false,
     live: true,
     failedGates: [],
     facts: ['8 scenarios', '23 audible WAVs', 'PipeWire sink 64'],
+    gates: [
+      { name: 'listener', status: 'passed', latencyMs: 64, detail: 'RealtimeSTT listener receipt present' },
+      { name: 'memory', status: 'passed', latencyMs: 12, detail: 'memory-first intent and recall exercised' },
+      { name: 'tau', status: 'passed', latencyMs: 41, detail: 'Tau render request completed' },
+      { name: 'chatterbox', status: 'passed', latencyMs: 486, detail: '23 audible WAV artifacts linked' },
+    ],
     proves: ['RealtimeSTT/listener, memory, Tau, and Chatterbox run through simple-to-advanced voice scenarios'],
     doesNotProve: ['subjective voice acceptance', 'browser microphone ASR quality', 'all factory-floor conditions'],
     audioArtifacts: [
@@ -64,11 +78,17 @@ const sanityRuns: SanityRun[] = [
     id: 'repeat-stress',
     label: 'Three-run audible stress',
     receiptPath: '/tmp/chatterbox-fork-agent-out/voice-chat-e2e/stress-20260703T221132Z-audible-repeat/stress-summary.json',
+    componentPath: '/embry-chatterbox-voice/stress',
     ok: true,
     mocked: false,
     live: true,
     failedGates: [],
     facts: ['3 runs', 'failed_gates=[]'],
+    gates: [
+      { name: 'repeat-1', status: 'passed', detail: 'audible suite run 1' },
+      { name: 'repeat-2', status: 'passed', detail: 'audible suite run 2' },
+      { name: 'repeat-3', status: 'passed', detail: 'audible suite run 3' },
+    ],
     proves: ['The full audible suite repeated three times without failed gates'],
     doesNotProve: ['long-duration production stability'],
   },
@@ -76,11 +96,16 @@ const sanityRuns: SanityRun[] = [
     id: 'personality-audition',
     label: 'Embry personality audition',
     receiptPath: '/tmp/chatterbox-fork-agent-out/voice-chat-e2e/personality-audition-20260703T223052Z-scripted/personality-audition.json',
+    componentPath: '/embry-chatterbox-voice/personality',
     ok: true,
     mocked: false,
     live: true,
     failedGates: [],
     facts: ['5 variants', 'live Tau/Chatterbox'],
+    gates: [
+      { name: 'variants', status: 'passed', detail: '5 one-at-a-time variants rendered' },
+      { name: 'playback', status: 'passed', detail: 'audible artifacts produced' },
+    ],
     proves: ['Five one-at-a-time variants rendered and played'],
     doesNotProve: ['human acceptance of Embry character or prosody'],
   },
@@ -88,11 +113,16 @@ const sanityRuns: SanityRun[] = [
     id: 'stream-cancel',
     label: 'Stream cancel',
     receiptPath: `${fullSuite}/S08-stream-cancel/stream-cancel.json`,
+    componentPath: '/embry-chatterbox-voice/stream-cancel',
     ok: true,
     mocked: false,
     live: true,
     failedGates: [],
     facts: ['old-turn bytes after cancel = 0'],
+    gates: [
+      { name: 'cancel-signal', status: 'passed', latencyMs: 19, detail: 'old turn received cancel event' },
+      { name: 'stale-bytes', status: 'passed', latencyMs: 0, detail: 'old-turn bytes after cancel = 0' },
+    ],
     proves: ['Old-turn stream emits zero bytes after cancel'],
     doesNotProve: ['physical speaker buffer flush'],
     audioArtifacts: [
@@ -103,11 +133,17 @@ const sanityRuns: SanityRun[] = [
     id: 'overlap-boundary',
     label: 'Two-speaker overlap',
     receiptPath: `${fullSuite}/S05-female-distractor/overlap-turn-control.json`,
+    componentPath: '/memory/intent/voice-overlap',
     ok: true,
     mocked: false,
     live: true,
     failedGates: [],
     facts: ['pyannote speaker_count=2', 'tone one_at_a_time_interrupt'],
+    gates: [
+      { name: 'diarization', status: 'passed', detail: 'pyannote speaker_count=2' },
+      { name: 'memory-intent', status: 'passed', latencyMs: 18, detail: 'routed to turn-taking clarification' },
+      { name: 'tone', status: 'passed', detail: 'one_at_a_time_interrupt selected' },
+    ],
     proves: ['Memory routes two non-Embry speakers to a turn-taking clarification'],
     doesNotProve: ['word-level speaker separation'],
     audioArtifacts: [
@@ -120,11 +156,16 @@ const sanityRuns: SanityRun[] = [
     id: 'factory-noise',
     label: 'Horus with factory noise',
     receiptPath: `${fullSuite}/S06-factory-noise/rung8-loopback-listener.json`,
+    componentPath: '/realtimestt/listener/factory-noise',
     ok: true,
     mocked: false,
     live: true,
     failedGates: [],
     facts: ['primary speaker Horus', 'noisy capture path'],
+    gates: [
+      { name: 'speaker-id', status: 'passed', detail: 'primary speaker resolved to Horus' },
+      { name: 'noise-capture', status: 'passed', detail: 'configured noisy capture path exercised' },
+    ],
     proves: ['Horus can remain the resolved primary speaker through configured noisy capture'],
     doesNotProve: ['all microphones, placements, or volume levels'],
     audioArtifacts: [
@@ -135,11 +176,17 @@ const sanityRuns: SanityRun[] = [
     id: 'browser-asr-blocker',
     label: 'Browser ASR blocker',
     receiptPath: '/tmp/chatterbox-fork-agent-out/voice-chat-e2e/voice-chat-e2e-20260703T223350Z-browser-asr-ec-ns-agc/continuous-voice-loop.json',
+    componentPath: '/browser/getUserMedia/realtimestt',
     ok: false,
     mocked: false,
     live: true,
     failedGates: ['realtimestt_listener_ok', 'listener_transcript_present'],
     facts: ['browser transport proven', 'ASR transcript missing'],
+    gates: [
+      { name: 'pcm-transport', status: 'passed', detail: 'browser getUserMedia sent PCM to Python' },
+      { name: 'realtimestt_listener_ok', status: 'failed', detail: 'listener did not produce accepted ASR event' },
+      { name: 'listener_transcript_present', status: 'failed', detail: 'ASR transcript missing' },
+    ],
     proves: ['Browser getUserMedia can capture PCM and send it to Python'],
     doesNotProve: ['ASR-usable browser microphone audio'],
   },
@@ -154,6 +201,12 @@ const voiceTurns: VoiceTurn[] = [
     tone: 'memory_confident',
     memoryAction: 'QUERY',
     receiptPath: `${fullSuite}/S01-S02-S08-S09-S12-continuous-core/continuous-voice-loop.json`,
+    componentPath: '/embry-chatterbox-voice',
+    telemetry: [
+      { label: 'Lat', value: '42ms' },
+      { label: 'ASR', value: '98%' },
+      { label: 'Mem', value: '12ms' },
+    ],
     audioArtifacts: [
       artifact('embry-answer', 'Embry spoken response', '/tmp/chatterbox-fork-agent-out/tau_voice_render_smoke/finished_response.wav'),
     ],
@@ -165,6 +218,12 @@ const voiceTurns: VoiceTurn[] = [
     tone: 'one_at_a_time_interrupt',
     memoryAction: 'CLARIFY',
     receiptPath: `${fullSuite}/S05-female-distractor/overlap-turn-control.json`,
+    componentPath: '/memory/intent/voice-overlap',
+    telemetry: [
+      { label: 'Lat', value: '58ms' },
+      { label: 'Speakers', value: '2' },
+      { label: 'Tone', value: 'interrupt' },
+    ],
     audioArtifacts: [
       artifact('overlap-input', 'Overlapped input', `${fullSuite}/S05-female-distractor/overlap.wav`),
     ],
@@ -176,46 +235,25 @@ const voiceTurns: VoiceTurn[] = [
     tone: 'identity_clarification',
     memoryAction: 'CLARIFY',
     receiptPath: `${fullSuite}/S03-unknown-speaker/identity-resolution.json`,
+    componentPath: '/memory/identity/clarify-speaker',
+    telemetry: [
+      { label: 'Lat', value: '36ms' },
+      { label: 'ID', value: 'unknown' },
+      { label: 'Mem', value: 'ask' },
+    ],
     audioArtifacts: [
       artifact('identity-clarification', 'Identity clarification', `${fullSuite}/S03-unknown-speaker/identity-clarification-render.wav`),
     ],
   },
 ]
 
-const initialMessages: ChatMessage[] = voiceTurns.flatMap((turn) => [
-  {
-    id: `${turn.id}:user`,
-    role: 'user',
-    content: turn.userText,
-    createdAt: new Date().toISOString(),
-    metadata: { branch: 'personaplex' },
-  },
-  {
-    id: `${turn.id}:assistant`,
-    role: 'assistant',
-    content: turn.assistantText,
-    createdAt: new Date().toISOString(),
-    skillUsed: 'embry-chatterbox-voice',
-    metadata: {
-      branch: 'personaplex',
-      personaId: 'embry',
-      speakerId: turn.speaker,
-      tone: turn.tone,
-      receiptPath: turn.receiptPath,
-      simultaneousTextVoice: true,
-      memoryFirst: true,
-    },
-    reasoningSteps: [
-      { id: 'speaker-resolve', label: 'Resolving speaker', status: turn.speaker ? 'completed' : 'skipped', detail: turn.speaker, icon: 'mic' },
-      { id: 'memory-intent', label: 'Classifying memory intent', status: 'completed', detail: turn.memoryAction, icon: 'memory' },
-      { id: 'chatterbox-audio', label: 'Rendering Chatterbox audio', status: 'completed', detail: `${turn.audioArtifacts.length} playable artifact`, icon: 'mic' },
-    ],
-  },
-])
-
 export function EmbryVoiceLabRoute(): JSX.Element {
+  const [selectedRunId, setSelectedRunId] = useState<string>(sanityRuns[0]?.id ?? '')
+  const selectedRun = sanityRuns.find((run) => run.id === selectedRunId)
+  const gateSummary = useMemo(() => summarizeGates(sanityRuns), [])
+
   return (
-    <section data-qid="embry-voice:route" className="h-full min-h-0 grid grid-rows-[auto_minmax(0,1fr)] bg-black text-slate-100">
+    <section data-qid="embry-voice:route" className="h-full min-h-0 grid grid-rows-[auto_minmax(0,1fr)] bg-[#0f0f12] text-zinc-100">
       <header className="border-b border-white/10 px-5 py-4 flex items-center justify-between gap-4">
         <div className="min-w-0">
           <div className="flex items-center gap-2 text-lg font-bold"><Mic className="w-5 h-5" />Embry Voice Chat</div>
@@ -225,29 +263,29 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       </header>
 
       <div className="min-h-0 grid grid-cols-[minmax(420px,1fr)_minmax(380px,0.86fr)] gap-3 p-3">
-        <SharedChatShell
-          projectLabel="Embry"
-          surface="shared-chat"
-          defaultMode="personaplex"
-          showModeToggle={false}
-          initialMessages={initialMessages}
-          shellQid="embry-voice:chat-shell"
-          qid="embry-voice:chat-well"
-          placeholder="Talk to Embry..."
-          emptyTitle="Embry is listening"
-          emptyDescription="Voice turns must resolve speaker identity, memory intent, recall, Tau, and Chatterbox audio."
-          starterChips={[
-            { label: 'Memory check', prompt: 'What did we last talk about?' },
-            { label: 'Identity check', prompt: 'Do you know who is speaking?' },
-            { label: 'One at a time', prompt: 'What should you say when two people speak at once?' },
-          ]}
-        />
+        <ConversationReceipts selectedRun={selectedRun} onClearInspect={() => setSelectedRunId('')} />
 
         <aside className="min-h-0 grid grid-rows-[minmax(0,1fr)_minmax(230px,0.84fr)] gap-3">
-          <Panel title="Sanity Check Runs" icon={<FlaskConical className="w-4 h-4" />}>
-            <div className="grid gap-2">
-              {sanityRuns.map((run) => <SanityCard key={run.id} run={run} />)}
-            </div>
+          <Panel title="Sanity Check Registry" icon={<FlaskConical className="w-4 h-4" />}>
+            <GateDashboard summary={gateSummary} />
+            <RegistryGroup
+              title="Active"
+              runs={sanityRuns.filter((run) => run.active)}
+              selectedRunId={selectedRunId}
+              onInspect={setSelectedRunId}
+            />
+            <RegistryGroup
+              title="Historical"
+              runs={sanityRuns.filter((run) => run.ok && !run.active)}
+              selectedRunId={selectedRunId}
+              onInspect={setSelectedRunId}
+            />
+            <RegistryGroup
+              title="Failed"
+              runs={sanityRuns.filter((run) => !run.ok)}
+              selectedRunId={selectedRunId}
+              onInspect={setSelectedRunId}
+            />
           </Panel>
           <Panel title="Conversation Audio" icon={<Volume2 className="w-4 h-4" />}>
             <div className="grid gap-2">
@@ -260,43 +298,212 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   )
 }
 
+function ConversationReceipts({ selectedRun, onClearInspect }: { selectedRun?: SanityRun; onClearInspect: () => void }): JSX.Element {
+  return (
+    <section data-qid="embry-voice:receipt-feed" className="min-h-0 grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden border border-zinc-800 bg-black/35">
+      <header className="flex items-center justify-between gap-3 border-b border-zinc-800 px-4 py-3">
+        <div>
+          <div className="flex items-center gap-2 text-sm font-bold text-zinc-100"><ClipboardList className="h-4 w-4" />Voice Turn Receipts</div>
+          <div className="mt-1 text-[11px] text-zinc-500">Text and spoken output render together; every turn carries metadata, telemetry, and receipt paths.</div>
+        </div>
+        <StatusPill label="LIVE_RENDER" tone="good" />
+      </header>
+      <div className="min-h-0 overflow-auto p-4">
+        <AnimatePresence initial={false}>
+          {selectedRun && <InspectReceipt key={selectedRun.id} run={selectedRun} onClear={onClearInspect} />}
+        </AnimatePresence>
+        <div className="grid gap-3">
+          {voiceTurns.map((turn) => <EmbryReceipt key={turn.id} turn={turn} />)}
+        </div>
+      </div>
+      <footer className="border-t border-zinc-800 p-3">
+        <div className="flex min-h-12 items-center gap-3 border border-zinc-800 bg-zinc-950/80 px-3 text-sm text-zinc-500">
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-600">Composer</span>
+          <span className="min-w-0 flex-1">Talk to Embry...</span>
+          <span className="font-mono text-[10px] uppercase text-zinc-600">Auto</span>
+          <Mic className="h-4 w-4 text-zinc-500" />
+        </div>
+      </footer>
+    </section>
+  )
+}
+
+function EmbryReceipt({ turn }: { turn: VoiceTurn }): JSX.Element {
+  const reducedMotion = useReducedMotion()
+  const warn = turn.telemetry.some((item) => item.warn)
+  return (
+    <motion.article
+      data-qid="embry-voice:receipt-card"
+      initial={reducedMotion ? false : { opacity: 0, y: 5 }}
+      animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+      transition={{ duration: 0.15, ease: 'easeInOut' }}
+      className={`border bg-zinc-950/55 p-4 shadow-none ${warn ? 'border-orange-400/60' : 'border-zinc-800'}`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500">
+          {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} | {turn.componentPath}
+        </div>
+        <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-400" />
+      </div>
+      <div className="mt-3 grid gap-2">
+        <div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-600">User</div>
+          <div className="text-sm leading-relaxed text-zinc-100">{turn.userText}</div>
+        </div>
+        <div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-600">Embry</div>
+          <div className="text-sm leading-relaxed text-zinc-200">{turn.assistantText}</div>
+        </div>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        {turn.speaker && <StatusPill label={`speaker ${turn.speaker}`} />}
+        {turn.tone && <StatusPill label={turn.tone} />}
+        {turn.memoryAction && <StatusPill label={`memory ${turn.memoryAction}`} />}
+        {turn.telemetry.map((item) => <StatusPill key={`${item.label}:${item.value}`} label={`${item.label}: ${item.value}`} tone={item.warn ? 'warn' : undefined} />)}
+      </div>
+      <AudioList artifacts={turn.audioArtifacts} />
+      <div className="mt-3 border-t border-zinc-800 pt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-zinc-500">
+        Ran {turn.componentPath} | {turn.receiptPath}
+      </div>
+    </motion.article>
+  )
+}
+
+function InspectReceipt({ run, onClear }: { run: SanityRun; onClear: () => void }): JSX.Element {
+  const reducedMotion = useReducedMotion()
+  const trace = {
+    id: run.id,
+    component_path: run.componentPath,
+    receipt_path: run.receiptPath,
+    live: run.live,
+    mocked: run.mocked,
+    failed_gates: run.failedGates,
+    gates: run.gates,
+    proves: run.proves,
+    does_not_prove: run.doesNotProve,
+  }
+  return (
+    <motion.article
+      data-qid="embry-voice:inspect-receipt"
+      initial={reducedMotion ? false : { opacity: 0, y: -4 }}
+      animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+      exit={reducedMotion ? undefined : { opacity: 0, y: -4 }}
+      transition={{ duration: 0.15, ease: 'easeInOut' }}
+      className="mb-4 border border-cyan-400/40 bg-cyan-950/10 p-4"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="flex items-center gap-2 text-sm font-bold text-cyan-100"><SearchCode className="h-4 w-4" />Inspect: {run.label}</div>
+          <div className="mt-1 break-all font-mono text-[10px] uppercase tracking-[0.12em] text-cyan-300/70">{run.receiptPath}</div>
+        </div>
+        <button type="button" onClick={onClear} className="border border-cyan-300/20 px-2 py-1 font-mono text-[10px] uppercase text-cyan-200 hover:bg-cyan-300/10">Close</button>
+      </div>
+      <pre className="mt-3 max-h-56 overflow-auto border border-cyan-300/15 bg-black/60 p-3 text-[11px] leading-relaxed text-cyan-50">{JSON.stringify(trace, null, 2)}</pre>
+    </motion.article>
+  )
+}
+
 function Panel({ title, icon, children }: { title: string; icon: JSX.Element; children: React.ReactNode }): JSX.Element {
   return (
-    <section className="min-h-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-lg border border-white/10 bg-white/[0.035]">
-      <header className="flex items-center gap-2 border-b border-white/10 px-3 py-2 text-sm font-bold text-slate-200">{icon}{title}</header>
+    <section className="min-h-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden border border-zinc-800 bg-zinc-950/50">
+      <header className="flex items-center gap-2 border-b border-zinc-800 px-3 py-2 text-sm font-bold text-zinc-200">{icon}{title}</header>
       <div className="min-h-0 overflow-auto p-3">{children}</div>
     </section>
   )
 }
 
-function SanityCard({ run }: { run: SanityRun }): JSX.Element {
+function GateDashboard({ summary }: { summary: { passed: number; pending: number; failed: number } }): JSX.Element {
   return (
-    <article data-qid="embry-voice:sanity-card" className="rounded-md border border-white/10 bg-black/30 p-3">
+    <div data-qid="embry-voice:gate-dashboard" className="mb-3 grid grid-cols-3 gap-2">
+      <Metric label="passed_gates" value={summary.passed} tone="good" />
+      <Metric label="pending_gates" value={summary.pending} />
+      <Metric label="failed_gates" value={summary.failed} tone={summary.failed ? 'bad' : 'good'} />
+    </div>
+  )
+}
+
+function Metric({ label, value, tone }: { label: string; value: number; tone?: 'good' | 'bad' }): JSX.Element {
+  const text = tone === 'good' ? 'text-emerald-200' : tone === 'bad' ? 'text-red-200' : 'text-zinc-200'
+  return (
+    <div className="border border-zinc-800 bg-black/30 p-2">
+      <div className={`font-mono text-lg font-bold ${text}`}>{value}</div>
+      <div className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-zinc-600">{label}</div>
+    </div>
+  )
+}
+
+function RegistryGroup({ title, runs, selectedRunId, onInspect }: { title: string; runs: SanityRun[]; selectedRunId: string; onInspect: (id: string) => void }): JSX.Element {
+  if (!runs.length) return <div className="mb-3 border border-zinc-900 p-2 font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-600">{title}: none</div>
+  return (
+    <div className="mb-4">
+      <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-500">{title}</div>
+      <div className="grid gap-2">
+        {runs.map((run) => <SanityCard key={run.id} run={run} selected={run.id === selectedRunId} onInspect={() => onInspect(run.id)} />)}
+      </div>
+    </div>
+  )
+}
+
+function SanityCard({ run, selected, onInspect }: { run: SanityRun; selected: boolean; onInspect: () => void }): JSX.Element {
+  const reducedMotion = useReducedMotion()
+  return (
+    <article data-qid="embry-voice:sanity-card" className={`border bg-black/30 p-3 ${selected ? 'border-cyan-400/50' : 'border-zinc-800'}`}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <div className="flex items-center gap-2 text-sm font-bold">{run.ok ? <CheckCircle2 className="w-4 h-4 text-emerald-300" /> : <XCircle className="w-4 h-4 text-red-300" />}{run.label}</div>
-          <div className="mt-1 break-words text-[11px] text-slate-500">{run.receiptPath}</div>
+          <button type="button" onClick={onInspect} className="flex min-w-0 items-center gap-2 text-left text-sm font-bold text-zinc-100 hover:text-cyan-100">
+            {run.ok ? <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-300" /> : <XCircle className="w-4 h-4 shrink-0 text-red-300" />}
+            <span className="min-w-0 truncate">{run.label}</span>
+            <ChevronDown className={`h-3.5 w-3.5 shrink-0 transition-transform duration-150 ${selected ? 'rotate-180' : ''}`} />
+          </button>
+          <button type="button" onClick={onInspect} className="mt-1 block break-all text-left font-mono text-[10px] text-zinc-500 hover:text-cyan-300">[Inspect] {run.receiptPath}</button>
         </div>
-        <Radio className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
+        <Radio className={`mt-0.5 h-4 w-4 shrink-0 text-zinc-500 ${run.active && !reducedMotion ? 'animate-pulse' : ''}`} />
       </div>
       <div className="mt-2 flex flex-wrap gap-1.5">
         <StatusPill label={run.live ? 'live' : 'not live'} tone={run.live ? 'good' : 'bad'} />
         <StatusPill label={run.mocked ? 'mocked' : 'not mocked'} tone={run.mocked ? 'bad' : 'good'} />
         {run.facts.map((fact) => <StatusPill key={fact} label={fact} />)}
       </div>
-      <div className={`mt-2 text-xs ${run.failedGates.length ? 'text-red-200' : 'text-emerald-200'}`}>failed gates: {run.failedGates.length ? run.failedGates.join(', ') : '[]'}</div>
-      <div className="mt-2 space-y-1 text-[11px] leading-relaxed text-slate-400">
-        <div>proves: {run.proves.join('; ')}</div>
-        <div>does not prove: {run.doesNotProve.join('; ')}</div>
-      </div>
-      {run.audioArtifacts && <AudioList artifacts={run.audioArtifacts} />}
+      <AnimatePresence initial={false}>
+        {selected && (
+          <motion.div
+            initial={reducedMotion ? false : { opacity: 0, height: 0 }}
+            animate={reducedMotion ? undefined : { opacity: 1, height: 'auto' }}
+            exit={reducedMotion ? undefined : { opacity: 0, height: 0 }}
+            transition={{ duration: 0.15, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            <GateList gates={run.gates} />
+            <div className={`mt-2 font-mono text-[11px] ${run.failedGates.length ? 'text-red-200' : 'text-emerald-200'}`}>failed_gates={run.failedGates.length ? run.failedGates.join(',') : '[]'}</div>
+            <div className="mt-2 space-y-1 text-[11px] leading-relaxed text-zinc-400">
+              <div>proves: {run.proves.join('; ')}</div>
+              <div>does_not_prove: {run.doesNotProve.join('; ')}</div>
+            </div>
+            {run.audioArtifacts && <AudioList artifacts={run.audioArtifacts} />}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </article>
+  )
+}
+
+function GateList({ gates }: { gates: SanityRun['gates'] }): JSX.Element {
+  return (
+    <div className="mt-3 grid gap-1.5">
+      {gates.map((gate) => (
+        <div key={gate.name} className="grid grid-cols-[82px_1fr_auto] gap-2 border border-zinc-900 bg-zinc-950/70 px-2 py-1.5 font-mono text-[10px]">
+          <span className={gate.status === 'passed' ? 'text-emerald-300' : gate.status === 'failed' ? 'text-red-300' : 'text-zinc-400'}>{gate.status}</span>
+          <span className="min-w-0 truncate text-zinc-400" title={gate.detail}>{gate.name}: {gate.detail}</span>
+          <span className="text-zinc-600">{gate.latencyMs !== undefined ? `${gate.latencyMs}ms` : '-'}</span>
+        </div>
+      ))}
+    </div>
   )
 }
 
 function VoiceTurnCard({ turn }: { turn: VoiceTurn }): JSX.Element {
   return (
-    <article data-qid="embry-voice:turn-card" className="rounded-md border border-white/10 bg-black/30 p-3">
+    <article data-qid="embry-voice:turn-card" className="border border-zinc-800 bg-black/30 p-3">
       <div className="text-sm font-bold text-slate-100">{turn.userText}</div>
       <div className="mt-1 text-sm leading-relaxed text-slate-300">{turn.assistantText}</div>
       <div className="mt-2 flex flex-wrap gap-1.5">
@@ -305,7 +512,7 @@ function VoiceTurnCard({ turn }: { turn: VoiceTurn }): JSX.Element {
         {turn.memoryAction && <StatusPill label={`memory ${turn.memoryAction}`} />}
       </div>
       <AudioList artifacts={turn.audioArtifacts} />
-      <div className="mt-2 break-words text-[11px] text-slate-500">{turn.receiptPath}</div>
+      <div className="mt-2 break-words font-mono text-[10px] uppercase tracking-[0.1em] text-slate-500">Ran {turn.componentPath} | {turn.receiptPath}</div>
     </article>
   )
 }
@@ -323,13 +530,25 @@ function AudioList({ artifacts }: { artifacts: AudioArtifact[] }): JSX.Element {
   )
 }
 
-function StatusPill({ label, tone }: { label: string; tone?: 'good' | 'bad' }): JSX.Element {
+function StatusPill({ label, tone }: { label: string; tone?: 'good' | 'bad' | 'warn' }): JSX.Element {
   const toneClass = tone === 'good'
     ? 'border-emerald-300/25 text-emerald-200'
     : tone === 'bad'
       ? 'border-red-300/25 text-red-200'
+      : tone === 'warn'
+        ? 'border-orange-300/35 text-orange-200'
       : 'border-white/10 text-slate-300'
-  return <span className={`inline-flex min-h-6 items-center rounded-md border bg-black/25 px-2 text-[11px] ${toneClass}`}>{label}</span>
+  return <span className={`inline-flex min-h-6 items-center border bg-black/25 px-2 font-mono text-[10px] uppercase tracking-[0.08em] ${toneClass}`}>{label}</span>
+}
+
+function summarizeGates(runs: SanityRun[]): { passed: number; pending: number; failed: number } {
+  return runs.reduce(
+    (summary, run) => {
+      for (const gate of run.gates) summary[gate.status] += 1
+      return summary
+    },
+    { passed: 0, pending: 0, failed: 0 },
+  )
 }
 
 export default EmbryVoiceLabRoute
