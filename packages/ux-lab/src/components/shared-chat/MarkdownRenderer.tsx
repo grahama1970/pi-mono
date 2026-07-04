@@ -15,8 +15,8 @@ import bash from 'highlight.js/lib/languages/bash';
 import json from 'highlight.js/lib/languages/json';
 import yaml from 'highlight.js/lib/languages/yaml';
 import rust from 'highlight.js/lib/languages/rust';
-import { highlightEntities } from './highlightEntities';
-import type { EntityType } from './types';
+import { highlightWithSpans } from './highlightEntities';
+import type { EntityType, EvidenceCaseSpan } from './types';
 
 // Register languages once
 hljs.registerLanguage('go', go);
@@ -37,6 +37,8 @@ hljs.registerLanguage('sh', bash);
 interface MarkdownRendererProps {
   content: string;
   onEntityClick?: (entity: string, type: EntityType) => void;
+  /** Deterministic spans from /memory /extract-entities. */
+  entitySpans?: EvidenceCaseSpan[];
   /** Legacy: cap tables at 3 rows with fade + workspace link (non-sidebar only) */
   teaserMode?: boolean;
   /** Gemini sidebar: full readable prose/tables on flat canvas */
@@ -45,9 +47,27 @@ interface MarkdownRendererProps {
   tableRowCount?: number;
 }
 
-export const MarkdownRenderer = memo(function MarkdownRenderer({ content, onEntityClick, teaserMode = false, sidebarMode = false, onOpenWorkspace, tableRowCount }: MarkdownRendererProps) {
-  // Sidebar: clean reading surface — no neon entity underlines (workspace owns that).
-  const hl = (text: string) => sidebarMode ? text : highlightEntities(text, onEntityClick);
+export const MarkdownRenderer = memo(function MarkdownRenderer({ content, onEntityClick, entitySpans = [], teaserMode = false, sidebarMode = false, onOpenWorkspace, tableRowCount }: MarkdownRendererProps) {
+  let searchOffset = 0;
+  const hl = (text: string) => {
+    if (sidebarMode || !entitySpans.length) return text;
+    const start = content.indexOf(text, searchOffset);
+    if (start < 0) return text;
+    const end = start + text.length;
+    searchOffset = end;
+    const localSpans = entitySpans
+      .filter((span): span is EvidenceCaseSpan & { span: [number, number] } => (
+        Array.isArray(span.span)
+        && span.span.length === 2
+        && span.span[0] >= start
+        && span.span[1] <= end
+      ))
+      .map((span) => ({
+        ...span,
+        span: [span.span[0] - start, span.span[1] - start] as [number, number],
+      }));
+    return highlightWithSpans(text, localSpans, onEntityClick);
+  };
 
   return (
     <div className={sidebarMode ? 'chat-prose chat-prose--sidebar' : 'chat-prose'}>

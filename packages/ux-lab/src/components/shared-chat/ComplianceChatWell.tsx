@@ -11,6 +11,7 @@ import { RecallCard } from '../sparta/query/RecallCard'
 import { GateChain } from '../sparta/query/GateChain'
 import { ThreatMatrixCard } from '../sparta/query/ThreatMatrixCard'
 import { SpartaShieldIcon } from './SpartaShieldIcon'
+import type { EvidenceCaseSpan } from './types'
 import {
   branchFromMessage,
   branchFromSteps,
@@ -43,6 +44,87 @@ export interface ComplianceChatWellProps {
   className?: string
   activeBranch?: TurnBranch
   sidebar?: boolean
+}
+
+function isRecord(value: unknown): value is UnknownRecord {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
+}
+
+function spanPair(value: unknown): [number, number] | null {
+  if (!Array.isArray(value) || value.length !== 2) return null
+  const [start, end] = value
+  return typeof start === 'number' && typeof end === 'number' && end > start ? [start, end] : null
+}
+
+function spanFromExtractEntityNode(value: unknown): EvidenceCaseSpan | null {
+  if (!isRecord(value)) return null
+  const extracted = isRecord(value.extracted) ? value.extracted : {}
+  const metadata = isRecord(value.metadata) ? value.metadata : {}
+  const span = spanPair(value.span) ?? spanPair(extracted.span)
+  if (!span) return null
+  const text = value.mention ?? value.text ?? value.entity ?? extracted.text ?? metadata.control_id ?? metadata.name
+  const name = metadata.name ?? value.name ?? text
+  const framework = metadata.framework ?? value.framework
+  const kind = extracted.kind ?? value.kind ?? value.node_kind ?? metadata.type
+  return {
+    text: typeof text === 'string' ? text : undefined,
+    span,
+    kind: typeof kind === 'string' ? kind : undefined,
+    framework: typeof framework === 'string' ? framework : undefined,
+    name: typeof name === 'string' ? name : undefined,
+    grounded_to_framework: metadata.grounded === true || metadata.exists === true || value.status === 'grounded',
+  }
+}
+
+function collectExtractEntitySpans(value: unknown): EvidenceCaseSpan[] {
+  if (Array.isArray(value)) return value.map(spanFromExtractEntityNode).filter((span): span is EvidenceCaseSpan => Boolean(span))
+  if (!isRecord(value)) return []
+
+  const spans: EvidenceCaseSpan[] = []
+  for (const key of ['entitySpans', 'entity_spans', 'spans', 'glossary', 'entity_nodes']) {
+    spans.push(...collectExtractEntitySpans(value[key]))
+  }
+  const nodes = isRecord(value.nodes) ? value.nodes : undefined
+  if (nodes) {
+    for (const key of ['anchors', 'validated_context', 'context_terms', 'unsupported']) {
+      spans.push(...collectExtractEntitySpans(nodes[key]))
+    }
+  }
+  const packet = isRecord(value.proof_packet) ? value.proof_packet : undefined
+  if (packet) {
+    for (const key of ['anchors', 'validated_context', 'context_terms', 'unsupported']) {
+      spans.push(...collectExtractEntitySpans(packet[key]))
+    }
+  }
+  return spans
+}
+
+function extractEntitySpansFromMessage(message: ChatMessage, meta: UnknownRecord): EvidenceCaseSpan[] {
+  const messageRecord = message as unknown as UnknownRecord
+  const spans: EvidenceCaseSpan[] = []
+  for (const source of [
+    messageRecord.entitySpans,
+    messageRecord.entity_spans,
+    meta.entitySpans,
+    meta.entity_spans,
+    meta.entityContext,
+    meta.entity_context,
+    meta.extract_entities,
+    meta.entities,
+  ]) {
+    spans.push(...collectExtractEntitySpans(source))
+  }
+
+  const seen = new Set<string>()
+  return spans
+    .filter((span): span is EvidenceCaseSpan & { span: [number, number] } => Boolean(spanPair(span.span)))
+    .sort((left, right) => left.span[0] - right.span[0])
+    .filter((span) => {
+      const key = `${span.span[0]}:${span.span[1]}:${span.text ?? ''}`
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
 }
 
 export function ComplianceChatWell({
@@ -270,6 +352,7 @@ function MessageBubble({ message }: { message: ChatMessage }): JSX.Element {
   const recallItems = meta.recallItems ?? meta.recall_items ?? meta.recall
   const resultCount = meta.resultCount ?? meta.result_count
   const entities = meta.entities
+  const entitySpans = extractEntitySpansFromMessage(message, meta)
   const verdict = meta.verdict
   const querySpec = meta._querySpec ?? meta.querySpec ?? meta.query_spec
   const figureArtifact = meta.figureArtifact ?? meta.figure_artifact
@@ -313,7 +396,7 @@ function MessageBubble({ message }: { message: ChatMessage }): JSX.Element {
 
       {/* Content text */}
       <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.55, fontSize: 14, marginTop: (!isUser && (evidenceCaseData || figureArtifact || tableData)) ? 12 : 0 }}>
-        {message.content ? <MarkdownRenderer content={message.content} /> : null}
+        {message.content ? <MarkdownRenderer content={message.content} entitySpans={entitySpans} /> : null}
       </div>
 
       {/* Recall cards */}

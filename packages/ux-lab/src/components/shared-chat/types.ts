@@ -41,6 +41,19 @@ export interface EvidenceGate {
 	duration?: number;
 }
 
+export interface EvidenceCaseSpan {
+	text?: string;
+	span?: [number, number];
+	kind?: string;
+	framework?: string;
+	name?: string;
+	grounded_to_framework?: boolean;
+	start?: number;
+	end?: number;
+	type?: string;
+	[key: string]: unknown;
+}
+
 export interface ThreatMatrixSummary {
 	totalTechniques: number;
 	totalTactics: number;
