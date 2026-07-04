@@ -38,12 +38,17 @@ export type SharedChatShellProps = Omit<
   messages?: ChatMessage[]
   initialMessages?: ChatMessage[]
   onMessagesChange?: (messages: ChatMessage[]) => void
-  onSend?: (text: string, mode?: InputMode) => void | Promise<void>
+  onSend?: (...args: any[]) => void | Promise<void>
   streamingSteps?: StreamingStep[]
   isStreaming?: boolean
   activeBranch?: TurnBranch
   showModeToggle?: boolean
   defaultMode?: PersonaPlexChatMode
+  mode?: PersonaPlexChatMode | string
+  wsUrl?: string
+  personaId?: string
+  showTracePanel?: boolean
+  initialTraceRows?: unknown[]
   modeLabels?: Partial<Record<PersonaPlexChatMode, string>>
   modeTitles?: Partial<Record<PersonaPlexChatMode, string>>
   onModeChange?: (mode: PersonaPlexChatMode) => void
@@ -103,6 +108,10 @@ export function SharedChatShell({
   chatTitle,
   agentStatus,
   mediaUrl,
+  voiceEnabled,
+  voiceStatus,
+  voiceLabel,
+  onVoiceToggle,
 }: SharedChatShellProps): JSX.Element {
   const [mode, setModeState] = useState<PersonaPlexChatMode>(defaultMode)
   const [internalMessages, setInternalMessages] = useState<ChatMessage[]>(initialMessages)
@@ -286,6 +295,10 @@ export function SharedChatShell({
         chatTitle={chatTitle}
         agentStatus={agentStatus}
         mediaUrl={mediaUrl}
+        voiceEnabled={voiceEnabled}
+        voiceStatus={voiceStatus}
+        voiceLabel={voiceLabel}
+        onVoiceToggle={onVoiceToggle}
       />
     </section>
   )
