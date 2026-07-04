@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { CheckCircle2, ChevronDown, FlaskConical, Folder, Mic, PauseCircle, PlayCircle, Radio, SearchCode, XCircle } from 'lucide-react'
 import { LeftPane, LeftPaneSection, useLeftPaneSearch } from '../common/LeftPane'
 import { SharedChatShell } from '../shared-chat/SharedChatShell'
+import { EmbryVoiceOrb, deriveEmbryVoiceStatus } from './EmbryVoiceOrb'
 import type { ChatMessage, StreamingStep } from '../shared-chat/memory-turn'
 
 type AudioArtifact = {
@@ -641,10 +642,18 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           <div className="flex items-center gap-2 text-lg font-bold"><Mic className="w-5 h-5" />Embry Voice Chat</div>
           <div className={`mt-1 text-xs ${mutedTextClass}`}>Shared chat UX with synchronized Chatterbox audio, memory trace, and session replay.</div>
         </div>
-        <div className="flex shrink-0 flex-wrap justify-end gap-1.5">
-          <StatusPill label="memory-first voice lab" tone="good" />
-          <StatusPill label="Chatterbox Turbo" />
-          <StatusPill label="Embry" />
+        <div className="flex shrink-0 items-center gap-3">
+          <EmbryVoiceOrb
+            voiceStatus={deriveEmbryVoiceStatus({ voiceEnabled, replayPhase: replayState.phase })}
+            isStreaming={isStreaming}
+            tone={selectedTurn.tone}
+            size={96}
+          />
+          <div className="flex flex-wrap justify-end gap-1.5">
+            <StatusPill label="memory-first voice lab" tone="good" />
+            <StatusPill label="Chatterbox Turbo" />
+            <StatusPill label="Embry" />
+          </div>
         </div>
       </header>
 
@@ -661,9 +670,11 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           <SharedChatShell
             projectLabel="Embry Voice"
             shellQid="embry-voice:shared-chat-shell"
+            className="ux-lab-watch-chat-shell"
             qid="embry-voice:shared-chat"
-            surface="shared-chat"
-            defaultMode="personaplex"
+            surface="watch"
+            hideHeader
+            defaultMode="compliance"
             showModeToggle={false}
             messages={chatMessages}
             onMessagesChange={setChatMessages}
@@ -687,9 +698,10 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             ]}
             mediaUrl={artifactUrl}
             voiceEnabled={voiceEnabled}
-            voiceStatus={replayState.playing ? 'speaking' : voiceEnabled ? 'listening' : 'off'}
+            voiceStatus={deriveEmbryVoiceStatus({ voiceEnabled, replayPhase: replayState.phase })}
             voiceLabel="Embry voice"
             onVoiceToggle={setVoiceEnabled}
+            sidebar
           />
         </section>
 
