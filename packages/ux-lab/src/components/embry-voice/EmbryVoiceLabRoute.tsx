@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { CheckCircle2, ChevronDown, ClipboardList, FlaskConical, Mic, PlayCircle, Radio, SearchCode, XCircle } from 'lucide-react'
+import { SharedChatShell } from '../shared-chat/SharedChatShell'
+import type { ChatMessage } from '../shared-chat/memory-turn'
 
 type AudioArtifact = {
   id: string
@@ -39,6 +41,9 @@ type VoiceTurn = {
   audioArtifacts: AudioArtifact[]
   relatedRunIds: string[]
 }
+
+type ReplayPhase = 'idle' | 'request' | 'response'
+type ReplayState = { playing: boolean; activeIndex: number; activeTurnId?: string; phase: ReplayPhase }
 
 const fullSuite = '/tmp/chatterbox-fork-agent-out/voice-chat-e2e/voice-chat-e2e-20260703T214538Z-audible-all-v2'
 
@@ -251,58 +256,165 @@ const voiceTurns: VoiceTurn[] = [
   },
 ]
 
+const initialVisibleTurn = voiceTurns[voiceTurns.length - 1]
+
+function chatMessagesFromVoiceTurns(turns: VoiceTurn[]): ChatMessage[] {
+  return turns.flatMap((turn) => ([
+    {
+      id: `${turn.id}:user`,
+      role: 'user',
+      content: turn.userText,
+      createdAt: new Date().toISOString(),
+      metadata: {
+        surface: 'embry-voice',
+        inputChannel: 'voice',
+        speaker: turn.speaker ?? 'unknown',
+        turnId: turn.id,
+        receiptPath: turn.receiptPath,
+      },
+    },
+    {
+      id: `${turn.id}:assistant`,
+      role: 'assistant',
+      content: turn.assistantText,
+      createdAt: new Date().toISOString(),
+      skillUsed: 'embry-chatterbox-voice',
+      reasoningSteps: memoryReasoningTraceForTurn(turn),
+      thinkingTrace: memoryReasoningTraceForTurn(turn),
+      metadata: {
+        branch: 'personaplex',
+        disclosureVariant: 'thinking',
+        surface: 'embry-voice',
+        inputChannel: 'voice',
+        turnId: turn.id,
+        speaker: turn.speaker ?? 'unknown',
+        tone: turn.tone,
+        memoryAction: turn.memoryAction,
+        receiptPath: turn.receiptPath,
+        componentPath: turn.componentPath,
+        audioArtifacts: turn.audioArtifacts,
+        telemetry: turn.telemetry,
+      },
+    },
+  ]))
+}
+
+function memoryReasoningTraceForTurn(turn: VoiceTurn): NonNullable<ChatMessage['reasoningSteps']> {
+  const speakerKnown = Boolean(turn.speaker)
+  return [
+    {
+      id: 'speaker-resolve',
+      label: 'Resolve speaker identity',
+      status: speakerKnown ? 'completed' : 'needs_attention',
+      detail: speakerKnown
+        ? `/speaker/resolve returned known speaker ${turn.speaker}; personal memory recall is allowed.`
+        : '/speaker/resolve did not identify a known speaker; personal memory recall must fail closed.',
+      icon: 'mic',
+      disclosureVariant: 'thinking',
+    },
+    {
+      id: 'memory-intent',
+      label: 'Classify memory intent',
+      status: 'completed',
+      detail: `/intent selected action ${turn.memoryAction ?? 'CLARIFY'} with tone ${turn.tone ?? 'identity_clarification'}.`,
+      icon: 'memory',
+      disclosureVariant: 'thinking',
+    },
+    {
+      id: speakerKnown ? 'memory-recall' : 'memory-clarify',
+      label: speakerKnown ? 'Recall speaker-scoped memory' : 'Ask identity clarification',
+      status: 'completed',
+      detail: speakerKnown
+        ? 'Used speaker_conversation_memory / persona-scoped recall before rendering the response.'
+        : 'Skipped speaker-scoped recall and generated a clarification/boundary response.',
+      icon: speakerKnown ? 'search' : 'check',
+      disclosureVariant: 'thinking',
+    },
+    {
+      id: 'chatterbox-render',
+      label: 'Render Chatterbox audio',
+      status: turn.audioArtifacts.length ? 'completed' : 'pending',
+      detail: turn.audioArtifacts.length
+        ? `Attached ${turn.audioArtifacts.length} Chatterbox audio artifact(s) to this chat turn.`
+        : 'No Chatterbox artifact is attached to this turn yet.',
+      icon: 'mic',
+      disclosureVariant: 'thinking',
+    },
+  ]
+}
+
 export function EmbryVoiceLabRoute(): JSX.Element {
-  const [selectedRunId, setSelectedRunId] = useState<string>(sanityRuns[0]?.id ?? '')
-  const [replayState, setReplayState] = useState<{ playing: boolean; activeIndex: number }>({ playing: false, activeIndex: -1 })
+  const [selectedRunId, setSelectedRunId] = useState<string>(initialVisibleTurn?.relatedRunIds[0] ?? sanityRuns[0]?.id ?? '')
+  const [selectedTurnId, setSelectedTurnId] = useState<string>(initialVisibleTurn?.id ?? '')
+  const [voiceEnabled, setVoiceEnabled] = useState(true)
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(() => chatMessagesFromVoiceTurns(voiceTurns))
+  const [replayState, setReplayState] = useState<ReplayState>({ playing: false, activeIndex: -1, phase: 'idle' })
   const replayStopRef = useRef(false)
   const receiptRefs = useRef<Record<string, HTMLElement | null>>({})
   const selectedRun = sanityRuns.find((run) => run.id === selectedRunId)
+  const selectedTurn = voiceTurns.find((turn) => turn.id === selectedTurnId) ?? voiceTurns[0]
   const gateSummary = useMemo(() => summarizeGates(sanityRuns), [])
   const sessionArtifacts = useMemo(() => voiceTurns.flatMap((turn) => turn.audioArtifacts.map((audio) => ({ ...audio, turnId: turn.id }))), [])
 
   const focusRun = useCallback((runId: string) => {
     setSelectedRunId(runId)
     const turn = voiceTurns.find((candidate) => candidate.relatedRunIds.includes(runId))
+    if (turn) setSelectedTurnId(turn.id)
     const node = turn ? receiptRefs.current[turn.id] : undefined
     node?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }, [])
 
   const replaySession = useCallback(async () => {
     const audioElements = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
-    if (!audioElements.length) return
+    if (!voiceTurns.length) return
     replayStopRef.current = false
-    setReplayState({ playing: true, activeIndex: 0 })
+    setReplayState({ playing: true, activeIndex: -1, activeTurnId: voiceTurns[0]?.id, phase: 'request' })
 
-    for (let index = 0; index < audioElements.length; index += 1) {
+    let audioIndex = 0
+    for (const turn of voiceTurns) {
       if (replayStopRef.current) break
-      const audio = audioElements[index]
-      setReplayState({ playing: true, activeIndex: index })
-      audio.currentTime = 0
-      try {
-        await audio.play()
-        await new Promise<void>((resolve) => {
-          const finish = (): void => {
-            audio.removeEventListener('ended', finish)
-            audio.removeEventListener('pause', finish)
-            resolve()
-          }
-          audio.addEventListener('ended', finish, { once: true })
-          audio.addEventListener('pause', finish, { once: true })
-        })
-      } catch {
-        await new Promise((resolve) => window.setTimeout(resolve, 300))
+      setSelectedTurnId(turn.id)
+      const relatedRun = turn.relatedRunIds[0]
+      if (relatedRun) setSelectedRunId(relatedRun)
+      setReplayState({ playing: true, activeIndex: audioIndex - 1, activeTurnId: turn.id, phase: 'request' })
+      await new Promise((resolve) => window.setTimeout(resolve, 900))
+
+      for (let artifactIndex = 0; artifactIndex < turn.audioArtifacts.length; artifactIndex += 1) {
+        if (replayStopRef.current) break
+        const audio = audioElements[audioIndex]
+        setReplayState({ playing: true, activeIndex: audioIndex, activeTurnId: turn.id, phase: 'response' })
+        audioIndex += 1
+        if (!audio) {
+          await new Promise((resolve) => window.setTimeout(resolve, 450))
+          continue
+        }
+        audio.currentTime = 0
+        try {
+          await audio.play()
+          await new Promise<void>((resolve) => {
+            const finish = (): void => {
+              audio.removeEventListener('ended', finish)
+              audio.removeEventListener('pause', finish)
+              resolve()
+            }
+            audio.addEventListener('ended', finish, { once: true })
+            audio.addEventListener('pause', finish, { once: true })
+          })
+        } catch {
+          await new Promise((resolve) => window.setTimeout(resolve, 450))
+        }
       }
       await new Promise((resolve) => window.setTimeout(resolve, 450))
     }
 
-    setReplayState({ playing: false, activeIndex: -1 })
+    setReplayState({ playing: false, activeIndex: -1, phase: 'idle' })
     replayStopRef.current = false
   }, [])
 
   const stopReplay = useCallback(() => {
     replayStopRef.current = true
     document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]').forEach((audio) => audio.pause())
-    setReplayState({ playing: false, activeIndex: -1 })
+    setReplayState({ playing: false, activeIndex: -1, phase: 'idle' })
   }, [])
 
   return (
@@ -319,42 +431,218 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         </div>
       </header>
 
-      <div className="min-h-0 grid grid-cols-[minmax(560px,1fr)_320px] gap-3 p-3">
-        <ConversationReceipts
-          selectedRun={selectedRun}
+      <div className="min-h-0 grid grid-cols-[260px_minmax(560px,1fr)_340px] gap-3 p-3">
+        <SessionPane
+          turns={voiceTurns}
+          selectedTurnId={selectedTurn?.id ?? ''}
           replayState={replayState}
-          sessionArtifacts={sessionArtifacts}
-          receiptRefs={receiptRefs}
           onReplay={replaySession}
           onStopReplay={stopReplay}
-          onClearInspect={() => setSelectedRunId('')}
+          onSelectTurn={(turnId) => {
+            setSelectedTurnId(turnId)
+            const relatedRun = voiceTurns.find((turn) => turn.id === turnId)?.relatedRunIds[0]
+            if (relatedRun) setSelectedRunId(relatedRun)
+          }}
         />
 
+        <section data-qid="embry-voice:shared-chat-pane" className="min-h-0 overflow-hidden border border-zinc-800 bg-black/35">
+          <SharedChatShell
+            projectLabel="Embry Voice"
+            shellQid="embry-voice:shared-chat-shell"
+            qid="embry-voice:shared-chat"
+            surface="shared-chat"
+            defaultMode="personaplex"
+            showModeToggle={false}
+            messages={chatMessages}
+            onMessagesChange={setChatMessages}
+            adapterOptions={{ personaplex: { personaId: 'embry', surface: 'ux-lab/embry-voice' } }}
+            context={{
+              memory_first: true,
+              simultaneous_text_voice: true,
+              renderer: '/home/graham/workspace/experiments/agent-skills/agents/embry-chatterbox-voice',
+            }}
+            emptyTitle="Talk to Embry"
+            emptyDescription="Voice and text share the same turn record. Chatterbox audio artifacts render inside the chat timeline."
+            placeholder="Talk to Embry..."
+            starterChips={[
+              { label: 'Known memory answer', prompt: 'Embry, what do you remember about Horus?' },
+              { label: 'One at a time', prompt: 'Two people are talking at once; ask for one speaker.' },
+              { label: 'Factory stress', prompt: 'Run the Horus factory-floor listening check.' },
+            ]}
+            voiceEnabled={voiceEnabled}
+            voiceStatus={voiceEnabled ? (replayState.playing ? 'speaking' : 'listening') : 'off'}
+            voiceLabel="Embry voice"
+            onVoiceToggle={setVoiceEnabled}
+          />
+          <TimelineProgress artifacts={sessionArtifacts} activeIndex={replayState.activeIndex} />
+        </section>
+
         <aside className="min-h-0">
-          <Panel title="Sanity Check Registry" icon={<FlaskConical className="w-4 h-4" />}>
-            <GateDashboard summary={gateSummary} />
-            <RegistryGroup
-              title="Active"
-              runs={sanityRuns.filter((run) => run.active)}
-              selectedRunId={selectedRunId}
-              onInspect={focusRun}
-            />
-            <RegistryGroup
-              title="Historical"
-              runs={sanityRuns.filter((run) => run.ok && !run.active)}
-              selectedRunId={selectedRunId}
-              onInspect={focusRun}
-            />
-            <RegistryGroup
-              title="Failed"
-              runs={sanityRuns.filter((run) => !run.ok)}
-              selectedRunId={selectedRunId}
-              onInspect={focusRun}
-            />
-          </Panel>
+          <RequestDetailPane
+            selectedTurn={selectedTurn}
+            selectedRun={selectedRun}
+            gateSummary={gateSummary}
+            selectedRunId={selectedRunId}
+            onInspect={focusRun}
+            onClearInspect={() => setSelectedRunId('')}
+          />
         </aside>
       </div>
     </section>
+  )
+}
+
+function SessionPane({
+  turns,
+  selectedTurnId,
+  replayState,
+  onReplay,
+  onStopReplay,
+  onSelectTurn,
+}: {
+  turns: VoiceTurn[]
+  selectedTurnId: string
+  replayState: ReplayState
+  onReplay: () => void
+  onStopReplay: () => void
+  onSelectTurn: (turnId: string) => void
+}): JSX.Element {
+  const activeTurn = turns.find((turn) => turn.id === replayState.activeTurnId)
+  return (
+    <aside data-qid="embry-voice:session-pane" className="min-h-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden border border-zinc-800 bg-zinc-950/50">
+      <header className="border-b border-zinc-800 p-3">
+        <div className="flex items-center justify-between gap-2">
+          <div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-500">Sessions</div>
+            <div className="mt-1 text-sm font-bold text-zinc-100">Embry / Horus voice</div>
+          </div>
+          <button
+            type="button"
+            data-qid="embry-voice:replay-session"
+            data-qs-action="EMBRY_VOICE_REPLAY_SESSION"
+            onClick={replayState.playing ? onStopReplay : onReplay}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-emerald-300/30 bg-emerald-400/10 text-emerald-100 hover:bg-emerald-400/20"
+            title={replayState.playing ? 'Stop replay' : 'Replay conversation in timeline order'}
+          >
+            <PlayCircle className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="mt-3 border border-zinc-800 bg-black/25 p-2">
+          <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-zinc-600">Conversation Replay</div>
+          <div className="mt-1 text-xs leading-relaxed text-zinc-300">
+            {replayState.playing && activeTurn
+              ? replayState.phase === 'request'
+                ? `Playing request: ${activeTurn.userText}`
+                : `Playing Embry response: ${activeTurn.assistantText}`
+              : 'Replay steps through each human/project-agent request, then Embry voice response.'}
+          </div>
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <Metric label="turns" value={turns.length} />
+          <Metric label="audio" value={turns.reduce((count, turn) => count + turn.audioArtifacts.length, 0)} tone="good" />
+        </div>
+      </header>
+      <div className="min-h-0 overflow-auto p-2">
+        <div className="grid gap-2">
+          {turns.map((turn, index) => (
+            <button
+              key={turn.id}
+              type="button"
+              data-qid="embry-voice:session-turn"
+              data-selected={turn.id === selectedTurnId}
+              onClick={() => onSelectTurn(turn.id)}
+              className={`grid gap-1 border p-3 text-left transition-colors duration-150 ${turn.id === replayState.activeTurnId ? 'border-emerald-300/70 bg-emerald-400/10' : turn.id === selectedTurnId ? 'border-cyan-400/60 bg-cyan-400/10' : 'border-zinc-800 bg-black/25 hover:border-zinc-700'}`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">turn {index + 1}</span>
+                <StatusPill label={turn.speaker ?? 'unknown'} tone={turn.speaker ? 'good' : 'warn'} />
+              </div>
+              {turn.id === replayState.activeTurnId && (
+                <StatusPill label={replayState.phase === 'request' ? 'replaying request' : 'replaying response'} tone="good" />
+              )}
+              <div className="line-clamp-2 text-xs leading-relaxed text-zinc-200">{turn.userText}</div>
+              <div className="flex flex-wrap gap-1">
+                {turn.memoryAction && <StatusPill label={turn.memoryAction} />}
+                {turn.tone && <StatusPill label={turn.tone} />}
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </aside>
+  )
+}
+
+function RequestDetailPane({
+  selectedTurn,
+  selectedRun,
+  gateSummary,
+  selectedRunId,
+  onInspect,
+  onClearInspect,
+}: {
+  selectedTurn?: VoiceTurn
+  selectedRun?: SanityRun
+  gateSummary: { passed: number; pending: number; failed: number }
+  selectedRunId: string
+  onInspect: (runId: string) => void
+  onClearInspect: () => void
+}): JSX.Element {
+  return (
+    <Panel title="Current Request / Response" icon={<FlaskConical className="w-4 h-4" />}>
+      <GateDashboard summary={gateSummary} />
+      {selectedTurn && (
+        <section data-qid="embry-voice:turn-detail" className="mb-3 border border-zinc-800 bg-black/25 p-3">
+          <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-500">Selected Turn</div>
+          <div className="mt-2 grid gap-2 text-xs leading-relaxed">
+            <div>
+              <div className="font-mono text-[10px] uppercase text-zinc-600">User</div>
+              <div className="text-zinc-100">{selectedTurn.userText}</div>
+            </div>
+            <div>
+              <div className="font-mono text-[10px] uppercase text-zinc-600">Embry</div>
+              <div className="text-zinc-200">{selectedTurn.assistantText}</div>
+            </div>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {selectedTurn.speaker && <StatusPill label={`speaker ${selectedTurn.speaker}`} tone="good" />}
+            {selectedTurn.memoryAction && <StatusPill label={`memory ${selectedTurn.memoryAction}`} />}
+            {selectedTurn.tone && <StatusPill label={selectedTurn.tone} />}
+            {selectedTurn.telemetry.map((item) => <StatusPill key={`${item.label}:${item.value}`} label={`${item.label}: ${item.value}`} tone={item.warn ? 'warn' : undefined} />)}
+          </div>
+          <MemoryTracePanel turn={selectedTurn} />
+          <div className="mt-3 break-all font-mono text-[10px] uppercase tracking-[0.1em] text-zinc-500">
+            Ran {selectedTurn.componentPath}<br />{selectedTurn.receiptPath}
+          </div>
+        </section>
+      )}
+      {selectedRun && <InspectReceipt run={selectedRun} onClear={onClearInspect} compact />}
+      <RegistryGroup
+        title="Sanity Runs"
+        runs={sanityRuns}
+        selectedRunId={selectedRunId}
+        onInspect={onInspect}
+      />
+    </Panel>
+  )
+}
+
+function MemoryTracePanel({ turn }: { turn: VoiceTurn }): JSX.Element {
+  return (
+    <div data-qid="embry-voice:memory-reasoning-trace" className="mt-3 border border-zinc-800 bg-zinc-950/80 p-2">
+      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500">$memory reasoning trace</div>
+      <div className="mt-2 grid gap-1.5">
+        {memoryReasoningTraceForTurn(turn).map((step) => (
+          <div key={step.id} className="grid grid-cols-[96px_1fr] gap-2 border border-zinc-900 bg-black/30 px-2 py-1.5 text-[10px]">
+            <span className={step.status === 'completed' ? 'font-mono uppercase text-emerald-300' : 'font-mono uppercase text-orange-300'}>{String(step.status)}</span>
+            <span className="text-zinc-300">
+              <span className="font-semibold text-zinc-100">{step.label}: </span>
+              {step.detail}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
   )
 }
 
@@ -368,7 +656,7 @@ function ConversationReceipts({
   onClearInspect,
 }: {
   selectedRun?: SanityRun
-  replayState: { playing: boolean; activeIndex: number }
+  replayState: ReplayState
   sessionArtifacts: Array<AudioArtifact & { turnId: string }>
   receiptRefs: React.MutableRefObject<Record<string, HTMLElement | null>>
   onReplay: () => void
