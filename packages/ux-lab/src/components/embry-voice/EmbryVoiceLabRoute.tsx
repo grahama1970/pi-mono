@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { CheckCircle2, ChevronDown, FlaskConical, Folder, Mic, PauseCircle, PlayCircle, Radio, SearchCode, XCircle } from 'lucide-react'
 import { LeftPane, LeftPaneSection, useLeftPaneSearch } from '../common/LeftPane'
 import { SharedChatShell } from '../shared-chat/SharedChatShell'
-import type { ChatMessage } from '../shared-chat/memory-turn'
+import type { ChatMessage, StreamingStep } from '../shared-chat/memory-turn'
 
 type AudioArtifact = {
   id: string
@@ -413,6 +413,43 @@ function chatMessagesFromVoiceTurns(turns: VoiceTurn[]): ChatMessage[] {
   return turns.flatMap((turn, index) => chatMessagesForTurn(turn, index))
 }
 
+function replayThinkingStepsForTurn(turn: VoiceTurn, activeIndex: number): StreamingStep[] {
+  const definitions: Array<Pick<StreamingStep, 'id' | 'label' | 'detail'>> = [
+    {
+      id: 'connecting-personaplex',
+      label: 'Resolve speaker identity',
+      detail: turn.speaker
+        ? `Horus voice resolved as ${turn.speaker}; speaker-scoped memory may be used.`
+        : 'Speaker is unknown; personal memory recall must fail closed.',
+    },
+    {
+      id: 'extracting-entities',
+      label: 'Extract voice entities',
+      detail: [turn.speaker, turn.memoryAction, turn.tone].filter(Boolean).join(' | ') || 'No grounded voice entities attached.',
+    },
+    {
+      id: 'looking-in-memory',
+      label: 'Run memory intent and recall',
+      detail: `/intent selected ${turn.memoryAction ?? 'CLARIFY'} before Chatterbox render.`,
+    },
+    {
+      id: 'persona-answer',
+      label: 'Render Chatterbox audio',
+      detail: turn.audioArtifacts.length
+        ? `${turn.audioArtifacts.length} Chatterbox artifact(s) attached to the shared chat turn.`
+        : 'No Chatterbox audio artifact attached.',
+    },
+  ]
+  return definitions.map((step, index) => ({
+    ...step,
+    kind: 'step',
+    branch: 'personaplex',
+    disclosureVariant: 'thinking',
+    liveStatusLabel: step.label,
+    status: index < activeIndex ? 'completed' : index === activeIndex ? 'running' : 'pending',
+  }))
+}
+
 function scrollSharedChatToBottom(): void {
   const messagePane = document.querySelector<HTMLElement>('[data-qid="embry-voice:shared-chat:messages"]')
   if (!messagePane) return
@@ -468,6 +505,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const [selectedTurnId, setSelectedTurnId] = useState<string>(initialVisibleTurn?.id ?? '')
   const [voiceEnabled, setVoiceEnabled] = useState(true)
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(() => chatMessagesFromVoiceTurns(voiceTurns))
+  const [streamingSteps, setStreamingSteps] = useState<StreamingStep[]>([])
+  const [isStreaming, setIsStreaming] = useState(false)
   const [replayState, setReplayState] = useState<ReplayState>({ playing: false, activeIndex: -1, phase: 'idle' })
   const replayStopRef = useRef(false)
   const selectedRun = sanityRuns.find((run) => run.id === selectedRunId)
@@ -489,6 +528,32 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     else setSelectedRunId(runId)
   }, [focusTurn])
 
+  const handleSend = useCallback(async (text: string) => {
+    const createdAt = new Date().toISOString()
+    setChatMessages((messages) => [
+      ...messages,
+      {
+        id: `embry-manual-user:${Date.now()}`,
+        role: 'user',
+        content: text,
+        createdAt,
+        metadata: {
+          surface: 'ux-lab/embry-voice',
+          inputChannel: voiceEnabled ? 'voice-or-text' : 'text',
+          branch: 'personaplex',
+        },
+      },
+    ])
+    setIsStreaming(true)
+    const turn = voiceTurns[0]
+    for (let stepIndex = 0; stepIndex < 4; stepIndex += 1) {
+      setStreamingSteps(replayThinkingStepsForTurn(turn, stepIndex))
+      await new Promise((resolve) => window.setTimeout(resolve, 180))
+    }
+    setIsStreaming(false)
+    setStreamingSteps([])
+  }, [voiceEnabled])
+
   const replaySession = useCallback(async (session?: TestSession) => {
     const turnsToReplay = session
       ? session.turnIds.map((turnId) => voiceTurns.find((turn) => turn.id === turnId)).filter((turn): turn is VoiceTurn => Boolean(turn))
@@ -507,7 +572,19 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       const relatedRun = turn.relatedRunIds[0]
       if (relatedRun) setSelectedRunId(relatedRun)
       setReplayState({ playing: true, activeIndex: audioIndex - 1, activeTurnId: turn.id, activeSessionId: session?.id, phase: 'request', visibleTurnCount: turnIndex + 1 })
-      setChatMessages((messages) => [...messages, ...chatMessagesForTurn(turn, turnIndex)])
+      const [userMessage, assistantMessage] = chatMessagesForTurn(turn, turnIndex)
+      setChatMessages((messages) => [...messages, userMessage])
+      setIsStreaming(true)
+      for (let stepIndex = 0; stepIndex < 4; stepIndex += 1) {
+        if (replayStopRef.current) break
+        setStreamingSteps(replayThinkingStepsForTurn(turn, stepIndex))
+        await new Promise((resolve) => window.setTimeout(resolve, 320))
+      }
+      setStreamingSteps(replayThinkingStepsForTurn(turn, 4))
+      await new Promise((resolve) => window.setTimeout(resolve, 80))
+      setIsStreaming(false)
+      setStreamingSteps([])
+      setChatMessages((messages) => [...messages, assistantMessage])
       await new Promise((resolve) => window.setTimeout(resolve, 80))
       scrollSharedChatToBottom()
       await new Promise((resolve) => window.setTimeout(resolve, 900))
@@ -542,6 +619,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     }
 
     setReplayState({ playing: false, activeIndex: -1, phase: 'idle' })
+    setIsStreaming(false)
+    setStreamingSteps([])
     replayStopRef.current = false
     setChatMessages(chatMessagesFromVoiceTurns(turnsToReplay))
   }, [])
@@ -550,6 +629,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     replayStopRef.current = true
     document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]').forEach((audio) => audio.pause())
     setReplayState({ playing: false, activeIndex: -1, phase: 'idle' })
+    setIsStreaming(false)
+    setStreamingSteps([])
     setChatMessages(chatMessagesFromVoiceTurns(voiceTurns))
   }, [])
 
@@ -586,6 +667,10 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             showModeToggle={false}
             messages={chatMessages}
             onMessagesChange={setChatMessages}
+            onSend={handleSend}
+            streamingSteps={streamingSteps}
+            isStreaming={isStreaming}
+            activeBranch="personaplex"
             adapterOptions={{ personaplex: { personaId: 'embry', surface: 'ux-lab/embry-voice' } }}
             context={{
               memory_first: true,
