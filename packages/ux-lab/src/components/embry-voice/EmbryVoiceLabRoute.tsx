@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { CheckCircle2, ChevronDown, ClipboardList, FlaskConical, Mic, PlayCircle, Radio, SearchCode, Volume2, XCircle } from 'lucide-react'
+import { CheckCircle2, ChevronDown, ClipboardList, FlaskConical, Mic, PlayCircle, Radio, SearchCode, XCircle } from 'lucide-react'
 
 type AudioArtifact = {
   id: string
@@ -37,6 +37,7 @@ type VoiceTurn = {
   componentPath: string
   telemetry: { label: string; value: string; warn?: boolean }[]
   audioArtifacts: AudioArtifact[]
+  relatedRunIds: string[]
 }
 
 const fullSuite = '/tmp/chatterbox-fork-agent-out/voice-chat-e2e/voice-chat-e2e-20260703T214538Z-audible-all-v2'
@@ -210,6 +211,7 @@ const voiceTurns: VoiceTurn[] = [
     audioArtifacts: [
       artifact('embry-answer', 'Embry spoken response', '/tmp/chatterbox-fork-agent-out/tau_voice_render_smoke/finished_response.wav'),
     ],
+    relatedRunIds: ['full-audible-suite', 'repeat-stress', 'stream-cancel', 'factory-noise', 'browser-asr-blocker'],
   },
   {
     id: 'one-at-a-time',
@@ -227,6 +229,7 @@ const voiceTurns: VoiceTurn[] = [
     audioArtifacts: [
       artifact('overlap-input', 'Overlapped input', `${fullSuite}/S05-female-distractor/overlap.wav`),
     ],
+    relatedRunIds: ['overlap-boundary', 'personality-audition'],
   },
   {
     id: 'unknown-speaker',
@@ -244,13 +247,63 @@ const voiceTurns: VoiceTurn[] = [
     audioArtifacts: [
       artifact('identity-clarification', 'Identity clarification', `${fullSuite}/S03-unknown-speaker/identity-clarification-render.wav`),
     ],
+    relatedRunIds: ['personality-audition'],
   },
 ]
 
 export function EmbryVoiceLabRoute(): JSX.Element {
   const [selectedRunId, setSelectedRunId] = useState<string>(sanityRuns[0]?.id ?? '')
+  const [replayState, setReplayState] = useState<{ playing: boolean; activeIndex: number }>({ playing: false, activeIndex: -1 })
+  const replayStopRef = useRef(false)
+  const receiptRefs = useRef<Record<string, HTMLElement | null>>({})
   const selectedRun = sanityRuns.find((run) => run.id === selectedRunId)
   const gateSummary = useMemo(() => summarizeGates(sanityRuns), [])
+  const sessionArtifacts = useMemo(() => voiceTurns.flatMap((turn) => turn.audioArtifacts.map((audio) => ({ ...audio, turnId: turn.id }))), [])
+
+  const focusRun = useCallback((runId: string) => {
+    setSelectedRunId(runId)
+    const turn = voiceTurns.find((candidate) => candidate.relatedRunIds.includes(runId))
+    const node = turn ? receiptRefs.current[turn.id] : undefined
+    node?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, [])
+
+  const replaySession = useCallback(async () => {
+    const audioElements = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
+    if (!audioElements.length) return
+    replayStopRef.current = false
+    setReplayState({ playing: true, activeIndex: 0 })
+
+    for (let index = 0; index < audioElements.length; index += 1) {
+      if (replayStopRef.current) break
+      const audio = audioElements[index]
+      setReplayState({ playing: true, activeIndex: index })
+      audio.currentTime = 0
+      try {
+        await audio.play()
+        await new Promise<void>((resolve) => {
+          const finish = (): void => {
+            audio.removeEventListener('ended', finish)
+            audio.removeEventListener('pause', finish)
+            resolve()
+          }
+          audio.addEventListener('ended', finish, { once: true })
+          audio.addEventListener('pause', finish, { once: true })
+        })
+      } catch {
+        await new Promise((resolve) => window.setTimeout(resolve, 300))
+      }
+      await new Promise((resolve) => window.setTimeout(resolve, 450))
+    }
+
+    setReplayState({ playing: false, activeIndex: -1 })
+    replayStopRef.current = false
+  }, [])
+
+  const stopReplay = useCallback(() => {
+    replayStopRef.current = true
+    document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]').forEach((audio) => audio.pause())
+    setReplayState({ playing: false, activeIndex: -1 })
+  }, [])
 
   return (
     <section data-qid="embry-voice:route" className="h-full min-h-0 grid grid-rows-[auto_minmax(0,1fr)] bg-[#0f0f12] text-zinc-100">
@@ -259,38 +312,45 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           <div className="flex items-center gap-2 text-lg font-bold"><Mic className="w-5 h-5" />Embry Voice Chat</div>
           <div className="mt-1 text-xs text-slate-400">Simultaneous chat text, Chatterbox audio, and receipt-backed sanity checks.</div>
         </div>
-        <StatusPill label="memory-first voice lab" tone="good" />
+        <div className="flex shrink-0 flex-wrap justify-end gap-1.5">
+          <StatusPill label="memory-first voice lab" tone="good" />
+          <StatusPill label="Chatterbox Turbo" />
+          <StatusPill label="Embry" />
+        </div>
       </header>
 
-      <div className="min-h-0 grid grid-cols-[minmax(420px,1fr)_minmax(380px,0.86fr)] gap-3 p-3">
-        <ConversationReceipts selectedRun={selectedRun} onClearInspect={() => setSelectedRunId('')} />
+      <div className="min-h-0 grid grid-cols-[minmax(560px,1fr)_320px] gap-3 p-3">
+        <ConversationReceipts
+          selectedRun={selectedRun}
+          replayState={replayState}
+          sessionArtifacts={sessionArtifacts}
+          receiptRefs={receiptRefs}
+          onReplay={replaySession}
+          onStopReplay={stopReplay}
+          onClearInspect={() => setSelectedRunId('')}
+        />
 
-        <aside className="min-h-0 grid grid-rows-[minmax(0,1fr)_minmax(230px,0.84fr)] gap-3">
+        <aside className="min-h-0">
           <Panel title="Sanity Check Registry" icon={<FlaskConical className="w-4 h-4" />}>
             <GateDashboard summary={gateSummary} />
             <RegistryGroup
               title="Active"
               runs={sanityRuns.filter((run) => run.active)}
               selectedRunId={selectedRunId}
-              onInspect={setSelectedRunId}
+              onInspect={focusRun}
             />
             <RegistryGroup
               title="Historical"
               runs={sanityRuns.filter((run) => run.ok && !run.active)}
               selectedRunId={selectedRunId}
-              onInspect={setSelectedRunId}
+              onInspect={focusRun}
             />
             <RegistryGroup
               title="Failed"
               runs={sanityRuns.filter((run) => !run.ok)}
               selectedRunId={selectedRunId}
-              onInspect={setSelectedRunId}
+              onInspect={focusRun}
             />
-          </Panel>
-          <Panel title="Conversation Audio" icon={<Volume2 className="w-4 h-4" />}>
-            <div className="grid gap-2">
-              {voiceTurns.map((turn) => <VoiceTurnCard key={turn.id} turn={turn} />)}
-            </div>
           </Panel>
         </aside>
       </div>
@@ -298,22 +358,60 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   )
 }
 
-function ConversationReceipts({ selectedRun, onClearInspect }: { selectedRun?: SanityRun; onClearInspect: () => void }): JSX.Element {
+function ConversationReceipts({
+  selectedRun,
+  replayState,
+  sessionArtifacts,
+  receiptRefs,
+  onReplay,
+  onStopReplay,
+  onClearInspect,
+}: {
+  selectedRun?: SanityRun
+  replayState: { playing: boolean; activeIndex: number }
+  sessionArtifacts: Array<AudioArtifact & { turnId: string }>
+  receiptRefs: React.MutableRefObject<Record<string, HTMLElement | null>>
+  onReplay: () => void
+  onStopReplay: () => void
+  onClearInspect: () => void
+}): JSX.Element {
+  const selectedTurnId = selectedRun ? voiceTurns.find((turn) => turn.relatedRunIds.includes(selectedRun.id))?.id : undefined
   return (
     <section data-qid="embry-voice:receipt-feed" className="min-h-0 grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden border border-zinc-800 bg-black/35">
       <header className="flex items-center justify-between gap-3 border-b border-zinc-800 px-4 py-3">
         <div>
           <div className="flex items-center gap-2 text-sm font-bold text-zinc-100"><ClipboardList className="h-4 w-4" />Voice Turn Receipts</div>
-          <div className="mt-1 text-[11px] text-zinc-500">Text and spoken output render together; every turn carries metadata, telemetry, and receipt paths.</div>
+          <div className="mt-1 text-[11px] text-zinc-500">Master timeline: transcript, audio, metadata, and receipts live in each turn.</div>
         </div>
-        <StatusPill label="LIVE_RENDER" tone="good" />
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            onClick={replayState.playing ? onStopReplay : onReplay}
+            className="inline-flex min-h-8 items-center gap-2 border border-emerald-300/30 bg-emerald-400/10 px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-emerald-100 hover:bg-emerald-400/20"
+          >
+            <PlayCircle className="h-3.5 w-3.5" />
+            {replayState.playing ? 'Stop Replay' : 'Replay Session'}
+          </button>
+          <StatusPill label="LIVE_RENDER" tone="good" />
+        </div>
       </header>
+      <TimelineProgress artifacts={sessionArtifacts} activeIndex={replayState.activeIndex} />
       <div className="min-h-0 overflow-auto p-4">
         <AnimatePresence initial={false}>
-          {selectedRun && <InspectReceipt key={selectedRun.id} run={selectedRun} onClear={onClearInspect} />}
+          {selectedRun && !selectedTurnId && <InspectReceipt key={selectedRun.id} run={selectedRun} onClear={onClearInspect} />}
         </AnimatePresence>
         <div className="grid gap-3">
-          {voiceTurns.map((turn) => <EmbryReceipt key={turn.id} turn={turn} />)}
+          {voiceTurns.map((turn) => (
+            <EmbryReceipt
+              key={turn.id}
+              turn={turn}
+              selectedRun={selectedTurnId === turn.id ? selectedRun : undefined}
+              activeAudioIndex={replayState.activeIndex}
+              allArtifacts={sessionArtifacts}
+              refSetter={(node) => { receiptRefs.current[turn.id] = node }}
+              onClearInspect={onClearInspect}
+            />
+          ))}
         </div>
       </div>
       <footer className="border-t border-zinc-800 p-3">
@@ -328,16 +426,50 @@ function ConversationReceipts({ selectedRun, onClearInspect }: { selectedRun?: S
   )
 }
 
-function EmbryReceipt({ turn }: { turn: VoiceTurn }): JSX.Element {
+function TimelineProgress({ artifacts, activeIndex }: { artifacts: Array<AudioArtifact & { turnId: string }>; activeIndex: number }): JSX.Element {
+  return (
+    <div data-qid="embry-voice:timeline-progress" className="border-b border-zinc-800 px-4 py-2">
+      <div className="flex items-center gap-1">
+        {artifacts.map((artifact, index) => (
+          <div
+            key={`${artifact.turnId}:${artifact.id}`}
+            title={artifact.label}
+            className={`h-1.5 flex-1 ${index === activeIndex ? 'bg-emerald-300' : index < activeIndex ? 'bg-emerald-700/60' : 'bg-zinc-800'}`}
+          />
+        ))}
+      </div>
+      <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.16em] text-zinc-600">
+        {activeIndex >= 0 ? `replay_audio_${activeIndex + 1}_of_${artifacts.length}` : `${artifacts.length}_audio_artifacts_ready`}
+      </div>
+    </div>
+  )
+}
+
+function EmbryReceipt({
+  turn,
+  selectedRun,
+  activeAudioIndex,
+  allArtifacts,
+  refSetter,
+  onClearInspect,
+}: {
+  turn: VoiceTurn
+  selectedRun?: SanityRun
+  activeAudioIndex: number
+  allArtifacts: Array<AudioArtifact & { turnId: string }>
+  refSetter: (node: HTMLElement | null) => void
+  onClearInspect: () => void
+}): JSX.Element {
   const reducedMotion = useReducedMotion()
   const warn = turn.telemetry.some((item) => item.warn)
   return (
     <motion.article
       data-qid="embry-voice:receipt-card"
+      ref={refSetter}
       initial={reducedMotion ? false : { opacity: 0, y: 5 }}
       animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ duration: 0.15, ease: 'easeInOut' }}
-      className={`border bg-zinc-950/55 p-4 shadow-none ${warn ? 'border-orange-400/60' : 'border-zinc-800'}`}
+      className={`border bg-zinc-950/55 p-4 shadow-none ${selectedRun ? 'border-cyan-400/60' : warn ? 'border-orange-400/60' : 'border-zinc-800'}`}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500">
@@ -361,7 +493,10 @@ function EmbryReceipt({ turn }: { turn: VoiceTurn }): JSX.Element {
         {turn.memoryAction && <StatusPill label={`memory ${turn.memoryAction}`} />}
         {turn.telemetry.map((item) => <StatusPill key={`${item.label}:${item.value}`} label={`${item.label}: ${item.value}`} tone={item.warn ? 'warn' : undefined} />)}
       </div>
-      <AudioList artifacts={turn.audioArtifacts} />
+      <AudioList artifacts={turn.audioArtifacts} activeAudioIndex={activeAudioIndex} allArtifacts={allArtifacts} />
+      <AnimatePresence initial={false}>
+        {selectedRun && <InspectReceipt key={selectedRun.id} run={selectedRun} onClear={onClearInspect} compact />}
+      </AnimatePresence>
       <div className="mt-3 border-t border-zinc-800 pt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-zinc-500">
         Ran {turn.componentPath} | {turn.receiptPath}
       </div>
@@ -369,7 +504,7 @@ function EmbryReceipt({ turn }: { turn: VoiceTurn }): JSX.Element {
   )
 }
 
-function InspectReceipt({ run, onClear }: { run: SanityRun; onClear: () => void }): JSX.Element {
+function InspectReceipt({ run, onClear, compact = false }: { run: SanityRun; onClear: () => void; compact?: boolean }): JSX.Element {
   const reducedMotion = useReducedMotion()
   const trace = {
     id: run.id,
@@ -389,7 +524,7 @@ function InspectReceipt({ run, onClear }: { run: SanityRun; onClear: () => void 
       animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       exit={reducedMotion ? undefined : { opacity: 0, y: -4 }}
       transition={{ duration: 0.15, ease: 'easeInOut' }}
-      className="mb-4 border border-cyan-400/40 bg-cyan-950/10 p-4"
+      className={`${compact ? 'mt-3' : 'mb-4'} border border-cyan-400/40 bg-cyan-950/10 p-4`}
     >
       <div className="flex items-start justify-between gap-3">
         <div>
@@ -398,7 +533,7 @@ function InspectReceipt({ run, onClear }: { run: SanityRun; onClear: () => void 
         </div>
         <button type="button" onClick={onClear} className="border border-cyan-300/20 px-2 py-1 font-mono text-[10px] uppercase text-cyan-200 hover:bg-cyan-300/10">Close</button>
       </div>
-      <pre className="mt-3 max-h-56 overflow-auto border border-cyan-300/15 bg-black/60 p-3 text-[11px] leading-relaxed text-cyan-50">{JSON.stringify(trace, null, 2)}</pre>
+      <pre className={`${compact ? 'max-h-44' : 'max-h-56'} mt-3 overflow-auto border border-cyan-300/15 bg-black/60 p-3 text-[11px] leading-relaxed text-cyan-50`}>{JSON.stringify(trace, null, 2)}</pre>
     </motion.article>
   )
 }
@@ -479,7 +614,6 @@ function SanityCard({ run, selected, onInspect }: { run: SanityRun; selected: bo
               <div>proves: {run.proves.join('; ')}</div>
               <div>does_not_prove: {run.doesNotProve.join('; ')}</div>
             </div>
-            {run.audioArtifacts && <AudioList artifacts={run.audioArtifacts} />}
           </motion.div>
         )}
       </AnimatePresence>
@@ -501,29 +635,21 @@ function GateList({ gates }: { gates: SanityRun['gates'] }): JSX.Element {
   )
 }
 
-function VoiceTurnCard({ turn }: { turn: VoiceTurn }): JSX.Element {
+function AudioList({
+  artifacts,
+  activeAudioIndex,
+  allArtifacts,
+}: {
+  artifacts: AudioArtifact[]
+  activeAudioIndex?: number
+  allArtifacts?: Array<AudioArtifact & { turnId: string }>
+}): JSX.Element {
   return (
-    <article data-qid="embry-voice:turn-card" className="border border-zinc-800 bg-black/30 p-3">
-      <div className="text-sm font-bold text-slate-100">{turn.userText}</div>
-      <div className="mt-1 text-sm leading-relaxed text-slate-300">{turn.assistantText}</div>
-      <div className="mt-2 flex flex-wrap gap-1.5">
-        {turn.speaker && <StatusPill label={`speaker ${turn.speaker}`} />}
-        {turn.tone && <StatusPill label={turn.tone} />}
-        {turn.memoryAction && <StatusPill label={`memory ${turn.memoryAction}`} />}
-      </div>
-      <AudioList artifacts={turn.audioArtifacts} />
-      <div className="mt-2 break-words font-mono text-[10px] uppercase tracking-[0.1em] text-slate-500">Ran {turn.componentPath} | {turn.receiptPath}</div>
-    </article>
-  )
-}
-
-function AudioList({ artifacts }: { artifacts: AudioArtifact[] }): JSX.Element {
-  return (
-    <div className="mt-2 grid gap-2">
+    <div data-qid="embry-voice:embedded-audio" className="mt-3 grid gap-2">
       {artifacts.map((artifact) => (
-        <div key={artifact.id} className="grid gap-1">
+        <div key={artifact.id} className={`grid gap-1 border p-2 ${allArtifacts?.[activeAudioIndex ?? -1]?.id === artifact.id ? 'border-emerald-300/60 bg-emerald-400/10' : 'border-zinc-800 bg-black/20'}`}>
           <div className="flex items-center gap-1.5 text-xs text-slate-300"><PlayCircle className="h-3.5 w-3.5" />{artifact.label}</div>
-          <audio controls preload="metadata" src={artifact.url} className="h-8 w-full" />
+          <audio data-embry-session-audio="true" controls preload="metadata" src={artifact.url} className="h-8 w-full" />
         </div>
       ))}
     </div>
