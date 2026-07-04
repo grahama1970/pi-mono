@@ -49,6 +49,7 @@ const PdfLab = React.lazy(() => import('./components/pdf-lab/PdfLabView').then(m
 const PdfLabInitialSweepProof = React.lazy(() => import('./components/pdf-lab/InitialSweepStaticProof').then(m => ({ default: m.InitialSweepStaticProof })));
 const PdfLabParityAuditProof = React.lazy(() => import('./components/pdf-lab/ParityAuditStaticProof').then(m => ({ default: m.ParityAuditStaticProof })));
 const WatchReportView = React.lazy(() => import('./components/watch/WatchReportView').then(m => ({ default: m.WatchReportView })));
+const EmbryVoiceLabRoute = React.lazy(() => import('./components/embry-voice/EmbryVoiceLabRoute').then(m => ({ default: m.EmbryVoiceLabRoute })));
 const HumBakeoffView = React.lazy(() => import('./components/hum/HumBakeoffView').then(m => ({ default: m.HumBakeoffView })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { TestingPanel } from './components/TestingPanel';
@@ -309,6 +310,7 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
           {projectId === 'pdf-lab' && <PdfLab initialSubpath={subpath} />}
           {projectId === 'scillm' && <ScillmWorkspace initialTab={subpath} />}
           {projectId === 'watch' && <WatchReportView />}
+          {projectId === 'embry-voice' && <EmbryVoiceLabRoute />}
           {projectId === 'hum-bakeoff' && <HumBakeoffView />}
           {projectId === 'hum' && (
             <div className="w-full h-full">
@@ -320,7 +322,7 @@ const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string
               <HackEvolveMonitor />
             </div>
           )}
-          {!['ux-lab', 'sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'pdf-lab', 'lean4-lemma', 'scillm', 'watch', 'hum-bakeoff', 'hum', 'hack'].includes(projectId) && (
+          {!['ux-lab', 'sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture', 'embry-terminal', 'datalake-explorer', 'pdf-lab', 'lean4-lemma', 'scillm', 'watch', 'embry-voice', 'hum-bakeoff', 'hum', 'hack'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
             </div>
@@ -992,6 +994,7 @@ const ProjectSidebar = ({
     { id: 'ux-lab', title: 'Global Chat', subtitle: 'Self-contained shared chat surface (skill-owned)', date: '2026-06-24', type: 'desktop' as const },
     { id: 'sparta-explorer', title: 'SPARTA Explorer', subtitle: 'Security knowledge graph', date: '2026-03-22', type: 'desktop' as const },
     { id: 'watch', title: 'Watch', subtitle: 'Question-driven movie evidence report', date: '2026-06-18', type: 'desktop' as const },
+    { id: 'embry-voice', title: 'Embry Voice', subtitle: 'Memory-first chat, Chatterbox audio, and real sanity checks', date: '2026-07-04', type: 'desktop' as const },
     { id: 'hum-bakeoff', title: 'Hum Bakeoff', subtitle: 'Embry STS guide and voice controls', date: '2026-06-20', type: 'desktop' as const },
     { id: 'hack', title: 'Hack Evolve Monitor', subtitle: 'Greybox hardening campaign UX', date: '2026-05-06', type: 'desktop' as const },
     { id: 'binary-explorer', title: 'Binary Explorer', subtitle: 'ELF binary analysis', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/binary-explorer/stitch/6d81147866c74cbd8e20fcf020f3a17e.png' },
