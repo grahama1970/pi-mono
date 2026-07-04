@@ -6,6 +6,10 @@ import { createReadStream, mkdirSync, readFileSync, statSync, writeFileSync, exi
 import type { Plugin } from 'vite'
 import { transportReviewBundlePlugin } from './plugins/transportReviewBundlePlugin'
 
+const uxLabApiPort = Number(process.env.UX_LAB_API_PORT ?? process.env.PORT ?? 3001)
+const uxLabApiTarget = `http://localhost:${uxLabApiPort}`
+const uxLabWsTarget = `ws://localhost:${uxLabApiPort}`
+
 function chatterboxArtifactsPlugin(): Plugin {
   const ROOT = '/tmp/chatterbox-fork-agent-out'
   return {
@@ -168,6 +172,8 @@ export default defineConfig({
     host: '127.0.0.1',
     port: 3000,
     watch: {
+      usePolling: process.env.UX_LAB_USE_POLLING !== '0',
+      interval: Number(process.env.UX_LAB_WATCH_INTERVAL_MS ?? 1000),
       ignored: [
         '**/node_modules/**',
         '**/.git/**',
@@ -183,19 +189,19 @@ export default defineConfig({
     },
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: uxLabApiTarget,
         changeOrigin: true,
       },
       '/artifacts': {
-        target: 'http://localhost:3001',
+        target: uxLabApiTarget,
         changeOrigin: true,
       },
       '/ws': {
-        target: 'ws://localhost:3001',
+        target: uxLabWsTarget,
         ws: true,
       },
       '/test-results': {
-        target: 'http://localhost:3001',
+        target: uxLabApiTarget,
         changeOrigin: true,
       },
     },

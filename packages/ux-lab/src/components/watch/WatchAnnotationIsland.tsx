@@ -846,7 +846,7 @@ export function WatchAnnotationIsland({
           const leftDistance = Math.abs(left.keyframeTimeSeconds - candidate.timeSeconds)
           const rightDistance = Math.abs(right.keyframeTimeSeconds - candidate.timeSeconds)
           if (leftDistance !== rightDistance) return leftDistance - rightDistance
-          return right.evidenceCount - left.evidenceCount
+          return (right.evidenceCount ?? 0) - (left.evidenceCount ?? 0)
         })[0]
       if (propagatedAssignment && !isRejected(candidate, propagatedAssignment)) {
         const {
