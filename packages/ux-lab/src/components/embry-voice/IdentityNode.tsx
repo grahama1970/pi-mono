@@ -1,5 +1,6 @@
 import { Copy } from 'lucide-react'
 import { EmbryVoiceOrb, type EmbryVoiceStatus } from './EmbryVoiceOrb'
+import type { EmbryVoiceEnvelope } from '../../hooks/useEmbryPlaybackAudioLevel'
 import { buildIdentityNodeViewModel } from './identityNodeState'
 
 export interface IdentityNodeProps {
@@ -14,6 +15,9 @@ export interface IdentityNodeProps {
   phaseSpeedMs?: number
   speechAudioElement?: HTMLMediaElement | null
   speechSourceId?: string
+  speechAudioUrl?: string
+  speechStartedAtMs?: number
+  speechEnvelope?: EmbryVoiceEnvelope
 }
 
 function readIdentityPanelPacket(): string {
@@ -82,6 +86,9 @@ export function IdentityNode({
   phaseSpeedMs,
   speechAudioElement,
   speechSourceId,
+  speechAudioUrl,
+  speechStartedAtMs,
+  speechEnvelope,
 }: IdentityNodeProps): JSX.Element {
   const view = buildIdentityNodeViewModel({ voiceStatus, isStreaming, tone })
   const resolvedOrbSize = orbSize ?? (compact ? Math.max(44, Math.min(72, height - 28)) : 220)
@@ -117,6 +124,9 @@ export function IdentityNode({
           signal={view.signal}
           speechAudioElement={speechAudioElement}
           speechSourceId={speechSourceId}
+          speechAudioUrl={speechAudioUrl}
+          speechStartedAtMs={speechStartedAtMs}
+          speechEnvelope={speechEnvelope}
           size={resolvedOrbSize}
           surface={compact ? 'toolbar' : 'rail'}
           phaseSpeedMs={phaseSpeedMs}

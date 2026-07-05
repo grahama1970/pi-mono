@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useEmbryOrbContainerSize } from '../../hooks/useEmbryOrbContainerSize'
-import { useEmbryPlaybackAudioBands, type EmbryPlaybackAudioBands } from '../../hooks/useEmbryPlaybackAudioLevel'
+import { useEmbryDecodedAudioBands, useEmbryEnvelopeAudioBands, useEmbryPlaybackAudioBands, type EmbryPlaybackAudioBands, type EmbryVoiceEnvelope } from '../../hooks/useEmbryPlaybackAudioLevel'
 import { resolveEmbryVisualState } from './embryOrbState'
 import type { IdentitySignal } from './identityNodeState'
 
@@ -392,6 +392,9 @@ export function EmbryVoiceOrb({
   signal,
   speechAudioElement,
   speechSourceId,
+  speechAudioUrl,
+  speechStartedAtMs,
+  speechEnvelope,
   size: sizeProp = 96,
   surface = 'rail',
   phaseSpeedMs,
@@ -403,6 +406,9 @@ export function EmbryVoiceOrb({
   signal?: IdentitySignal
   speechAudioElement?: HTMLMediaElement | null
   speechSourceId?: string
+  speechAudioUrl?: string
+  speechStartedAtMs?: number
+  speechEnvelope?: EmbryVoiceEnvelope
   size?: number
   surface?: 'rail' | 'header' | 'toolbar'
   fillCanvas?: boolean
@@ -435,7 +441,11 @@ export function EmbryVoiceOrb({
     ? 'idle'
     : resolveEmbryVisualState({ voiceStatus, isStreaming, tone, signal })
   const reducedMotion = false
-  const audio = useEmbryPlaybackAudioBands(visualState === 'speaking', speechAudioElement)
+  const mediaAudio = useEmbryPlaybackAudioBands(visualState === 'speaking', speechAudioElement)
+  const envelopeAudio = useEmbryEnvelopeAudioBands(visualState === 'speaking', speechEnvelope, speechStartedAtMs)
+  const decodedAudio = useEmbryDecodedAudioBands(visualState === 'speaking', speechAudioUrl, speechStartedAtMs)
+  const hasServerEnvelope = Boolean(speechEnvelope?.frames.length)
+  const audio = hasServerEnvelope ? envelopeAudio : mediaAudio.level > 0.002 ? mediaAudio : decodedAudio
   const speechLevel = visualState === 'speaking' ? audio.level : 0
   const speechRingScale = 1 + speechLevel * 0.16 + audio.bass * 0.035
   const speechRingOpacity = Math.min(0.9, 0.12 + speechLevel * 1.8)
@@ -505,7 +515,10 @@ export function EmbryVoiceOrb({
       data-embry-audio-treble={audio.treble.toFixed(3)}
       data-embry-phase-speed-ms={normalizedPhaseSpeedMs}
       data-embry-speech-source-id={speechSourceId ?? ''}
-      data-embry-speech-bound={speechAudioElement ? 'true' : 'false'}
+      data-embry-speech-bound={speechAudioElement || hasServerEnvelope ? 'true' : 'false'}
+      data-embry-decoded-source={speechAudioUrl ?? ''}
+      data-embry-envelope-frames={speechEnvelope?.frames.length ?? 0}
+      data-embry-orb-authority={hasServerEnvelope ? 'server-envelope' : speechAudioElement ? 'browser-analysis' : speechAudioUrl ? 'decoded-wav' : 'none'}
       style={{
         position: 'relative',
         lineHeight: 0,

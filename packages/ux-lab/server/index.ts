@@ -10962,6 +10962,8 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
     const text = typeof req.body?.text === 'string' ? req.body.text.trim() : ''
     const tone = normalizeChatterboxTone(req.body?.tone)
     const deliveryStage = normalizeChatterboxDeliveryStage(req.body?.deliveryStage, tone)
+    const playLocal = req.body?.playLocal === true
+    const localPlaybackTarget = typeof req.body?.localPlaybackTarget === 'string' ? req.body.localPlaybackTarget.trim() : ''
     if (!text) return res.status(400).json({ status: 'error', error: 'text required' })
     if (text.length > 1200) return res.status(400).json({ status: 'error', error: 'text exceeds 1200 characters' })
 
@@ -11011,7 +11013,41 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
     const textHash = createHash('sha256').update(text).digest('hex').slice(0, 12)
     const audioPath = resolve(outDir, `${createdAt.replace(/[:.]/g, '-')}-${textHash}.wav`)
     await copyFile(generatedPath, audioPath)
+    const audioSha256 = createHash('sha256').update(await readFile(audioPath)).digest('hex')
+    const voiceEnvelope = await buildChatterboxVoiceEnvelope(audioPath)
     const receiptPath = audioPath.replace(/\.wav$/i, '.json')
+    let localPlayback: JsonRecord | null = null
+    if (playLocal) {
+      const targetArgUsed = Boolean(localPlaybackTarget && !['auto', 'default'].includes(localPlaybackTarget))
+      const args = targetArgUsed ? ['--target', localPlaybackTarget, audioPath] : [audioPath]
+      const startedAtEpochMs = Date.now()
+      const child = spawn('pw-play', args, {
+        detached: true,
+        stdio: 'ignore',
+      })
+      child.unref()
+      localPlayback = {
+        requested: true,
+        driver: 'pipewire-pw-play',
+        command: 'pw-play',
+        target: targetArgUsed ? localPlaybackTarget : 'auto',
+        targetArgUsed,
+        pid: child.pid,
+        startedAtEpochMs,
+      }
+    }
+    const audioUrl = `/chatterbox-artifacts/${audioPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`
+    const receiptUrl = `/chatterbox-artifacts/${receiptPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`
+    const audioAuthority = {
+      authority: 'server-chatterbox-wav-envelope-v1',
+      artifactId: textHash,
+      url: audioUrl,
+      path: audioPath,
+      sha256: audioSha256,
+      durationMs: voiceEnvelope.durationMs,
+      localPlayback,
+      envelope: voiceEnvelope,
+    }
     const receipt = {
       schema: 'ux_lab.embry_voice.direct_speak_receipt.v1',
       created_at: createdAt,
@@ -11026,6 +11062,8 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
       ref_audio: chatterboxRefAudio,
       chatterbox: payload,
       output_wav: audioPath,
+      audio_authority: audioAuthority,
+      voice_envelope: voiceEnvelope,
     }
     await writeFile(receiptPath, JSON.stringify(receipt, null, 2))
 
@@ -11036,11 +11074,14 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
       backend: 'chatterbox-direct',
       answerText: cleanText,
       audioPath,
-      audioUrl: `/chatterbox-artifacts/${audioPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`,
+      audioUrl,
       receiptPath,
-      receiptUrl: `/chatterbox-artifacts/${receiptPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`,
+      receiptUrl,
       tone,
       deliveryStage,
+      localPlayback,
+      voiceEnvelope,
+      audioAuthority,
     })
   } catch (err) {
     res.status(500).json({
@@ -11052,6 +11093,113 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
     })
   }
 })
+
+type ChatterboxVoiceEnvelopeFrame = {
+  t: number
+  level: number
+  rms: number
+  peak: number
+  bass: number
+  mid: number
+  treble: number
+}
+
+async function buildChatterboxVoiceEnvelope(audioPath: string): Promise<{
+  version: 1
+  sampleRate: number
+  frameMs: number
+  durationMs: number
+  stats: {
+    rmsP10: number
+    rmsP95: number
+    peakP95: number
+  }
+  frames: ChatterboxVoiceEnvelopeFrame[]
+}> {
+  const sampleRate = 16_000
+  const frameMs = 16
+  const { stdout } = await execFileAsync('ffmpeg', [
+    '-v', 'error',
+    '-i', audioPath,
+    '-ac', '1',
+    '-ar', String(sampleRate),
+    '-f', 's16le',
+    '-acodec', 'pcm_s16le',
+    'pipe:1',
+  ], {
+    encoding: 'buffer',
+    maxBuffer: 32 * 1024 * 1024,
+    timeout: 30_000,
+  } as JsonRecord)
+  const pcm = Buffer.isBuffer(stdout) ? stdout : Buffer.from(stdout as ArrayBuffer)
+  const sampleCount = Math.floor(pcm.length / 2)
+  const frameSamples = Math.max(1, Math.floor(sampleRate * frameMs / 1000))
+  const rawFrames: Array<{ t: number; rms: number; peak: number; deltaAvg: number }> = []
+  for (let start = 0; start < sampleCount; start += frameSamples) {
+    const end = Math.min(sampleCount, start + frameSamples)
+    let sumSquares = 0
+    let peak = 0
+    let deltaSum = 0
+    let previous = start > 0 ? pcm.readInt16LE((start - 1) * 2) / 32768 : 0
+    for (let sample = start; sample < end; sample += 1) {
+      const value = pcm.readInt16LE(sample * 2) / 32768
+      const abs = Math.abs(value)
+      sumSquares += value * value
+      if (abs > peak) peak = abs
+      deltaSum += Math.abs(value - previous)
+      previous = value
+    }
+    const count = Math.max(1, end - start)
+    const rms = Math.sqrt(sumSquares / count)
+    const deltaAvg = deltaSum / count
+    rawFrames.push({
+      t: Number((start / sampleRate).toFixed(3)),
+      rms,
+      peak,
+      deltaAvg,
+    })
+  }
+  const percentile = (values: number[], pct: number): number => {
+    if (!values.length) return 0
+    const sorted = [...values].sort((a, b) => a - b)
+    const index = Math.max(0, Math.min(sorted.length - 1, Math.floor((sorted.length - 1) * pct)))
+    return sorted[index] ?? 0
+  }
+  const rmsValues = rawFrames.map((frame) => frame.rms)
+  const peakValues = rawFrames.map((frame) => frame.peak)
+  const rmsP10 = percentile(rmsValues, 0.1)
+  const rmsP95 = percentile(rmsValues, 0.95)
+  const peakP95 = percentile(peakValues, 0.95)
+  const rmsRange = Math.max(0.0001, rmsP95 - rmsP10)
+  const peakRange = Math.max(0.0001, peakP95)
+  const clamp01 = (value: number): number => Math.max(0, Math.min(1, value))
+  const frames = rawFrames.map((frame) => {
+    const normalizedRms = clamp01((frame.rms - rmsP10) / rmsRange)
+    const normalizedPeak = clamp01(frame.peak / peakRange)
+    const level = clamp01(normalizedRms * 0.7 + normalizedPeak * 0.3)
+    return {
+      t: frame.t,
+      level: Number(level.toFixed(4)),
+      rms: Number(normalizedRms.toFixed(4)),
+      peak: Number(normalizedPeak.toFixed(4)),
+      bass: Number(clamp01(normalizedRms * 0.8 + normalizedPeak * 0.2).toFixed(4)),
+      mid: Number(level.toFixed(4)),
+      treble: Number(clamp01(frame.deltaAvg * 120).toFixed(4)),
+    }
+  })
+  return {
+    version: 1,
+    sampleRate,
+    frameMs,
+    durationMs: Math.round((sampleCount / sampleRate) * 1000),
+    stats: {
+      rmsP10: Number(rmsP10.toFixed(6)),
+      rmsP95: Number(rmsP95.toFixed(6)),
+      peakP95: Number(peakP95.toFixed(6)),
+    },
+    frames,
+  }
+}
 
 app.post('/api/projects/dream/voices/audition', async (req, res) => {
   try {
