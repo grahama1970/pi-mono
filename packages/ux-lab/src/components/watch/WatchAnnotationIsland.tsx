@@ -2889,7 +2889,10 @@ export function WatchAnnotationIsland({
               {status}
             </div>
             {detectorStatus ? (
-              <div style={{ color: detectorStatus.includes('unavailable') ? '#fca5a5' : '#94a3b8', fontSize: 11, lineHeight: 1.35, marginTop: 8 }}>
+              <div
+                data-qid="watch:annotation-island:detector-status"
+                style={{ color: detectorStatus.includes('unavailable') ? '#fca5a5' : '#94a3b8', fontSize: 11, lineHeight: 1.35, marginTop: 8 }}
+              >
                 {detectorStatus}
               </div>
             ) : null}
