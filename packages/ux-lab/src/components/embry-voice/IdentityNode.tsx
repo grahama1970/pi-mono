@@ -9,6 +9,8 @@ export interface IdentityNodeProps {
   speaker?: string
   height?: number
   phaseSpeedMs?: number
+  speechAudioElement?: HTMLMediaElement | null
+  speechSourceId?: string
 }
 
 function readIdentityPanelPacket(): string {
@@ -72,6 +74,8 @@ export function IdentityNode({
   tone,
   height = 260,
   phaseSpeedMs,
+  speechAudioElement,
+  speechSourceId,
 }: IdentityNodeProps): JSX.Element {
   const view = buildIdentityNodeViewModel({ voiceStatus, isStreaming, tone })
 
@@ -101,6 +105,8 @@ export function IdentityNode({
           isStreaming={isStreaming}
           tone={tone}
           signal={view.signal}
+          speechAudioElement={speechAudioElement}
+          speechSourceId={speechSourceId}
           size={220}
           surface="rail"
           phaseSpeedMs={phaseSpeedMs}

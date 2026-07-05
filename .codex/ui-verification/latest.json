@@ -1,10 +1,10 @@
 {
-  "verified_at": "2026-07-05T15:57:08.628927+00:00",
-  "cwd": "/home/graham/workspace/experiments/pi-mono",
+  "verified_at": "2026-07-05T16:25:28.202386+00:00",
+  "cwd": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab",
   "root": "/home/graham/workspace/experiments/pi-mono",
   "output_root": "/tmp/codex-ui-verification/pi-mono",
-  "url": "http://localhost:3002/?orbProof=1783267000#embry-voice",
-  "name": "ux-lab-embry-orb-exact-tab-speech-response",
-  "screenshot": "/tmp/codex-ui-verification/pi-mono/ux-lab-embry-orb-exact-tab-speech-response/20260705T155702Z.png",
-  "read_json": "/tmp/codex-ui-verification/pi-mono/ux-lab-embry-orb-exact-tab-speech-response/20260705T155702Z.read.json"
+  "url": "http://localhost:3002/#embry-voice",
+  "name": "ux-lab-embry-voice-final-state-speaking-proof",
+  "screenshot": "/tmp/codex-ui-verification/pi-mono/ux-lab-embry-voice-final-state-speaking-proof/20260705T162522Z.png",
+  "read_json": "/tmp/codex-ui-verification/pi-mono/ux-lab-embry-voice-final-state-speaking-proof/20260705T162522Z.read.json"
 }

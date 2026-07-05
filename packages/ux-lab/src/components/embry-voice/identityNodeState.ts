@@ -50,8 +50,8 @@ function statusLabelFor(visualState: EmbryState, signal: IdentitySignal): string
 
 function signalFor(visualState: EmbryState, voiceStatus: EmbryVoiceStatus | undefined, tone?: string): IdentitySignal {
 	if (voiceStatus === "off") return "off";
-	if (tone === "identity_clarification" || tone?.includes("clarif")) return "clarify";
 	if (visualState === "speaking") return "speaking";
+	if (tone === "identity_clarification" || tone?.includes("clarif")) return "clarify";
 	if (visualState === "thinking" || visualState === "synthesizing" || visualState === "listening") return "busy";
 	return "ready";
 }

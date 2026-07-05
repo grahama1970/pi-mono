@@ -390,6 +390,8 @@ export function EmbryVoiceOrb({
   isStreaming,
   tone,
   signal,
+  speechAudioElement,
+  speechSourceId,
   size: sizeProp = 96,
   surface = 'rail',
   phaseSpeedMs,
@@ -399,6 +401,8 @@ export function EmbryVoiceOrb({
   audioLevel?: number
   tone?: string
   signal?: IdentitySignal
+  speechAudioElement?: HTMLMediaElement | null
+  speechSourceId?: string
   size?: number
   surface?: 'rail' | 'header'
   fillCanvas?: boolean
@@ -431,7 +435,7 @@ export function EmbryVoiceOrb({
     ? 'idle'
     : resolveEmbryVisualState({ voiceStatus, isStreaming, tone, signal })
   const reducedMotion = false
-  const audio = useEmbryPlaybackAudioBands(visualState === 'speaking')
+  const audio = useEmbryPlaybackAudioBands(visualState === 'speaking', speechAudioElement)
 
   useEffect(() => {
     if (previousVisualStateRef.current !== visualState) {
@@ -497,6 +501,8 @@ export function EmbryVoiceOrb({
       data-embry-audio-mid={audio.mid.toFixed(3)}
       data-embry-audio-treble={audio.treble.toFixed(3)}
       data-embry-phase-speed-ms={normalizedPhaseSpeedMs}
+      data-embry-speech-source-id={speechSourceId ?? ''}
+      data-embry-speech-bound={speechAudioElement ? 'true' : 'false'}
       style={{
         lineHeight: 0,
         width: railBoost ? '100%' : size,

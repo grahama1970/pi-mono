@@ -31,12 +31,6 @@ function analyserFor(audio: HTMLMediaElement): AudioAnalyserEntry {
 	return entry;
 }
 
-function playingSessionAudio(): HTMLAudioElement | undefined {
-	return Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]')).find(
-		(audio) => !audio.paused && !audio.ended && audio.currentTime > 0,
-	);
-}
-
 function averageRange(data: Uint8Array, start: number, end: number): number {
 	let sum = 0;
 	const safeStart = Math.max(0, Math.min(data.length, start));
@@ -59,28 +53,28 @@ function bandsFromAnalyser(analyser: AnalyserNode): EmbryPlaybackAudioBands {
 
 const silentBands: EmbryPlaybackAudioBands = { level: 0, bass: 0, mid: 0, treble: 0 };
 
-export function useEmbryPlaybackAudioBands(enabled = true): EmbryPlaybackAudioBands {
+export function useEmbryPlaybackAudioBands(enabled = true, audioElement?: HTMLMediaElement | null): EmbryPlaybackAudioBands {
 	const [bands, setBands] = useState<EmbryPlaybackAudioBands>(silentBands);
 	const rafRef = useRef(0);
 
 	useEffect(() => {
-		if (!enabled || typeof window === "undefined") {
+		if (!enabled || typeof window === "undefined" || !audioElement) {
 			return;
 		}
 
 		const tick = () => {
-			const playing = playingSessionAudio();
-			setBands(playing ? bandsFromAnalyser(analyserFor(playing).analyser) : silentBands);
+			const playing = !audioElement.paused && !audioElement.ended && audioElement.currentTime > 0;
+			setBands(playing ? bandsFromAnalyser(analyserFor(audioElement).analyser) : silentBands);
 			rafRef.current = requestAnimationFrame(tick);
 		};
 
 		rafRef.current = requestAnimationFrame(tick);
 		return () => cancelAnimationFrame(rafRef.current);
-	}, [enabled]);
+	}, [audioElement, enabled]);
 
-	return enabled ? bands : silentBands;
+	return enabled && audioElement ? bands : silentBands;
 }
 
-export function useEmbryPlaybackAudioLevel(enabled = true): number {
-	return useEmbryPlaybackAudioBands(enabled).level;
+export function useEmbryPlaybackAudioLevel(enabled = true, audioElement?: HTMLMediaElement | null): number {
+	return useEmbryPlaybackAudioBands(enabled, audioElement).level;
 }

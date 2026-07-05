@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { CheckCircle2, ChevronDown, FlaskConical, Folder, Mic, PauseCircle, PlayCircle, Radio, SearchCode, Volume2, XCircle } from 'lucide-react'
+import { CheckCircle2, ChevronDown, FlaskConical, Folder, Mic, PauseCircle, PlayCircle, Radio, SearchCode, XCircle } from 'lucide-react'
 import { LeftPane, LeftPaneSection, useLeftPaneSearch } from '../common/LeftPane'
 import { SharedChatShell } from '../shared-chat/SharedChatShell'
+import { IdentityNode } from './IdentityNode'
 import type { EmbryVoiceStatus } from './EmbryVoiceOrb'
 import { deriveEmbryVoiceStatus } from './embryOrbState'
-import { IdentityNode } from './IdentityNode'
 import type { ChatMessage, StreamingStep } from '../shared-chat/memory-turn'
 
 type AudioArtifact = {
@@ -50,13 +50,11 @@ type ReplayPhase = 'idle' | 'request' | 'thinking' | 'response' | 'complete' | '
 type ReplayState = { playing: boolean; activeIndex: number; activeTurnId?: string; activeSessionId?: string; phase: ReplayPhase; visibleTurnCount?: number }
 type OrbStatusOverride = Exclude<EmbryVoiceStatus, 'off' | 'error'> | null
 type DirectEmbryAudio = { id: string; text: string; url: string; path?: string; receiptUrl?: string }
-type MemoryIntentSnapshot = {
-  action: string
-  confidence?: number
-  speaker: string
-  tone: string
-  occurrence: string
-  source: 'live-memory-intent' | 'fixture-turn'
+type ActiveSpeechSource = {
+  id: string
+  audioElement: HTMLMediaElement
+  source: 'direct' | 'replay' | 'live-turn' | 'visible'
+  text?: string
 }
 
 type TestSession = {
@@ -96,57 +94,6 @@ function firstStringValue(...values: unknown[]): string {
     if (typeof value === 'string' && value.trim()) return value.trim()
   }
   return ''
-}
-
-function firstNumberValue(...values: unknown[]): number | undefined {
-  for (const value of values) {
-    if (typeof value === 'number' && Number.isFinite(value)) return value
-    if (typeof value === 'string' && value.trim() && Number.isFinite(Number(value))) return Number(value)
-  }
-  return undefined
-}
-
-function snapshotFromMemoryPacket(memory: unknown, fallbackTone?: string): MemoryIntentSnapshot | undefined {
-  const packet = asRecord(memory)
-  const intent = asRecord(packet?.intent)
-  if (!intent) return undefined
-  const speakerResolution = asRecord(intent.speaker_resolution)
-  const slots = asRecord(intent.slots)
-  const queryPlan = asRecord(intent.query_plan)
-  const action = firstStringValue(packet?.action, intent.action, intent.intent, intent.route, intent.decision).toUpperCase()
-  return {
-    action: action || 'UNKNOWN',
-    confidence: firstNumberValue(intent.confidence, intent.recall_profile_confidence),
-    speaker: firstStringValue(
-      speakerResolution?.display_name,
-      speakerResolution?.speaker_id,
-      speakerResolution?.status,
-      slots?.speaker,
-      intent.speaker,
-    ) || 'unknown',
-    tone: firstStringValue(intent.tone, slots?.tone, fallbackTone) || 'neutral',
-    occurrence: firstStringValue(
-      queryPlan?.intent_type,
-      queryPlan?.event_type,
-      intent.ui_action,
-      intent.recall_profile,
-      intent.response_mode,
-      intent.classifier_source,
-    ) || 'memory intent',
-    source: 'live-memory-intent',
-  }
-}
-
-function snapshotFromTurn(turn: VoiceTurn): MemoryIntentSnapshot {
-  return {
-    action: turn.memoryAction ?? 'none',
-    speaker: turn.speaker ?? 'unknown',
-    tone: turn.tone ?? 'neutral',
-    occurrence: turn.telemetry.find((entry) => entry.label.toLowerCase().includes('route'))?.value
-      ?? turn.assistantText
-      ?? 'fixture turn',
-    source: 'fixture-turn',
-  }
 }
 
 const sanityRuns: SanityRun[] = [
@@ -408,6 +355,15 @@ const sessionFolders: SessionFolder[] = [
   },
 ]
 
+function sessionTitleForReplay(sessionId?: string): string {
+  if (!sessionId) return 'All seeded Embry voice turns'
+  for (const folder of sessionFolders) {
+    const session = folder.sessions.find((candidate) => candidate.id === sessionId)
+    if (session) return `${folder.title} / ${session.title}`
+  }
+  return sessionId
+}
+
 function turnStatus(turn: VoiceTurn): 'pass' | 'clarify' | 'warn' {
   if (turn.speaker) return 'pass'
   if (turn.memoryAction === 'CLARIFY') return 'clarify'
@@ -627,22 +583,20 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const [replayState, setReplayState] = useState<ReplayState>({ playing: false, activeIndex: -1, phase: 'idle' })
   const [orbStatusOverride, setOrbStatusOverride] = useState<OrbStatusOverride>(null)
   const [orbPhaseSpeedMs, setOrbPhaseSpeedMs] = useState(650)
+  const [activeSpeech, setActiveSpeech] = useState<ActiveSpeechSource | null>(null)
   const [directSpeakBusy, setDirectSpeakBusy] = useState(false)
-  const [liveIntentSnapshot, setLiveIntentSnapshot] = useState<MemoryIntentSnapshot | null>(null)
-  const [intentProbeBusy, setIntentProbeBusy] = useState(false)
   const replayStopRef = useRef(false)
   const directSpeakBusyRef = useRef(false)
   const directPlaybackAudioRef = useRef<HTMLAudioElement | null>(null)
   const directPlaybackRunRef = useRef(0)
+  const activeSpeechIdRef = useRef('')
   const selectedRun = sanityRuns.find((run) => run.id === selectedRunId)
   const selectedTurn = voiceTurns.find((turn) => turn.id === selectedTurnId) ?? voiceTurns[0]
   const gateSummary = useMemo(() => summarizeGates(sanityRuns), [])
   const liveVoiceStatus = deriveEmbryVoiceStatus({ voiceEnabled, replayPhase: replayState.phase })
   const effectiveVoiceStatus = orbStatusOverride ?? liveVoiceStatus
-  const intentSnapshot = liveIntentSnapshot ?? snapshotFromTurn(selectedTurn)
 
   const focusTurn = useCallback((turnId: string, runId?: string) => {
-    setLiveIntentSnapshot(null)
     setSelectedTurnId(turnId)
     if (runId) setSelectedRunId(runId)
     else {
@@ -656,6 +610,19 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     if (turn) focusTurn(turn.id, runId)
     else setSelectedRunId(runId)
   }, [focusTurn])
+
+  const bindActiveSpeech = useCallback((source: ActiveSpeechSource) => {
+    activeSpeechIdRef.current = source.id
+    setActiveSpeech(source)
+    setOrbStatusOverride('speaking')
+  }, [])
+
+  const clearActiveSpeech = useCallback((speechId: string) => {
+    if (activeSpeechIdRef.current !== speechId) return
+    activeSpeechIdRef.current = ''
+    setActiveSpeech(null)
+    setOrbStatusOverride((current) => (current === 'speaking' ? null : current))
+  }, [])
 
   const handleSend = useCallback(async (text: string) => {
     const trimmed = text.trim()
@@ -806,7 +773,6 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             : message
         )))
       }
-      setLiveIntentSnapshot(snapshotFromMemoryPacket(payload.memory, payload.tone) ?? null)
       setChatMessages((messages) => [...messages, assistantMessage])
       setStreamingSteps(Array.isArray(payload.reasoningSteps) ? payload.reasoningSteps as StreamingStep[] : [])
       setReplayState({ playing: false, activeIndex: -1, activeTurnId: turnId, phase: 'response' })
@@ -816,12 +782,21 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         const audios = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
         const latestAudio = audios.at(-1)
         if (!latestAudio) return
+        const speechId = `embry-live-turn-${turnId}`
+        bindActiveSpeech({ id: speechId, audioElement: latestAudio, source: 'live-turn', text: assistantMessage.content })
         latestAudio.currentTime = 0
-        void latestAudio.play().catch(() => undefined)
+        const finish = (): void => {
+          latestAudio.removeEventListener('ended', finish)
+          latestAudio.removeEventListener('pause', finish)
+          clearActiveSpeech(speechId)
+          setReplayState({ playing: false, activeIndex: -1, phase: 'idle' })
+        }
+        latestAudio.addEventListener('ended', finish, { once: true })
+        latestAudio.addEventListener('pause', finish, { once: true })
+        void latestAudio.play().catch(() => {
+          finish()
+        })
       }, 160)
-      window.setTimeout(() => {
-        setReplayState({ playing: false, activeIndex: -1, phase: 'idle' })
-      }, 1600)
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error)
       setChatMessages((messages) => [
@@ -853,12 +828,11 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         },
       ])
       setReplayState({ playing: false, activeIndex: -1, activeTurnId: turnId, phase: 'interrupted' })
-      setLiveIntentSnapshot(null)
     } finally {
       setIsStreaming(false)
       window.setTimeout(() => setStreamingSteps([]), 1200)
     }
-  }, [isStreaming, voiceEnabled])
+  }, [bindActiveSpeech, clearActiveSpeech, isStreaming, voiceEnabled])
 
   const replaySession = useCallback(async (session?: TestSession) => {
     const turnsToReplay = session
@@ -866,7 +840,6 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       : voiceTurns
     if (!turnsToReplay.length) return
     replayStopRef.current = false
-    setLiveIntentSnapshot(null)
     setChatMessages([])
     setReplayState({ playing: true, activeIndex: -1, activeSessionId: session?.id, phase: 'request', visibleTurnCount: 0 })
     if (session?.runIds[0]) setSelectedRunId(session.runIds[0])
@@ -907,6 +880,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           await new Promise((resolve) => window.setTimeout(resolve, 450))
           continue
         }
+        const speechId = `embry-replay-${turn.id}-${artifactIndex}-${audioIndex - 1}`
+        bindActiveSpeech({ id: speechId, audioElement: audio, source: 'replay', text: turn.assistantText })
         audio.currentTime = 0
         try {
           await audio.play()
@@ -914,12 +889,14 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             const finish = (): void => {
               audio.removeEventListener('ended', finish)
               audio.removeEventListener('pause', finish)
+              clearActiveSpeech(speechId)
               resolve()
             }
             audio.addEventListener('ended', finish, { once: true })
             audio.addEventListener('pause', finish, { once: true })
           })
         } catch {
+          clearActiveSpeech(speechId)
           await new Promise((resolve) => window.setTimeout(resolve, 450))
         }
       }
@@ -929,8 +906,10 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     setReplayState({ playing: false, activeIndex: -1, activeSessionId: session?.id, phase: replayStopRef.current ? 'interrupted' : 'complete', visibleTurnCount: turnsToReplay.length })
     setIsStreaming(false)
     setStreamingSteps([])
+    activeSpeechIdRef.current = ''
+    setActiveSpeech(null)
     replayStopRef.current = false
-  }, [])
+  }, [bindActiveSpeech, clearActiveSpeech])
 
   const stopReplay = useCallback(() => {
     replayStopRef.current = true
@@ -938,7 +917,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     setReplayState({ playing: false, activeIndex: -1, phase: 'interrupted' })
     setIsStreaming(false)
     setStreamingSteps([])
-    setLiveIntentSnapshot(null)
+    activeSpeechIdRef.current = ''
+    setActiveSpeech(null)
   }, [])
 
   const playDirectEmbryAudio = useCallback((audioState: DirectEmbryAudio): Promise<void> => {
@@ -962,7 +942,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     audio.style.display = 'none'
     document.body.appendChild(audio)
     directPlaybackAudioRef.current = audio
-    setOrbStatusOverride('speaking')
+    bindActiveSpeech({ id: audioState.id, audioElement: audio, source: 'direct', text: audioState.text })
 
     return new Promise((resolve, reject) => {
       let settled = false
@@ -985,7 +965,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         if (directPlaybackAudioRef.current === audio) directPlaybackAudioRef.current = null
         audio.remove()
         if (directPlaybackRunRef.current === runId) {
-          setOrbStatusOverride((current) => (current === 'speaking' ? null : current))
+          clearActiveSpeech(audioState.id)
           directSpeakBusyRef.current = false
           setDirectSpeakBusy(false)
         }
@@ -1019,7 +999,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       audio.load()
       if (audio.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) startPlayback()
     })
-  }, [])
+  }, [bindActiveSpeech, clearActiveSpeech])
 
   const speakDirectEmbry = useCallback(async (text = 'Embry direct voice test. The orb should move with my voice now.') => {
     const trimmed = text.trim()
@@ -1072,6 +1052,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         audio.remove()
         directPlaybackAudioRef.current = null
       }
+      activeSpeechIdRef.current = ''
+      setActiveSpeech(null)
     }
   }, [])
 
@@ -1087,40 +1069,18 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     const audios = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
     const audio = audios.find((candidate) => candidate.readyState > 0) ?? audios[0]
     if (!audio) return
-    setOrbStatusOverride('speaking')
+    const speechId = `embry-visible-${Date.now()}`
+    bindActiveSpeech({ id: speechId, audioElement: audio, source: 'visible', text: audio.getAttribute('data-embry-direct-text') ?? undefined })
     audio.currentTime = 0
     void audio.play().catch(() => undefined)
     const finish = (): void => {
       audio.removeEventListener('ended', finish)
       audio.removeEventListener('pause', finish)
-      setOrbStatusOverride((current) => (current === 'speaking' ? null : current))
+      clearActiveSpeech(speechId)
     }
     audio.addEventListener('ended', finish, { once: true })
     audio.addEventListener('pause', finish, { once: true })
-  }, [])
-
-  const probeMemoryIntent = useCallback(async () => {
-    if (intentProbeBusy) return
-    setIntentProbeBusy(true)
-    try {
-      const response = await fetch('/api/projects/embry-voice/live-turn', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text: selectedTurn.userText,
-          sessionId: 'ux-lab-embry-voice-intent-probe',
-          voiceEnabled: false,
-          tone: selectedTurn.tone ?? 'neutral_warm',
-        }),
-      })
-      const payload = await response.json().catch(() => null) as { memory?: unknown; tone?: string; status?: string; error?: string } | null
-      if (!response.ok || payload?.status !== 'ok') throw new Error(payload?.error || `Intent probe returned HTTP ${response.status}`)
-      setLiveIntentSnapshot(snapshotFromMemoryPacket(payload.memory, payload.tone ?? selectedTurn.tone) ?? null)
-      setOrbStatusOverride(null)
-    } finally {
-      setIntentProbeBusy(false)
-    }
-  }, [intentProbeBusy, selectedTurn])
+  }, [bindActiveSpeech, clearActiveSpeech])
 
   return (
     <section data-qid="embry-voice:route" className={`h-full min-h-0 grid grid-rows-[auto_minmax(0,1fr)] ${surfaceClass}`}>
@@ -1143,19 +1103,13 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           folders={sessionFolders}
           replayState={replayState}
           voiceStatus={effectiveVoiceStatus}
-          liveVoiceStatus={liveVoiceStatus}
+          isStreaming={isStreaming}
+          tone={effectiveVoiceStatus === 'idle' ? undefined : selectedTurn.tone}
+          activeSpeech={activeSpeech}
           orbStatusOverride={orbStatusOverride}
           orbPhaseSpeedMs={orbPhaseSpeedMs}
-          isStreaming={isStreaming}
-          tone={selectedTurn.tone}
-          intentSnapshot={intentSnapshot}
-          intentProbeBusy={intentProbeBusy}
           onOrbStatusOverride={setOrbStatusOverride}
           onOrbPhaseSpeedChange={setOrbPhaseSpeedMs}
-          onDirectSpeak={speakDirectEmbry}
-          directSpeakBusy={directSpeakBusy}
-          onPlayVoice={playVisibleEmbryVoice}
-          onProbeIntent={probeMemoryIntent}
           onReplay={replaySession}
           onStopReplay={stopReplay}
         />
@@ -1164,8 +1118,18 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           data-qid="embry-voice:evidence-timeline"
           data-replay-phase={replayState.phase}
           data-visible-turn-count={replayState.visibleTurnCount ?? chatMessages.length}
-          className={`min-h-0 overflow-hidden ${panelClass}`}
+          className={`min-h-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden ${panelClass}`}
         >
+          <ChatReplayHeader
+            replayState={replayState}
+            voiceStatus={effectiveVoiceStatus}
+            selectedSessionTitle={sessionTitleForReplay(replayState.activeSessionId)}
+            directSpeakBusy={directSpeakBusy}
+            onReplay={() => replaySession()}
+            onStopReplay={stopReplay}
+            onPlayVoice={playVisibleEmbryVoice}
+            onDirectSpeak={speakDirectEmbry}
+          />
           <SharedChatShell
             projectLabel="Embry Voice"
             shellQid="embry-voice:shared-chat-shell"
@@ -1226,73 +1190,125 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   )
 }
 
+function ChatReplayHeader({
+  replayState,
+  voiceStatus,
+  selectedSessionTitle,
+  directSpeakBusy,
+  onReplay,
+  onStopReplay,
+  onPlayVoice,
+  onDirectSpeak,
+}: {
+  replayState: ReplayState
+  voiceStatus: EmbryVoiceStatus
+  selectedSessionTitle: string
+  directSpeakBusy: boolean
+  onReplay: () => void
+  onStopReplay: () => void
+  onPlayVoice: () => void
+  onDirectSpeak: (text?: string) => Promise<DirectEmbryAudio | null>
+}): JSX.Element {
+  const playing = replayState.playing
+  return (
+    <header
+      data-qid="embry-voice:center-replay-header"
+      className="flex items-center justify-between gap-3 border-b border-[#2d2d31] bg-[#151518] px-4 py-3"
+    >
+      <div className="min-w-0">
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-200">Shared Chat Replay</span>
+          <StatusPill label={playing ? `playing ${replayState.phase}` : `replay ${replayState.phase}`} tone={playing ? 'good' : replayState.phase === 'interrupted' ? 'warn' : undefined} />
+          <StatusPill label={`voice ${voiceStatus}`} tone={voiceStatus === 'speaking' || voiceStatus === 'listening' ? 'good' : undefined} />
+        </div>
+        <div className="mt-1 truncate text-xs text-zinc-400">
+          {selectedSessionTitle} rebuilds in the center chat with human turns, Embry turns, inline memory trace, and Chatterbox audio.
+        </div>
+      </div>
+      <div className="flex shrink-0 items-center gap-2">
+        <button
+          type="button"
+          data-qid="embry-voice:replay-all"
+          onClick={playing ? onStopReplay : onReplay}
+          className={`inline-flex items-center gap-2 border px-3 py-2 text-xs font-semibold ${
+            playing
+              ? 'border-amber-300/40 bg-amber-400/10 text-amber-100'
+              : 'border-emerald-300/40 bg-emerald-400/10 text-emerald-100 hover:bg-emerald-400/15'
+          }`}
+        >
+          {playing ? <PauseCircle className="h-4 w-4" /> : <PlayCircle className="h-4 w-4" />}
+          {playing ? 'Stop Replay' : 'Replay Conversation'}
+        </button>
+        <button
+          type="button"
+          data-qid="embry-voice:play-current-audio"
+          onClick={onPlayVoice}
+          className="inline-flex items-center gap-2 border border-cyan-300/30 bg-cyan-400/10 px-3 py-2 text-xs font-semibold text-cyan-100 hover:bg-cyan-400/15"
+        >
+          <Radio className="h-4 w-4" />
+          Play Visible Voice
+        </button>
+        <button
+          type="button"
+          data-qid="embry-voice:direct-speak"
+          onClick={() => void onDirectSpeak()}
+          disabled={directSpeakBusy}
+          className="inline-flex items-center gap-2 border border-teal-300/30 bg-teal-400/10 px-3 py-2 text-xs font-semibold text-teal-100 hover:bg-teal-400/15 disabled:cursor-wait disabled:opacity-60"
+        >
+          <Mic className="h-4 w-4" />
+          {directSpeakBusy ? 'Rendering...' : 'Live Chatterbox'}
+        </button>
+      </div>
+    </header>
+  )
+}
+
 function SessionController({
   turns,
   folders,
   replayState,
   voiceStatus,
-  liveVoiceStatus,
-  orbStatusOverride,
-  orbPhaseSpeedMs,
   isStreaming,
   tone,
-  intentSnapshot,
-  intentProbeBusy,
-  directSpeakBusy,
+  activeSpeech,
+  orbStatusOverride,
+  orbPhaseSpeedMs,
   onOrbStatusOverride,
   onOrbPhaseSpeedChange,
-  onDirectSpeak,
-  onPlayVoice,
-  onProbeIntent,
   onReplay,
   onStopReplay,
 }: {
   turns: VoiceTurn[]
   folders: SessionFolder[]
   replayState: ReplayState
-  voiceStatus?: EmbryVoiceStatus
-  liveVoiceStatus: EmbryVoiceStatus
+  voiceStatus: EmbryVoiceStatus
+  isStreaming: boolean
+  tone?: string
+  activeSpeech: ActiveSpeechSource | null
   orbStatusOverride: OrbStatusOverride
   orbPhaseSpeedMs: number
-  isStreaming?: boolean
-  tone?: string
-  intentSnapshot: MemoryIntentSnapshot
-  intentProbeBusy: boolean
-  directSpeakBusy: boolean
   onOrbStatusOverride: (status: OrbStatusOverride) => void
-  onOrbPhaseSpeedChange: (speedMs: number) => void
-  onDirectSpeak: (text?: string) => Promise<DirectEmbryAudio | null>
-  onPlayVoice: () => void
-  onProbeIntent: () => void
+  onOrbPhaseSpeedChange: (value: number) => void
   onReplay: (session?: TestSession) => void
   onStopReplay: () => void
 }): JSX.Element {
   const totalAudio = turns.reduce((count, turn) => count + turn.audioArtifacts.length, 0)
   const replayProgress = replayState.playing ? Math.min(100, Math.max(6, ((replayState.visibleTurnCount ?? 0) / Math.max(1, turns.length)) * 100)) : 0
-  const identityTone = orbStatusOverride || intentSnapshot.source !== 'live-memory-intent' ? undefined : tone
   return (
     <div
       data-qid="embry-voice:command-rail"
-      className="flex h-full min-h-0 w-[300px] shrink-0 flex-col border-r border-[#2d2d31] bg-[#121214]"
+      className="flex h-full min-h-0 w-[320px] shrink-0 flex-col border-r border-[#2d2d31] bg-[#121214]"
     >
-      <IdentityNode voiceStatus={voiceStatus} isStreaming={isStreaming} tone={identityTone} phaseSpeedMs={orbPhaseSpeedMs} />
-      <OrbStateLabControls
-        liveVoiceStatus={liveVoiceStatus}
-        overrideStatus={orbStatusOverride}
-        phaseSpeedMs={orbPhaseSpeedMs}
-        intentSnapshot={intentSnapshot}
-        intentProbeBusy={intentProbeBusy}
-        directSpeakBusy={directSpeakBusy}
-        onOverride={onOrbStatusOverride}
-        onPhaseSpeedChange={onOrbPhaseSpeedChange}
-        onDirectSpeak={onDirectSpeak}
-        onPlayVoice={onPlayVoice}
-        onProbeIntent={onProbeIntent}
-      />
+      <div className="border-b border-[#2d2d31] px-4 py-3">
+        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-200">Session Replay Controller</div>
+        <div className="mt-1 text-xs leading-relaxed text-zinc-400">
+          Select a project/session to rebuild the center shared Chat UX in chronological order with human turns, Embry turns, memory trace, and Chatterbox audio.
+        </div>
+      </div>
       <div className="min-h-0 flex-1 [&>div]:h-full">
     <LeftPane
       title="Sessions"
-      width={300}
+      width={320}
       searchable
       collapsible={false}
       searchTestId="embry-voice:sessions:search"
@@ -1321,146 +1337,68 @@ function SessionController({
   )
 }
 
-function OrbStateLabControls({
-  liveVoiceStatus,
-  overrideStatus,
+function OrbPhaseControls({
+  status,
+  effectiveStatus,
   phaseSpeedMs,
-  intentSnapshot,
-  intentProbeBusy,
-  directSpeakBusy,
-  onOverride,
+  onStatusChange,
   onPhaseSpeedChange,
-  onDirectSpeak,
-  onPlayVoice,
-  onProbeIntent,
 }: {
-  liveVoiceStatus: EmbryVoiceStatus
-  overrideStatus: OrbStatusOverride
+  status: OrbStatusOverride
+  effectiveStatus: EmbryVoiceStatus
   phaseSpeedMs: number
-  intentSnapshot: MemoryIntentSnapshot
-  intentProbeBusy: boolean
-  directSpeakBusy: boolean
-  onOverride: (status: OrbStatusOverride) => void
-  onPhaseSpeedChange: (speedMs: number) => void
-  onDirectSpeak: (text?: string) => Promise<DirectEmbryAudio | null>
-  onPlayVoice: () => void
-  onProbeIntent: () => void
+  onStatusChange: (status: OrbStatusOverride) => void
+  onPhaseSpeedChange: (value: number) => void
 }): JSX.Element {
-  const stateOptions: Array<{ label: string; value: OrbStatusOverride }> = [
+  const phases: { label: string; value: OrbStatusOverride }[] = [
     { label: 'Live', value: null },
     { label: 'Idle', value: 'idle' },
     { label: 'Listening', value: 'listening' },
-    { label: 'Processing', value: 'processing' },
+    { label: 'Thinking', value: 'processing' },
     { label: 'Speaking', value: 'speaking' },
   ]
-  const liveResolvedStatus = intentSnapshot.source === 'live-memory-intent' && intentSnapshot.tone.includes('clarif') && liveVoiceStatus === 'idle'
-    ? 'listening'
-    : liveVoiceStatus
-  const activeStatus = overrideStatus ?? liveResolvedStatus
   return (
-    <div
-      data-qid="embry-voice:orb-state-lab"
-      className="border-b border-[#27272a] px-3 py-2"
-    >
-      <div className="flex flex-wrap gap-1">
-        {stateOptions.map((option) => {
-          const active = option.value === overrideStatus
+    <div data-qid="embry-voice:orb-controls" className="border-b border-[#27272a] px-4 py-3">
+      <div className="grid grid-cols-2 gap-2">
+        {phases.map((phase) => {
+          const active = status === phase.value || (phase.value === null && status === null)
           return (
             <button
-              key={option.label}
+              key={phase.label}
               type="button"
-              data-qid={`embry-voice:orb-state:${option.label.toLowerCase()}`}
-              onClick={() => onOverride(option.value)}
-              className={`border px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] transition ${
+              data-qid={`embry-voice:orb-phase:${phase.label.toLowerCase()}`}
+              data-active={active ? 'true' : 'false'}
+              onClick={() => onStatusChange(phase.value)}
+              className={`border px-3 py-2 text-left font-mono text-[10px] font-bold uppercase tracking-[0.16em] transition ${
                 active
                   ? 'border-cyan-300/70 bg-cyan-400/15 text-cyan-100'
-                  : 'border-[#2d2d31] bg-[#121214] text-zinc-400 hover:border-cyan-400/50 hover:text-cyan-100'
+                  : 'border-[#27272a] bg-[#101012] text-zinc-400 hover:border-cyan-300/40 hover:text-cyan-100'
               }`}
             >
-              {option.label}
+              {phase.label}
             </button>
           )
         })}
-        <button
-          type="button"
-          data-qid="embry-voice:orb-play-voice"
-          onClick={onPlayVoice}
-          className="ml-auto inline-flex items-center gap-1 border border-emerald-300/30 bg-emerald-400/10 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-emerald-100 hover:bg-emerald-400/15"
-          title="Play visible Embry Chatterbox audio and drive speaking particles"
-        >
-          <Volume2 className="h-3 w-3" />
-          Voice
-        </button>
-        <button
-          type="button"
-          data-qid="embry-voice:orb-probe-intent"
-          onClick={onProbeIntent}
-          disabled={intentProbeBusy}
-          className="inline-flex items-center gap-1 border border-sky-300/30 bg-sky-400/10 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-sky-100 hover:bg-sky-400/15 disabled:cursor-wait disabled:opacity-60"
-          title="Run selected turn through memory.intent via Embry live-turn without rendering new audio"
-        >
-          {intentProbeBusy ? 'Intent...' : 'Intent'}
-        </button>
-        <button
-          type="button"
-          data-qid="embry-voice:orb-direct-speak"
-          onClick={() => void onDirectSpeak()}
-          disabled={directSpeakBusy}
-          className="inline-flex items-center gap-1 border border-teal-300/30 bg-teal-400/10 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-teal-100 hover:bg-teal-400/15 disabled:cursor-wait disabled:opacity-60"
-          title="Synthesize an exact direct Embry utterance through Chatterbox and drive the orb from that audio"
-        >
-          {directSpeakBusy ? 'Speak...' : 'Direct'}
-        </button>
       </div>
-      <label className="mt-2 grid gap-1 font-mono text-[9px] uppercase tracking-[0.12em] text-zinc-500">
-        <span className="flex items-center justify-between">
+      <label className="mt-3 block">
+        <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
           <span>Phase speed</span>
-          <span data-qid="embry-voice:orb-phase-speed-readout" className="text-cyan-200">{phaseSpeedMs}ms</span>
-        </span>
+          <span data-qid="embry-voice:orb-phase-speed-value" className="text-cyan-200">{phaseSpeedMs}ms</span>
+        </div>
         <input
-          type="range"
-          min={250}
-          max={1400}
-          step={50}
-          value={phaseSpeedMs}
           data-qid="embry-voice:orb-phase-speed"
-          aria-label="Embry orb phase transition speed"
+          type="range"
+          min={180}
+          max={1800}
+          step={10}
+          value={phaseSpeedMs}
           onChange={(event) => onPhaseSpeedChange(Number(event.currentTarget.value))}
-          className="h-1 w-full cursor-pointer accent-cyan-300"
+          className="mt-2 w-full accent-cyan-400"
         />
       </label>
-      <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 font-mono text-[9px] uppercase tracking-[0.12em] text-zinc-500">
-        <div>
-          <dt className="text-zinc-600">State</dt>
-          <dd data-qid="embry-voice:orb-state-readout" className="text-cyan-200">{activeStatus}</dd>
-        </div>
-        <div>
-          <dt className="text-zinc-600">Speaker</dt>
-          <dd data-qid="embry-voice:orb-speaker-readout" className="truncate text-zinc-300">{intentSnapshot.speaker}</dd>
-        </div>
-        <div>
-          <dt className="text-zinc-600">Tone</dt>
-          <dd data-qid="embry-voice:orb-tone-readout" className="truncate text-zinc-300">{intentSnapshot.tone}</dd>
-        </div>
-        <div>
-          <dt className="text-zinc-600">Memory intent</dt>
-          <dd data-qid="embry-voice:orb-intent-readout" className="truncate text-zinc-300">{intentSnapshot.action}</dd>
-        </div>
-        <div>
-          <dt className="text-zinc-600">Occurrence</dt>
-          <dd data-qid="embry-voice:orb-occurrence-readout" className="truncate text-zinc-300">{intentSnapshot.occurrence}</dd>
-        </div>
-        <div>
-          <dt className="text-zinc-600">Confidence</dt>
-          <dd data-qid="embry-voice:orb-confidence-readout" className="truncate text-zinc-300">
-            {intentSnapshot.confidence === undefined ? 'n/a' : intentSnapshot.confidence.toFixed(2)}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-zinc-600">Source</dt>
-          <dd data-qid="embry-voice:orb-intent-source-readout" className="truncate text-zinc-300">{intentSnapshot.source}</dd>
-        </div>
-      </dl>
+      <div data-qid="embry-voice:orb-effective-state" className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
+        Effective: <span className="text-cyan-200">{effectiveStatus}</span>
+      </div>
     </div>
   )
 }
