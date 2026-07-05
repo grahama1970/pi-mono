@@ -106,7 +106,7 @@ function drawFrame(
   time: number,
 ): void {
   ctx.globalCompositeOperation = 'source-over'
-  ctx.fillStyle = 'rgba(12, 12, 14, 0.38)'
+  ctx.fillStyle = 'rgba(12, 12, 14, 0.30)'
   ctx.fillRect(0, 0, MICRO_CANVAS_SIZE, MICRO_CANVAS_SIZE)
 
   const centerX = MICRO_CANVAS_SIZE / 2
@@ -151,12 +151,12 @@ function drawFrame(
     const field = active ? maskProbability(mask, particle.x, particle.y) : 0
     const ignites = field > 0 && particle.fieldAffinity < field * 0.22
     if (ignites) {
-      const targetBrightness = 0.035 + field * 0.085 + audioLevel * 0.08
+      const targetBrightness = 0.04 + field * 0.075 + audioLevel * 0.08
       particle.brightness += (targetBrightness - particle.brightness) * 0.06
       ctx.fillStyle = `rgba(${palette.hot[0]}, ${palette.hot[1]}, ${palette.hot[2]}, ${particle.brightness})`
     } else {
       particle.brightness *= 0.86
-      const alpha = 0.026 + (active ? 0.012 : 0) + audioLevel * 0.045
+      const alpha = 0.12 + (active ? 0.035 : 0) + audioLevel * 0.06
       ctx.fillStyle = `rgba(${palette.base[0]}, ${palette.base[1]}, ${palette.base[2]}, ${alpha})`
     }
     ctx.fillRect(particle.x, particle.y, 1, 1)
@@ -251,8 +251,8 @@ export function EmbryVoiceOrb({
           height: size,
           borderRadius: '50%',
           overflow: 'hidden',
-          border: '1px solid rgba(96, 165, 250, 0.1)',
-          boxShadow: 'inset 0 0 40px rgba(96, 165, 250, 0.05)',
+          border: '1px solid rgba(96, 165, 250, 0.22)',
+          boxShadow: 'inset 0 0 48px rgba(96, 165, 250, 0.12)',
         }}
       >
         <canvas
@@ -262,7 +262,7 @@ export function EmbryVoiceOrb({
           className="embry-voice-orb"
           aria-label={`Embry ${visualState}`}
           role="img"
-          style={{ width: '100%', height: '100%', filter: 'blur(0.5px) contrast(1.2) brightness(1.1)' }}
+          style={{ width: '100%', height: '100%', filter: 'blur(0.3px) contrast(1.35) brightness(1.75)' }}
         />
       </div>
     </div>

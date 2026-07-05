@@ -439,6 +439,7 @@ function chatMessagesForTurn(turn: VoiceTurn, index: number): ChatMessage[] {
   const assistantContent = `${turn.assistantText} ${turn.memoryAction ?? ''} ${turn.tone ?? ''}`.trim()
   const baseMetadata = {
     surface: 'ux-lab/embry-voice',
+    branch: 'embry-voice',
     inputChannel: 'voice',
     turnId: turn.id,
     speaker: turn.speaker ?? 'unknown',
@@ -469,7 +470,6 @@ function chatMessagesForTurn(turn: VoiceTurn, index: number): ChatMessage[] {
       thinkingTrace: memoryReasoningTraceForTurn(turn),
       metadata: {
         ...baseMetadata,
-        branch: 'personaplex',
         disclosureVariant: 'thinking',
         entitySpans: entitySpansForMessage(assistantContent, turn),
         audioArtifacts: turn.audioArtifacts.map((audio) => ({
@@ -490,7 +490,7 @@ function chatMessagesFromVoiceTurns(turns: VoiceTurn[]): ChatMessage[] {
 function replayThinkingStepsForTurn(turn: VoiceTurn, activeIndex: number): StreamingStep[] {
   const definitions: Array<Pick<StreamingStep, 'id' | 'label' | 'detail'>> = [
     {
-      id: 'connecting-personaplex',
+      id: 'speaker-resolve',
       label: 'Resolve speaker identity',
       detail: turn.speaker
         ? `Horus voice resolved as ${turn.speaker}; speaker-scoped memory may be used.`
@@ -517,7 +517,7 @@ function replayThinkingStepsForTurn(turn: VoiceTurn, activeIndex: number): Strea
   return definitions.map((step, index) => ({
     ...step,
     kind: 'step',
-    branch: 'personaplex',
+    branch: 'embry-voice',
     disclosureVariant: 'thinking',
     liveStatusLabel: step.label,
     status: index < activeIndex ? 'completed' : index === activeIndex ? 'running' : 'pending',
@@ -700,6 +700,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         tone?: string
         deliveryStage?: string
         backend?: string
+        entityContext?: unknown
       } | null
       if (!response.ok || payload?.status !== 'ok') {
         throw new Error(payload?.error || `Embry live turn returned HTTP ${response.status}`)
@@ -725,6 +726,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           deliveryStage: payload.deliveryStage,
           receiptPath: payload.receiptPath,
           receiptUrl: payload.receiptUrl,
+          entityContext: payload.entityContext,
+          entity_context: payload.entityContext,
           entities: Array.isArray(payload.entities) ? payload.entities : [],
           recallItems: Array.isArray(payload.recallItems) ? payload.recallItems : [],
           memory: payload.memory,
@@ -737,6 +740,20 @@ export function EmbryVoiceLabRoute(): JSX.Element {
               }]
             : [],
         },
+      }
+      if (payload.entityContext) {
+        setChatMessages((messages) => messages.map((message) => (
+          message.id === `${turnId}:user`
+            ? {
+                ...message,
+                metadata: {
+                  ...(message.metadata ?? {}),
+                  entityContext: payload.entityContext,
+                  entity_context: payload.entityContext,
+                },
+              }
+            : message
+        )))
       }
       setLiveIntentSnapshot(snapshotFromMemoryPacket(payload.memory, payload.tone) ?? null)
       setChatMessages((messages) => [...messages, assistantMessage])
@@ -966,7 +983,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             onSend={handleSend}
             streamingSteps={streamingSteps}
             isStreaming={isStreaming}
-            activeBranch="personaplex"
+            activeBranch="embry-voice"
             adapterOptions={{ personaplex: { personaId: 'embry', surface: 'ux-lab/embry-voice' } }}
             context={{
               memory_first: true,
@@ -1047,7 +1064,7 @@ function SessionController({
 }): JSX.Element {
   const totalAudio = turns.reduce((count, turn) => count + turn.audioArtifacts.length, 0)
   const replayProgress = replayState.playing ? Math.min(100, Math.max(6, ((replayState.visibleTurnCount ?? 0) / Math.max(1, turns.length)) * 100)) : 0
-  const identityTone = orbStatusOverride ? undefined : tone
+  const identityTone = orbStatusOverride || intentSnapshot.source !== 'live-memory-intent' ? undefined : tone
   return (
     <div
       data-qid="embry-voice:command-rail"
@@ -1119,7 +1136,9 @@ function OrbStateLabControls({
     { label: 'Processing', value: 'processing' },
     { label: 'Speaking', value: 'speaking' },
   ]
-  const liveResolvedStatus = intentSnapshot.tone.includes('clarif') && liveVoiceStatus === 'idle' ? 'listening' : liveVoiceStatus
+  const liveResolvedStatus = intentSnapshot.source === 'live-memory-intent' && intentSnapshot.tone.includes('clarif') && liveVoiceStatus === 'idle'
+    ? 'listening'
+    : liveVoiceStatus
   const activeStatus = overrideStatus ?? liveResolvedStatus
   return (
     <div
