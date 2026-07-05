@@ -332,6 +332,12 @@ function detectorDiagnosticTitle(diagnostic?: DetectorSuggestionDiagnostic): str
   return summary ? `Qdrant suggestion: ${summary}${reason}` : `Qdrant suggestion rejected${reason}`
 }
 
+function timestampMs(value?: string | null): number | null {
+  if (!value) return null
+  const parsed = Date.parse(value)
+  return Number.isFinite(parsed) ? parsed : null
+}
+
 const DETECTOR_TRACK_MATERIALIZATION_MAX_EXAMPLES = 24
 const DETECTOR_TRACK_MATERIALIZATION_MIN_SPACING_SECONDS = 0.25
 const DETECTOR_TRACK_MATERIALIZATION_SAMPLE_SECONDS = 0.5
@@ -980,7 +986,13 @@ export function WatchAnnotationIsland({
 
     const isRejected = (candidate: DetectorCandidate, assignment: DetectorCandidateAssignment | null | undefined): boolean => {
       if (!assignment) return false
-      return Boolean(detectorLabelRejections[detectorCandidateLabelKey(candidate, assignment.characterName)])
+      const rejection = detectorLabelRejections[detectorCandidateLabelKey(candidate, assignment.characterName)]
+      if (!rejection) return false
+      if (!assignment.keyframe) return true
+      const rejectionTime = timestampMs(rejection.createdAt)
+      const acceptedTime = timestampMs(assignment.keyframe.createdAt)
+      if (rejectionTime === null || acceptedTime === null) return true
+      return rejectionTime >= acceptedTime
     }
 
     const selectedName = session.selectedCharacterName.trim()
