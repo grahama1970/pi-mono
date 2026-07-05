@@ -166,6 +166,36 @@ interface DetectorSuggestionPayload {
     best_score?: number
     neighbor_count?: number
   } | null
+  candidates?: Array<{
+    character_name?: string
+    actor_name?: string
+    confidence?: number
+    best_score?: number
+    neighbor_count?: number
+  }>
+  rejection_reason?: string | null
+}
+
+interface DetectorSuggestionCandidate {
+  characterName: string
+  actorName: string
+  confidence: number
+  neighborCount: number
+}
+
+interface DetectorSuggestionDiagnostic {
+  trackId: string
+  candidates: DetectorSuggestionCandidate[]
+  rejectionReason: string | null
+  suggestedCharacterName?: string
+  suggestedActorName?: string
+  suggestedConfidence?: number
+  suggestedEvidenceCount?: number
+}
+
+interface DetectorSuggestionResult {
+  assignment: DetectorCandidateAssignment | null
+  diagnostic: DetectorSuggestionDiagnostic
 }
 
 interface IdentityReadinessEntry {
@@ -283,6 +313,23 @@ function detectorAssignmentLabel(candidate: DetectorCandidate, assignment?: Dete
     return `${assignment.characterName}?${confidence}`
   }
   return assignment.characterName
+}
+
+function detectorDiagnosticSummary(diagnostic?: DetectorSuggestionDiagnostic): string {
+  if (!diagnostic || diagnostic.candidates.length < 1) return ''
+  const [first, second] = diagnostic.candidates
+  const firstLabel = `${first.characterName}? ${first.confidence.toFixed(2)}`
+  if (diagnostic.rejectionReason === 'ambiguous_identity_candidates' && second) {
+    return `${firstLabel} / ${second.characterName}? ${second.confidence.toFixed(2)}`
+  }
+  return firstLabel
+}
+
+function detectorDiagnosticTitle(diagnostic?: DetectorSuggestionDiagnostic): string {
+  if (!diagnostic) return ''
+  const summary = detectorDiagnosticSummary(diagnostic)
+  const reason = diagnostic.rejectionReason ? ` (${diagnostic.rejectionReason})` : ''
+  return summary ? `Qdrant suggestion: ${summary}${reason}` : `Qdrant suggestion rejected${reason}`
 }
 
 const DETECTOR_TRACK_MATERIALIZATION_MAX_EXAMPLES = 24
@@ -678,6 +725,7 @@ export function WatchAnnotationIsland({
   const [detectorCandidates, setDetectorCandidates] = useState<DetectorCandidate[]>([])
   const [detectorStatus, setDetectorStatus] = useState('')
   const [detectorSuggestions, setDetectorSuggestions] = useState<Record<string, DetectorCandidateAssignment>>({})
+  const [detectorSuggestionDiagnostics, setDetectorSuggestionDiagnostics] = useState<Record<string, DetectorSuggestionDiagnostic>>({})
   const [detectorLabelRejections, setDetectorLabelRejections] = useState<Record<string, DetectorLabelRejection>>({})
   const [identityReadiness, setIdentityReadiness] = useState<IdentityReadinessPayload | null>(null)
   const [identityReadinessStatus, setIdentityReadinessStatus] = useState('')
@@ -788,6 +836,7 @@ export function WatchAnnotationIsland({
     setSelectedDetectorCandidateId(null)
     setInlineLabelEditorCandidateId(null)
     setDetectorSuggestions({})
+    setDetectorSuggestionDiagnostics({})
     setDetectorLabelRejections({})
     setStatus('Loading live row annotations...')
     void hydrateRow()
@@ -1200,7 +1249,7 @@ export function WatchAnnotationIsland({
   async function fetchDetectorSuggestion(
     candidate: DetectorCandidate,
     frameDataUrl?: string | null,
-  ): Promise<DetectorCandidateAssignment | null> {
+  ): Promise<DetectorSuggestionResult> {
     const response = await fetch('/api/projects/watch/detector-candidates/suggest-label', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1221,19 +1270,53 @@ export function WatchAnnotationIsland({
     if (!response.ok || payload.ok === false) {
       throw new Error(payload.error || payload.detail || `detector_suggestion_http_${response.status}`)
     }
+    const candidates: DetectorSuggestionCandidate[] = Array.isArray(payload.candidates)
+      ? payload.candidates.flatMap((entry): DetectorSuggestionCandidate[] => {
+        const characterName = entry.character_name?.trim()
+        if (!characterName || characterKey(characterName) === 'unassigned') return []
+        const confidence = typeof entry.confidence === 'number' && Number.isFinite(entry.confidence)
+          ? entry.confidence
+          : typeof entry.best_score === 'number' && Number.isFinite(entry.best_score)
+            ? entry.best_score
+            : 0
+        return [{
+          characterName,
+          actorName: entry.actor_name?.trim() || actorLookup(characterName),
+          confidence,
+          neighborCount: typeof entry.neighbor_count === 'number' && Number.isFinite(entry.neighbor_count)
+            ? entry.neighbor_count
+            : 0,
+        }]
+      })
+      : []
     const suggestion = payload.suggestion
     const characterName = suggestion?.character_name?.trim()
-    if (!characterName || characterKey(characterName) === 'unassigned') return null
+    const diagnostic: DetectorSuggestionDiagnostic = {
+      trackId: candidate.trackId,
+      candidates,
+      rejectionReason: typeof payload.rejection_reason === 'string' ? payload.rejection_reason : null,
+    }
+    if (!characterName || characterKey(characterName) === 'unassigned') return { assignment: null, diagnostic }
     const actorName = suggestion?.actor_name?.trim() || actorLookup(characterName)
     const confidence = typeof suggestion?.confidence === 'number' && Number.isFinite(suggestion.confidence)
       ? suggestion.confidence
       : undefined
-    return {
+    const assignment: DetectorCandidateAssignment = {
       characterName,
       actorName,
       source: 'suggested',
       confidence,
       evidenceCount: typeof suggestion?.neighbor_count === 'number' ? suggestion.neighbor_count : undefined,
+    }
+    return {
+      assignment,
+      diagnostic: {
+        ...diagnostic,
+        suggestedCharacterName: characterName,
+        suggestedActorName: actorName,
+        suggestedConfidence: confidence,
+        suggestedEvidenceCount: assignment.evidenceCount,
+      },
     }
   }
 
@@ -1269,7 +1352,8 @@ export function WatchAnnotationIsland({
           skipped += 1
           continue
         }
-        const suggestedAssignment = await fetchDetectorSuggestion(candidate, frameDataUrl)
+        const suggestedResult = await fetchDetectorSuggestion(candidate, frameDataUrl)
+        const suggestedAssignment = suggestedResult.assignment
         const suggestedConflict = suggestedAssignment
           && characterKey(suggestedAssignment.characterName) !== characterKey(characterName)
           && (suggestedAssignment.confidence ?? 0) >= DETECTOR_SUGGESTION_CONFLICT_CONFIDENCE
@@ -1349,6 +1433,11 @@ export function WatchAnnotationIsland({
         delete next[candidate.id]
         return next
       })
+      setDetectorSuggestionDiagnostics((current) => {
+        const next = { ...current }
+        delete next[candidate.id]
+        return next
+      })
       if (pendingTargetBbox) {
         cancelPendingTarget()
         setStatus(`Discarded pending label for ${candidate.trackId}; showing ${detectorBaseLabel(candidate)}.`)
@@ -1370,6 +1459,11 @@ export function WatchAnnotationIsland({
       },
     }))
     setDetectorSuggestions((current) => {
+      const next = { ...current }
+      delete next[candidate.id]
+      return next
+    })
+    setDetectorSuggestionDiagnostics((current) => {
       const next = { ...current }
       delete next[candidate.id]
       return next
@@ -1479,6 +1573,11 @@ export function WatchAnnotationIsland({
       return next
     })
     setDetectorSuggestions((current) => {
+      const next = { ...current }
+      delete next[candidate.id]
+      return next
+    })
+    setDetectorSuggestionDiagnostics((current) => {
       const next = { ...current }
       delete next[candidate.id]
       return next
@@ -1894,11 +1993,20 @@ export function WatchAnnotationIsland({
   }
 
   async function hydrateDetectorSuggestion(candidate: DetectorCandidate): Promise<void> {
-    if (detectorSuggestions[candidate.id]) return
+    if (detectorSuggestions[candidate.id] || detectorSuggestionDiagnostics[candidate.id]) return
     try {
-      const suggestedAssignment = await fetchDetectorSuggestion(candidate)
+      const suggestedResult = await fetchDetectorSuggestion(candidate)
+      const suggestedAssignment = suggestedResult.assignment
+      setDetectorSuggestionDiagnostics((current) => ({
+        ...current,
+        [candidate.id]: suggestedResult.diagnostic,
+      }))
       if (!suggestedAssignment) {
-        setDetectorStatus(`YOLO candidates loaded; no Qdrant label suggestion for ${candidate.trackId}.`)
+        const diagnosticSummary = detectorDiagnosticSummary(suggestedResult.diagnostic)
+        const rejectionText = suggestedResult.diagnostic.rejectionReason ? ` (${suggestedResult.diagnostic.rejectionReason})` : ''
+        setDetectorStatus(diagnosticSummary
+          ? `YOLO candidates loaded; Qdrant did not auto-label ${candidate.trackId}: ${diagnosticSummary}${rejectionText}.`
+          : `YOLO candidates loaded; no Qdrant label suggestion for ${candidate.trackId}${rejectionText}.`)
         return
       }
       setDetectorSuggestions((current) => ({
@@ -2551,7 +2659,9 @@ export function WatchAnnotationIsland({
               const [x1, y1] = candidate.bbox
               const selectedDetectorCandidate = selectedDetectorCandidateId === candidate.id
               const detectorAssignment = detectorCandidateAssignments.get(candidate.id)
+              const detectorDiagnostic = detectorSuggestionDiagnostics[candidate.id]
               const detectorLabel = detectorAssignmentLabel(candidate, detectorAssignment)
+              const detectorDiagnosticText = !detectorAssignment ? detectorDiagnosticSummary(detectorDiagnostic) : ''
               const assignedDetectorCandidate = Boolean(detectorAssignment)
               return (
                 <React.Fragment key={`${candidate.id}:label-fragment`}>
@@ -2561,6 +2671,8 @@ export function WatchAnnotationIsland({
                   data-track-id={candidate.trackId}
                   data-runtime-policy={candidate.runtimePolicy || ''}
                   data-assigned-character={detectorAssignment?.characterName || ''}
+                  data-suggestion={detectorDiagnosticText}
+                  data-rejection-reason={detectorDiagnostic?.rejectionReason || ''}
                   onPointerDown={(event) => {
                     event.preventDefault()
                     event.stopPropagation()
@@ -2579,7 +2691,7 @@ export function WatchAnnotationIsland({
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: 6,
-                    maxWidth: 300,
+                    maxWidth: 360,
                     padding: '3px 7px',
                     borderRadius: 5,
                     background: selectedDetectorCandidate ? '#fbbf24' : assignedDetectorCandidate ? '#312e81' : '#083344',
@@ -2594,8 +2706,27 @@ export function WatchAnnotationIsland({
                     pointerEvents: 'auto',
                     cursor: 'pointer',
                   }}
+                  title={[
+                    detectorAssignment
+                      ? `${candidate.trackId} ${candidate.runtimePolicy || 'raw'} ${detectorAssignment.source} ${detectorAssignment.characterName}`
+                      : `YOLO ${candidate.detectedClass} ${candidate.trackId} ${candidate.runtimePolicy || 'raw'}; select as annotation target`,
+                    detectorDiagnosticTitle(detectorDiagnostic),
+                  ].filter(Boolean).join(' | ')}
                 >
-                  {detectorLabel}
+                  <span>{detectorLabel}</span>
+                  {detectorDiagnosticText ? (
+                    <span
+                      data-qid="watch:annotation-island:detector-suggestion-chip"
+                      style={{
+                        borderLeft: '1px solid rgba(207,250,254,0.35)',
+                        paddingLeft: 6,
+                        color: detectorDiagnostic?.rejectionReason ? '#fde68a' : '#ccfbf1',
+                        opacity: 0.96,
+                      }}
+                    >
+                      {detectorDiagnosticText}
+                    </span>
+                  ) : null}
                 </button>
                 {inlineLabelEditorCandidateId === candidate.trackId || inlineLabelEditorCandidateId === candidate.id ? (
                   <>
