@@ -2,14 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
-import { createReadStream, statSync, existsSync } from 'fs'
+import { createReadStream, statSync } from 'fs'
 import type { Plugin } from 'vite'
-
-const resolveWorkspaceModule = (modulePath: string) => {
-  const localPath = resolve(__dirname, 'node_modules', modulePath)
-  if (existsSync(localPath)) return localPath
-  return resolve(__dirname, '../../node_modules', modulePath)
-}
 
 function chatterboxArtifactsPlugin(): Plugin {
   const ROOT = '/tmp/chatterbox-fork-agent-out'
@@ -55,15 +49,8 @@ export default defineConfig({
       '@skills': resolve(__dirname, '../../.pi/skills'),
       // Map NVIS theme to EMBRY shim so skill components use Explorer's design system
       '@skills-theme': resolve(__dirname, 'src/components/sparta/common/nvis-shim.ts'),
-      '@embry/logo': resolve(__dirname, '../../../embry-os/packages/embry-logo/src'),
-      react: resolveWorkspaceModule('react'),
-      'react-dom': resolveWorkspaceModule('react-dom'),
-      'react/jsx-runtime': resolveWorkspaceModule('react/jsx-runtime'),
-      'react/jsx-dev-runtime': resolveWorkspaceModule('react/jsx-dev-runtime'),
-      'framer-motion': resolveWorkspaceModule('framer-motion'),
-      'lucide-react': resolveWorkspaceModule('lucide-react'),
     },
-    dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'framer-motion', 'lucide-react'],
+    dedupe: ['react', 'react-dom', 'react/jsx-runtime'],
   },
   server: {
     port: 3000,
