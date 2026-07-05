@@ -1910,7 +1910,7 @@ export function WatchAnnotationIsland({
     const nextActorName = assignment?.actorName || actorLookup(nextCharacterName)
     setManualAnnotationEnabled(false)
     setSelectedDetectorCandidateId(candidate.id)
-    setInlineLabelEditorCandidateId((current) => current === candidate.id ? null : candidate.id)
+    setInlineLabelEditorCandidateId(candidate.trackId)
     setPendingTargetBbox(null)
     setDraftBbox(null)
     setSession((state) => ({
@@ -2467,6 +2467,11 @@ export function WatchAnnotationIsland({
                     event.stopPropagation()
                     openDetectorLabelEditor(candidate)
                   }}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    openDetectorLabelEditor(candidate)
+                  }}
                   style={{
                     position: 'absolute',
                     left: `calc(${x1 * 100}% - 2px)`,
@@ -2493,7 +2498,7 @@ export function WatchAnnotationIsland({
                 >
                   {detectorLabel}
                 </button>
-                {inlineLabelEditorCandidateId === candidate.id ? (
+                {inlineLabelEditorCandidateId === candidate.trackId || inlineLabelEditorCandidateId === candidate.id ? (
                   <>
                   <select
                     data-qid="watch:annotation-island:inline-detector-label-select"
