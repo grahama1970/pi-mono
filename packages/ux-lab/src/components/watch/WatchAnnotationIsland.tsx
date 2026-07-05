@@ -113,16 +113,6 @@ interface DetectorLabelRejection {
   createdAt: string
 }
 
-interface DetectorTrackAssignmentDocument {
-  key: string
-  id?: string
-  boxId?: string
-  annotationUid?: string
-  characterName: string
-  actorName: string
-  timeSeconds: number
-}
-
 interface DetectorCandidatePayload {
   schema?: string
   candidates?: Array<{
@@ -247,6 +237,7 @@ const DETECTOR_TRACK_MATERIALIZATION_MAX_EXAMPLES = 24
 const DETECTOR_TRACK_MATERIALIZATION_MIN_SPACING_SECONDS = 0.25
 const DETECTOR_TRACK_MATERIALIZATION_SAMPLE_SECONDS = 0.5
 const DETECTOR_TRACK_MATERIALIZATION_MAX_INTERPOLATION_GAP_SECONDS = 1.0
+const DETECTOR_SUGGESTION_CONFLICT_CONFIDENCE = 0.82
 
 function detectorRuntimeCandidate(candidate: DetectorCandidate, runtimePolicy: DetectorCandidateRuntimePolicy): DetectorCandidate {
   return {
@@ -916,6 +907,7 @@ export function WatchAnnotationIsland({
         assignments.set(candidate.id, savedAssignment)
         continue
       }
+      const suggestedAssignment = detectorSuggestions[candidate.id]
       const propagatedAssignments = acceptedByTrack.get(candidate.trackId) || []
       const propagatedAssignment = propagatedAssignments
         .filter((assignment) => !isRejected(candidate, assignment))
@@ -925,6 +917,18 @@ export function WatchAnnotationIsland({
           if (leftDistance !== rightDistance) return leftDistance - rightDistance
           return (right.evidenceCount ?? 0) - (left.evidenceCount ?? 0)
         })[0]
+      if (
+        suggestedAssignment
+        && !isRejected(candidate, suggestedAssignment)
+        && (
+          !propagatedAssignment
+          || characterKey(suggestedAssignment.characterName) !== characterKey(propagatedAssignment.characterName)
+          || (suggestedAssignment.confidence ?? 0) >= DETECTOR_SUGGESTION_CONFLICT_CONFIDENCE
+        )
+      ) {
+        assignments.set(candidate.id, suggestedAssignment)
+        continue
+      }
       if (propagatedAssignment && !isRejected(candidate, propagatedAssignment)) {
         assignments.set(candidate.id, {
           characterName: propagatedAssignment.characterName,
@@ -936,7 +940,6 @@ export function WatchAnnotationIsland({
         })
         continue
       }
-      const suggestedAssignment = detectorSuggestions[candidate.id]
       if (suggestedAssignment && !isRejected(candidate, suggestedAssignment)) {
         assignments.set(candidate.id, suggestedAssignment)
       }
@@ -1217,53 +1220,11 @@ export function WatchAnnotationIsland({
     await clearDetectorCandidateLabel(selectedDetectorCandidate)
   }
 
-  async function fetchPersistedDetectorTrackAssignments(
-    candidate: DetectorCandidate,
-    characterName: string,
-  ): Promise<DetectorTrackAssignmentDocument[]> {
-    const response = await fetch(`/api/projects/watch/annotations/rows/${encodeURIComponent(String(row.index))}`)
-    const payload = await readJsonResponse(response) as { annotations?: Array<Record<string, unknown>>; error?: string; detail?: string }
-    if (!response.ok) throw new Error(payload.error || payload.detail || `watch_row_annotations_http_${response.status}`)
-
-    const targetCharacterKey = characterKey(characterName)
-    return (Array.isArray(payload.annotations) ? payload.annotations : []).flatMap((document): DetectorTrackAssignmentDocument[] => {
-      const detectorRef = document.detector_observation_ref && typeof document.detector_observation_ref === 'object'
-        ? document.detector_observation_ref as Record<string, unknown>
-        : null
-      if (!detectorRef || detectorRef.track_id !== candidate.trackId) return []
-      if (characterKey(String(document.character_name || '')) !== targetCharacterKey) return []
-      if (String(document.lifecycle_status || 'current') !== 'current') return []
-      if (document.kind !== 'watch_keyframe_annotation') return []
-      const key = typeof document._key === 'string' ? document._key : ''
-      if (!key) return []
-      const detectorRefSeconds = Number(detectorRef.time_seconds)
-      const documentSeconds = Number(document.time_seconds)
-      const keyframeSeconds = Number(document.keyframe_time_seconds)
-      const targetSeconds = Number.isFinite(detectorRefSeconds)
-        ? detectorRefSeconds
-        : Number.isFinite(documentSeconds)
-          ? documentSeconds
-          : Number.isFinite(keyframeSeconds)
-            ? keyframeSeconds
-            : candidate.timeSeconds
-      return [{
-        key,
-        id: typeof document._id === 'string' ? document._id : undefined,
-        boxId: typeof document.box_id === 'string' ? document.box_id : undefined,
-        annotationUid: typeof document.annotation_uid === 'string' ? document.annotation_uid : undefined,
-        characterName: String(document.character_name || characterName),
-        actorName: String(document.actor_name || actorLookup(characterName)),
-        timeSeconds: targetSeconds,
-      }]
-    })
-  }
-
   async function clearDetectorCandidateLabel(candidate: DetectorCandidate): Promise<void> {
     if (saving) return
     const savedAssignment = findSavedDetectorAssignment(candidate)
     const visibleAssignment = detectorCandidateAssignments.get(candidate.id)
     const assignmentToClear = savedAssignment || visibleAssignment || null
-    const keyframe = assignmentToClear?.keyframe
     if (!assignmentToClear) {
       setDetectorSuggestions((current) => {
         const next = { ...current }
@@ -1318,32 +1279,16 @@ export function WatchAnnotationIsland({
     })
 
     try {
-      const persistedAssignments = await fetchPersistedDetectorTrackAssignments(candidate, assignmentToClear.characterName)
-      const targets = persistedAssignments.length > 0
-        ? persistedAssignments
-        : keyframe ? [{
-          key: keyframe.recordKey || keyframe.id,
-          id: undefined,
-          boxId: keyframe.recordId || keyframe.id,
-          annotationUid: keyframe.recordId || keyframe.id,
-          characterName: keyframe.characterName,
-          actorName: keyframe.actorName,
-          timeSeconds: keyframe.timeSeconds,
-        }] : []
-      let deletedCount = 0
-      for (const target of targets) {
-        const receipt = await requestJson('/api/projects/watch/annotations/delete-keyframe', {
-          ...commonMutationBody(target.timeSeconds, keyframe?.assetUid || resolvedAssetUid),
-          annotation_id: target.annotationUid || target.boxId || target.key,
-          key: target.key,
-          id: target.id,
-          box_id: target.boxId || target.annotationUid || target.key,
-          character_name: target.characterName,
-          actor_name: target.actorName,
-          reason: `clear_yolo_track_label:${candidate.trackId}:${characterKey(assignmentToClear.characterName)}`,
-        }) as MutationReceipt & { deleted_count?: number }
-        deletedCount += typeof receipt.deleted_count === 'number' ? receipt.deleted_count : 0
-      }
+      const receipt = await requestJson('/api/projects/watch/annotations/delete-keyframe', {
+        ...commonMutationBody(candidate.timeSeconds, resolvedAssetUid),
+        detector_track_id: candidate.trackId,
+        detector_observation_ref: detectorObservationRefForCandidate(candidate),
+        persist_rejection: true,
+        character_name: assignmentToClear.characterName,
+        actor_name: assignmentToClear.actorName,
+        reason: `clear_yolo_track_label:${candidate.trackId}:${characterKey(assignmentToClear.characterName)}`,
+      }) as MutationReceipt & { deleted_count?: number }
+      const deletedCount = typeof receipt.deleted_count === 'number' ? receipt.deleted_count : 0
       await hydrateRow()
       await hydrateIdentityReadiness()
       setStatus(deletedCount > 0
@@ -1937,7 +1882,7 @@ export function WatchAnnotationIsland({
 
   function selectDetectorCandidate(candidate: DetectorCandidate): void {
     const assignment = detectorCandidateAssignments.get(candidate.id) || findSavedDetectorAssignment(candidate)
-    if (!assignment) void hydrateDetectorSuggestion(candidate)
+    if (!assignment || assignment.source === 'propagated') void hydrateDetectorSuggestion(candidate)
     const nextCharacterName = assignment?.characterName || 'Unassigned'
     const nextActorName = assignment?.actorName || actorLookup(nextCharacterName)
     setManualAnnotationEnabled(false)
@@ -1960,7 +1905,7 @@ export function WatchAnnotationIsland({
 
   function openDetectorLabelEditor(candidate: DetectorCandidate): void {
     const assignment = detectorCandidateAssignments.get(candidate.id) || findSavedDetectorAssignment(candidate)
-    if (!assignment) void hydrateDetectorSuggestion(candidate)
+    if (!assignment || assignment.source === 'propagated') void hydrateDetectorSuggestion(candidate)
     const nextCharacterName = assignment?.characterName || 'Unassigned'
     const nextActorName = assignment?.actorName || actorLookup(nextCharacterName)
     setManualAnnotationEnabled(false)
@@ -2560,11 +2505,6 @@ export function WatchAnnotationIsland({
                     }}
                     onChange={(event) => {
                       void saveDetectorCandidateLabel(candidate, event.currentTarget.value)
-                    }}
-                    onBlur={() => {
-                      window.setTimeout(() => setInlineLabelEditorCandidateId((current) => (
-                        current === candidate.id ? null : current
-                      )), 120)
                     }}
                     style={{
                       position: 'absolute',
