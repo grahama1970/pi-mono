@@ -10326,6 +10326,7 @@ import { WebSocketServer, WebSocket } from 'ws'
 import { registerTestRunnerRoutes } from './test-runner.ts'
 import { createPiChatRouter } from '../../pi-chat-adapter/src/index.ts'
 import { registerTauRoutes } from './tauRoutes.js'
+import { registerWatchRoutes } from './watchRoutes.js'
 
 const httpServer = createServer(app)
 const wss = new WebSocketServer({ server: httpServer })
@@ -10344,6 +10345,7 @@ startSpartaCoveragePushBridge()
 
 registerTestRunnerRoutes(app, broadcast)
 registerTauRoutes(app)
+registerWatchRoutes(app, { proxyPost })
 
 // Pi Chat Adapter — D-Bus bridge to embry-agent (SSE streaming)
 try {
