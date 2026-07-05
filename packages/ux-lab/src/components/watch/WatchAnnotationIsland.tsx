@@ -1144,6 +1144,46 @@ export function WatchAnnotationIsland({
     return spreadDetectorCandidates(selected, DETECTOR_TRACK_MATERIALIZATION_MAX_EXAMPLES)
   }
 
+  async function fetchDetectorSuggestion(
+    candidate: DetectorCandidate,
+    frameDataUrl?: string | null,
+  ): Promise<DetectorCandidateAssignment | null> {
+    const response = await fetch('/api/projects/watch/detector-candidates/suggest-label', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        asset_uid: resolvedAssetUid,
+        row_index: row.index,
+        track_id: candidate.trackId,
+        bbox: candidate.bbox,
+        time_seconds: candidate.timeSeconds,
+        image_data_url: frameDataUrl || undefined,
+        allowed_characters: characterOptions.map((option) => ({
+          character_name: option.name,
+          actor_name: option.actorName || actorLookup(option.name),
+        })),
+      }),
+    })
+    const payload = await readJsonResponse(response) as DetectorSuggestionPayload
+    if (!response.ok || payload.ok === false) {
+      throw new Error(payload.error || payload.detail || `detector_suggestion_http_${response.status}`)
+    }
+    const suggestion = payload.suggestion
+    const characterName = suggestion?.character_name?.trim()
+    if (!characterName || characterKey(characterName) === 'unassigned') return null
+    const actorName = suggestion?.actor_name?.trim() || actorLookup(characterName)
+    const confidence = typeof suggestion?.confidence === 'number' && Number.isFinite(suggestion.confidence)
+      ? suggestion.confidence
+      : undefined
+    return {
+      characterName,
+      actorName,
+      source: 'suggested',
+      confidence,
+      evidenceCount: typeof suggestion?.neighbor_count === 'number' ? suggestion.neighbor_count : undefined,
+    }
+  }
+
   async function materializeDetectorTrackExamples(
     seed: DetectorCandidate,
     characterName: string,
@@ -1156,13 +1196,38 @@ export function WatchAnnotationIsland({
     const originalTime = video.currentTime
     let saved = 0
     let skipped = 0
-    for (const candidate of samples) {
+    let stopBeforeSeed = false
+    let stopAfterSeed = false
+    const orderedSamples = [...samples].sort((left, right) => (
+      Math.abs(left.timeSeconds - seed.timeSeconds) - Math.abs(right.timeSeconds - seed.timeSeconds)
+      || left.timeSeconds - right.timeSeconds
+    ))
+    for (const candidate of orderedSamples) {
+      const beforeSeed = candidate.timeSeconds < seed.timeSeconds
+      if ((beforeSeed && stopBeforeSeed) || (!beforeSeed && stopAfterSeed)) {
+        skipped += 1
+        continue
+      }
       try {
         setStatus(`Materializing ${characterName} from ${seed.trackId}: ${saved + skipped + 1}/${samples.length} at ${candidate.timeSeconds.toFixed(2)}s...`)
         await waitForVideoSeek(video, candidate.timeSeconds)
         const frameDataUrl = captureVideoFrameDataUrl(video)
         if (!frameDataUrl) {
           skipped += 1
+          continue
+        }
+        const suggestedAssignment = await fetchDetectorSuggestion(candidate, frameDataUrl)
+        const suggestedConflict = suggestedAssignment
+          && characterKey(suggestedAssignment.characterName) !== characterKey(characterName)
+          && (suggestedAssignment.confidence ?? 0) >= DETECTOR_SUGGESTION_CONFLICT_CONFIDENCE
+        if (suggestedConflict) {
+          if (beforeSeed) stopBeforeSeed = true
+          else stopAfterSeed = true
+          skipped += 1
+          const confidenceText = typeof suggestedAssignment.confidence === 'number'
+            ? ` ${suggestedAssignment.confidence.toFixed(2)}`
+            : ''
+          setStatus(`Stopped ${seed.trackId} materialization at ${candidate.timeSeconds.toFixed(2)}s: Qdrant suggests ${suggestedAssignment.characterName}?${confidenceText}, not ${characterName}.`)
           continue
         }
         await persistKeyframe({
@@ -1778,48 +1843,17 @@ export function WatchAnnotationIsland({
   async function hydrateDetectorSuggestion(candidate: DetectorCandidate): Promise<void> {
     if (detectorSuggestions[candidate.id]) return
     try {
-      const response = await fetch('/api/projects/watch/detector-candidates/suggest-label', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          asset_uid: resolvedAssetUid,
-          row_index: row.index,
-          track_id: candidate.trackId,
-          bbox: candidate.bbox,
-          time_seconds: candidate.timeSeconds,
-          allowed_characters: characterOptions.map((option) => ({
-            character_name: option.name,
-            actor_name: option.actorName || actorLookup(option.name),
-          })),
-        }),
-      })
-      const payload = await readJsonResponse(response) as DetectorSuggestionPayload
-      if (!response.ok || payload.ok === false) {
-        throw new Error(payload.error || payload.detail || `detector_suggestion_http_${response.status}`)
-      }
-      const suggestion = payload.suggestion
-      const characterName = suggestion?.character_name?.trim()
-      if (!characterName || characterKey(characterName) === 'unassigned') {
+      const suggestedAssignment = await fetchDetectorSuggestion(candidate)
+      if (!suggestedAssignment) {
         setDetectorStatus(`YOLO candidates loaded; no Qdrant label suggestion for ${candidate.trackId}.`)
         return
-      }
-      const actorName = suggestion?.actor_name?.trim() || actorLookup(characterName)
-      const confidence = typeof suggestion?.confidence === 'number' && Number.isFinite(suggestion.confidence)
-        ? suggestion.confidence
-        : undefined
-      const suggestedAssignment: DetectorCandidateAssignment = {
-        characterName,
-        actorName,
-        source: 'suggested',
-        confidence,
-        evidenceCount: typeof suggestion?.neighbor_count === 'number' ? suggestion.neighbor_count : undefined,
       }
       setDetectorSuggestions((current) => ({
         ...current,
         [candidate.id]: suggestedAssignment,
       }))
-      const confidenceText = typeof confidence === 'number' ? ` ${confidence.toFixed(2)}` : ''
-      setDetectorStatus(`YOLO candidates loaded; Qdrant suggests ${characterName}?${confidenceText} for ${candidate.trackId}.`)
+      const confidenceText = typeof suggestedAssignment.confidence === 'number' ? ` ${suggestedAssignment.confidence.toFixed(2)}` : ''
+      setDetectorStatus(`YOLO candidates loaded; Qdrant suggests ${suggestedAssignment.characterName}?${confidenceText} for ${candidate.trackId}.`)
     } catch (error) {
       setDetectorStatus(`YOLO candidates loaded; Qdrant suggestion failed for ${candidate.trackId}: ${error instanceof Error ? error.message : String(error)}`)
     }
