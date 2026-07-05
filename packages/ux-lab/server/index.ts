@@ -10019,6 +10019,8 @@ function buildDreamPreflightStages(runRoot: string, files: string[]): DreamStage
       ? phase04ContactSheetStatus(matched)
       : phase.id === 'phase_05_orpheus_voices'
         ? phase05VoiceEvidenceStatus()
+      : phase.id === 'phase_07_storyboard'
+        ? phase07StoryboardStatus(matched)
       : null
     const phaseArtifacts = receiptStatus && 'artifacts' in receiptStatus
       ? [...artifacts, ...receiptStatus.artifacts]
@@ -10131,6 +10133,65 @@ function phase05VoiceEvidenceStatus(): (Pick<DreamStageSummary, 'status' | 'fail
       status: 'MISSING_EVIDENCE',
       summary: `Partial live Chatterbox voice evidence found: ${[...acceptedByCharacter.keys()].join(', ')}.`,
       failureOrGap: `Missing live Chatterbox voice receipt for: ${missing.join(', ')}.`,
+      artifacts,
+    }
+  }
+
+  return null
+}
+
+function phase07StoryboardStatus(matchedFiles: string[]): (Pick<DreamStageSummary, 'status' | 'failureOrGap' | 'summary'> & {
+  artifacts: DreamStageSummary['artifacts']
+}) | null {
+  const rehydrationPath = matchedFiles.find((file) => file.endsWith('/storyboard_reference_rehydration_receipt.json'))
+  const panelGatePath = matchedFiles.find((file) => file.endsWith('/phase_07_storyboard_live_tau/receipts/panel_repair_gate_receipt.json'))
+  const panelSourcePath = matchedFiles.find((file) => file.endsWith('/phase_07_storyboard_live_tau/receipts/panel_source_receipt.json'))
+  const storyboardPacketPath = matchedFiles.find((file) => file.endsWith('/phase_07_storyboard_live_tau/storyboard_packet.json'))
+  const rehydration = rehydrationPath ? parseJsonFile(rehydrationPath) : null
+  const panelGate = panelGatePath ? parseJsonFile(panelGatePath) : null
+  const panelSource = panelSourcePath ? parseJsonFile(panelSourcePath) : null
+  const storyboardPacket = storyboardPacketPath ? parseJsonFile(storyboardPacketPath) : null
+  const artifacts = [rehydrationPath, panelGatePath, panelSourcePath, storyboardPacketPath]
+    .filter((path): path is string => Boolean(path))
+    .map((path) => ({
+      label: path.split('/').slice(-2).join('/'),
+      path,
+      kind: dreamArtifactKind(path),
+    }))
+
+  const rehydrationPassed = rehydration?.status === 'PASS'
+    && Number(rehydration?.attached_reference_count ?? 0) >= 5
+    && Number(rehydration?.missing_reference_count ?? 1) === 0
+  const packetReferencesAttached = storyboardPacket?.status === 'REFERENCE_GAPS_ATTACHED'
+    && Array.isArray(storyboardPacket?.references)
+    && storyboardPacket.references.length >= 5
+    && Array.isArray(storyboardPacket?.missing_reference_blockers)
+    && storyboardPacket.missing_reference_blockers.length === 0
+
+  if (rehydrationPassed || packetReferencesAttached) {
+    const gateStatus = typeof panelGate?.status === 'string' ? panelGate.status : ''
+    const sourceStatus = typeof panelSource?.status === 'string' ? panelSource.status : ''
+    const remainingBlockers = Array.isArray(panelGate?.remaining_blockers)
+      ? panelGate.remaining_blockers.filter((item: unknown) => typeof item === 'string' && item.trim().length > 0)
+      : []
+    const sourceBlockers = Array.isArray(panelSource?.blockers)
+      ? panelSource.blockers.filter((item: unknown) => typeof item === 'string' && item.trim().length > 0)
+      : []
+    const blockers = [...remainingBlockers, ...sourceBlockers]
+    if (/BLOCKED/i.test(`${gateStatus} ${sourceStatus}`) || blockers.length > 0) {
+      return {
+        status: gateStatus || sourceStatus || 'BLOCKED_STORYBOARD_PANEL_ASSETS',
+        summary: 'Storyboard reference gaps are attached from Phase 04 evidence; panel/frame acceptance is still blocked.',
+        failureOrGap: blockers.length > 0
+          ? `Remaining storyboard blocker: ${blockers.join(' ')}`
+          : 'Remaining storyboard blocker: accepted storyboard panel images/start-end frames are not present yet.',
+        artifacts,
+      }
+    }
+    return {
+      status: 'PASS_REFERENCE_GAPS_ATTACHED',
+      summary: 'Storyboard reference gaps are attached from Phase 04 evidence.',
+      failureOrGap: null,
       artifacts,
     }
   }
