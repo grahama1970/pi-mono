@@ -702,6 +702,7 @@ export function WatchAnnotationIsland({
   const characterSelectRef = useRef<HTMLSelectElement | null>(null)
   const manipulationRef = useRef<ManipulationState | null>(null)
   const pendingOverlayPointerRef = useRef<PendingOverlayPointer | null>(null)
+  const rowSessionKeyRef = useRef<string | null>(null)
 
   const actorLookup = useCallback((name: string): string => (
     actorByCharacter[name]
@@ -751,6 +752,15 @@ export function WatchAnnotationIsland({
 
   const segmentDuration = useMemo(() => rowSegmentDurationSeconds(row), [row])
   const resolvedAssetUid = useMemo(() => asAssetUid(reportTitle, assetUid), [assetUid, reportTitle])
+  const rowSessionKey = useMemo(() => (
+    [
+      resolvedAssetUid,
+      String(row.index),
+      String(row.timecode || ''),
+      String(row.movie_segment || ''),
+      String(row.video_clip_path || ''),
+    ].join(':')
+  ), [resolvedAssetUid, row.index, row.movie_segment, row.timecode, row.video_clip_path])
 
   const effectiveVideoSrc = videoSrc || (typeof row.video_clip_path === 'string' ? row.video_clip_path : '')
   const effectiveThumbnailSrc = thumbnailSrc || (typeof row.scene_marker_image_path === 'string' ? row.scene_marker_image_path : '')
@@ -835,18 +845,22 @@ export function WatchAnnotationIsland({
   }, [resolvedAssetUid])
 
   useEffect(() => {
+    const rowChanged = rowSessionKeyRef.current !== rowSessionKey
+    rowSessionKeyRef.current = rowSessionKey
     setSession((current) => createWatchAnnotationSession(row, characterOptions, current))
-    setDraftBbox(null)
-    setPendingTargetBbox(null)
-    setDrawStart(null)
-    setSelectedDetectorCandidateId(null)
-    setInlineLabelEditorCandidateId(null)
-    setDetectorSuggestions({})
-    setDetectorSuggestionDiagnostics({})
-    setDetectorLabelRejections({})
-    setStatus('Loading live row annotations...')
+    if (rowChanged) {
+      setDraftBbox(null)
+      setPendingTargetBbox(null)
+      setDrawStart(null)
+      setSelectedDetectorCandidateId(null)
+      setInlineLabelEditorCandidateId(null)
+      setDetectorSuggestions({})
+      setDetectorSuggestionDiagnostics({})
+      setDetectorLabelRejections({})
+      setStatus('Loading live row annotations...')
+    }
     void hydrateRow()
-  }, [characterOptions, hydrateRow, row])
+  }, [characterOptions, hydrateRow, row, rowSessionKey])
 
   useEffect(() => {
     void hydrateDetectorCandidates()
@@ -2100,7 +2114,8 @@ export function WatchAnnotationIsland({
   }
 
   function selectDetectorCandidate(candidate: DetectorCandidate): void {
-    const assignment = detectorCandidateAssignments.get(candidate.id) || findSavedDetectorAssignment(candidate)
+    const currentAssignment = detectorCandidateAssignments.get(candidate.id) || findSavedDetectorAssignment(candidate)
+    const assignment = currentAssignment?.source === 'pending' ? null : currentAssignment
     if (!assignment || assignment.source === 'propagated') void hydrateDetectorSuggestion(candidate)
     const nextCharacterName = assignment?.characterName || 'Unassigned'
     const nextActorName = assignment?.actorName || actorLookup(nextCharacterName)
@@ -2123,7 +2138,8 @@ export function WatchAnnotationIsland({
   }
 
   function openDetectorLabelEditor(candidate: DetectorCandidate): void {
-    const assignment = detectorCandidateAssignments.get(candidate.id) || findSavedDetectorAssignment(candidate)
+    const currentAssignment = detectorCandidateAssignments.get(candidate.id) || findSavedDetectorAssignment(candidate)
+    const assignment = currentAssignment?.source === 'pending' ? null : currentAssignment
     if (!assignment || assignment.source === 'propagated') void hydrateDetectorSuggestion(candidate)
     const nextCharacterName = assignment?.characterName || 'Unassigned'
     const nextActorName = assignment?.actorName || actorLookup(nextCharacterName)
@@ -2435,7 +2451,7 @@ export function WatchAnnotationIsland({
       name: track.characterName,
       actorName: track.actorName,
     }))
-    return normalizeCharacterOptions(row, [...characterOptions, ...fromTracks])
+    return normalizeCharacterOptions(row, [{ name: 'Unassigned', actorName: '' }, ...characterOptions, ...fromTracks])
   }, [characterOptions, row, session.tracks])
 
   return (
