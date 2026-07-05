@@ -128,11 +128,15 @@ export interface ComplianceChatWellProps {
   defaultMode?: string
   projectLabel?: string
   voiceEnabled?: boolean
-  voiceStatus?: 'off' | 'listening' | 'processing' | 'speaking' | 'error'
+  voiceStatus?: 'off' | 'idle' | 'listening' | 'processing' | 'speaking' | 'error'
   voiceLabel?: string
   onVoiceToggle?: (enabled: boolean) => void
   /** Optional: convert filesystem paths to URLs for inline media (image=/path, clip=/path, audio=/path) */
   mediaUrl?: (path: string) => string
+  /** Turn id whose receipt card should show processing border glow */
+  activeProcessingTurnId?: string
+  /** Fallback message id when turn id is unavailable during streaming */
+  activeProcessingMessageId?: string
 }
 
 const ROLE_COLORS: Record<string, string> = {
@@ -421,6 +425,8 @@ export function ComplianceChatWell({
   onCopyMessage,
   onDownloadMessage,
   mediaUrl,
+  activeProcessingTurnId,
+  activeProcessingMessageId,
   voiceEnabled = false,
   voiceStatus = 'off',
   voiceLabel = 'Voice input',
@@ -545,11 +551,21 @@ export function ComplianceChatWell({
 	            const roleColor = getRoleColor(message)
 	            const isHovered = hoveredMessage === messageId
 
+            const meta = (message.metadata ?? {}) as UnknownRecord
+            const turnId = typeof meta.turnId === 'string' ? meta.turnId : undefined
+            const isReceiptProcessing = Boolean(
+              isStreaming && (
+                (activeProcessingTurnId && turnId === activeProcessingTurnId)
+                || (activeProcessingMessageId && messageId === activeProcessingMessageId)
+              ),
+            )
+
             return (
               <DashboardMessageBubble
 	                key={messageId}
                 message={message}
                 index={index}
+                isReceiptProcessing={isReceiptProcessing}
                 isHovered={isHovered}
 	                onHover={() => setHoveredMessage(messageId)}
 	                onLeave={() => setHoveredMessage(null)}
@@ -829,7 +845,7 @@ export function ComplianceChatWell({
                   {voiceEnabled ? <Mic size={17} strokeWidth={1.5} /> : <MicOff size={17} strokeWidth={1.5} />}
                   {voiceEnabled && (
                     <span style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                      {voiceStatus === 'listening' ? 'Listen' : voiceStatus === 'speaking' ? 'Voice' : 'On'}
+                      {voiceStatus === 'listening' ? 'Listen' : voiceStatus === 'speaking' ? 'Voice' : voiceStatus === 'idle' ? 'Ready' : 'On'}
                     </span>
                   )}
                 </button>
@@ -1094,6 +1110,7 @@ function EmptyState({
 
 function DashboardMessageBubble({
   message,
+  isReceiptProcessing = false,
   isHovered,
   onHover,
   onLeave,
@@ -1107,6 +1124,7 @@ function DashboardMessageBubble({
 }: {
   message: ChatMessage
   index?: number
+  isReceiptProcessing?: boolean
   isHovered: boolean
   onHover: () => void
   onLeave: () => void
@@ -1172,6 +1190,7 @@ function DashboardMessageBubble({
     <article
       data-qid={`shared-chat:message:${message.role}`}
       data-branch={branch ?? message.role}
+      data-entity-span-count={entitySpans.length}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
       style={{
@@ -1185,7 +1204,10 @@ function DashboardMessageBubble({
 	          justifyContent: 'flex-end',
 	          padding: '2px 0 10px',
 	        }}>
-	          <div style={{
+	          <div
+	            className={isReceiptProcessing ? 'embry-receipt embry-receipt--processing' : 'embry-receipt'}
+	            data-qid={isReceiptProcessing ? 'embry-receipt:processing' : 'embry-receipt:user'}
+	            style={{
 	            maxWidth: sidebar ? '82%' : '72%',
 	            background: 'rgba(255,255,255,0.08)',
 	            border: '1px solid rgba(255,255,255,0.065)',
@@ -1214,7 +1236,10 @@ function DashboardMessageBubble({
           </div>
         </div>
 	      ) : (
-	        <div style={{
+	        <div
+	          className={isReceiptProcessing ? 'embry-receipt embry-receipt--processing' : 'embry-receipt'}
+	          data-qid={isReceiptProcessing ? 'embry-receipt:processing' : 'embry-receipt:assistant'}
+	          style={{
 	          background: 'rgba(255,255,255,0.04)',
 	          border: '1px solid rgba(255,255,255,0.075)',
 	          borderRadius: 12,
