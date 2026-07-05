@@ -1123,6 +1123,10 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           <ChatReplayHeader
             replayState={replayState}
             voiceStatus={effectiveVoiceStatus}
+            isStreaming={isStreaming}
+            tone={effectiveVoiceStatus === 'idle' ? undefined : selectedTurn.tone}
+            activeSpeech={activeSpeech}
+            phaseSpeedMs={orbPhaseSpeedMs}
             selectedSessionTitle={sessionTitleForReplay(replayState.activeSessionId)}
             directSpeakBusy={directSpeakBusy}
             onReplay={() => replaySession()}
@@ -1193,6 +1197,10 @@ export function EmbryVoiceLabRoute(): JSX.Element {
 function ChatReplayHeader({
   replayState,
   voiceStatus,
+  isStreaming,
+  tone,
+  activeSpeech,
+  phaseSpeedMs,
   selectedSessionTitle,
   directSpeakBusy,
   onReplay,
@@ -1202,6 +1210,10 @@ function ChatReplayHeader({
 }: {
   replayState: ReplayState
   voiceStatus: EmbryVoiceStatus
+  isStreaming: boolean
+  tone?: string
+  activeSpeech: ActiveSpeechSource | null
+  phaseSpeedMs: number
   selectedSessionTitle: string
   directSpeakBusy: boolean
   onReplay: () => void
@@ -1213,8 +1225,22 @@ function ChatReplayHeader({
   return (
     <header
       data-qid="embry-voice:center-replay-header"
-      className="flex items-center justify-between gap-3 border-b border-[#2d2d31] bg-[#151518] px-4 py-3"
+      className="flex items-center justify-between gap-4 border-b border-[#2d2d31] bg-[#151518] px-4 py-3"
     >
+      <div className="shrink-0" data-qid="embry-voice:center-orb">
+        <IdentityNode
+          voiceStatus={voiceStatus}
+          isStreaming={isStreaming}
+          tone={tone}
+          height={92}
+          orbSize={58}
+          compact
+          showCopy={false}
+          phaseSpeedMs={phaseSpeedMs}
+          speechAudioElement={activeSpeech?.audioElement ?? null}
+          speechSourceId={activeSpeech?.id}
+        />
+      </div>
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-200">Shared Chat Replay</span>

@@ -77,7 +77,7 @@ export interface ComplianceChatWellProps {
   streamingSteps?: StreamingStep[]
   isStreaming?: boolean
   liveAssistantMessage?: ChatMessage
-  onSend?: (...args: any[]) => void | Promise<void>
+  onSend?: (...args: unknown[]) => void | Promise<void>
   placeholder?: string
   composerPlaceholder?: string
   disabled?: boolean
@@ -103,11 +103,11 @@ export interface ComplianceChatWellProps {
   onEditTitle?: (title: string) => void
   chatTitle?: string
   agentStatus?: 'idle' | 'processing' | 'ready'
-  onFeedback?: (...args: any[]) => void
-  onClarifyClick?: (...args: any[]) => void
-  onEntityClick?: (...args: any[]) => void
-  onRunEvidenceCase?: (...args: any[]) => void
-  onNavigateMatrix?: (...args: any[]) => void
+  onFeedback?: (...args: unknown[]) => void
+  onClarifyClick?: (...args: unknown[]) => void
+  onEntityClick?: (...args: unknown[]) => void
+  onRunEvidenceCase?: (...args: unknown[]) => void
+  onNavigateMatrix?: (...args: unknown[]) => void
   evidenceCaseLoading?: boolean
   preSignoffWarning?: string
   starterMode?: string
@@ -122,9 +122,9 @@ export interface ComplianceChatWellProps {
   modeLabels?: Record<string, string>
   modeTitles?: Record<string, string>
   adapter?: unknown
-  onMessagesChange?: (...args: any[]) => void
-  onStreamingStepsChange?: (...args: any[]) => void
-  onStreamingChange?: (...args: any[]) => void
+  onMessagesChange?: (...args: unknown[]) => void
+  onStreamingStepsChange?: (...args: unknown[]) => void
+  onStreamingChange?: (...args: unknown[]) => void
   defaultMode?: string
   projectLabel?: string
   voiceEnabled?: boolean
@@ -215,10 +215,6 @@ function defaultMediaUrl(path: string): string {
 
 function isRecord(value: unknown): value is UnknownRecord {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
-}
-
-function asArray(value: unknown): unknown[] {
-  return Array.isArray(value) ? value : []
 }
 
 function spanPair(value: unknown): [number, number] | null {
@@ -1143,14 +1139,14 @@ function DashboardMessageBubble({
   const disclosure = thinkingTraceDisclosureParts({ message, branch })
   const meta = (message.metadata ?? {}) as UnknownRecord
 
-  const evidenceCaseData = (meta.evidenceCase ?? meta.evidence_case) as any
-  const matrixSummary = (meta.matrixSummary ?? meta.matrix_summary) as any
-  const recallItems = (meta.recallItems ?? meta.recall_items ?? meta.recall) as any
+  const evidenceCaseData = (meta.evidenceCase ?? meta.evidence_case) as EvidenceCaseData | undefined
+  const matrixSummary = (meta.matrixSummary ?? meta.matrix_summary) as ThreatMatrixSummary | undefined
+  const recallItems = (meta.recallItems ?? meta.recall_items ?? meta.recall) as RecallItem[] | undefined
   const resultCount = meta.resultCount ?? meta.result_count
-  const entities = meta.entities as any
+  const entities = meta.entities as Array<EntityArtifact | string> | undefined
   const entitySpans = extractEntitySpansFromMessage(message, meta)
-  const verdict = meta.verdict as any
-	  const querySpec = (meta._querySpec ?? meta.querySpec ?? meta.query_spec) as any
+  const verdict = meta.verdict as VerdictArtifact | undefined
+	  const querySpec = (meta._querySpec ?? meta.querySpec ?? meta.query_spec) as unknown
 	  const figureArtifact = (meta.figureArtifact ?? meta.figure_artifact) as FigureArtifact | undefined
 	  const tableData = (meta.tableData ?? meta.table_data) as TableArtifact | undefined
 	  const audioArtifacts = normalizeAudioArtifacts(meta.audioArtifacts ?? meta.audio_artifacts)
@@ -1158,7 +1154,7 @@ function DashboardMessageBubble({
 	  const hasHighRisk = tableData && Array.isArray(tableData.rows) && tableData.rows.some((row) =>
 	    row.some((cell) => typeof cell === 'string' && (cell.includes('DIFF') || cell.includes('HIGH') || cell.includes('CRITICAL')))
 	  )
-	  const timestamp = new Date(message.createdAt ?? message.timestamp ?? Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+		  const timestamp = new Date(message.createdAt ?? message.timestamp ?? 0).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   const ProvenanceIcon = isUser ? User : Cpu
   const provenanceLabel = isUser
     ? 'Human input'
@@ -1175,12 +1171,13 @@ function DashboardMessageBubble({
     <div className="chat-message-thinking-trace">
       <ThinkingTrace
         steps={steps}
-        title={disclosure.title}
+        title={branch === 'embry-voice' ? 'Memory reasoning trace' : disclosure.title}
         label={disclosure.label}
         disclosureVariant={disclosure.disclosureVariant}
         leadingIcon={leadingIconForBranch(branch, disclosure.disclosureVariant)}
         placement="header"
         displayMode="full"
+        defaultOpen={branch === 'embry-voice'}
         dataQid="shared-chat:message:thinking-trace"
       />
     </div>
@@ -1353,8 +1350,6 @@ function DashboardMessageBubble({
             </div>
           )}
 
-          {completedThinkingTrace}
-
           {/* Content */}
           <div>
           {/* Tool action line */}
@@ -1439,6 +1434,8 @@ function DashboardMessageBubble({
                 <MarkdownRenderer content={textContent} sidebarMode={sidebar} entitySpans={entitySpans} mediaUrl={mediaUrl ?? defaultMediaUrl} />
             </div>
           )}
+
+          {completedThinkingTrace}
 
           {!isUser && audioArtifacts.length > 0 && (
             <VoiceAudioArtifacts artifacts={audioArtifacts} mediaUrl={mediaUrl ?? defaultMediaUrl} />

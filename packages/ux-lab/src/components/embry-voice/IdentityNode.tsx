@@ -8,6 +8,9 @@ export interface IdentityNodeProps {
   tone?: string
   speaker?: string
   height?: number
+  orbSize?: number
+  compact?: boolean
+  showCopy?: boolean
   phaseSpeedMs?: number
   speechAudioElement?: HTMLMediaElement | null
   speechSourceId?: string
@@ -73,11 +76,16 @@ export function IdentityNode({
   isStreaming,
   tone,
   height = 260,
+  orbSize,
+  compact = false,
+  showCopy = true,
   phaseSpeedMs,
   speechAudioElement,
   speechSourceId,
 }: IdentityNodeProps): JSX.Element {
   const view = buildIdentityNodeViewModel({ voiceStatus, isStreaming, tone })
+  const resolvedOrbSize = orbSize ?? (compact ? Math.max(44, Math.min(72, height - 28)) : 220)
+  const engineHeight = compact ? Math.max(52, height - 28) : 220
 
   return (
     <section
@@ -85,21 +93,23 @@ export function IdentityNode({
       data-embry-state={view.visualState}
       data-embry-signal={view.signal}
       data-embry-tone={tone ?? ''}
-      className="embry-identity-node relative shrink-0 border-b border-[#27272a] bg-[#0c0c0e]"
+      className={`embry-identity-node relative shrink-0 ${compact ? 'border border-[#2d2d31]' : 'border-b border-[#27272a]'} bg-[#0c0c0e]`}
       style={{ height, minHeight: height, maxHeight: height }}
     >
-      <button
-        type="button"
-        data-qid="embry-voice:copy-content"
-        aria-label="Copy Embry logo panel"
-        title="Copy Embry logo panel"
-        onClick={() => void copyIdentityPanel()}
-        className="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center border border-[#27272a] bg-[#121214] text-[#60a5fa] transition hover:border-[#60a5fa] hover:bg-[#18181b] focus:outline-none focus:ring-2 focus:ring-[#60a5fa]/70"
-      >
-        <Copy className="h-4 w-4" aria-hidden />
-      </button>
+      {showCopy && (
+        <button
+          type="button"
+          data-qid="embry-voice:copy-content"
+          aria-label="Copy Embry logo panel"
+          title="Copy Embry logo panel"
+          onClick={() => void copyIdentityPanel()}
+          className="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center border border-[#27272a] bg-[#121214] text-[#60a5fa] transition hover:border-[#60a5fa] hover:bg-[#18181b] focus:outline-none focus:ring-2 focus:ring-[#60a5fa]/70"
+        >
+          <Copy className="h-4 w-4" aria-hidden />
+        </button>
+      )}
 
-      <div className="embry-identity-node__engine flex h-[220px] w-full items-center justify-center bg-transparent">
+      <div className="embry-identity-node__engine flex w-full items-center justify-center bg-transparent" style={{ height: engineHeight }}>
         <EmbryVoiceOrb
           voiceStatus={voiceStatus}
           isStreaming={isStreaming}
@@ -107,17 +117,17 @@ export function IdentityNode({
           signal={view.signal}
           speechAudioElement={speechAudioElement}
           speechSourceId={speechSourceId}
-          size={220}
-          surface="rail"
+          size={resolvedOrbSize}
+          surface={compact ? 'toolbar' : 'rail'}
           phaseSpeedMs={phaseSpeedMs}
           fillCanvas
           letterAsParticles
         />
       </div>
 
-      <div className="embry-identity-node__status flex h-10 items-center justify-center px-3">
+      <div className={`embry-identity-node__status flex ${compact ? 'h-7' : 'h-10'} items-center justify-center px-3`}>
         <span
-          className="status-text truncate font-mono-os text-[10px] font-bold uppercase tracking-[0.1em]"
+          className={`${compact ? 'max-w-[112px]' : ''} status-text truncate font-mono-os text-[10px] font-bold uppercase tracking-[0.1em]`}
           style={{ color: view.accentColor }}
           aria-live="polite"
           aria-atomic="true"
