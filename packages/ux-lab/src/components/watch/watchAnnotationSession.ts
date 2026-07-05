@@ -553,7 +553,26 @@ function controlKind(record: JsonRecord): WatchTrackControlKind {
   return 'track-control'
 }
 
+function isRejectedIdentityRecord(record: JsonRecord): boolean {
+  const trainingRole = record.training_role && typeof record.training_role === 'object'
+    ? record.training_role as JsonRecord
+    : record.trainingRole && typeof record.trainingRole === 'object'
+      ? record.trainingRole as JsonRecord
+      : {}
+  const status = firstString(record, ['status']).toLowerCase()
+  const reviewState = firstString(trainingRole, ['review_state', 'reviewState']).toLowerCase()
+  const labelType = firstString(trainingRole, ['label_type', 'labelType'])
+    || firstString(record, ['label_type', 'labelType'])
+  const normalizedLabelType = labelType.toLowerCase()
+  return (
+    status.includes('rejected')
+    || reviewState.includes('rejected')
+    || normalizedLabelType === 'negative'
+  )
+}
+
 function parseKeyframeRecord(row: WatchAnnotationSceneRow, record: JsonRecord): WatchAnnotationKeyframe | null {
+  if (isRejectedIdentityRecord(record)) return null
   if (isAdjustmentRecord(record)) return null
   if (isControlRecord(record)) return null
   const bbox = normalizeBbox(record.bbox ?? record.normalized_bbox ?? record.box)
