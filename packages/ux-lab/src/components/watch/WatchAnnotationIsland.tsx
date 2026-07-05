@@ -153,6 +153,16 @@ interface DetectorObservationRefPayload {
   human_bbox?: NormalizedBbox
 }
 
+interface PersistableKeyframe {
+  bbox: NormalizedBbox
+  timeSeconds: number
+  characterName: string
+  actorName: string
+  recordId?: string
+  assetUid?: string
+  detectorObservationRef?: DetectorObservationRefPayload
+}
+
 interface DetectorSuggestionPayload {
   ok?: boolean
   error?: string
@@ -445,20 +455,6 @@ function sameBbox(a: NormalizedBbox, b: NormalizedBbox): boolean {
   return a.every((value, index) => Math.abs(value - b[index]) < 0.0005)
 }
 
-function bboxIou(a: NormalizedBbox, b: NormalizedBbox): number {
-  const left = Math.max(a[0], b[0])
-  const top = Math.max(a[1], b[1])
-  const right = Math.min(a[2], b[2])
-  const bottom = Math.min(a[3], b[3])
-  const intersectionWidth = Math.max(0, right - left)
-  const intersectionHeight = Math.max(0, bottom - top)
-  const intersection = intersectionWidth * intersectionHeight
-  const areaA = Math.max(0, a[2] - a[0]) * Math.max(0, a[3] - a[1])
-  const areaB = Math.max(0, b[2] - b[0]) * Math.max(0, b[3] - b[1])
-  const union = areaA + areaB - intersection
-  return union > 0 ? intersection / union : 0
-}
-
 function runtimeEditKeyframeId(rowIndex: number, characterKeyValue: string): string {
   const safeCharacterKey = characterKeyValue.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'character'
   return `${Date.now()}_row${rowIndex.toString().padStart(4, '0')}_${safeCharacterKey}_runtime_edit`
@@ -590,6 +586,8 @@ const HANDLE_ITEMS: Array<{ handle: DragHandle; label: string; style: React.CSSP
 ]
 
 const PENDING_TARGET_OVERLAY_ID = 'pending:new-annotation-target'
+const EMPTY_CHARACTER_OPTIONS: Array<string | WatchAnnotationCharacterOption> = []
+const EMPTY_ACTOR_BY_CHARACTER: Record<string, string> = {}
 
 export function WatchAnnotationIsland({
   row,
@@ -597,8 +595,8 @@ export function WatchAnnotationIsland({
   assetUid,
   videoSrc,
   thumbnailSrc,
-  characters = [],
-  actorByCharacter = {},
+  characters = EMPTY_CHARACTER_OPTIONS,
+  actorByCharacter = EMPTY_ACTOR_BY_CHARACTER,
   actorForCharacter,
   onClose,
 }: WatchAnnotationIslandProps): React.ReactElement {
@@ -623,10 +621,6 @@ export function WatchAnnotationIsland({
       actorName: option.actorName || actorLookup(option.name) || '',
     }))
   }, [actorLookup, characters, row])
-
-  const characterOptionsKey = useMemo(() => (
-    characterOptions.map((option) => `${option.name}:${option.actorName || ''}`).join('|')
-  ), [characterOptions])
 
   const [session, setSession] = useState<WatchAnnotationSessionState>(() => (
     createWatchAnnotationSession(row, characterOptions)
@@ -679,7 +673,7 @@ export function WatchAnnotationIsland({
     } finally {
       setLoading(false)
     }
-  }, [characterOptionsKey, row.index, row.movie_segment, row.timecode])
+  }, [characterOptions, row])
 
   const hydrateDetectorCandidates = useCallback(async (): Promise<void> => {
     try {
@@ -753,7 +747,7 @@ export function WatchAnnotationIsland({
     setDetectorLabelRejections({})
     setStatus('Loading live row annotations...')
     void hydrateRow()
-  }, [characterOptionsKey, hydrateRow, row.index, row.movie_segment, row.timecode])
+  }, [characterOptions, hydrateRow, row])
 
   useEffect(() => {
     void hydrateDetectorCandidates()
@@ -832,7 +826,7 @@ export function WatchAnnotationIsland({
     }
     return visible.sort((left, right) => left.trackId.localeCompare(right.trackId))
   }, [detectorCandidates, row.index, session.playheadSeconds])
-  function findSavedDetectorAssignment(candidate: DetectorCandidate): DetectorCandidateAssignment | null {
+  const findSavedDetectorAssignment = useCallback((candidate: DetectorCandidate): DetectorCandidateAssignment | null => {
     let best: { distance: number; keyframe: WatchAnnotationKeyframe } | null = null
     for (const track of Object.values(session.tracks)) {
       for (const keyframe of track.keyframes) {
@@ -851,7 +845,7 @@ export function WatchAnnotationIsland({
       source: 'saved',
       keyframe: best.keyframe,
     }
-  }
+  }, [session.tracks])
 
   const detectorCandidateAssignments = useMemo(() => {
     const assignments = new Map<string, DetectorCandidateAssignment>()
@@ -932,13 +926,11 @@ export function WatchAnnotationIsland({
           return (right.evidenceCount ?? 0) - (left.evidenceCount ?? 0)
         })[0]
       if (propagatedAssignment && !isRejected(candidate, propagatedAssignment)) {
-        const {
-          keyframeId: _keyframeId,
-          keyframeTimeSeconds: _keyframeTimeSeconds,
-          ...assignment
-        } = propagatedAssignment
         assignments.set(candidate.id, {
-          ...assignment,
+          characterName: propagatedAssignment.characterName,
+          actorName: propagatedAssignment.actorName,
+          keyframe: propagatedAssignment.keyframe,
+          evidenceCount: propagatedAssignment.evidenceCount,
           source: 'propagated',
           originTrackId: candidate.trackId,
         })
@@ -952,9 +944,9 @@ export function WatchAnnotationIsland({
     return assignments
   }, [
     actorLookup,
-    detectorCandidates,
     detectorLabelRejections,
     detectorSuggestions,
+    findSavedDetectorAssignment,
     pendingTargetBbox,
     selectedDetectorCandidateId,
     session.selectedActorName,
@@ -967,7 +959,9 @@ export function WatchAnnotationIsland({
       ? visibleDetectorCandidates.find((candidate) => candidate.id === selectedDetectorCandidateId) || null
       : null
   ), [selectedDetectorCandidateId, visibleDetectorCandidates])
-  const selectedDetectorAssignment = selectedDetectorCandidate ? detectorCandidateAssignments.get(selectedDetectorCandidate.id) || null : null
+  const selectedDetectorAssignment = selectedDetectorCandidate
+    ? detectorCandidateAssignments.get(selectedDetectorCandidate.id) || findSavedDetectorAssignment(selectedDetectorCandidate)
+    : null
   const detectorFirstMode = visibleDetectorCandidates.length > 0
   const manualDrawEnabled = manualAnnotationEnabled
   const displayedOverlays = useMemo(() => (
@@ -1047,10 +1041,13 @@ export function WatchAnnotationIsland({
       || right.progress - left.progress
       || left.characterName.localeCompare(right.characterName)
     ))
-  }, [actorLookup, detectorCandidates, detectorLabelRejections, detectorSuggestions, identityReadiness, session.tracks])
+  }, [actorLookup, detectorCandidates, detectorLabelRejections, detectorSuggestions, findSavedDetectorAssignment, identityReadiness])
 
-  function commonMutationBody(timeSeconds: number, mutationAssetUid = resolvedAssetUid): Record<string, unknown> {
-    return {
+  const commonMutationBody = useCallback((
+    timeSeconds: number,
+    mutationAssetUid = resolvedAssetUid,
+  ): Record<string, unknown> => (
+    {
       asset_uid: mutationAssetUid,
       row_index: row.index,
       timecode: row.timecode,
@@ -1061,17 +1058,20 @@ export function WatchAnnotationIsland({
       keyframe_time_basis: 'segment_seconds',
       source: 'watch_annotation_island',
     }
-  }
+  ), [
+    effectiveVideoSrc,
+    resolvedAssetUid,
+    row.index,
+    row.movie_segment,
+    row.scene_marker_image_path,
+    row.timecode,
+    row.video_clip_path,
+  ])
 
-  async function persistKeyframe(keyframe: {
-    bbox: NormalizedBbox
-    timeSeconds: number
-    characterName: string
-    actorName: string
-    recordId?: string
-    assetUid?: string
-    detectorObservationRef?: DetectorObservationRefPayload
-  }, keyframeImageDataUrl?: string | null): Promise<void> {
+  const persistKeyframe = useCallback(async (
+    keyframe: PersistableKeyframe,
+    keyframeImageDataUrl?: string | null,
+  ): Promise<void> => {
     await requestJson('/api/projects/watch/annotations', {
       ...commonMutationBody(keyframe.timeSeconds, keyframe.assetUid || resolvedAssetUid),
       annotation_id: keyframe.recordId,
@@ -1084,7 +1084,7 @@ export function WatchAnnotationIsland({
         ? captureVideoFrameDataUrl(videoRef.current) || undefined
         : keyframeImageDataUrl || undefined,
     })
-  }
+  }, [commonMutationBody, resolvedAssetUid])
 
   function waitForVideoSeek(video: HTMLVideoElement, timeSeconds: number): Promise<void> {
     const clamped = Math.max(0, Math.min(segmentDuration, timeSeconds))
@@ -1505,33 +1505,6 @@ export function WatchAnnotationIsland({
     await stopSelectedTrackAtPlayhead()
   }
 
-  async function clearSegmentAnnotations(): Promise<void> {
-    const current = sessionRef.current || session
-    const exactCount = trackStats(current).exactKeyframes
-    if (saving || exactCount < 1) return
-    setSaving(true)
-    setStatus(`Clearing ${exactCount} exact keyframe${exactCount === 1 ? '' : 's'} in this segment...`)
-    try {
-      await requestJson('/api/projects/watch/annotations/clear-segment', {
-        asset_uid: resolvedAssetUid,
-        row_index: row.index,
-        timecode: row.timecode,
-        movie_segment: row.movie_segment || row.timecode,
-        source: 'watch_annotation_island',
-      })
-      setDraftBbox(null)
-      setPendingTargetBbox(null)
-      setDrawStart(null)
-      await hydrateRow()
-      setStatus(`Cleared ${exactCount} exact keyframe${exactCount === 1 ? '' : 's'} in this segment.`)
-    } catch (error) {
-      setStatus(`Clear failed: ${error instanceof Error ? error.message : String(error)}`)
-      await hydrateRow()
-    } finally {
-      setSaving(false)
-    }
-  }
-
   async function copyAnnotationSnapshotToClipboard(): Promise<void> {
     const current = sessionRef.current || session
     const frameImageDataUrl = captureVideoFrameDataUrl(videoRef.current)
@@ -1857,28 +1830,8 @@ export function WatchAnnotationIsland({
     setVideoTime(current.playheadSeconds + direction * (1 / 24))
   }
 
-  function focusCharacterSelect(openPicker = false): void {
-    window.setTimeout(() => {
-      const select = characterSelectRef.current
-      if (!select) return
-      select.focus()
-      if (!openPicker) return
-      try {
-        const picker = (select as HTMLSelectElement & { showPicker?: () => void }).showPicker
-        if (typeof picker === 'function') picker.call(select)
-      } catch {
-        // Some browsers only allow focus, not programmatic native-picker opening.
-      }
-    }, 0)
-  }
-
   async function hydrateDetectorSuggestion(candidate: DetectorCandidate): Promise<void> {
     if (detectorSuggestions[candidate.id]) return
-    const frameImageDataUrl = captureVideoFrameDataUrl(videoRef.current)
-    if (!frameImageDataUrl) {
-      setDetectorStatus(`YOLO candidates loaded; Qdrant suggestion skipped for ${candidate.trackId} because the current video frame is unavailable.`)
-      return
-    }
     try {
       const response = await fetch('/api/projects/watch/detector-candidates/suggest-label', {
         method: 'POST',
@@ -1889,7 +1842,6 @@ export function WatchAnnotationIsland({
           track_id: candidate.trackId,
           bbox: candidate.bbox,
           time_seconds: candidate.timeSeconds,
-          image_data_url: frameImageDataUrl,
           allowed_characters: characterOptions.map((option) => ({
             character_name: option.name,
             actor_name: option.actorName || actorLookup(option.name),
@@ -2221,7 +2173,7 @@ export function WatchAnnotationIsland({
     } finally {
       setSaving(false)
     }
-  }, [hydrateRow])
+  }, [hydrateRow, persistKeyframe, resolvedAssetUid])
 
   useEffect(() => {
     function onPointerMove(event: PointerEvent): void {
