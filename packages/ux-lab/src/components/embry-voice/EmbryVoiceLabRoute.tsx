@@ -1,9 +1,10 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { CheckCircle2, ChevronDown, FlaskConical, Folder, Mic, PauseCircle, PlayCircle, Radio, SearchCode, XCircle } from 'lucide-react'
+import { CheckCircle2, ChevronDown, FlaskConical, Folder, Mic, PauseCircle, PlayCircle, Radio, SearchCode, Volume2, XCircle } from 'lucide-react'
 import { LeftPane, LeftPaneSection, useLeftPaneSearch } from '../common/LeftPane'
 import { SharedChatShell } from '../shared-chat/SharedChatShell'
-import { deriveEmbryVoiceStatus, type EmbryVoiceStatus } from './EmbryVoiceOrb'
+import type { EmbryVoiceStatus } from './EmbryVoiceOrb'
+import { deriveEmbryVoiceStatus } from './embryOrbState'
 import { IdentityNode } from './IdentityNode'
 import type { ChatMessage, StreamingStep } from '../shared-chat/memory-turn'
 
@@ -47,6 +48,15 @@ type VoiceTurn = {
 
 type ReplayPhase = 'idle' | 'request' | 'thinking' | 'response' | 'complete' | 'interrupted'
 type ReplayState = { playing: boolean; activeIndex: number; activeTurnId?: string; activeSessionId?: string; phase: ReplayPhase; visibleTurnCount?: number }
+type OrbStatusOverride = Exclude<EmbryVoiceStatus, 'off' | 'error'> | null
+type MemoryIntentSnapshot = {
+  action: string
+  confidence?: number
+  speaker: string
+  tone: string
+  occurrence: string
+  source: 'live-memory-intent' | 'fixture-turn'
+}
 
 type TestSession = {
   id: string
@@ -74,6 +84,68 @@ function artifactUrl(path: string): string {
 
 function artifact(id: string, label: string, path: string): AudioArtifact {
   return { id, label, path, url: artifactUrl(path) }
+}
+
+function asRecord(value: unknown): Record<string, unknown> | undefined {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined
+}
+
+function firstStringValue(...values: unknown[]): string {
+  for (const value of values) {
+    if (typeof value === 'string' && value.trim()) return value.trim()
+  }
+  return ''
+}
+
+function firstNumberValue(...values: unknown[]): number | undefined {
+  for (const value of values) {
+    if (typeof value === 'number' && Number.isFinite(value)) return value
+    if (typeof value === 'string' && value.trim() && Number.isFinite(Number(value))) return Number(value)
+  }
+  return undefined
+}
+
+function snapshotFromMemoryPacket(memory: unknown, fallbackTone?: string): MemoryIntentSnapshot | undefined {
+  const packet = asRecord(memory)
+  const intent = asRecord(packet?.intent)
+  if (!intent) return undefined
+  const speakerResolution = asRecord(intent.speaker_resolution)
+  const slots = asRecord(intent.slots)
+  const queryPlan = asRecord(intent.query_plan)
+  const action = firstStringValue(packet?.action, intent.action, intent.intent, intent.route, intent.decision).toUpperCase()
+  return {
+    action: action || 'UNKNOWN',
+    confidence: firstNumberValue(intent.confidence, intent.recall_profile_confidence),
+    speaker: firstStringValue(
+      speakerResolution?.display_name,
+      speakerResolution?.speaker_id,
+      speakerResolution?.status,
+      slots?.speaker,
+      intent.speaker,
+    ) || 'unknown',
+    tone: firstStringValue(intent.tone, slots?.tone, fallbackTone) || 'neutral',
+    occurrence: firstStringValue(
+      queryPlan?.intent_type,
+      queryPlan?.event_type,
+      intent.ui_action,
+      intent.recall_profile,
+      intent.response_mode,
+      intent.classifier_source,
+    ) || 'memory intent',
+    source: 'live-memory-intent',
+  }
+}
+
+function snapshotFromTurn(turn: VoiceTurn): MemoryIntentSnapshot {
+  return {
+    action: turn.memoryAction ?? 'none',
+    speaker: turn.speaker ?? 'unknown',
+    tone: turn.tone ?? 'neutral',
+    occurrence: turn.telemetry.find((entry) => entry.label.toLowerCase().includes('route'))?.value
+      ?? turn.assistantText
+      ?? 'fixture turn',
+    source: 'fixture-turn',
+  }
 }
 
 const sanityRuns: SanityRun[] = [
@@ -510,12 +582,19 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const [streamingSteps, setStreamingSteps] = useState<StreamingStep[]>([])
   const [isStreaming, setIsStreaming] = useState(false)
   const [replayState, setReplayState] = useState<ReplayState>({ playing: false, activeIndex: -1, phase: 'idle' })
+  const [orbStatusOverride, setOrbStatusOverride] = useState<OrbStatusOverride>(null)
+  const [liveIntentSnapshot, setLiveIntentSnapshot] = useState<MemoryIntentSnapshot | null>(null)
+  const [intentProbeBusy, setIntentProbeBusy] = useState(false)
   const replayStopRef = useRef(false)
   const selectedRun = sanityRuns.find((run) => run.id === selectedRunId)
   const selectedTurn = voiceTurns.find((turn) => turn.id === selectedTurnId) ?? voiceTurns[0]
   const gateSummary = useMemo(() => summarizeGates(sanityRuns), [])
+  const liveVoiceStatus = deriveEmbryVoiceStatus({ voiceEnabled, replayPhase: replayState.phase })
+  const effectiveVoiceStatus = orbStatusOverride ?? liveVoiceStatus
+  const intentSnapshot = liveIntentSnapshot ?? snapshotFromTurn(selectedTurn)
 
   const focusTurn = useCallback((turnId: string, runId?: string) => {
+    setLiveIntentSnapshot(null)
     setSelectedTurnId(turnId)
     if (runId) setSelectedRunId(runId)
     else {
@@ -617,6 +696,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         reasoningSteps?: unknown[]
         entities?: unknown[]
         recallItems?: unknown[]
+        memory?: unknown
         tone?: string
         deliveryStage?: string
         backend?: string
@@ -647,6 +727,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           receiptUrl: payload.receiptUrl,
           entities: Array.isArray(payload.entities) ? payload.entities : [],
           recallItems: Array.isArray(payload.recallItems) ? payload.recallItems : [],
+          memory: payload.memory,
           audioArtifacts: payload.audioUrl
             ? [{
                 id: `${turnId}:chatterbox`,
@@ -657,6 +738,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             : [],
         },
       }
+      setLiveIntentSnapshot(snapshotFromMemoryPacket(payload.memory, payload.tone) ?? null)
       setChatMessages((messages) => [...messages, assistantMessage])
       setStreamingSteps(Array.isArray(payload.reasoningSteps) ? payload.reasoningSteps as StreamingStep[] : [])
       setReplayState({ playing: false, activeIndex: -1, activeTurnId: turnId, phase: 'response' })
@@ -703,6 +785,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         },
       ])
       setReplayState({ playing: false, activeIndex: -1, activeTurnId: turnId, phase: 'interrupted' })
+      setLiveIntentSnapshot(null)
     } finally {
       setIsStreaming(false)
       window.setTimeout(() => setStreamingSteps([]), 1200)
@@ -715,6 +798,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       : voiceTurns
     if (!turnsToReplay.length) return
     replayStopRef.current = false
+    setLiveIntentSnapshot(null)
     setChatMessages([])
     setReplayState({ playing: true, activeIndex: -1, activeSessionId: session?.id, phase: 'request', visibleTurnCount: 0 })
     if (session?.runIds[0]) setSelectedRunId(session.runIds[0])
@@ -786,7 +870,47 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     setReplayState({ playing: false, activeIndex: -1, phase: 'interrupted' })
     setIsStreaming(false)
     setStreamingSteps([])
+    setLiveIntentSnapshot(null)
   }, [])
+
+  const playVisibleEmbryVoice = useCallback(() => {
+    const audios = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
+    const audio = audios.find((candidate) => candidate.readyState > 0) ?? audios[0]
+    if (!audio) return
+    setOrbStatusOverride('speaking')
+    audio.currentTime = 0
+    void audio.play().catch(() => undefined)
+    const finish = (): void => {
+      audio.removeEventListener('ended', finish)
+      audio.removeEventListener('pause', finish)
+      setOrbStatusOverride((current) => (current === 'speaking' ? null : current))
+    }
+    audio.addEventListener('ended', finish, { once: true })
+    audio.addEventListener('pause', finish, { once: true })
+  }, [])
+
+  const probeMemoryIntent = useCallback(async () => {
+    if (intentProbeBusy) return
+    setIntentProbeBusy(true)
+    try {
+      const response = await fetch('/api/projects/embry-voice/live-turn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: selectedTurn.userText,
+          sessionId: 'ux-lab-embry-voice-intent-probe',
+          voiceEnabled: false,
+          tone: selectedTurn.tone ?? 'neutral_warm',
+        }),
+      })
+      const payload = await response.json().catch(() => null) as { memory?: unknown; tone?: string; status?: string; error?: string } | null
+      if (!response.ok || payload?.status !== 'ok') throw new Error(payload?.error || `Intent probe returned HTTP ${response.status}`)
+      setLiveIntentSnapshot(snapshotFromMemoryPacket(payload.memory, payload.tone ?? selectedTurn.tone) ?? null)
+      setOrbStatusOverride(null)
+    } finally {
+      setIntentProbeBusy(false)
+    }
+  }, [intentProbeBusy, selectedTurn])
 
   return (
     <section data-qid="embry-voice:route" className={`h-full min-h-0 grid grid-rows-[auto_minmax(0,1fr)] ${surfaceClass}`}>
@@ -808,9 +932,16 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           turns={voiceTurns}
           folders={sessionFolders}
           replayState={replayState}
-          voiceStatus={deriveEmbryVoiceStatus({ voiceEnabled, replayPhase: replayState.phase })}
+          voiceStatus={effectiveVoiceStatus}
+          liveVoiceStatus={liveVoiceStatus}
+          orbStatusOverride={orbStatusOverride}
           isStreaming={isStreaming}
           tone={selectedTurn.tone}
+          intentSnapshot={intentSnapshot}
+          intentProbeBusy={intentProbeBusy}
+          onOrbStatusOverride={setOrbStatusOverride}
+          onPlayVoice={playVisibleEmbryVoice}
+          onProbeIntent={probeMemoryIntent}
           onReplay={replaySession}
           onStopReplay={stopReplay}
         />
@@ -852,7 +983,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             ]}
             mediaUrl={artifactUrl}
             voiceEnabled={voiceEnabled}
-            voiceStatus={deriveEmbryVoiceStatus({ voiceEnabled, replayPhase: replayState.phase })}
+            voiceStatus={effectiveVoiceStatus}
             voiceLabel="Embry voice"
             onVoiceToggle={setVoiceEnabled}
             activeProcessingTurnId={isStreaming ? replayState.activeTurnId : undefined}
@@ -886,8 +1017,15 @@ function SessionController({
   folders,
   replayState,
   voiceStatus,
+  liveVoiceStatus,
+  orbStatusOverride,
   isStreaming,
   tone,
+  intentSnapshot,
+  intentProbeBusy,
+  onOrbStatusOverride,
+  onPlayVoice,
+  onProbeIntent,
   onReplay,
   onStopReplay,
 }: {
@@ -895,19 +1033,36 @@ function SessionController({
   folders: SessionFolder[]
   replayState: ReplayState
   voiceStatus?: EmbryVoiceStatus
+  liveVoiceStatus: EmbryVoiceStatus
+  orbStatusOverride: OrbStatusOverride
   isStreaming?: boolean
   tone?: string
+  intentSnapshot: MemoryIntentSnapshot
+  intentProbeBusy: boolean
+  onOrbStatusOverride: (status: OrbStatusOverride) => void
+  onPlayVoice: () => void
+  onProbeIntent: () => void
   onReplay: (session?: TestSession) => void
   onStopReplay: () => void
 }): JSX.Element {
   const totalAudio = turns.reduce((count, turn) => count + turn.audioArtifacts.length, 0)
   const replayProgress = replayState.playing ? Math.min(100, Math.max(6, ((replayState.visibleTurnCount ?? 0) / Math.max(1, turns.length)) * 100)) : 0
+  const identityTone = orbStatusOverride ? undefined : tone
   return (
     <div
       data-qid="embry-voice:command-rail"
       className="flex h-full min-h-0 w-[300px] shrink-0 flex-col border-r border-[#2d2d31] bg-[#121214]"
     >
-      <IdentityNode voiceStatus={voiceStatus} isStreaming={isStreaming} tone={tone} />
+      <IdentityNode voiceStatus={voiceStatus} isStreaming={isStreaming} tone={identityTone} />
+      <OrbStateLabControls
+        liveVoiceStatus={liveVoiceStatus}
+        overrideStatus={orbStatusOverride}
+        intentSnapshot={intentSnapshot}
+        intentProbeBusy={intentProbeBusy}
+        onOverride={onOrbStatusOverride}
+        onPlayVoice={onPlayVoice}
+        onProbeIntent={onProbeIntent}
+      />
       <div className="min-h-0 flex-1 [&>div]:h-full">
     <LeftPane
       title="Sessions"
@@ -936,6 +1091,113 @@ function SessionController({
       />
     </LeftPane>
       </div>
+    </div>
+  )
+}
+
+function OrbStateLabControls({
+  liveVoiceStatus,
+  overrideStatus,
+  intentSnapshot,
+  intentProbeBusy,
+  onOverride,
+  onPlayVoice,
+  onProbeIntent,
+}: {
+  liveVoiceStatus: EmbryVoiceStatus
+  overrideStatus: OrbStatusOverride
+  intentSnapshot: MemoryIntentSnapshot
+  intentProbeBusy: boolean
+  onOverride: (status: OrbStatusOverride) => void
+  onPlayVoice: () => void
+  onProbeIntent: () => void
+}): JSX.Element {
+  const stateOptions: Array<{ label: string; value: OrbStatusOverride }> = [
+    { label: 'Live', value: null },
+    { label: 'Idle', value: 'idle' },
+    { label: 'Listening', value: 'listening' },
+    { label: 'Processing', value: 'processing' },
+    { label: 'Speaking', value: 'speaking' },
+  ]
+  const liveResolvedStatus = intentSnapshot.tone.includes('clarif') && liveVoiceStatus === 'idle' ? 'listening' : liveVoiceStatus
+  const activeStatus = overrideStatus ?? liveResolvedStatus
+  return (
+    <div
+      data-qid="embry-voice:orb-state-lab"
+      className="border-b border-[#27272a] px-3 py-2"
+    >
+      <div className="flex flex-wrap gap-1">
+        {stateOptions.map((option) => {
+          const active = option.value === overrideStatus
+          return (
+            <button
+              key={option.label}
+              type="button"
+              data-qid={`embry-voice:orb-state:${option.label.toLowerCase()}`}
+              onClick={() => onOverride(option.value)}
+              className={`border px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] transition ${
+                active
+                  ? 'border-cyan-300/70 bg-cyan-400/15 text-cyan-100'
+                  : 'border-[#2d2d31] bg-[#121214] text-zinc-400 hover:border-cyan-400/50 hover:text-cyan-100'
+              }`}
+            >
+              {option.label}
+            </button>
+          )
+        })}
+        <button
+          type="button"
+          data-qid="embry-voice:orb-play-voice"
+          onClick={onPlayVoice}
+          className="ml-auto inline-flex items-center gap-1 border border-emerald-300/30 bg-emerald-400/10 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-emerald-100 hover:bg-emerald-400/15"
+          title="Play visible Embry Chatterbox audio and drive speaking particles"
+        >
+          <Volume2 className="h-3 w-3" />
+          Voice
+        </button>
+        <button
+          type="button"
+          data-qid="embry-voice:orb-probe-intent"
+          onClick={onProbeIntent}
+          disabled={intentProbeBusy}
+          className="inline-flex items-center gap-1 border border-sky-300/30 bg-sky-400/10 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-sky-100 hover:bg-sky-400/15 disabled:cursor-wait disabled:opacity-60"
+          title="Run selected turn through memory.intent via Embry live-turn without rendering new audio"
+        >
+          {intentProbeBusy ? 'Intent...' : 'Intent'}
+        </button>
+      </div>
+      <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 font-mono text-[9px] uppercase tracking-[0.12em] text-zinc-500">
+        <div>
+          <dt className="text-zinc-600">State</dt>
+          <dd data-qid="embry-voice:orb-state-readout" className="text-cyan-200">{activeStatus}</dd>
+        </div>
+        <div>
+          <dt className="text-zinc-600">Speaker</dt>
+          <dd data-qid="embry-voice:orb-speaker-readout" className="truncate text-zinc-300">{intentSnapshot.speaker}</dd>
+        </div>
+        <div>
+          <dt className="text-zinc-600">Tone</dt>
+          <dd data-qid="embry-voice:orb-tone-readout" className="truncate text-zinc-300">{intentSnapshot.tone}</dd>
+        </div>
+        <div>
+          <dt className="text-zinc-600">Memory intent</dt>
+          <dd data-qid="embry-voice:orb-intent-readout" className="truncate text-zinc-300">{intentSnapshot.action}</dd>
+        </div>
+        <div>
+          <dt className="text-zinc-600">Occurrence</dt>
+          <dd data-qid="embry-voice:orb-occurrence-readout" className="truncate text-zinc-300">{intentSnapshot.occurrence}</dd>
+        </div>
+        <div>
+          <dt className="text-zinc-600">Confidence</dt>
+          <dd data-qid="embry-voice:orb-confidence-readout" className="truncate text-zinc-300">
+            {intentSnapshot.confidence === undefined ? 'n/a' : intentSnapshot.confidence.toFixed(2)}
+          </dd>
+        </div>
+        <div>
+          <dt className="text-zinc-600">Source</dt>
+          <dd data-qid="embry-voice:orb-intent-source-readout" className="truncate text-zinc-300">{intentSnapshot.source}</dd>
+        </div>
+      </dl>
     </div>
   )
 }

@@ -1,23 +1,10 @@
 {
-  "verified_at": "2026-06-28T14:16:15.861156+00:00",
+  "verified_at": "2026-07-05T14:20:39.769705+00:00",
   "cwd": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab",
   "root": "/home/graham/workspace/experiments/pi-mono",
   "output_root": "/tmp/codex-ui-verification/pi-mono",
-  "url": "http://127.0.0.1:4302/#tau",
-  "name": "tau-memory-route-proof",
-  "screenshot": "/tmp/codex-ui-verification/pi-mono/tau-memory-route-proof/20260628T141606Z.png",
-  "scrolled_screenshot": "/tmp/codex-ui-verification/pi-mono/tau-memory-route-proof/20260628T141606Z.memory-route-panel.png",
-  "read_json": "/tmp/codex-ui-verification/pi-mono/tau-memory-route-proof/20260628T141606Z.read.json",
-  "visible_evidence": [
-    "Fresh Memory Route Proof",
-    "LIVE RECEIPT",
-    "MOCKED false",
-    "LIVE true",
-    "ROUTES 5",
-    "RESEARCH_BRAVE_DISABLED FAILED",
-    "fail-closed branch",
-    "Selector-selected ANSWER route for the natural-language answer probes."
-  ],
-  "marker_created_by": "codex",
-  "marker_scope": "repo-local latest pointer for Tau Memory route proof UI verification"
+  "url": "http://127.0.0.1:3002/#embry-voice",
+  "name": "ux-lab-embry-orb-goal-audio-bands",
+  "screenshot": "/tmp/codex-ui-verification/pi-mono/ux-lab-embry-orb-goal-audio-bands/20260705T142032Z.png",
+  "read_json": "/tmp/codex-ui-verification/pi-mono/ux-lab-embry-orb-goal-audio-bands/20260705T142032Z.read.json"
 }
