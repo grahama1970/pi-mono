@@ -531,32 +531,183 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   }, [focusTurn])
 
   const handleSend = useCallback(async (text: string) => {
+    const trimmed = text.trim()
+    if (!trimmed || isStreaming) return
     const createdAt = new Date().toISOString()
+    const turnId = `embry-live-turn:${Date.now()}`
     setChatMessages((messages) => [
       ...messages,
       {
-        id: `embry-manual-user:${Date.now()}`,
+        id: `${turnId}:user`,
         role: 'user',
-        content: text,
+        content: trimmed,
         createdAt,
         metadata: {
           surface: 'ux-lab/embry-voice',
           inputChannel: voiceEnabled ? 'voice-or-text' : 'text',
-          branch: 'personaplex',
+          branch: 'embry-voice',
+          turnId,
         },
       },
     ])
     setIsStreaming(true)
-    setReplayState((state) => ({ ...state, activeTurnId: voiceTurns[0]?.id, phase: 'request' }))
-    const turn = voiceTurns[0]
-    for (let stepIndex = 0; stepIndex < 4; stepIndex += 1) {
-      setStreamingSteps(replayThinkingStepsForTurn(turn, stepIndex))
-      await new Promise((resolve) => window.setTimeout(resolve, 180))
+    setReplayState({ playing: false, activeIndex: -1, activeTurnId: turnId, phase: 'request' })
+    setStreamingSteps([
+      {
+        id: 'finalizing-intent',
+        label: 'Memory intent',
+        status: 'running',
+        branch: 'embry-voice',
+        detail: 'Calling memory.intent as the Tau chat boundary.',
+        disclosureVariant: 'thinking',
+      },
+      {
+        id: 'extracting-entities',
+        label: 'Extract entities',
+        status: 'pending',
+        branch: 'embry-voice',
+        detail: 'Waiting for memory entity artifacts.',
+        disclosureVariant: 'thinking',
+      },
+      {
+        id: 'looking-in-memory',
+        label: 'Memory recall',
+        status: 'pending',
+        branch: 'embry-voice',
+        detail: 'Waiting for memory-first answer or clarification route.',
+        disclosureVariant: 'thinking',
+      },
+      {
+        id: 'answering',
+        label: 'Tau response',
+        status: 'pending',
+        branch: 'embry-voice',
+        detail: 'Preparing an Embry response from the memory-first result.',
+        disclosureVariant: 'thinking',
+      },
+      {
+        id: 'embry-chatterbox-render',
+        label: 'Chatterbox voice',
+        status: 'pending',
+        branch: 'embry-voice',
+        detail: 'Waiting to render Embry speech.',
+        disclosureVariant: 'thinking',
+      },
+    ])
+
+    try {
+      const response = await fetch('/api/projects/embry-voice/live-turn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: trimmed,
+          sessionId: 'ux-lab-embry-voice',
+          voiceEnabled,
+          tone: 'neutral_warm',
+        }),
+      })
+      const payload = await response.json().catch(() => null) as {
+        status?: string
+        error?: string
+        answerText?: string
+        audioUrl?: string
+        audioPath?: string
+        receiptPath?: string
+        receiptUrl?: string
+        reasoningSteps?: unknown[]
+        entities?: unknown[]
+        recallItems?: unknown[]
+        tone?: string
+        deliveryStage?: string
+        backend?: string
+      } | null
+      if (!response.ok || payload?.status !== 'ok') {
+        throw new Error(payload?.error || `Embry live turn returned HTTP ${response.status}`)
+      }
+
+      const assistantMessage: ChatMessage = {
+        id: `${turnId}:assistant`,
+        role: 'assistant',
+        content: payload.answerText || 'I heard you, but Tau did not return spoken text.',
+        createdAt: new Date().toISOString(),
+        skillUsed: 'embry-chatterbox-voice',
+        reasoningSteps: Array.isArray(payload.reasoningSteps) ? payload.reasoningSteps : undefined,
+        thinkingTrace: Array.isArray(payload.reasoningSteps) ? payload.reasoningSteps : undefined,
+        metadata: {
+          surface: 'ux-lab/embry-voice',
+          branch: 'embry-voice',
+          backend: payload.backend || 'tau-memory-chatterbox',
+          live: true,
+          mocked: false,
+          inputChannel: voiceEnabled ? 'voice-or-text' : 'text',
+          turnId,
+          tone: payload.tone,
+          deliveryStage: payload.deliveryStage,
+          receiptPath: payload.receiptPath,
+          receiptUrl: payload.receiptUrl,
+          entities: Array.isArray(payload.entities) ? payload.entities : [],
+          recallItems: Array.isArray(payload.recallItems) ? payload.recallItems : [],
+          audioArtifacts: payload.audioUrl
+            ? [{
+                id: `${turnId}:chatterbox`,
+                label: 'Embry live Chatterbox response',
+                url: payload.audioUrl,
+                path: payload.audioPath || payload.audioUrl,
+              }]
+            : [],
+        },
+      }
+      setChatMessages((messages) => [...messages, assistantMessage])
+      setStreamingSteps(Array.isArray(payload.reasoningSteps) ? payload.reasoningSteps as StreamingStep[] : [])
+      setReplayState({ playing: false, activeIndex: -1, activeTurnId: turnId, phase: 'response' })
+      window.setTimeout(() => {
+        scrollSharedChatToBottom()
+        if (!voiceEnabled || !payload.audioUrl) return
+        const audios = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
+        const latestAudio = audios.at(-1)
+        if (!latestAudio) return
+        latestAudio.currentTime = 0
+        void latestAudio.play().catch(() => undefined)
+      }, 160)
+      window.setTimeout(() => {
+        setReplayState({ playing: false, activeIndex: -1, phase: 'idle' })
+      }, 1600)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      setChatMessages((messages) => [
+        ...messages,
+        {
+          id: `${turnId}:assistant-error`,
+          role: 'assistant',
+          content: `Embry live voice turn failed before a Chatterbox response could be rendered: ${message}`,
+          createdAt: new Date().toISOString(),
+          skillUsed: 'embry-chatterbox-voice',
+          reasoningSteps: [
+            {
+              id: 'embry-live-turn-error',
+              label: 'Embry live turn',
+              status: 'failed',
+              detail: message,
+              icon: 'mic',
+              disclosureVariant: 'thinking',
+            },
+          ],
+          metadata: {
+            surface: 'ux-lab/embry-voice',
+            branch: 'embry-voice',
+            backend: 'tau-memory-chatterbox',
+            live: true,
+            mocked: false,
+            error: message,
+          },
+        },
+      ])
+      setReplayState({ playing: false, activeIndex: -1, activeTurnId: turnId, phase: 'interrupted' })
+    } finally {
+      setIsStreaming(false)
+      window.setTimeout(() => setStreamingSteps([]), 1200)
     }
-    setIsStreaming(false)
-    setStreamingSteps([])
-    setReplayState((state) => ({ ...state, activeTurnId: undefined, phase: 'idle' }))
-  }, [voiceEnabled])
+  }, [isStreaming, voiceEnabled])
 
   const replaySession = useCallback(async (session?: TestSession) => {
     const turnsToReplay = session
@@ -594,7 +745,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       scrollSharedChatToBottom()
       await new Promise((resolve) => window.setTimeout(resolve, 900))
 
-      for (const artifact of turn.audioArtifacts) {
+      for (let artifactIndex = 0; artifactIndex < turn.audioArtifacts.length; artifactIndex += 1) {
         if (replayStopRef.current) break
         const audioElements = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
         const audio = audioElements[audioIndex]
