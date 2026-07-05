@@ -1905,6 +1905,18 @@ export function WatchAnnotationIsland({
         ...current,
         [candidate.id]: suggestedAssignment,
       }))
+      setSession((current) => {
+        if (characterKey(current.selectedCharacterName) !== 'unassigned') return current
+        return {
+          ...setSelectedCharacter(
+            setPlayheadSeconds(current, candidate.timeSeconds),
+            suggestedAssignment.characterName,
+            suggestedAssignment.actorName || actorLookup(suggestedAssignment.characterName),
+          ),
+          selectedOverlayId: null,
+          revision: current.revision + 1,
+        }
+      })
       const confidenceText = typeof suggestedAssignment.confidence === 'number' ? ` ${suggestedAssignment.confidence.toFixed(2)}` : ''
       setDetectorStatus(`YOLO candidates loaded; Qdrant suggests ${suggestedAssignment.characterName}?${confidenceText} for ${candidate.trackId}.`)
     } catch (error) {
