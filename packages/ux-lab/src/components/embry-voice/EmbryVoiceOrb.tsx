@@ -404,7 +404,7 @@ export function EmbryVoiceOrb({
   speechAudioElement?: HTMLMediaElement | null
   speechSourceId?: string
   size?: number
-  surface?: 'rail' | 'header'
+  surface?: 'rail' | 'header' | 'toolbar'
   fillCanvas?: boolean
   letterAsParticles?: boolean
   phaseSpeedMs?: number
@@ -436,6 +436,9 @@ export function EmbryVoiceOrb({
     : resolveEmbryVisualState({ voiceStatus, isStreaming, tone, signal })
   const reducedMotion = false
   const audio = useEmbryPlaybackAudioBands(visualState === 'speaking', speechAudioElement)
+  const speechLevel = visualState === 'speaking' ? audio.level : 0
+  const speechRingScale = 1 + speechLevel * 0.16 + audio.bass * 0.035
+  const speechRingOpacity = Math.min(0.9, 0.12 + speechLevel * 1.8)
 
   useEffect(() => {
     if (previousVisualStateRef.current !== visualState) {
@@ -504,6 +507,7 @@ export function EmbryVoiceOrb({
       data-embry-speech-source-id={speechSourceId ?? ''}
       data-embry-speech-bound={speechAudioElement ? 'true' : 'false'}
       style={{
+        position: 'relative',
         lineHeight: 0,
         width: railBoost ? '100%' : size,
         height: railBoost ? '100%' : size,
@@ -514,6 +518,7 @@ export function EmbryVoiceOrb({
     >
       <div
         style={{
+          position: 'relative',
           width: size,
           height: size,
           borderRadius: '50%',
@@ -522,6 +527,58 @@ export function EmbryVoiceOrb({
           boxShadow: 'inset 0 0 48px rgba(96, 165, 250, 0.12)',
         }}
       >
+        <div
+          aria-hidden
+          data-qid="embry-voice:audio-reactive-ring"
+          style={{
+            position: 'absolute',
+            inset: Math.max(2, size * 0.035),
+            zIndex: 2,
+            borderRadius: '50%',
+            border: `${Math.max(1, size * 0.012 + audio.bass * size * 0.018)}px solid rgba(128, 255, 210, ${speechRingOpacity})`,
+            boxShadow: `0 0 ${Math.round(size * (0.08 + speechLevel * 0.16))}px rgba(80, 255, 180, ${Math.min(0.7, speechRingOpacity)}), inset 0 0 ${Math.round(size * 0.08)}px rgba(80, 255, 180, ${Math.min(0.34, speechLevel)})`,
+            opacity: visualState === 'speaking' ? 1 : 0,
+            transform: `scale(${speechRingScale})`,
+            transition: 'opacity 120ms ease-out',
+            pointerEvents: 'none',
+          }}
+        />
+        <div
+          aria-hidden
+          data-qid="embry-voice:audio-band-meter"
+          style={{
+            position: 'absolute',
+            left: '18%',
+            right: '18%',
+            bottom: '16%',
+            zIndex: 3,
+            display: visualState === 'speaking' ? 'grid' : 'none',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            alignItems: 'end',
+            gap: Math.max(2, size * 0.012),
+            height: Math.max(12, size * 0.16),
+            pointerEvents: 'none',
+          }}
+        >
+          {[audio.level, audio.bass, audio.mid, audio.treble].map((band, index) => (
+            <span
+              key={index}
+              style={{
+                display: 'block',
+                minHeight: 2,
+                height: `${Math.max(8, Math.round((0.18 + band * 0.82) * 100))}%`,
+                borderRadius: 999,
+                background: index === 1
+                  ? 'rgba(128, 255, 210, 0.9)'
+                  : index === 2
+                    ? 'rgba(190, 255, 225, 0.86)'
+                    : 'rgba(80, 255, 180, 0.78)',
+                boxShadow: '0 0 10px rgba(80, 255, 180, 0.5)',
+                transition: 'height 55ms linear',
+              }}
+            />
+          ))}
+        </div>
         <canvas
           ref={canvasRef}
           width={MICRO_CANVAS_SIZE}
