@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
+import type { ReactNode } from 'react'
 import SharedChatShell from '../shared-chat/SharedChatShell'
 import type { WatchChatAdapterOptions, WatchSceneRow } from '../shared-chat/memory-turn'
 

@@ -168,6 +168,40 @@ async function waitForTrackReset(page, trackId) {
   await page.waitForTimeout(1000)
 }
 
+async function waitForBackendReset(trackId, characterName) {
+  const deadline = Date.now() + 45_000
+  let lastRefs = []
+  while (Date.now() < deadline) {
+    const refs = detectorRefsForTrack(await rowAnnotations(), trackId)
+    lastRefs = refs
+    const visible = refs.filter((item) => (
+      item.status !== 'human_rejected_yolo_label'
+      && item.lifecycle_status !== 'deleted'
+      && String(item.character_name || '').toLowerCase() === characterName.toLowerCase()
+    ))
+    const rejected = refs.filter((item) => (
+      item.status === 'human_rejected_yolo_label'
+      && String(item.character_name || '').toLowerCase() === characterName.toLowerCase()
+    ))
+    if (visible.length === 0 && rejected.length >= 1) {
+      return { refs, visible, rejected }
+    }
+    await new Promise((resolve) => setTimeout(resolve, 500))
+  }
+  return {
+    refs: lastRefs,
+    visible: lastRefs.filter((item) => (
+      item.status !== 'human_rejected_yolo_label'
+      && item.lifecycle_status !== 'deleted'
+      && String(item.character_name || '').toLowerCase() === characterName.toLowerCase()
+    )),
+    rejected: lastRefs.filter((item) => (
+      item.status === 'human_rejected_yolo_label'
+      && String(item.character_name || '').toLowerCase() === characterName.toLowerCase()
+    )),
+  }
+}
+
 async function ensureNoVisibleAssignment(trackId, characterName) {
   const annotations = await rowAnnotations()
   const refs = detectorRefsForTrack(annotations, trackId)
@@ -270,18 +304,11 @@ async function run() {
     await selectInlineLabel(page, 'Unassigned')
     await waitForTrackReset(page, TARGET_TRACK_ID)
     const afterReset = await snapshotState(page)
-    const refsAfterReset = detectorRefsForTrack(await rowAnnotations(), TARGET_TRACK_ID)
-    const visibleAfterReset = refsAfterReset.filter((item) => (
-      item.status !== 'human_rejected_yolo_label'
-      && item.lifecycle_status !== 'deleted'
-      && String(item.character_name || '').toLowerCase() === TARGET_CHARACTER.toLowerCase()
-    ))
-    const rejectionAfterReset = refsAfterReset.filter((item) => (
-      item.status === 'human_rejected_yolo_label'
-      && String(item.character_name || '').toLowerCase() === TARGET_CHARACTER.toLowerCase()
-    ))
+    const backendReset = await waitForBackendReset(TARGET_TRACK_ID, TARGET_CHARACTER)
+    const visibleAfterReset = backendReset.visible
+    const rejectionAfterReset = backendReset.rejected
     assert(visibleAfterReset.length === 0, 'reset must remove visible persisted character assignment for target track', visibleAfterReset)
-    assert(rejectionAfterReset.length >= 1, 'reset/reject must persist a rejection ledger record', refsAfterReset)
+    assert(rejectionAfterReset.length >= 1, 'reset/reject must persist a rejection ledger record', backendReset.refs)
     assert(afterReset.label?.text.toLowerCase().includes(`yolo ${TARGET_TRACK_ID}`.toLowerCase()) || afterReset.label?.text.toLowerCase().includes(`yolo ${TARGET_TRACK_ID.replace('_', ' ')}`.toLowerCase()), 'visible label must reset to YOLO track_N', afterReset)
     evidence.checks.push({ name: 'reset_reject_restores_yolo_track_label_and_persists_rejection', pass: true, state: afterReset, rejectionCount: rejectionAfterReset.length })
 
