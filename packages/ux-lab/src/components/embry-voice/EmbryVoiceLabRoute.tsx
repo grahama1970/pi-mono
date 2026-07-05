@@ -1299,12 +1299,22 @@ function SessionController({
       data-qid="embry-voice:command-rail"
       className="flex h-full min-h-0 w-[320px] shrink-0 flex-col border-r border-[#2d2d31] bg-[#121214]"
     >
-      <div className="border-b border-[#2d2d31] px-4 py-3">
-        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-200">Session Replay Controller</div>
-        <div className="mt-1 text-xs leading-relaxed text-zinc-400">
-          Select a project/session to rebuild the center shared Chat UX in chronological order with human turns, Embry turns, memory trace, and Chatterbox audio.
-        </div>
-      </div>
+      <IdentityNode
+        voiceStatus={voiceStatus}
+        isStreaming={isStreaming}
+        tone={tone}
+        height={300}
+        phaseSpeedMs={orbPhaseSpeedMs}
+        speechAudioElement={activeSpeech?.audioElement ?? null}
+        speechSourceId={activeSpeech?.id}
+      />
+      <OrbPhaseControls
+        status={orbStatusOverride}
+        effectiveStatus={voiceStatus}
+        phaseSpeedMs={orbPhaseSpeedMs}
+        onStatusChange={onOrbStatusOverride}
+        onPhaseSpeedChange={onOrbPhaseSpeedChange}
+      />
       <div className="min-h-0 flex-1 [&>div]:h-full">
     <LeftPane
       title="Sessions"
