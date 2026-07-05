@@ -505,6 +505,12 @@ async function computeWatchAudioPeaks(rawPath: string, peakCount: number): Promi
 
 app.use('/api/projects/watch/static/tmp', express.static('/tmp', watchStaticOptions))
 app.use('/api/projects/watch/static/watch-frames', express.static('/mnt/storage12tb/media/watch-frames', watchStaticOptions))
+app.use('/chatterbox-artifacts', express.static(CHATTERBOX_HOST_OUT_DIR, {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.wav')) res.setHeader('Content-Type', 'audio/wav')
+    else if (filePath.endsWith('.json')) res.setHeader('Content-Type', 'application/json')
+  },
+}))
 
 async function serveWatchMediaPath(rawPath: string, req: express.Request, res: express.Response): Promise<void> {
   if (!rawPath || !rawPath.startsWith('/')) {
@@ -10598,6 +10604,24 @@ function memoryEntitiesFrom(value: unknown): unknown[] {
   return []
 }
 
+function memoryEntityCountFrom(value: unknown): number {
+  if (!value || typeof value !== 'object') return 0
+  const record = value as Record<string, unknown>
+  if (record.counts && typeof record.counts === 'object' && !Array.isArray(record.counts)) {
+    const counts = record.counts as Record<string, unknown>
+    return ['anchors', 'validated_context', 'context_terms', 'unsupported']
+      .reduce((total, key) => total + (typeof counts[key] === 'number' ? counts[key] as number : 0), 0)
+  }
+  const nodes = record.nodes && typeof record.nodes === 'object' && !Array.isArray(record.nodes)
+    ? record.nodes as Record<string, unknown>
+    : null
+  if (nodes) {
+    return ['anchors', 'validated_context', 'context_terms', 'unsupported']
+      .reduce((total, key) => total + (Array.isArray(nodes[key]) ? (nodes[key] as unknown[]).length : 0), 0)
+  }
+  return memoryEntitiesFrom(value).length
+}
+
 function memoryRecallItemsFrom(value: unknown): unknown[] {
   if (!value || typeof value !== 'object') return []
   const record = value as Record<string, unknown>
@@ -10630,7 +10654,7 @@ function memoryActionFrom(value: unknown): string {
 }
 
 function liveTurnStep(id: string, label: string, status: string, detail: string, icon: string) {
-  return { id, label, status, detail, icon, disclosureVariant: 'thinking' }
+  return { id, label, status, detail, icon, branch: 'embry-voice', disclosureVariant: 'thinking' }
 }
 
 app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
@@ -10647,9 +10671,23 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
     if (text.length > 2000) return res.status(400).json({ status: 'error', error: 'text exceeds 2000 characters' })
 
     const memoryErrors: string[] = []
+    let entityResult: unknown = null
     let intentResult: unknown = null
     let answerResult: unknown = null
     let recallResult: unknown = null
+    try {
+      entityResult = await proxyPost('/extract-entities', {
+        text,
+        q: text,
+        query: text,
+        scope: 'embry_voice',
+        session_id: sessionId,
+        channel: 'voice-chat',
+      }, 15000)
+    } catch (err) {
+      memoryErrors.push(`extract-entities: ${err instanceof Error ? err.message : String(err)}`)
+    }
+
     try {
       intentResult = await proxyPost('/intent', {
         q: text,
@@ -10741,10 +10779,16 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
     }
 
     const allEntities = [
+      ...memoryEntitiesFrom(entityResult),
       ...memoryEntitiesFrom(intentResult),
       ...memoryEntitiesFrom(answerResult),
       ...memoryEntitiesFrom(recallResult),
     ]
+    const entityCount = memoryEntityCountFrom(entityResult)
+      || memoryEntityCountFrom(intentResult)
+      || memoryEntityCountFrom(answerResult)
+      || memoryEntityCountFrom(recallResult)
+      || allEntities.length
     const recallItems = [
       ...memoryRecallItemsFrom(answerResult),
       ...memoryRecallItemsFrom(recallResult),
@@ -10756,8 +10800,8 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
         ? 'skipped'
         : 'failed'
     const reasoningSteps = [
+      liveTurnStep('extracting-entities', 'Extract entities', entityResult ? 'completed' : 'failed', entityResult ? `${entityCount} structured entity span(s) from memory.extract-entities` : (memoryErrors.find((error) => error.startsWith('extract-entities:')) || 'memory.extract-entities did not return'), 'search'),
       liveTurnStep('finalizing-intent', 'Memory intent', intentResult ? 'completed' : 'failed', intentResult ? `memory.intent action ${intentAction || 'UNKNOWN'}` : (memoryErrors.find((error) => error.startsWith('intent:')) || 'memory.intent did not return'), 'memory'),
-      liveTurnStep('extracting-entities', 'Extract entities', allEntities.length ? 'completed' : 'skipped', allEntities.length ? `${allEntities.length} memory entity artifact(s) returned` : 'No entity artifact returned by memory for this turn', 'search'),
       liveTurnStep('looking-in-memory', 'Memory recall', recallStepStatus, answerResult ? 'memory.answer returned a response candidate' : recallResult ? 'memory.recall returned a fallback candidate' : 'No grounded memory answer returned; Embry used the fail-closed fallback phrase for this spoken turn', 'search'),
       liveTurnStep('answering', 'Tau response', answerText ? 'completed' : 'failed', memoryCandidateReturned ? (shouldClarify ? 'Tau/memory selected a clarification route' : 'Tau/memory produced Embry response text') : 'Tau preserved the memory-first boundary and emitted a fallback response because no grounded memory answer was available', 'check'),
       liveTurnStep('embry-chatterbox-render', 'Chatterbox voice', audioPath ? 'completed' : voiceEnabled ? 'failed' : 'skipped', audioPath ? `Rendered ${audioPath}` : voiceEnabled ? (chatterboxError || 'Chatterbox did not render audio') : 'Voice disabled for this turn', 'mic'),
@@ -10780,12 +10824,14 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       tone,
       delivery_stage: deliveryStage,
       memory: {
+        entity_context: entityResult,
         intent: intentResult,
         answer: answerResult,
         recall: recallResult,
         errors: memoryErrors,
       },
       reasoning_steps: reasoningSteps,
+      entity_context: entityResult,
       entities: allEntities,
       recall_items: recallItems,
       chatterbox: {
@@ -10824,9 +10870,11 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       receiptPath,
       receiptUrl: `/chatterbox-artifacts/${receiptPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`,
       reasoningSteps,
+      entityContext: entityResult,
       entities: allEntities,
       recallItems,
       memory: {
+        entity_context: entityResult,
         intent: intentResult,
         answer: answerResult,
         recall: recallResult,
@@ -10842,6 +10890,103 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       mocked: false,
       live: true,
       backend: 'tau-memory-chatterbox',
+      error: err instanceof Error ? err.message : String(err),
+    })
+  }
+})
+
+app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
+  const createdAt = new Date().toISOString()
+  try {
+    const text = typeof req.body?.text === 'string' ? req.body.text.trim() : ''
+    const tone = normalizeChatterboxTone(req.body?.tone)
+    const deliveryStage = normalizeChatterboxDeliveryStage(req.body?.deliveryStage, tone)
+    if (!text) return res.status(400).json({ status: 'error', error: 'text required' })
+    if (text.length > 1200) return res.status(400).json({ status: 'error', error: 'text exceeds 1200 characters' })
+
+    const cleanText = stripSpeechControls(text)
+    if (!cleanText) return res.status(400).json({ status: 'error', error: 'text contains only unsupported speech controls' })
+
+    const refReal = realpathSync(resolve(CHATTERBOX_HOST_REF_DIR, 'embry_authorized_ref_30s_8s.wav'))
+    const chatterboxRefAudio = resolveChatterboxReferencePath(refReal)
+    const ttsRenderText = buildChatterboxRenderText(text, cleanText, '')
+    const upstream = await fetch(`${CHATTERBOX_AGENT_URL.replace(/\/+$/, '')}/synthesize`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: ttsRenderText,
+        ref_audio: chatterboxRefAudio,
+        label: `ux-lab-embry-direct-${Date.now()}`,
+        delivery_stage: deliveryStage,
+        temperature: 0.7,
+      }),
+    })
+    const payload = await upstream.json().catch(() => null) as JsonRecord | null
+    if (!upstream.ok || payload?.ok !== true) {
+      return res.status(502).json({
+        status: 'error',
+        mocked: false,
+        live: true,
+        backend: 'chatterbox-direct',
+        error: firstString(payload?.error, payload?.detail) || `Chatterbox returned ${upstream.status}`,
+        chatterbox: payload,
+      })
+    }
+
+    const generatedPath = resolveChatterboxAudioPath(payload.audio)
+    if (!generatedPath || !existsSync(generatedPath)) {
+      return res.status(502).json({
+        status: 'error',
+        mocked: false,
+        live: true,
+        backend: 'chatterbox-direct',
+        error: 'Chatterbox returned an audio path that is not readable by ux-lab',
+        chatterbox_audio: payload.audio,
+      })
+    }
+
+    const outDir = resolve(CHATTERBOX_HOST_OUT_DIR, 'ux-lab-embry-direct')
+    await mkdir(outDir, { recursive: true })
+    const textHash = createHash('sha256').update(text).digest('hex').slice(0, 12)
+    const audioPath = resolve(outDir, `${createdAt.replace(/[:.]/g, '-')}-${textHash}.wav`)
+    await copyFile(generatedPath, audioPath)
+    const receiptPath = audioPath.replace(/\.wav$/i, '.json')
+    const receipt = {
+      schema: 'ux_lab.embry_voice.direct_speak_receipt.v1',
+      created_at: createdAt,
+      mocked: false,
+      live: true,
+      backend: 'chatterbox-direct',
+      input_text: text,
+      tts_render_text: ttsRenderText,
+      tts_render_text_sha256: createHash('sha256').update(ttsRenderText).digest('hex'),
+      tone,
+      delivery_stage: deliveryStage,
+      ref_audio: chatterboxRefAudio,
+      chatterbox: payload,
+      output_wav: audioPath,
+    }
+    await writeFile(receiptPath, JSON.stringify(receipt, null, 2))
+
+    res.json({
+      status: 'ok',
+      mocked: false,
+      live: true,
+      backend: 'chatterbox-direct',
+      answerText: cleanText,
+      audioPath,
+      audioUrl: `/chatterbox-artifacts/${audioPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`,
+      receiptPath,
+      receiptUrl: `/chatterbox-artifacts/${receiptPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`,
+      tone,
+      deliveryStage,
+    })
+  } catch (err) {
+    res.status(500).json({
+      status: 'error',
+      mocked: false,
+      live: true,
+      backend: 'chatterbox-direct',
       error: err instanceof Error ? err.message : String(err),
     })
   }

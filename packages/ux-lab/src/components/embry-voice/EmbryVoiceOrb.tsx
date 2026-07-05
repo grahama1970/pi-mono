@@ -174,6 +174,9 @@ function drawFrame(
   const speaking = engineState.visualState === 'speaking'
   const palette = statePalette(engineState.visualState)
   const audioLevel = speaking ? engineState.audio.level : 0
+  const bassLevel = speaking ? engineState.audio.bass : 0
+  const midLevel = speaking ? engineState.audio.mid : 0
+  const trebleLevel = speaking ? engineState.audio.treble : 0
   const attentionBoost = engineState.visualState === 'listening' ? engineState.attentionBoost : 0
   const releaseBoost = idle ? engineState.releaseBoost : 0
   const forceRadius = 170
@@ -211,7 +214,7 @@ function drawFrame(
       particle.vx += (particle.homeX - particle.x) * homePull
       particle.vy += (particle.homeY - particle.y) * homePull
       if (particle.glyphWeight > 0) {
-        const glyphPull = active ? 0.00165 + attentionBoost * 0.0038 + audioLevel * 0.00055 : 0
+        const glyphPull = active ? 0.00165 + attentionBoost * 0.0038 + audioLevel * 0.00055 + midLevel * 0.00085 : 0
         particle.vx += (particle.targetX - particle.x) * glyphPull * particle.glyphWeight
         particle.vy += (particle.targetY - particle.y) * glyphPull * particle.glyphWeight
         if (releaseBoost > 0) {
@@ -245,6 +248,16 @@ function drawFrame(
           particle.vy += flockDx * swirl
         }
       }
+      if (speaking) {
+        const distance = Math.max(1, Math.hypot(dx, dy))
+        const speechWave = Math.sin(distance * 0.08 - time * 48 + particle.seed * 0.015)
+        const radialPressure = (0.018 + bassLevel * 0.15 + audioLevel * 0.18) * (0.35 + particle.fieldAffinity)
+        const wavePressure = speechWave * (0.018 + midLevel * 0.05)
+        particle.vx += (dx / distance) * (radialPressure + wavePressure)
+        particle.vy += (dy / distance) * (radialPressure + wavePressure)
+        particle.vx += -dy / distance * trebleLevel * 0.055
+        particle.vy += dx / distance * trebleLevel * 0.055
+      }
     }
     particle.vx *= idle ? 0.88 + releaseBoost * 0.07 : speaking ? 0.93 : 0.9
     particle.vy *= idle ? 0.88 + releaseBoost * 0.07 : speaking ? 0.93 : 0.9
@@ -263,15 +276,42 @@ function drawFrame(
     const fieldStrength = active ? field : 0
     const ignites = fieldStrength > 0 && particle.fieldAffinity < fieldStrength * (0.16 + particle.glyphWeight * 0.1)
     if (ignites) {
-      const targetBrightness = 0.035 + fieldStrength * (0.11 + attentionBoost * 0.14) + particle.glyphWeight * (0.035 + attentionBoost * 0.035) + audioLevel * 0.08
-      particle.brightness += (targetBrightness - particle.brightness) * 0.06
+      const targetBrightness = 0.035 + fieldStrength * (0.11 + attentionBoost * 0.14) + particle.glyphWeight * (0.035 + attentionBoost * 0.035) + audioLevel * 0.18
+      particle.brightness += (targetBrightness - particle.brightness) * (speaking ? 0.12 : 0.06)
       ctx.fillStyle = `rgba(${palette.hot[0]}, ${palette.hot[1]}, ${palette.hot[2]}, ${particle.brightness})`
     } else {
       particle.brightness *= 0.86
-      const alpha = (idle ? 0.13 : 0.052 + particle.glyphWeight * 0.08) + audioLevel * 0.06
+      const alpha = (idle ? 0.13 : 0.052 + particle.glyphWeight * 0.08) + audioLevel * 0.15
       ctx.fillStyle = `rgba(${palette.base[0]}, ${palette.base[1]}, ${palette.base[2]}, ${alpha})`
     }
     ctx.fillRect(particle.x, particle.y, 1, 1)
+  }
+
+  if (speaking && audioLevel > 0.002) {
+    ctx.globalCompositeOperation = 'lighter'
+    const ringRadius = forceRadius - 5 + bassLevel * 18
+    const pulseAlpha = Math.min(0.42, 0.06 + audioLevel * 0.75)
+    ctx.beginPath()
+    ctx.arc(centerX, centerY, ringRadius, 0, Math.PI * 2)
+    ctx.strokeStyle = `rgba(${palette.base[0]}, ${palette.base[1]}, ${palette.base[2]}, ${pulseAlpha})`
+    ctx.lineWidth = 0.8 + bassLevel * 1.8
+    ctx.stroke()
+
+    ctx.beginPath()
+    for (let step = 0; step <= 160; step += 1) {
+      const theta = (step / 160) * Math.PI * 2
+      const voiceWave = Math.sin(theta * 9 + time * 84) * trebleLevel * 8
+        + Math.sin(theta * 4 - time * 36) * midLevel * 7
+      const radius = 94 + bassLevel * 14 + voiceWave
+      const x = centerX + Math.cos(theta) * radius
+      const y = centerY + Math.sin(theta) * radius
+      if (step === 0) ctx.moveTo(x, y)
+      else ctx.lineTo(x, y)
+    }
+    ctx.closePath()
+    ctx.strokeStyle = `rgba(${palette.hot[0]}, ${palette.hot[1]}, ${palette.hot[2]}, ${Math.min(0.32, 0.04 + audioLevel * 0.5)})`
+    ctx.lineWidth = 0.55
+    ctx.stroke()
   }
 
   ctx.globalCompositeOperation = 'source-over'

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { CheckCircle2, ChevronDown, FlaskConical, Folder, Mic, PauseCircle, PlayCircle, Radio, SearchCode, Volume2, XCircle } from 'lucide-react'
 import { LeftPane, LeftPaneSection, useLeftPaneSearch } from '../common/LeftPane'
@@ -49,6 +49,7 @@ type VoiceTurn = {
 type ReplayPhase = 'idle' | 'request' | 'thinking' | 'response' | 'complete' | 'interrupted'
 type ReplayState = { playing: boolean; activeIndex: number; activeTurnId?: string; activeSessionId?: string; phase: ReplayPhase; visibleTurnCount?: number }
 type OrbStatusOverride = Exclude<EmbryVoiceStatus, 'off' | 'error'> | null
+type DirectEmbryAudio = { id: string; text: string; url: string; path?: string; receiptUrl?: string }
 type MemoryIntentSnapshot = {
   action: string
   confidence?: number
@@ -433,6 +434,48 @@ function entitySpansForMessage(content: string, turn: VoiceTurn): Array<{ text: 
   ].filter((span): span is { text: string; span: [number, number]; kind: string; name: string; grounded_to_framework: boolean } => Boolean(span))
 }
 
+type EmbryEntitySpan = { text?: string; span: [number, number]; kind?: string; name?: string; framework?: string; grounded_to_framework?: boolean }
+
+function spanPairFromUnknown(value: unknown): [number, number] | null {
+  if (!Array.isArray(value) || value.length !== 2) return null
+  const [start, end] = value
+  return typeof start === 'number' && typeof end === 'number' && end > start ? [start, end] : null
+}
+
+function entitySpanFromExtractNode(value: unknown): EmbryEntitySpan | null {
+  const record = asRecord(value)
+  if (!record) return null
+  const metadata = asRecord(record.metadata) ?? {}
+  const extracted = asRecord(record.extracted) ?? {}
+  const span = spanPairFromUnknown(record.span) ?? spanPairFromUnknown(extracted.span)
+  if (!span) return null
+  const text = firstStringValue(record.mention, record.text, record.entity, extracted.text, metadata.control_id, metadata.name)
+  const name = firstStringValue(metadata.name, record.name, text)
+  const framework = firstStringValue(metadata.framework, record.framework)
+  const kind = firstStringValue(extracted.kind, record.kind, record.node_kind, metadata.type)
+  return {
+    text: text || undefined,
+    span,
+    kind: kind || undefined,
+    name: name || undefined,
+    framework: framework || undefined,
+    grounded_to_framework: metadata.grounded === true || metadata.exists === true || record.status === 'grounded',
+  }
+}
+
+function entitySpansFromEntityContext(value: unknown): EmbryEntitySpan[] {
+  const record = asRecord(value)
+  if (!record) return []
+  const nodes = asRecord(record.nodes)
+  const sources = nodes
+    ? [nodes.anchors, nodes.validated_context, nodes.context_terms, nodes.unsupported]
+    : [record.entities, record.entitySpans, record.entity_spans, record.spans]
+  return sources
+    .flatMap((source) => Array.isArray(source) ? source : [])
+    .map(entitySpanFromExtractNode)
+    .filter((span): span is EmbryEntitySpan => Boolean(span))
+}
+
 function chatMessagesForTurn(turn: VoiceTurn, index: number): ChatMessage[] {
   const createdAt = new Date(Date.UTC(2026, 6, 4, 18, 25 + index, 0)).toISOString()
   const userContent = `${turn.userText}${turn.speaker ? ` ${turn.speaker}` : ''} ${turn.memoryAction ?? ''} ${turn.tone ?? ''}`.trim()
@@ -584,6 +627,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const [replayState, setReplayState] = useState<ReplayState>({ playing: false, activeIndex: -1, phase: 'idle' })
   const [orbStatusOverride, setOrbStatusOverride] = useState<OrbStatusOverride>(null)
   const [orbPhaseSpeedMs, setOrbPhaseSpeedMs] = useState(650)
+  const [directEmbryAudio, setDirectEmbryAudio] = useState<DirectEmbryAudio | null>(null)
+  const [directSpeakBusy, setDirectSpeakBusy] = useState(false)
   const [liveIntentSnapshot, setLiveIntentSnapshot] = useState<MemoryIntentSnapshot | null>(null)
   const [intentProbeBusy, setIntentProbeBusy] = useState(false)
   const replayStopRef = useRef(false)
@@ -706,6 +751,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       if (!response.ok || payload?.status !== 'ok') {
         throw new Error(payload?.error || `Embry live turn returned HTTP ${response.status}`)
       }
+      const liveEntitySpans = entitySpansFromEntityContext(payload.entityContext)
 
       const assistantMessage: ChatMessage = {
         id: `${turnId}:assistant`,
@@ -751,6 +797,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
                   ...(message.metadata ?? {}),
                   entityContext: payload.entityContext,
                   entity_context: payload.entityContext,
+                  entitySpans: liveEntitySpans,
+                  entity_spans: liveEntitySpans,
                 },
               }
             : message
@@ -891,6 +939,94 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     setLiveIntentSnapshot(null)
   }, [])
 
+  const speakDirectEmbry = useCallback(async (text = 'Embry direct voice test. The orb should move with my voice now.') => {
+    const trimmed = text.trim()
+    if (!trimmed || directSpeakBusy) return null
+    setDirectSpeakBusy(true)
+    setOrbStatusOverride('processing')
+    try {
+      const response = await fetch('/api/projects/embry-voice/direct-speak', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: trimmed,
+          tone: 'neutral_warm',
+          deliveryStage: 'neutral',
+        }),
+      })
+      const payload = await response.json().catch(() => null) as {
+        status?: string
+        error?: string
+        audioUrl?: string
+        audioPath?: string
+        receiptUrl?: string
+      } | null
+      if (!response.ok || payload?.status !== 'ok' || !payload.audioUrl) {
+        throw new Error(payload?.error || `Embry direct speak returned HTTP ${response.status}`)
+      }
+      const audioState = {
+        id: `embry-direct-${Date.now()}`,
+        text: trimmed,
+        url: payload.audioUrl,
+        path: payload.audioPath,
+        receiptUrl: payload.receiptUrl,
+      }
+      setDirectEmbryAudio(audioState)
+      setOrbStatusOverride('speaking')
+      window.setTimeout(() => {
+        const audio = document.querySelector<HTMLAudioElement>('[data-qid="embry-voice:direct-speak-audio"]')
+        if (!audio) return
+        audio.currentTime = 0
+        audio.muted = false
+        audio.volume = 1
+        const finish = (): void => {
+          audio.removeEventListener('ended', finish)
+          setOrbStatusOverride((current) => (current === 'speaking' ? null : current))
+        }
+        audio.addEventListener('ended', finish, { once: true })
+        const waitForPlayable = new Promise<void>((resolve, reject) => {
+          if (audio.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+            resolve()
+            return
+          }
+          const timeout = window.setTimeout(() => {
+            audio.removeEventListener('canplay', onCanPlay)
+            audio.removeEventListener('error', onError)
+            reject(new Error('direct Embry audio did not become playable'))
+          }, 5000)
+          const onCanPlay = (): void => {
+            window.clearTimeout(timeout)
+            audio.removeEventListener('error', onError)
+            resolve()
+          }
+          const onError = (): void => {
+            window.clearTimeout(timeout)
+            audio.removeEventListener('canplay', onCanPlay)
+            reject(new Error('direct Embry audio failed to load'))
+          }
+          audio.addEventListener('canplay', onCanPlay, { once: true })
+          audio.addEventListener('error', onError, { once: true })
+          audio.load()
+        })
+        void waitForPlayable.then(() => audio.play()).catch(() => finish())
+      }, 160)
+      return audioState
+    } catch (error) {
+      setOrbStatusOverride(null)
+      throw error
+    } finally {
+      setDirectSpeakBusy(false)
+    }
+  }, [directSpeakBusy])
+
+  useEffect(() => {
+    const target = window as Window & { embrySpeak?: (text?: string) => Promise<DirectEmbryAudio | null> }
+    target.embrySpeak = speakDirectEmbry
+    return () => {
+      if (target.embrySpeak === speakDirectEmbry) delete target.embrySpeak
+    }
+  }, [speakDirectEmbry])
+
   const playVisibleEmbryVoice = useCallback(() => {
     const audios = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
     const audio = audios.find((candidate) => candidate.readyState > 0) ?? audios[0]
@@ -960,6 +1096,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           intentProbeBusy={intentProbeBusy}
           onOrbStatusOverride={setOrbStatusOverride}
           onOrbPhaseSpeedChange={setOrbPhaseSpeedMs}
+          onDirectSpeak={speakDirectEmbry}
+          directSpeakBusy={directSpeakBusy}
           onPlayVoice={playVisibleEmbryVoice}
           onProbeIntent={probeMemoryIntent}
           onReplay={replaySession}
@@ -1028,6 +1166,17 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           />
         </aside>
       </div>
+      {directEmbryAudio ? (
+        <audio
+          key={directEmbryAudio.id}
+          data-qid="embry-voice:direct-speak-audio"
+          data-embry-session-audio="true"
+          data-embry-direct-text={directEmbryAudio.text}
+          preload="auto"
+          src={directEmbryAudio.url}
+          className="hidden"
+        />
+      ) : null}
     </section>
   )
 }
@@ -1044,8 +1193,10 @@ function SessionController({
   tone,
   intentSnapshot,
   intentProbeBusy,
+  directSpeakBusy,
   onOrbStatusOverride,
   onOrbPhaseSpeedChange,
+  onDirectSpeak,
   onPlayVoice,
   onProbeIntent,
   onReplay,
@@ -1062,8 +1213,10 @@ function SessionController({
   tone?: string
   intentSnapshot: MemoryIntentSnapshot
   intentProbeBusy: boolean
+  directSpeakBusy: boolean
   onOrbStatusOverride: (status: OrbStatusOverride) => void
   onOrbPhaseSpeedChange: (speedMs: number) => void
+  onDirectSpeak: (text?: string) => Promise<DirectEmbryAudio | null>
   onPlayVoice: () => void
   onProbeIntent: () => void
   onReplay: (session?: TestSession) => void
@@ -1084,8 +1237,10 @@ function SessionController({
         phaseSpeedMs={orbPhaseSpeedMs}
         intentSnapshot={intentSnapshot}
         intentProbeBusy={intentProbeBusy}
+        directSpeakBusy={directSpeakBusy}
         onOverride={onOrbStatusOverride}
         onPhaseSpeedChange={onOrbPhaseSpeedChange}
+        onDirectSpeak={onDirectSpeak}
         onPlayVoice={onPlayVoice}
         onProbeIntent={onProbeIntent}
       />
@@ -1127,8 +1282,10 @@ function OrbStateLabControls({
   phaseSpeedMs,
   intentSnapshot,
   intentProbeBusy,
+  directSpeakBusy,
   onOverride,
   onPhaseSpeedChange,
+  onDirectSpeak,
   onPlayVoice,
   onProbeIntent,
 }: {
@@ -1137,8 +1294,10 @@ function OrbStateLabControls({
   phaseSpeedMs: number
   intentSnapshot: MemoryIntentSnapshot
   intentProbeBusy: boolean
+  directSpeakBusy: boolean
   onOverride: (status: OrbStatusOverride) => void
   onPhaseSpeedChange: (speedMs: number) => void
+  onDirectSpeak: (text?: string) => Promise<DirectEmbryAudio | null>
   onPlayVoice: () => void
   onProbeIntent: () => void
 }): JSX.Element {
@@ -1196,6 +1355,16 @@ function OrbStateLabControls({
           title="Run selected turn through memory.intent via Embry live-turn without rendering new audio"
         >
           {intentProbeBusy ? 'Intent...' : 'Intent'}
+        </button>
+        <button
+          type="button"
+          data-qid="embry-voice:orb-direct-speak"
+          onClick={() => void onDirectSpeak()}
+          disabled={directSpeakBusy}
+          className="inline-flex items-center gap-1 border border-teal-300/30 bg-teal-400/10 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-teal-100 hover:bg-teal-400/15 disabled:cursor-wait disabled:opacity-60"
+          title="Synthesize an exact direct Embry utterance through Chatterbox and drive the orb from that audio"
+        >
+          {directSpeakBusy ? 'Speak...' : 'Direct'}
         </button>
       </div>
       <label className="mt-2 grid gap-1 font-mono text-[9px] uppercase tracking-[0.12em] text-zinc-500">
