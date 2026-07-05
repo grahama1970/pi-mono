@@ -28,6 +28,7 @@ type EngineState = {
   visualState: EmbryState
   reducedMotion: boolean
   audio: EmbryPlaybackAudioBands
+  attentionBoost: number
 }
 
 const MICRO_CANVAS_SIZE = 400
@@ -161,6 +162,7 @@ function drawFrame(
   const speaking = engineState.visualState === 'speaking'
   const palette = statePalette(engineState.visualState)
   const audioLevel = speaking ? engineState.audio.level : 0
+  const attentionBoost = engineState.visualState === 'listening' ? engineState.attentionBoost : 0
   const forceRadius = 170
   if (idle) {
     for (let index = 0; index < idleFlocks.length; index += 1) {
@@ -193,7 +195,7 @@ function drawFrame(
       particle.vx += (particle.homeX - particle.x) * homePull
       particle.vy += (particle.homeY - particle.y) * homePull
       if (particle.glyphWeight > 0) {
-        const glyphPull = active ? 0.00165 + audioLevel * 0.00055 : 0
+        const glyphPull = active ? 0.00165 + attentionBoost * 0.0038 + audioLevel * 0.00055 : 0
         particle.vx += (particle.targetX - particle.x) * glyphPull * particle.glyphWeight
         particle.vy += (particle.targetY - particle.y) * glyphPull * particle.glyphWeight
       }
@@ -233,7 +235,7 @@ function drawFrame(
     const fieldStrength = active ? field : 0
     const ignites = fieldStrength > 0 && particle.fieldAffinity < fieldStrength * (0.16 + particle.glyphWeight * 0.1)
     if (ignites) {
-      const targetBrightness = 0.035 + fieldStrength * 0.11 + particle.glyphWeight * 0.035 + audioLevel * 0.08
+      const targetBrightness = 0.035 + fieldStrength * (0.11 + attentionBoost * 0.14) + particle.glyphWeight * (0.035 + attentionBoost * 0.035) + audioLevel * 0.08
       particle.brightness += (targetBrightness - particle.brightness) * 0.06
       ctx.fillStyle = `rgba(${palette.hot[0]}, ${palette.hot[1]}, ${palette.hot[2]}, ${particle.brightness})`
     } else {
@@ -274,7 +276,9 @@ export function EmbryVoiceOrb({
   const maskRef = useRef<Float32Array | null>(null)
   const frameRef = useRef(0)
   const timeRef = useRef(0)
-  const stateRef = useRef<EngineState>({ visualState: 'idle', reducedMotion: false, audio: SILENT_AUDIO })
+  const stateRef = useRef<EngineState>({ visualState: 'idle', reducedMotion: false, audio: SILENT_AUDIO, attentionBoost: 0 })
+  const previousVisualStateRef = useRef<EmbryState>('idle')
+  const attentionStartedAtRef = useRef(0)
 
   const visualState: EmbryState = voiceStatus === 'off'
     ? 'idle'
@@ -283,7 +287,13 @@ export function EmbryVoiceOrb({
   const audio = useEmbryPlaybackAudioBands(visualState === 'speaking')
 
   useEffect(() => {
-    stateRef.current = { visualState, reducedMotion, audio }
+    if (previousVisualStateRef.current !== visualState) {
+      if (visualState === 'listening') attentionStartedAtRef.current = performance.now()
+      previousVisualStateRef.current = visualState
+    }
+    const elapsed = attentionStartedAtRef.current ? performance.now() - attentionStartedAtRef.current : Number.POSITIVE_INFINITY
+    const attentionBoost = visualState === 'listening' ? Math.max(0, 1 - elapsed / 900) : 0
+    stateRef.current = { visualState, reducedMotion, audio, attentionBoost }
   }, [audio, reducedMotion, visualState])
 
   useEffect(() => {
@@ -306,6 +316,11 @@ export function EmbryVoiceOrb({
     const render = () => {
       timeRef.current += 0.004
       const mask = maskRef.current ?? createMask()
+      const current = stateRef.current
+      if (current.visualState === 'listening' && attentionStartedAtRef.current) {
+        const elapsed = performance.now() - attentionStartedAtRef.current
+        stateRef.current = { ...current, attentionBoost: Math.max(0, 1 - elapsed / 900) }
+      }
       drawFrame(ctx, particlesRef.current, mask, idleFlocksRef.current, stateRef.current, timeRef.current)
       frameRef.current = window.requestAnimationFrame(render)
     }
