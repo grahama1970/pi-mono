@@ -113,6 +113,8 @@ interface DetectorLabelRejection {
   createdAt: string
 }
 
+type WatchJsonRecord = Record<string, unknown>
+
 interface DetectorCandidatePayload {
   schema?: string
   candidates?: Array<{
@@ -217,6 +219,56 @@ interface IdentityReadinessPayload {
 
 function detectorCandidateLabelKey(candidate: DetectorCandidate, characterName: string): string {
   return `${candidate.trackId}:${characterKey(characterName)}`
+}
+
+function detectorLabelRejectionKey(trackId: string, characterName: string): string {
+  return `${trackId}:${characterKey(characterName)}`
+}
+
+function isWatchJsonRecord(value: unknown): value is WatchJsonRecord {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
+}
+
+function extractDetectorLabelRejections(payload: unknown): Record<string, DetectorLabelRejection> {
+  const annotations = isWatchJsonRecord(payload) && Array.isArray(payload.annotations) ? payload.annotations : []
+  const rejections: Record<string, DetectorLabelRejection> = {}
+  for (const entry of annotations) {
+    if (!isWatchJsonRecord(entry)) continue
+    const trainingRole = isWatchJsonRecord(entry.training_role) ? entry.training_role : {}
+    const status = typeof entry.status === 'string' ? entry.status.toLowerCase() : ''
+    const labelType = typeof trainingRole.label_type === 'string'
+      ? trainingRole.label_type.toLowerCase()
+      : typeof entry.label_type === 'string'
+        ? entry.label_type.toLowerCase()
+        : ''
+    const reviewState = typeof trainingRole.review_state === 'string'
+      ? trainingRole.review_state.toLowerCase()
+      : typeof entry.review_state === 'string'
+        ? entry.review_state.toLowerCase()
+        : ''
+    const rejected = labelType === 'negative'
+      || reviewState === 'human_rejected'
+      || status.includes('rejected')
+    if (!rejected) continue
+    const detectorRef = isWatchJsonRecord(entry.detector_observation_ref) ? entry.detector_observation_ref : {}
+    const trackId = typeof detectorRef.track_id === 'string' ? detectorRef.track_id.trim() : ''
+    const characterName = typeof entry.character_name === 'string' ? entry.character_name.trim() : ''
+    if (!trackId || !characterName || characterKey(characterName) === 'unassigned') continue
+    const actorName = typeof entry.actor_name === 'string' ? entry.actor_name.trim() : ''
+    const createdAt = typeof entry.updated_at === 'string'
+      ? entry.updated_at
+      : typeof entry.created_at === 'string'
+        ? entry.created_at
+        : new Date(0).toISOString()
+    rejections[detectorLabelRejectionKey(trackId, characterName)] = {
+      trackId,
+      characterName,
+      actorName,
+      source: 'saved',
+      createdAt,
+    }
+  }
+  return rejections
 }
 
 function detectorBaseLabel(candidate: DetectorCandidate): string {
@@ -658,6 +710,7 @@ export function WatchAnnotationIsland({
         throw new Error(payload.error || payload.detail || `watch_row_hydration_http_${response.status}`)
       }
       setSession((current) => replaceCanonicalFromHydration(current, row, payload, characterOptions))
+      setDetectorLabelRejections(extractDetectorLabelRejections(payload))
       setStatus('Live row annotations loaded.')
     } catch (error) {
       setStatus(`Hydration failed: ${error instanceof Error ? error.message : String(error)}`)
