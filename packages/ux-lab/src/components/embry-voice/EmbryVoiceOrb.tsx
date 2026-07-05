@@ -164,9 +164,6 @@ function drawFrame(
   time: number,
 ): void {
   ctx.globalCompositeOperation = 'source-over'
-  ctx.fillStyle = 'rgba(12, 12, 14, 0.30)'
-  ctx.fillRect(0, 0, MICRO_CANVAS_SIZE, MICRO_CANVAS_SIZE)
-
   const centerX = MICRO_CANVAS_SIZE / 2
   const centerY = MICRO_CANVAS_SIZE / 2
   const active = engineState.visualState !== 'idle'
@@ -177,6 +174,11 @@ function drawFrame(
   const bassLevel = speaking ? engineState.audio.bass : 0
   const midLevel = speaking ? engineState.audio.mid : 0
   const trebleLevel = speaking ? engineState.audio.treble : 0
+  const speechEnergy = speaking ? Math.min(1, audioLevel * 2.2 + midLevel * 0.35 + trebleLevel * 0.22) : 0
+  const speechPulse = speaking ? 0.5 + Math.sin(time * 95) * 0.5 : 0
+  ctx.fillStyle = speaking ? 'rgba(12, 12, 14, 0.18)' : 'rgba(12, 12, 14, 0.30)'
+  ctx.fillRect(0, 0, MICRO_CANVAS_SIZE, MICRO_CANVAS_SIZE)
+
   const attentionBoost = engineState.visualState === 'listening' ? engineState.attentionBoost : 0
   const releaseBoost = idle ? engineState.releaseBoost : 0
   const forceRadius = 170
@@ -250,17 +252,18 @@ function drawFrame(
       }
       if (speaking) {
         const distance = Math.max(1, Math.hypot(dx, dy))
-        const speechWave = Math.sin(distance * 0.08 - time * 48 + particle.seed * 0.015)
-        const radialPressure = (0.018 + bassLevel * 0.15 + audioLevel * 0.18) * (0.35 + particle.fieldAffinity)
-        const wavePressure = speechWave * (0.018 + midLevel * 0.05)
+        const speechWave = Math.sin(distance * 0.105 - time * 72 + particle.seed * 0.021)
+        const consonantJitter = Math.sin(time * 180 + particle.seed) * trebleLevel * 0.11
+        const radialPressure = (0.032 + bassLevel * 0.19 + audioLevel * 0.34 + speechEnergy * 0.12) * (0.34 + particle.fieldAffinity)
+        const wavePressure = speechWave * (0.026 + midLevel * 0.095 + speechEnergy * 0.04)
         particle.vx += (dx / distance) * (radialPressure + wavePressure)
         particle.vy += (dy / distance) * (radialPressure + wavePressure)
-        particle.vx += -dy / distance * trebleLevel * 0.055
-        particle.vy += dx / distance * trebleLevel * 0.055
+        particle.vx += -dy / distance * (trebleLevel * 0.085 + consonantJitter)
+        particle.vy += dx / distance * (trebleLevel * 0.085 + consonantJitter)
       }
     }
-    particle.vx *= idle ? 0.88 + releaseBoost * 0.07 : speaking ? 0.93 : 0.9
-    particle.vy *= idle ? 0.88 + releaseBoost * 0.07 : speaking ? 0.93 : 0.9
+    particle.vx *= idle ? 0.88 + releaseBoost * 0.07 : speaking ? 0.91 + speechEnergy * 0.035 : 0.9
+    particle.vy *= idle ? 0.88 + releaseBoost * 0.07 : speaking ? 0.91 + speechEnergy * 0.035 : 0.9
     particle.x += particle.vx * particle.speed
     particle.y += particle.vy * particle.speed
 
@@ -276,33 +279,40 @@ function drawFrame(
     const fieldStrength = active ? field : 0
     const ignites = fieldStrength > 0 && particle.fieldAffinity < fieldStrength * (0.16 + particle.glyphWeight * 0.1)
     if (ignites) {
-      const targetBrightness = 0.035 + fieldStrength * (0.11 + attentionBoost * 0.14) + particle.glyphWeight * (0.035 + attentionBoost * 0.035) + audioLevel * 0.18
+      const targetBrightness = 0.035
+        + fieldStrength * (0.11 + attentionBoost * 0.14 + speechEnergy * 0.18)
+        + particle.glyphWeight * (0.035 + attentionBoost * 0.035 + midLevel * 0.08)
+        + audioLevel * 0.32
       particle.brightness += (targetBrightness - particle.brightness) * (speaking ? 0.12 : 0.06)
       ctx.fillStyle = `rgba(${palette.hot[0]}, ${palette.hot[1]}, ${palette.hot[2]}, ${particle.brightness})`
     } else {
       particle.brightness *= 0.86
-      const alpha = (idle ? 0.13 : 0.052 + particle.glyphWeight * 0.08) + audioLevel * 0.15
+      const alpha = (idle ? 0.13 : 0.052 + particle.glyphWeight * 0.08) + audioLevel * 0.34 + speechEnergy * 0.08
       ctx.fillStyle = `rgba(${palette.base[0]}, ${palette.base[1]}, ${palette.base[2]}, ${alpha})`
     }
-    ctx.fillRect(particle.x, particle.y, 1, 1)
+    const particleSize = speaking
+      ? 1 + Math.min(2.35, audioLevel * 3.1 + midLevel * 0.85 + particle.brightness * 2.8)
+      : 1
+    ctx.fillRect(particle.x, particle.y, particleSize, particleSize)
   }
 
   if (speaking && audioLevel > 0.002) {
     ctx.globalCompositeOperation = 'lighter'
-    const ringRadius = forceRadius - 5 + bassLevel * 18
-    const pulseAlpha = Math.min(0.42, 0.06 + audioLevel * 0.75)
+    const ringRadius = forceRadius - 7 + bassLevel * 20 + speechPulse * speechEnergy * 8
+    const pulseAlpha = Math.min(0.62, 0.08 + audioLevel * 1.1 + speechEnergy * 0.18)
     ctx.beginPath()
     ctx.arc(centerX, centerY, ringRadius, 0, Math.PI * 2)
     ctx.strokeStyle = `rgba(${palette.base[0]}, ${palette.base[1]}, ${palette.base[2]}, ${pulseAlpha})`
-    ctx.lineWidth = 0.8 + bassLevel * 1.8
+    ctx.lineWidth = 0.8 + bassLevel * 2.4 + speechEnergy * 1.2
     ctx.stroke()
 
     ctx.beginPath()
     for (let step = 0; step <= 160; step += 1) {
       const theta = (step / 160) * Math.PI * 2
-      const voiceWave = Math.sin(theta * 9 + time * 84) * trebleLevel * 8
-        + Math.sin(theta * 4 - time * 36) * midLevel * 7
-      const radius = 94 + bassLevel * 14 + voiceWave
+      const voiceWave = Math.sin(theta * 9 + time * 96) * trebleLevel * 16
+        + Math.sin(theta * 4 - time * 46) * midLevel * 13
+        + Math.sin(theta * 2 + time * 28) * audioLevel * 17
+      const radius = 90 + bassLevel * 18 + speechEnergy * 10 + voiceWave
       const x = centerX + Math.cos(theta) * radius
       const y = centerY + Math.sin(theta) * radius
       if (step === 0) ctx.moveTo(x, y)
@@ -312,6 +322,25 @@ function drawFrame(
     ctx.strokeStyle = `rgba(${palette.hot[0]}, ${palette.hot[1]}, ${palette.hot[2]}, ${Math.min(0.32, 0.04 + audioLevel * 0.5)})`
     ctx.lineWidth = 0.55
     ctx.stroke()
+
+    for (let lane = 0; lane < 3; lane += 1) {
+      ctx.beginPath()
+      const baseRadius = 56 + lane * 34 + bassLevel * (lane + 1) * 5
+      for (let step = 0; step <= 144; step += 1) {
+        const theta = (step / 144) * Math.PI * 2
+        const wave = Math.sin(theta * (7 + lane * 3) - time * (58 + lane * 21)) * (midLevel * 9 + speechEnergy * 5)
+          + Math.sin(theta * (17 + lane) + time * 120) * trebleLevel * 5
+        const radius = baseRadius + wave
+        const x = centerX + Math.cos(theta) * radius
+        const y = centerY + Math.sin(theta) * radius
+        if (step === 0) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+      }
+      ctx.closePath()
+      ctx.strokeStyle = `rgba(${palette.hot[0]}, ${palette.hot[1]}, ${palette.hot[2]}, ${Math.min(0.22, 0.035 + speechEnergy * 0.18 - lane * 0.035)})`
+      ctx.lineWidth = 0.45 + audioLevel * 0.55
+      ctx.stroke()
+    }
   }
 
   ctx.globalCompositeOperation = 'source-over'
