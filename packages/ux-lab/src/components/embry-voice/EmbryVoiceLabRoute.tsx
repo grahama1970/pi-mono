@@ -583,6 +583,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const [isStreaming, setIsStreaming] = useState(false)
   const [replayState, setReplayState] = useState<ReplayState>({ playing: false, activeIndex: -1, phase: 'idle' })
   const [orbStatusOverride, setOrbStatusOverride] = useState<OrbStatusOverride>(null)
+  const [orbPhaseSpeedMs, setOrbPhaseSpeedMs] = useState(650)
   const [liveIntentSnapshot, setLiveIntentSnapshot] = useState<MemoryIntentSnapshot | null>(null)
   const [intentProbeBusy, setIntentProbeBusy] = useState(false)
   const replayStopRef = useRef(false)
@@ -952,11 +953,13 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           voiceStatus={effectiveVoiceStatus}
           liveVoiceStatus={liveVoiceStatus}
           orbStatusOverride={orbStatusOverride}
+          orbPhaseSpeedMs={orbPhaseSpeedMs}
           isStreaming={isStreaming}
           tone={selectedTurn.tone}
           intentSnapshot={intentSnapshot}
           intentProbeBusy={intentProbeBusy}
           onOrbStatusOverride={setOrbStatusOverride}
+          onOrbPhaseSpeedChange={setOrbPhaseSpeedMs}
           onPlayVoice={playVisibleEmbryVoice}
           onProbeIntent={probeMemoryIntent}
           onReplay={replaySession}
@@ -1036,11 +1039,13 @@ function SessionController({
   voiceStatus,
   liveVoiceStatus,
   orbStatusOverride,
+  orbPhaseSpeedMs,
   isStreaming,
   tone,
   intentSnapshot,
   intentProbeBusy,
   onOrbStatusOverride,
+  onOrbPhaseSpeedChange,
   onPlayVoice,
   onProbeIntent,
   onReplay,
@@ -1052,11 +1057,13 @@ function SessionController({
   voiceStatus?: EmbryVoiceStatus
   liveVoiceStatus: EmbryVoiceStatus
   orbStatusOverride: OrbStatusOverride
+  orbPhaseSpeedMs: number
   isStreaming?: boolean
   tone?: string
   intentSnapshot: MemoryIntentSnapshot
   intentProbeBusy: boolean
   onOrbStatusOverride: (status: OrbStatusOverride) => void
+  onOrbPhaseSpeedChange: (speedMs: number) => void
   onPlayVoice: () => void
   onProbeIntent: () => void
   onReplay: (session?: TestSession) => void
@@ -1070,13 +1077,15 @@ function SessionController({
       data-qid="embry-voice:command-rail"
       className="flex h-full min-h-0 w-[300px] shrink-0 flex-col border-r border-[#2d2d31] bg-[#121214]"
     >
-      <IdentityNode voiceStatus={voiceStatus} isStreaming={isStreaming} tone={identityTone} />
+      <IdentityNode voiceStatus={voiceStatus} isStreaming={isStreaming} tone={identityTone} phaseSpeedMs={orbPhaseSpeedMs} />
       <OrbStateLabControls
         liveVoiceStatus={liveVoiceStatus}
         overrideStatus={orbStatusOverride}
+        phaseSpeedMs={orbPhaseSpeedMs}
         intentSnapshot={intentSnapshot}
         intentProbeBusy={intentProbeBusy}
         onOverride={onOrbStatusOverride}
+        onPhaseSpeedChange={onOrbPhaseSpeedChange}
         onPlayVoice={onPlayVoice}
         onProbeIntent={onProbeIntent}
       />
@@ -1115,17 +1124,21 @@ function SessionController({
 function OrbStateLabControls({
   liveVoiceStatus,
   overrideStatus,
+  phaseSpeedMs,
   intentSnapshot,
   intentProbeBusy,
   onOverride,
+  onPhaseSpeedChange,
   onPlayVoice,
   onProbeIntent,
 }: {
   liveVoiceStatus: EmbryVoiceStatus
   overrideStatus: OrbStatusOverride
+  phaseSpeedMs: number
   intentSnapshot: MemoryIntentSnapshot
   intentProbeBusy: boolean
   onOverride: (status: OrbStatusOverride) => void
+  onPhaseSpeedChange: (speedMs: number) => void
   onPlayVoice: () => void
   onProbeIntent: () => void
 }): JSX.Element {
@@ -1185,6 +1198,23 @@ function OrbStateLabControls({
           {intentProbeBusy ? 'Intent...' : 'Intent'}
         </button>
       </div>
+      <label className="mt-2 grid gap-1 font-mono text-[9px] uppercase tracking-[0.12em] text-zinc-500">
+        <span className="flex items-center justify-between">
+          <span>Phase speed</span>
+          <span data-qid="embry-voice:orb-phase-speed-readout" className="text-cyan-200">{phaseSpeedMs}ms</span>
+        </span>
+        <input
+          type="range"
+          min={250}
+          max={1400}
+          step={50}
+          value={phaseSpeedMs}
+          data-qid="embry-voice:orb-phase-speed"
+          aria-label="Embry orb phase transition speed"
+          onChange={(event) => onPhaseSpeedChange(Number(event.currentTarget.value))}
+          className="h-1 w-full cursor-pointer accent-cyan-300"
+        />
+      </label>
       <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 font-mono text-[9px] uppercase tracking-[0.12em] text-zinc-500">
         <div>
           <dt className="text-zinc-600">State</dt>

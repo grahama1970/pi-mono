@@ -30,12 +30,17 @@ type EngineState = {
   audio: EmbryPlaybackAudioBands
   attentionBoost: number
   releaseBoost: number
+  phaseSpeedMs: number
 }
 
 const MICRO_CANVAS_SIZE = 400
 const PARTICLE_COUNT = 6500
 const GLYPH_PARTICLE_RATIO = 0.48
 const GLYPH_FIELD_SCALE = 1.42
+const IDLE_FLOCK_COUNT = 7
+const DEFAULT_PHASE_SPEED_MS = 650
+const MIN_PHASE_SPEED_MS = 250
+const MAX_PHASE_SPEED_MS = 1400
 const BACKGROUND = '#0c0c0e'
 const SILENT_AUDIO: EmbryPlaybackAudioBands = { level: 0, bass: 0, mid: 0, treble: 0 }
 
@@ -49,7 +54,13 @@ type IdleFlock = {
   x: number
   y: number
   strength: number
+  radius: number
   phase: number
+}
+
+function clampPhaseSpeedMs(value?: number): number {
+  if (!Number.isFinite(value)) return DEFAULT_PHASE_SPEED_MS
+  return Math.max(MIN_PHASE_SPEED_MS, Math.min(MAX_PHASE_SPEED_MS, Math.round(value ?? DEFAULT_PHASE_SPEED_MS)))
 }
 
 function statePalette(visualState: EmbryState): { base: [number, number, number]; hot: [number, number, number] } {
@@ -131,7 +142,7 @@ function createParticles(mask: Float32Array): FlowParticle[] {
       seed: Math.random() * 1000,
       fieldAffinity: Math.random(),
       glyphWeight,
-      flockIndex: Math.floor(Math.random() * 5),
+      flockIndex: Math.floor(Math.random() * IDLE_FLOCK_COUNT),
       brightness: 0,
     }
   })
@@ -169,10 +180,13 @@ function drawFrame(
   if (idle) {
     for (let index = 0; index < idleFlocks.length; index += 1) {
       const flock = idleFlocks[index]
-      const drift = time * (0.55 + index * 0.09) + flock.phase
-      flock.x = centerX + Math.cos(drift * 0.73) * (65 + index * 17) + Math.sin(drift * 1.7) * 18
-      flock.y = centerY + Math.sin(drift * 0.61) * (58 + index * 15) + Math.cos(drift * 1.4) * 16
-      flock.strength = 0.00018 + (Math.sin(drift * 2.1) + 1) * 0.00016
+      const drift = time * (0.45 + index * 0.07) + flock.phase
+      const orbitRadius = 72 + (index % 4) * 22
+      const pulse = Math.max(0, Math.sin(drift * 1.7 + index * 0.9))
+      flock.x = centerX + Math.cos(drift * 0.69) * orbitRadius + Math.sin(drift * 2.3) * 26
+      flock.y = centerY + Math.sin(drift * 0.57) * (orbitRadius * 0.92) + Math.cos(drift * 1.9) * 24
+      flock.radius = 44 + pulse * 48
+      flock.strength = (0.0001 + pulse * pulse * 0.00062) * (0.85 + index * 0.035)
     }
   }
 
@@ -206,26 +220,34 @@ function drawFrame(
         }
       }
       if (idle) {
-        const orbit = 0.00012 + particle.fieldAffinity * 0.0001
+        const centerDistance = Math.max(1, Math.hypot(dx, dy))
+        if (centerDistance < 108) {
+          const centerPush = (108 - centerDistance) * 0.00018
+          particle.vx += dx / centerDistance * centerPush
+          particle.vy += dy / centerDistance * centerPush
+        }
+        const orbit = 0.00016 + particle.fieldAffinity * 0.00014
         particle.vx += -dy * orbit
         particle.vy += dx * orbit
-        particle.vx += (Math.random() - 0.5) * 0.095
-        particle.vy += (Math.random() - 0.5) * 0.095
+        particle.vx += (Math.random() - 0.5) * 0.14
+        particle.vy += (Math.random() - 0.5) * 0.14
         const flock = idleFlocks[particle.flockIndex % idleFlocks.length]
         const flockDx = flock.x - particle.x
         const flockDy = flock.y - particle.y
         const flockDistanceSquared = flockDx * flockDx + flockDy * flockDy
-        if (flockDistanceSquared < 68 * 68 && Math.sin(time * 2.8 + particle.seed) > -0.18) {
-          const swirl = flock.strength * (0.9 + particle.fieldAffinity * 0.55)
-          particle.vx += flockDx * flock.strength
-          particle.vy += flockDy * flock.strength
+        const swirlGate = (Math.sin(time * 2.6 + particle.seed + flock.phase) + 1) * 0.5
+        if (flockDistanceSquared < flock.radius * flock.radius && swirlGate > 0.26) {
+          const pull = flock.strength * (0.75 + swirlGate * 0.7)
+          const swirl = flock.strength * (1.9 + particle.fieldAffinity * 1.35)
+          particle.vx += flockDx * pull
+          particle.vy += flockDy * pull
           particle.vx += -flockDy * swirl
           particle.vy += flockDx * swirl
         }
       }
     }
-    particle.vx *= idle ? 0.82 + releaseBoost * 0.12 : speaking ? 0.93 : 0.9
-    particle.vy *= idle ? 0.82 + releaseBoost * 0.12 : speaking ? 0.93 : 0.9
+    particle.vx *= idle ? 0.88 + releaseBoost * 0.07 : speaking ? 0.93 : 0.9
+    particle.vy *= idle ? 0.88 + releaseBoost * 0.07 : speaking ? 0.93 : 0.9
     particle.x += particle.vx * particle.speed
     particle.y += particle.vy * particle.speed
 
@@ -301,6 +323,7 @@ export function EmbryVoiceOrb({
   signal,
   size: sizeProp = 96,
   surface = 'rail',
+  phaseSpeedMs,
 }: {
   voiceStatus?: EmbryVoiceStatus
   isStreaming?: boolean
@@ -311,8 +334,10 @@ export function EmbryVoiceOrb({
   surface?: 'rail' | 'header'
   fillCanvas?: boolean
   letterAsParticles?: boolean
+  phaseSpeedMs?: number
 }): JSX.Element {
   const railBoost = surface === 'rail'
+  const normalizedPhaseSpeedMs = clampPhaseSpeedMs(phaseSpeedMs)
   const { ref: containerRef, size: observedSize } = useEmbryOrbContainerSize(sizeProp, { min: 96, max: 240 })
   const size = railBoost ? observedSize : sizeProp
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -321,7 +346,14 @@ export function EmbryVoiceOrb({
   const maskRef = useRef<Float32Array | null>(null)
   const frameRef = useRef(0)
   const timeRef = useRef(0)
-  const stateRef = useRef<EngineState>({ visualState: 'idle', reducedMotion: false, audio: SILENT_AUDIO, attentionBoost: 0, releaseBoost: 0 })
+  const stateRef = useRef<EngineState>({
+    visualState: 'idle',
+    reducedMotion: false,
+    audio: SILENT_AUDIO,
+    attentionBoost: 0,
+    releaseBoost: 0,
+    phaseSpeedMs: DEFAULT_PHASE_SPEED_MS,
+  })
   const previousVisualStateRef = useRef<EmbryState>('idle')
   const attentionStartedAtRef = useRef(0)
   const releaseStartedAtRef = useRef(0)
@@ -341,10 +373,10 @@ export function EmbryVoiceOrb({
     }
     const attentionElapsed = attentionStartedAtRef.current ? performance.now() - attentionStartedAtRef.current : Number.POSITIVE_INFINITY
     const releaseElapsed = releaseStartedAtRef.current ? performance.now() - releaseStartedAtRef.current : Number.POSITIVE_INFINITY
-    const attentionBoost = visualState === 'listening' ? Math.max(0, 1 - attentionElapsed / 900) : 0
-    const releaseBoost = visualState === 'idle' ? Math.max(0, 1 - releaseElapsed / 850) : 0
-    stateRef.current = { visualState, reducedMotion, audio, attentionBoost, releaseBoost }
-  }, [audio, reducedMotion, visualState])
+    const attentionBoost = visualState === 'listening' ? Math.max(0, 1 - attentionElapsed / normalizedPhaseSpeedMs) : 0
+    const releaseBoost = visualState === 'idle' ? Math.max(0, 1 - releaseElapsed / normalizedPhaseSpeedMs) : 0
+    stateRef.current = { visualState, reducedMotion, audio, attentionBoost, releaseBoost, phaseSpeedMs: normalizedPhaseSpeedMs }
+  }, [audio, normalizedPhaseSpeedMs, reducedMotion, visualState])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -356,10 +388,11 @@ export function EmbryVoiceOrb({
 
     maskRef.current = createMask()
     particlesRef.current = createParticles(maskRef.current)
-    idleFlocksRef.current = Array.from({ length: 5 }, (_, index) => ({
+    idleFlocksRef.current = Array.from({ length: IDLE_FLOCK_COUNT }, (_, index) => ({
       x: MICRO_CANVAS_SIZE / 2,
       y: MICRO_CANVAS_SIZE / 2,
       strength: 0,
+      radius: 64,
       phase: index * 1.37 + Math.random() * Math.PI * 2,
     }))
 
@@ -369,11 +402,11 @@ export function EmbryVoiceOrb({
       const current = stateRef.current
       if (current.visualState === 'listening' && attentionStartedAtRef.current) {
         const elapsed = performance.now() - attentionStartedAtRef.current
-        stateRef.current = { ...current, attentionBoost: Math.max(0, 1 - elapsed / 900) }
+        stateRef.current = { ...current, attentionBoost: Math.max(0, 1 - elapsed / current.phaseSpeedMs) }
       }
       if (current.visualState === 'idle' && releaseStartedAtRef.current) {
         const elapsed = performance.now() - releaseStartedAtRef.current
-        stateRef.current = { ...stateRef.current, releaseBoost: Math.max(0, 1 - elapsed / 850) }
+        stateRef.current = { ...stateRef.current, releaseBoost: Math.max(0, 1 - elapsed / stateRef.current.phaseSpeedMs) }
       }
       drawFrame(ctx, particlesRef.current, mask, idleFlocksRef.current, stateRef.current, timeRef.current)
       frameRef.current = window.requestAnimationFrame(render)
@@ -394,6 +427,7 @@ export function EmbryVoiceOrb({
       data-embry-audio-bass={audio.bass.toFixed(3)}
       data-embry-audio-mid={audio.mid.toFixed(3)}
       data-embry-audio-treble={audio.treble.toFixed(3)}
+      data-embry-phase-speed-ms={normalizedPhaseSpeedMs}
       style={{
         lineHeight: 0,
         width: railBoost ? '100%' : size,

@@ -8,6 +8,7 @@ export interface IdentityNodeProps {
   tone?: string
   speaker?: string
   height?: number
+  phaseSpeedMs?: number
 }
 
 function readIdentityPanelPacket(): string {
@@ -70,6 +71,7 @@ export function IdentityNode({
   isStreaming,
   tone,
   height = 260,
+  phaseSpeedMs,
 }: IdentityNodeProps): JSX.Element {
   const view = buildIdentityNodeViewModel({ voiceStatus, isStreaming, tone })
 
@@ -101,6 +103,7 @@ export function IdentityNode({
           signal={view.signal}
           size={220}
           surface="rail"
+          phaseSpeedMs={phaseSpeedMs}
           fillCanvas
           letterAsParticles
         />
