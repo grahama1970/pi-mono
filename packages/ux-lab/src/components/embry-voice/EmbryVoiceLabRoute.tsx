@@ -627,11 +627,13 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const [replayState, setReplayState] = useState<ReplayState>({ playing: false, activeIndex: -1, phase: 'idle' })
   const [orbStatusOverride, setOrbStatusOverride] = useState<OrbStatusOverride>(null)
   const [orbPhaseSpeedMs, setOrbPhaseSpeedMs] = useState(650)
-  const [directEmbryAudio, setDirectEmbryAudio] = useState<DirectEmbryAudio | null>(null)
   const [directSpeakBusy, setDirectSpeakBusy] = useState(false)
   const [liveIntentSnapshot, setLiveIntentSnapshot] = useState<MemoryIntentSnapshot | null>(null)
   const [intentProbeBusy, setIntentProbeBusy] = useState(false)
   const replayStopRef = useRef(false)
+  const directSpeakBusyRef = useRef(false)
+  const directPlaybackAudioRef = useRef<HTMLAudioElement | null>(null)
+  const directPlaybackRunRef = useRef(0)
   const selectedRun = sanityRuns.find((run) => run.id === selectedRunId)
   const selectedTurn = voiceTurns.find((turn) => turn.id === selectedTurnId) ?? voiceTurns[0]
   const gateSummary = useMemo(() => summarizeGates(sanityRuns), [])
@@ -939,9 +941,90 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     setLiveIntentSnapshot(null)
   }, [])
 
+  const playDirectEmbryAudio = useCallback((audioState: DirectEmbryAudio): Promise<void> => {
+    const runId = directPlaybackRunRef.current + 1
+    directPlaybackRunRef.current = runId
+
+    const previousAudio = directPlaybackAudioRef.current
+    if (previousAudio) {
+      previousAudio.pause()
+      previousAudio.remove()
+      directPlaybackAudioRef.current = null
+    }
+
+    const audio = new Audio(audioState.url)
+    audio.setAttribute('data-qid', 'embry-voice:direct-speak-audio')
+    audio.setAttribute('data-embry-session-audio', 'true')
+    audio.setAttribute('data-embry-direct-text', audioState.text)
+    audio.preload = 'auto'
+    audio.muted = false
+    audio.volume = 1
+    audio.style.display = 'none'
+    document.body.appendChild(audio)
+    directPlaybackAudioRef.current = audio
+    setOrbStatusOverride('speaking')
+
+    return new Promise((resolve, reject) => {
+      let settled = false
+      let playbackStarted = false
+      const timeout = window.setTimeout(() => {
+        finish(new Error('direct Embry audio did not become playable'))
+      }, 8000)
+
+      const cleanup = (): void => {
+        window.clearTimeout(timeout)
+        audio.removeEventListener('canplay', onCanPlay)
+        audio.removeEventListener('ended', onEnded)
+        audio.removeEventListener('error', onError)
+      }
+
+      const finish = (error?: Error): void => {
+        if (settled) return
+        settled = true
+        cleanup()
+        if (directPlaybackAudioRef.current === audio) directPlaybackAudioRef.current = null
+        audio.remove()
+        if (directPlaybackRunRef.current === runId) {
+          setOrbStatusOverride((current) => (current === 'speaking' ? null : current))
+          directSpeakBusyRef.current = false
+          setDirectSpeakBusy(false)
+        }
+        if (error) reject(error)
+        else resolve()
+      }
+
+      const startPlayback = (): void => {
+        if (playbackStarted) return
+        playbackStarted = true
+        void audio.play().catch((error: unknown) => {
+          finish(error instanceof Error ? error : new Error(String(error)))
+        })
+      }
+
+      function onCanPlay(): void {
+        startPlayback()
+      }
+
+      function onEnded(): void {
+        finish()
+      }
+
+      function onError(): void {
+        finish(new Error('direct Embry audio failed during playback'))
+      }
+
+      audio.addEventListener('canplay', onCanPlay)
+      audio.addEventListener('ended', onEnded, { once: true })
+      audio.addEventListener('error', onError, { once: true })
+      audio.load()
+      if (audio.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) startPlayback()
+    })
+  }, [])
+
   const speakDirectEmbry = useCallback(async (text = 'Embry direct voice test. The orb should move with my voice now.') => {
     const trimmed = text.trim()
-    if (!trimmed || directSpeakBusy) return null
+    if (!trimmed || directSpeakBusyRef.current) return null
+    directSpeakBusyRef.current = true
     setDirectSpeakBusy(true)
     setOrbStatusOverride('processing')
     try {
@@ -971,53 +1054,26 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         path: payload.audioPath,
         receiptUrl: payload.receiptUrl,
       }
-      setDirectEmbryAudio(audioState)
-      setOrbStatusOverride('speaking')
-      window.setTimeout(() => {
-        const audio = document.querySelector<HTMLAudioElement>('[data-qid="embry-voice:direct-speak-audio"]')
-        if (!audio) return
-        audio.currentTime = 0
-        audio.muted = false
-        audio.volume = 1
-        const finish = (): void => {
-          audio.removeEventListener('ended', finish)
-          setOrbStatusOverride((current) => (current === 'speaking' ? null : current))
-        }
-        audio.addEventListener('ended', finish, { once: true })
-        const waitForPlayable = new Promise<void>((resolve, reject) => {
-          if (audio.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
-            resolve()
-            return
-          }
-          const timeout = window.setTimeout(() => {
-            audio.removeEventListener('canplay', onCanPlay)
-            audio.removeEventListener('error', onError)
-            reject(new Error('direct Embry audio did not become playable'))
-          }, 5000)
-          const onCanPlay = (): void => {
-            window.clearTimeout(timeout)
-            audio.removeEventListener('error', onError)
-            resolve()
-          }
-          const onError = (): void => {
-            window.clearTimeout(timeout)
-            audio.removeEventListener('canplay', onCanPlay)
-            reject(new Error('direct Embry audio failed to load'))
-          }
-          audio.addEventListener('canplay', onCanPlay, { once: true })
-          audio.addEventListener('error', onError, { once: true })
-          audio.load()
-        })
-        void waitForPlayable.then(() => audio.play()).catch(() => finish())
-      }, 160)
+      void playDirectEmbryAudio(audioState).catch(() => undefined)
       return audioState
     } catch (error) {
       setOrbStatusOverride(null)
-      throw error
-    } finally {
+      directSpeakBusyRef.current = false
       setDirectSpeakBusy(false)
+      throw error
     }
-  }, [directSpeakBusy])
+  }, [playDirectEmbryAudio])
+
+  useEffect(() => {
+    return () => {
+      const audio = directPlaybackAudioRef.current
+      if (audio) {
+        audio.pause()
+        audio.remove()
+        directPlaybackAudioRef.current = null
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const target = window as Window & { embrySpeak?: (text?: string) => Promise<DirectEmbryAudio | null> }
@@ -1166,17 +1222,6 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           />
         </aside>
       </div>
-      {directEmbryAudio ? (
-        <audio
-          key={directEmbryAudio.id}
-          data-qid="embry-voice:direct-speak-audio"
-          data-embry-session-audio="true"
-          data-embry-direct-text={directEmbryAudio.text}
-          preload="auto"
-          src={directEmbryAudio.url}
-          className="hidden"
-        />
-      ) : null}
     </section>
   )
 }
