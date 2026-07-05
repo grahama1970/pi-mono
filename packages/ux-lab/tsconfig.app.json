@@ -21,8 +21,14 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "erasableSyntaxOnly": true,
+    "baseUrl": ".",
+    "paths": {
+      "@agent-skills/ux-lab-ui": ["../../../agent-skills/skills/ux-lab/ui/index.ts"],
+      "@agent-skills/ux-lab-ui/*": ["../../../agent-skills/skills/ux-lab/ui/*"]
+    },
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/**/*.spec.ts", "src/**/*.spec.tsx"]
 }

@@ -7,6 +7,7 @@ import { IdentityNode } from './IdentityNode'
 import type { EmbryVoiceStatus } from './EmbryVoiceOrb'
 import { deriveEmbryVoiceStatus } from './embryOrbState'
 import type { ChatMessage, StreamingStep } from '../shared-chat/memory-turn'
+import type { EmbryTurnAuthority, EmbryVoiceAudioAuthority } from '@agent-skills/ux-lab-ui/memory-turn/EmbryVoiceAuthority'
 import type { EmbryVoiceEnvelope } from '../../hooks/useEmbryPlaybackAudioLevel'
 
 type AudioArtifact = {
@@ -44,13 +45,15 @@ type VoiceTurn = {
   componentPath: string
   telemetry: { label: string; value: string; warn?: boolean }[]
   audioArtifacts: AudioArtifact[]
+  audioAuthority?: EmbryVoiceAudioAuthority
+  turnAuthority?: EmbryTurnAuthority
   relatedRunIds: string[]
 }
 
 type ReplayPhase = 'idle' | 'request' | 'thinking' | 'response' | 'complete' | 'interrupted'
 type ReplayState = { playing: boolean; activeIndex: number; activeTurnId?: string; activeSessionId?: string; phase: ReplayPhase; visibleTurnCount?: number }
 type OrbStatusOverride = Exclude<EmbryVoiceStatus, 'off' | 'error'> | null
-type EmbryAudioAuthority = {
+type EmbryAudioAuthority = EmbryVoiceAudioAuthority & {
   authority: 'server-chatterbox-wav-envelope-v1'
   artifactId: string
   url: string
@@ -78,9 +81,11 @@ type DirectEmbryAudio = {
   startedAtMs?: number
   voiceEnvelope?: EmbryVoiceEnvelope
   audioAuthority?: EmbryAudioAuthority
+  turnAuthority?: EmbryTurnAuthority
 }
 type ActiveSpeechSource = {
   id: string
+  turnId?: string
   audioElement: HTMLMediaElement
   source: 'direct' | 'replay' | 'live-turn' | 'visible'
   text?: string
@@ -120,6 +125,38 @@ function artifact(id: string, label: string, path: string): AudioArtifact {
 function serverEpochToClientPerfMs(startedAtEpochMs?: number): number {
   if (!startedAtEpochMs || !Number.isFinite(startedAtEpochMs)) return performance.now()
   return performance.now() - Math.max(0, Date.now() - startedAtEpochMs)
+}
+
+function authorityRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === 'object' ? value as Record<string, unknown> : {}
+}
+
+function turnAuthorityForVoiceTurn(turn: VoiceTurn, createdAt: string): EmbryTurnAuthority {
+  const audioAuthority = turn.audioAuthority
+  return turn.turnAuthority ?? {
+    turnId: turn.id,
+    userText: turn.userText,
+    assistantText: turn.assistantText,
+    personaId: 'embry',
+    speakerId: turn.speaker,
+    createdAt,
+    memoryFirst: true,
+    simultaneousTextVoice: true,
+    receiptPath: turn.receiptPath,
+    audioAuthority,
+    audioArtifacts: audioAuthority ? [authorityRecord(audioAuthority)] : turn.audioArtifacts.map((audio) => ({
+      id: audio.id,
+      label: audio.label,
+      path: audio.path,
+      url: audio.url,
+    } as Record<string, unknown>)),
+    memoryTrace: {
+      action: turn.memoryAction,
+      telemetry: turn.telemetry,
+    },
+    live: true,
+    mocked: false,
+  }
 }
 
 function asRecord(value: unknown): Record<string, unknown> | undefined {
@@ -473,6 +510,7 @@ function chatMessagesForTurn(turn: VoiceTurn, index: number): ChatMessage[] {
   const createdAt = new Date(Date.UTC(2026, 6, 4, 18, 25 + index, 0)).toISOString()
   const userContent = `${turn.userText}${turn.speaker ? ` ${turn.speaker}` : ''} ${turn.memoryAction ?? ''} ${turn.tone ?? ''}`.trim()
   const assistantContent = `${turn.assistantText} ${turn.memoryAction ?? ''} ${turn.tone ?? ''}`.trim()
+  const turnAuthority = turnAuthorityForVoiceTurn(turn, createdAt)
   const baseMetadata = {
     surface: 'ux-lab/embry-voice',
     branch: 'embry-voice',
@@ -484,6 +522,8 @@ function chatMessagesForTurn(turn: VoiceTurn, index: number): ChatMessage[] {
     componentPath: turn.componentPath,
     receiptPath: turn.receiptPath,
     telemetry: turn.telemetry,
+    audioAuthority: turn.audioAuthority,
+    turnAuthority,
   }
   return [
     {
@@ -514,6 +554,8 @@ function chatMessagesForTurn(turn: VoiceTurn, index: number): ChatMessage[] {
           url: audio.url,
           path: audio.path,
         })),
+        audioAuthority: turn.audioAuthority,
+        turnAuthority,
       },
     },
   ]
@@ -621,6 +663,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const [orbStatusOverride, setOrbStatusOverride] = useState<OrbStatusOverride>(null)
   const [orbPhaseSpeedMs, setOrbPhaseSpeedMs] = useState(650)
   const [activeSpeech, setActiveSpeech] = useState<ActiveSpeechSource | null>(null)
+  const [lastTurnAuthority, setLastTurnAuthority] = useState<EmbryTurnAuthority | null>(null)
   const [directSpeakBusy, setDirectSpeakBusy] = useState(false)
   const replayStopRef = useRef(false)
   const directSpeakBusyRef = useRef(false)
@@ -661,11 +704,16 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     setOrbStatusOverride((current) => (current === 'speaking' ? null : current))
   }, [])
 
+  const handleMessagesChange = useCallback((...args: unknown[]) => {
+    const [messages] = args
+    if (Array.isArray(messages)) setChatMessages(messages as ChatMessage[])
+  }, [])
+
   const handleSend = useCallback(async (text: string) => {
     const trimmed = text.trim()
     if (!trimmed || isStreaming) return
     const createdAt = new Date().toISOString()
-    const turnId = `embry-live-turn:${Date.now()}`
+    const turnId = `embry-live-turn-${Date.now()}`
     setChatMessages((messages) => [
       ...messages,
       {
@@ -732,6 +780,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           text: trimmed,
+          turnId,
           sessionId: 'ux-lab-embry-voice',
           voiceEnabled,
           tone: 'neutral_warm',
@@ -745,6 +794,10 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         audioPath?: string
         receiptPath?: string
         receiptUrl?: string
+        turnId?: string
+        audioAuthority?: EmbryAudioAuthority
+        voiceEnvelope?: EmbryVoiceEnvelope
+        turnAuthority?: EmbryTurnAuthority
         reasoningSteps?: unknown[]
         entities?: unknown[]
         recallItems?: unknown[]
@@ -758,12 +811,31 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         throw new Error(payload?.error || `Embry live turn returned HTTP ${response.status}`)
       }
       const liveEntitySpans = entitySpansFromEntityContext(payload.entityContext)
+      const responseTurnId = payload.turnId || payload.turnAuthority?.turnId || turnId
+      const audioAuthority = payload.audioAuthority ?? payload.turnAuthority?.audioAuthority as EmbryAudioAuthority | undefined
+      const voiceEnvelope = payload.voiceEnvelope ?? audioAuthority?.envelope
+      const turnAuthority: EmbryTurnAuthority = payload.turnAuthority ?? {
+        turnId: responseTurnId,
+        userText: trimmed,
+        assistantText: payload.answerText || 'I heard you, but Tau did not return spoken text.',
+        personaId: 'embry',
+        sessionId: 'ux-lab-embry-voice',
+        createdAt: new Date().toISOString(),
+        memoryFirst: true,
+        simultaneousTextVoice: true,
+        receiptPath: payload.receiptPath,
+        audioAuthority,
+        audioArtifacts: audioAuthority ? [authorityRecord(audioAuthority)] : [],
+        memoryTrace: payload.memory,
+        live: true,
+        mocked: false,
+      }
 
       const assistantMessage: ChatMessage = {
-        id: `${turnId}:assistant`,
+        id: `${responseTurnId}:assistant`,
         role: 'assistant',
-        content: payload.answerText || 'I heard you, but Tau did not return spoken text.',
-        createdAt: new Date().toISOString(),
+        content: turnAuthority.assistantText,
+        createdAt: turnAuthority.createdAt,
         skillUsed: 'embry-chatterbox-voice',
         reasoningSteps: Array.isArray(payload.reasoningSteps) ? payload.reasoningSteps : undefined,
         thinkingTrace: Array.isArray(payload.reasoningSteps) ? payload.reasoningSteps : undefined,
@@ -774,7 +846,9 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           live: true,
           mocked: false,
           inputChannel: voiceEnabled ? 'voice-or-text' : 'text',
-          turnId,
+          turnId: responseTurnId,
+          turnAuthority,
+          audioAuthority,
           tone: payload.tone,
           deliveryStage: payload.deliveryStage,
           receiptPath: payload.receiptPath,
@@ -786,7 +860,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           memory: payload.memory,
           audioArtifacts: payload.audioUrl
             ? [{
-                id: `${turnId}:chatterbox`,
+                id: `${responseTurnId}:chatterbox`,
                 label: 'Embry live Chatterbox response',
                 url: payload.audioUrl,
                 path: payload.audioPath || payload.audioUrl,
@@ -794,13 +868,17 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             : [],
         },
       }
+      setLastTurnAuthority(turnAuthority)
       if (payload.entityContext) {
         setChatMessages((messages) => messages.map((message) => (
           message.id === `${turnId}:user`
             ? {
                 ...message,
+                id: `${responseTurnId}:user`,
                 metadata: {
                   ...(message.metadata ?? {}),
+                  turnId: responseTurnId,
+                  turnAuthority,
                   entityContext: payload.entityContext,
                   entity_context: payload.entityContext,
                   entitySpans: liveEntitySpans,
@@ -812,15 +890,24 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       }
       setChatMessages((messages) => [...messages, assistantMessage])
       setStreamingSteps(Array.isArray(payload.reasoningSteps) ? payload.reasoningSteps as StreamingStep[] : [])
-      setReplayState({ playing: false, activeIndex: -1, activeTurnId: turnId, phase: 'response' })
+      setReplayState({ playing: false, activeIndex: -1, activeTurnId: responseTurnId, phase: 'response' })
       window.setTimeout(() => {
         scrollSharedChatToBottom()
         if (!voiceEnabled || !payload.audioUrl) return
         const audios = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
         const latestAudio = audios.at(-1)
         if (!latestAudio) return
-        const speechId = `embry-live-turn-${turnId}`
-        bindActiveSpeech({ id: speechId, audioElement: latestAudio, source: 'live-turn', text: assistantMessage.content, audioUrl: latestAudio.currentSrc || latestAudio.src, startedAtMs: performance.now() })
+        const speechId = `embry-live-turn-${responseTurnId}`
+        bindActiveSpeech({
+          id: speechId,
+          turnId: responseTurnId,
+          audioElement: latestAudio,
+          source: 'live-turn',
+          text: assistantMessage.content,
+          audioUrl: latestAudio.currentSrc || latestAudio.src,
+          startedAtMs: performance.now(),
+          voiceEnvelope: voiceEnvelope as EmbryVoiceEnvelope | undefined,
+        })
         latestAudio.currentTime = 0
         const finish = (): void => {
           latestAudio.removeEventListener('ended', finish)
@@ -918,7 +1005,16 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           continue
         }
         const speechId = `embry-replay-${turn.id}-${artifactIndex}-${audioIndex - 1}`
-        bindActiveSpeech({ id: speechId, audioElement: audio, source: 'replay', text: turn.assistantText, audioUrl: audio.currentSrc || audio.src, startedAtMs: performance.now() })
+        bindActiveSpeech({
+          id: speechId,
+          turnId: turn.id,
+          audioElement: audio,
+          source: 'replay',
+          text: turn.assistantText,
+          audioUrl: audio.currentSrc || audio.src,
+          startedAtMs: performance.now(),
+          voiceEnvelope: turn.audioAuthority?.envelope as EmbryVoiceEnvelope | undefined,
+        })
         audio.currentTime = 0
         try {
           await audio.play()
@@ -981,6 +1077,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     directPlaybackAudioRef.current = audio
     bindActiveSpeech({
       id: audioState.id,
+      turnId: audioState.audioAuthority?.artifactId ?? audioState.id,
       audioElement: audio,
       source: 'direct',
       text: audioState.text,
@@ -1104,6 +1201,21 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         audioAuthority: authority,
       }
       const createdAt = new Date().toISOString()
+      const turnAuthority: EmbryTurnAuthority = {
+        turnId: audioState.id,
+        userText: trimmed,
+        assistantText: trimmed,
+        personaId: 'embry',
+        createdAt,
+        memoryFirst: true,
+        simultaneousTextVoice: true,
+        receiptPath: payload.receiptUrl,
+        audioAuthority: authority,
+        audioArtifacts: [authorityRecord(authority)],
+        live: true,
+        mocked: false,
+      }
+      setLastTurnAuthority(turnAuthority)
       setChatMessages((messages) => [
         ...messages,
         {
@@ -1148,6 +1260,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             live: true,
             mocked: false,
             backend: 'chatterbox-direct',
+            turnId: audioState.id,
+            turnAuthority,
             audioArtifacts: [
               {
                 id: audioState.id,
@@ -1200,7 +1314,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     const audio = audios.find((candidate) => candidate.readyState > 0) ?? audios[0]
     if (!audio) return
     const speechId = `embry-visible-${Date.now()}`
-    bindActiveSpeech({ id: speechId, audioElement: audio, source: 'visible', text: audio.getAttribute('data-embry-direct-text') ?? undefined, audioUrl: audio.currentSrc || audio.src, startedAtMs: performance.now() })
+    bindActiveSpeech({ id: speechId, turnId: speechId, audioElement: audio, source: 'visible', text: audio.getAttribute('data-embry-direct-text') ?? undefined, audioUrl: audio.currentSrc || audio.src, startedAtMs: performance.now() })
     audio.currentTime = 0
     void audio.play().catch(() => undefined)
     const finish = (): void => {
@@ -1246,6 +1360,9 @@ export function EmbryVoiceLabRoute(): JSX.Element {
 
         <section
           data-qid="embry-voice:evidence-timeline"
+          data-active-turn-id={lastTurnAuthority?.turnId ?? ''}
+          data-active-audio-artifact-id={lastTurnAuthority?.audioAuthority?.artifactId ?? ''}
+          data-active-speech-turn-id={activeSpeech?.turnId ?? ''}
           data-replay-phase={replayState.phase}
           data-visible-turn-count={replayState.visibleTurnCount ?? chatMessages.length}
           className={`min-h-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden ${panelClass}`}
@@ -1274,7 +1391,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             defaultMode="compliance"
             showModeToggle={false}
             messages={chatMessages}
-            onMessagesChange={setChatMessages}
+            onMessagesChange={handleMessagesChange}
             onSend={handleSend}
             streamingSteps={streamingSteps}
             isStreaming={isStreaming}
@@ -1368,7 +1485,7 @@ function ChatReplayHeader({
           showCopy={false}
           phaseSpeedMs={phaseSpeedMs}
           speechAudioElement={activeSpeech?.audioElement ?? null}
-          speechSourceId={activeSpeech?.id}
+          speechSourceId={activeSpeech?.turnId ?? activeSpeech?.id}
           speechAudioUrl={activeSpeech?.audioUrl}
           speechStartedAtMs={activeSpeech?.startedAtMs}
           speechEnvelope={activeSpeech?.voiceEnvelope}
@@ -1465,7 +1582,7 @@ function SessionController({
         height={300}
         phaseSpeedMs={orbPhaseSpeedMs}
         speechAudioElement={activeSpeech?.audioElement ?? null}
-        speechSourceId={activeSpeech?.id}
+        speechSourceId={activeSpeech?.turnId ?? activeSpeech?.id}
         speechAudioUrl={activeSpeech?.audioUrl}
         speechStartedAtMs={activeSpeech?.startedAtMs}
         speechEnvelope={activeSpeech?.voiceEnvelope}

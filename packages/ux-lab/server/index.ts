@@ -10725,6 +10725,9 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
     const sessionId = typeof req.body?.sessionId === 'string' && req.body.sessionId.trim()
       ? req.body.sessionId.trim()
       : 'ux-lab-embry-voice'
+    const requestedTurnId = typeof req.body?.turnId === 'string' && req.body.turnId.trim()
+      ? safeReceiptName(req.body.turnId.trim())
+      : ''
     const voiceEnabled = req.body?.voiceEnabled !== false
     const tone = normalizeChatterboxTone(req.body?.tone)
     const deliveryStage = normalizeChatterboxDeliveryStage(req.body?.deliveryStage, tone)
@@ -10802,6 +10805,8 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
 
     let audioPath = ''
     let audioUrl = ''
+    let audioAuthority: JsonRecord | null = null
+    let voiceEnvelope: unknown = null
     let chatterboxPayload: unknown = null
     let chatterboxError = ''
 
@@ -10832,9 +10837,22 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
           const outDir = resolve(CHATTERBOX_HOST_OUT_DIR, 'ux-lab-embry-live')
           await mkdir(outDir, { recursive: true })
           const textHash = createHash('sha256').update(`${sessionId}:${text}:${answerText}`).digest('hex').slice(0, 12)
-          audioPath = resolve(outDir, `${createdAt.replace(/[:.]/g, '-')}-${safeReceiptName(sessionId)}-${textHash}.wav`)
+          const artifactId = requestedTurnId || textHash
+          audioPath = resolve(outDir, `${createdAt.replace(/[:.]/g, '-')}-${safeReceiptName(sessionId)}-${artifactId}.wav`)
           await copyFile(generatedPath, audioPath)
           audioUrl = `/chatterbox-artifacts/${audioPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`
+          const audioSha256 = createHash('sha256').update(await readFile(audioPath)).digest('hex')
+          voiceEnvelope = await buildChatterboxVoiceEnvelope(audioPath)
+          audioAuthority = {
+            authority: 'server-chatterbox-wav-envelope-v1',
+            artifactId,
+            url: audioUrl,
+            path: audioPath,
+            sha256: audioSha256,
+            durationMs: (voiceEnvelope as { durationMs?: number }).durationMs,
+            localPlayback: null,
+            envelope: voiceEnvelope,
+          }
         }
       }
     }
@@ -10855,6 +10873,7 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       ...memoryRecallItemsFrom(recallResult),
     ]
     const memoryCandidateReturned = Boolean(answerResult || recallResult)
+    const turnId = requestedTurnId || createHash('sha256').update(`${sessionId}:${createdAt}:${text}`).digest('hex').slice(0, 12)
     const recallStepStatus = memoryCandidateReturned
       ? 'completed'
       : audioPath
@@ -10882,6 +10901,7 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       session_id: sessionId,
       input_text: text,
       answer_text: answerText,
+      turn_id: turnId,
       tone,
       delivery_stage: deliveryStage,
       memory: {
@@ -10901,6 +10921,24 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
         error: chatterboxError || null,
         receipt: chatterboxPayload,
         output_wav: audioPath || null,
+        audio_authority: audioAuthority,
+      },
+      turn_authority: {
+        turnId,
+        userText: text,
+        assistantText: answerText,
+        personaId: 'embry',
+        sessionId,
+        createdAt,
+        memoryFirst: true,
+        simultaneousTextVoice: true,
+        receiptPath,
+        audioAuthority,
+        audioArtifacts: audioAuthority ? [audioAuthority] : [],
+        memoryTrace: { entity_context: entityResult, intent: intentResult, answer: answerResult, recall: recallResult },
+        tauTrace: { boundary: 'memory.intent', action: intentAction || answerAction || '' },
+        live: true,
+        mocked: false,
       },
     }
     await writeFile(receiptPath, JSON.stringify(receipt, null, 2))
@@ -10925,11 +10963,31 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       live: true,
       backend: 'tau-memory-chatterbox',
       tauBoundary: 'memory.intent',
+      turnId,
       answerText,
       audioPath: audioPath || null,
       audioUrl: audioUrl || null,
       receiptPath,
       receiptUrl: `/chatterbox-artifacts/${receiptPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`,
+      audioAuthority,
+      voiceEnvelope,
+      turnAuthority: {
+        turnId,
+        userText: text,
+        assistantText: answerText,
+        personaId: 'embry',
+        sessionId,
+        createdAt,
+        memoryFirst: true,
+        simultaneousTextVoice: true,
+        receiptPath,
+        audioAuthority,
+        audioArtifacts: audioAuthority ? [audioAuthority] : [],
+        memoryTrace: { entity_context: entityResult, intent: intentResult, answer: answerResult, recall: recallResult },
+        tauTrace: { boundary: 'memory.intent', action: intentAction || answerAction || '' },
+        live: true,
+        mocked: false,
+      },
       reasoningSteps,
       entityContext: entityResult,
       entities: allEntities,

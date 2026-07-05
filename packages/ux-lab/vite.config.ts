@@ -2,9 +2,55 @@ import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'fs'
+import { createReadStream, mkdirSync, readFileSync, statSync, writeFileSync, existsSync } from 'fs'
 import type { Plugin } from 'vite'
 import { transportReviewBundlePlugin } from './plugins/transportReviewBundlePlugin'
+
+const resolveWorkspaceModule = (modulePath: string) => {
+  const localPath = resolve(__dirname, 'node_modules', modulePath)
+  if (existsSync(localPath)) return localPath
+  return resolve(__dirname, '../../node_modules', modulePath)
+}
+
+const uxLabApiPort = Number(process.env.UX_LAB_API_PORT ?? process.env.PORT ?? 3001)
+const uxLabApiTarget = `http://localhost:${uxLabApiPort}`
+const uxLabWsTarget = `ws://localhost:${uxLabApiPort}`
+
+function chatterboxArtifactsPlugin(): Plugin {
+  const ROOT = '/tmp/chatterbox-fork-agent-out'
+  return {
+    name: 'chatterbox-artifacts',
+    configureServer(server) {
+      server.middlewares.use('/chatterbox-artifacts', (req, res) => {
+        try {
+          const rawUrl = req.url ?? '/'
+          const pathname = decodeURIComponent(rawUrl.split('?')[0] ?? '/')
+          const relative = pathname.replace(/^\/+/, '')
+          const absolutePath = resolve(ROOT, relative)
+          if (!absolutePath.startsWith(`${ROOT}/`)) {
+            res.statusCode = 403
+            res.end('forbidden')
+            return
+          }
+          const stat = statSync(absolutePath)
+          if (!stat.isFile()) {
+            res.statusCode = 404
+            res.end('not found')
+            return
+          }
+          if (absolutePath.endsWith('.wav')) res.setHeader('Content-Type', 'audio/wav')
+          else if (absolutePath.endsWith('.json')) res.setHeader('Content-Type', 'application/json')
+          else res.setHeader('Content-Type', 'application/octet-stream')
+          res.setHeader('Content-Length', String(stat.size))
+          createReadStream(absolutePath).pipe(res)
+        } catch {
+          res.statusCode = 404
+          res.end('not found')
+        }
+      })
+    },
+  }
+}
 
 /** PDF Lab sign-off persistence middleware.
  *
@@ -116,22 +162,35 @@ function pdfLabSignoffsPlugin(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), pdfLabSignoffsPlugin(), transportReviewBundlePlugin()],
+  plugins: [react(), tailwindcss(), chatterboxArtifactsPlugin(), pdfLabSignoffsPlugin(), transportReviewBundlePlugin()],
   resolve: {
     alias: {
       // Import skill components directly — no duplication
       '@skills': resolve(__dirname, '../../.pi/skills'),
+      '@agent-skills/ux-lab-ui': resolve(__dirname, '../../../agent-skills/skills/ux-lab/ui'),
       // Pi chat adapter — D-Bus bridge package
       '@pi-chat-adapter': resolve(__dirname, '../pi-chat-adapter/src'),
       // Map NVIS theme to EMBRY shim so skill components use Explorer's design system
       '@skills-theme': resolve(__dirname, 'src/components/sparta/common/nvis-shim.ts'),
+      '@embry/logo': resolve(__dirname, '../../../embry-os/packages/embry-logo/src'),
+      // Monorepo: ux-lab must not bundle a second React copy (invalid hook call)
+      react: resolveWorkspaceModule('react'),
+      'react-dom': resolveWorkspaceModule('react-dom'),
+      'react/jsx-runtime': resolveWorkspaceModule('react/jsx-runtime'),
+      'react/jsx-dev-runtime': resolveWorkspaceModule('react/jsx-dev-runtime'),
+      'framer-motion': resolveWorkspaceModule('framer-motion'),
+      'lucide-react': resolveWorkspaceModule('lucide-react'),
+      d3: resolveWorkspaceModule('d3'),
+      motion: resolveWorkspaceModule('motion'),
     },
-    dedupe: ['react', 'react-dom', 'react/jsx-runtime'],
+    dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'framer-motion', 'motion', 'lucide-react', 'd3'],
   },
   server: {
     host: '127.0.0.1',
     port: 3000,
     watch: {
+      usePolling: process.env.UX_LAB_USE_POLLING !== '0',
+      interval: Number(process.env.UX_LAB_WATCH_INTERVAL_MS ?? 1000),
       ignored: [
         '**/node_modules/**',
         '**/.git/**',
@@ -147,19 +206,19 @@ export default defineConfig({
     },
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: uxLabApiTarget,
         changeOrigin: true,
       },
       '/artifacts': {
-        target: 'http://localhost:3001',
+        target: uxLabApiTarget,
         changeOrigin: true,
       },
       '/ws': {
-        target: 'ws://localhost:3001',
+        target: uxLabWsTarget,
         ws: true,
       },
       '/test-results': {
-        target: 'http://localhost:3001',
+        target: uxLabApiTarget,
         changeOrigin: true,
       },
     },
