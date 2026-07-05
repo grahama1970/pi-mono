@@ -60,10 +60,10 @@ function statePalette(visualState: EmbryState): { base: [number, number, number]
     case 'thinking':
       return { base: [80, 160, 255], hot: [180, 220, 255] }
     case 'listening':
-      return { base: [96, 165, 250], hot: [150, 205, 245] }
+      return { base: [0, 220, 170], hot: [140, 255, 220] }
     case 'idle':
     default:
-      return { base: [0, 200, 180], hot: [130, 235, 220] }
+      return { base: [58, 145, 255], hot: [150, 205, 255] }
   }
 }
 

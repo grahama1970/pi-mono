@@ -14,17 +14,17 @@ export interface IdentityNodeViewModel {
 
 /** Logo Lab canonical hues — synced with @embry/logo STATE_COLORS particles */
 const EMBRY_STATE_ACCENT: Record<EmbryState, string> = {
-	idle: "#00c8b4",
-	listening: "#00cfff",
+	idle: "#3a91ff",
+	listening: "#00dcaa",
 	thinking: "#50a0ff",
 	synthesizing: "#b464ff",
 	speaking: "#50ffb4",
 };
 
 const SIGNAL_ACCENT: Record<IdentitySignal, string> = {
-	ready: "#00c8b4",
+	ready: "#3a91ff",
 	busy: "#fbbf24",
-	clarify: "#60a5fa",
+	clarify: "#00dcaa",
 	speaking: "#50ffb4",
 	off: "#52525b",
 };
