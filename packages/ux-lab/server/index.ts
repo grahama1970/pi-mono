@@ -10680,6 +10680,34 @@ function normalizeChatterboxTags(value: unknown): string[] {
   return [...new Set(tags)]
 }
 
+function buildEmbryInterruptPolicy(tone: string, requestedPolicy: JsonRecord | null, voiceDelivery: JsonRecord | null, requestBody: JsonRecord): JsonRecord {
+  const requestedInterruptPolicy = firstRecord(
+    voiceDelivery?.interrupt_policy,
+    voiceDelivery?.interruptPolicy,
+    requestedPolicy?.interrupt_policy,
+    requestedPolicy?.interruptPolicy,
+    requestBody.interrupt_policy,
+    requestBody.interruptPolicy,
+  )
+  const oneAtATime = tone === 'one_at_a_time_interrupt' || tone === 'firm_boundary'
+  const defaults: JsonRecord = {
+    interruptible: true,
+    barge_in_action: 'cancel_old_turn',
+    bargeInAction: 'cancel_old_turn',
+    duck_on_user_speech: true,
+    duckOnUserSpeech: true,
+    skip_stale_chunks: true,
+    skipStaleChunks: true,
+    new_turn_wins: true,
+    newTurnWins: true,
+    acknowledgement_tone: oneAtATime ? 'one_at_a_time_interrupt' : 'interrupted',
+    acknowledgementTone: oneAtATime ? 'one_at_a_time_interrupt' : 'interrupted',
+    acknowledgement_text: oneAtATime ? 'Hey, one at a time?' : 'Okay, stopping that.',
+    acknowledgementText: oneAtATime ? 'Hey, one at a time?' : 'Okay, stopping that.',
+  }
+  return { ...defaults, ...(requestedInterruptPolicy || {}) }
+}
+
 function buildEmbryVoicePolicy(params: {
   requestBody: JsonRecord
   intentResult: unknown
@@ -10752,6 +10780,15 @@ function buildEmbryVoicePolicy(params: {
     params.requestBody.cue_policy,
     params.requestBody.cuePolicy,
   ) || (chatterboxTags.length ? 'memory_intent_literal_chatterbox_tag' : 'memory_intent_no_literal_tag')
+  const pauseStrategy = firstString(
+    voiceDelivery?.pause_strategy,
+    voiceDelivery?.pauseStrategy,
+    requestedPolicy?.pause_strategy,
+    requestedPolicy?.pauseStrategy,
+    params.requestBody.pause_strategy,
+    params.requestBody.pauseStrategy,
+  ) || 'chunk_pause_150_350ms'
+  const interruptPolicy = buildEmbryInterruptPolicy(tone, requestedPolicy, voiceDelivery, params.requestBody)
   return {
     schema: 'ux_lab.embry_voice.delivery_policy.v1',
     conversation_tone: tone,
@@ -10759,7 +10796,10 @@ function buildEmbryVoicePolicy(params: {
     delivery_stage: deliveryStage,
     deliveryStage,
     pace: firstString(voiceDelivery?.pace, requestedPolicy?.pace, params.requestBody.pace) || 'measured',
-    pause_strategy: firstString(voiceDelivery?.pause_strategy, voiceDelivery?.pauseStrategy, requestedPolicy?.pause_strategy, requestedPolicy?.pauseStrategy, params.requestBody.pause_strategy, params.requestBody.pauseStrategy) || 'chunk_pause_150_350ms',
+    pause_strategy: pauseStrategy,
+    pauseStrategy,
+    interrupt_policy: interruptPolicy,
+    interruptPolicy,
     emotion_tags: emotionTags.length ? emotionTags : toneEmotionTags(tone),
     emotionTags: emotionTags.length ? emotionTags : toneEmotionTags(tone),
     chatterbox_tags: chatterboxTags,
@@ -11034,6 +11074,10 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
             localPlayback: null,
             envelope: {
               ...(voiceEnvelope && typeof voiceEnvelope === 'object' ? voiceEnvelope as JsonRecord : {}),
+              pause_strategy: voicePolicy.pause_strategy,
+              pauseStrategy: voicePolicy.pauseStrategy,
+              interrupt_policy: voicePolicy.interrupt_policy,
+              interruptPolicy: voicePolicy.interruptPolicy,
               voice_policy: voicePolicy,
               voicePolicy,
             },
@@ -11093,6 +11137,10 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       tone,
       delivery_stage: deliveryStage,
       conversation_tone: tone,
+      pause_strategy: voicePolicy.pause_strategy,
+      pauseStrategy: voicePolicy.pauseStrategy,
+      interrupt_policy: voicePolicy.interrupt_policy,
+      interruptPolicy: voicePolicy.interruptPolicy,
       emotion_tags: voicePolicy.emotion_tags,
       chatterbox_tags: voicePolicy.chatterbox_tags,
       cue_policy: voicePolicy.cue_policy,
@@ -11133,6 +11181,8 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
         memoryTrace: { entity_context: entityResult, intent: intentResult, answer: answerResult, recall: recallResult },
         tauTrace: { boundary: 'memory.intent', action: intentAction || answerAction || '' },
         voicePolicy,
+        pauseStrategy: voicePolicy.pauseStrategy,
+        interruptPolicy: voicePolicy.interruptPolicy,
         live: true,
         mocked: false,
       },
@@ -11171,11 +11221,19 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       audioAuthority,
       voiceEnvelope: {
         ...(voiceEnvelope && typeof voiceEnvelope === 'object' ? voiceEnvelope as JsonRecord : {}),
+        pause_strategy: voicePolicy.pause_strategy,
+        pauseStrategy: voicePolicy.pauseStrategy,
+        interrupt_policy: voicePolicy.interrupt_policy,
+        interruptPolicy: voicePolicy.interruptPolicy,
         voice_policy: voicePolicy,
         voicePolicy,
       },
       voicePolicy,
       conversation_tone: tone,
+      pause_strategy: voicePolicy.pause_strategy,
+      pauseStrategy: voicePolicy.pauseStrategy,
+      interrupt_policy: voicePolicy.interrupt_policy,
+      interruptPolicy: voicePolicy.interruptPolicy,
       emotion_tags: voicePolicy.emotion_tags,
       chatterbox_tags: voicePolicy.chatterbox_tags,
       cue_policy: voicePolicy.cue_policy,
@@ -11195,6 +11253,8 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
         memoryTrace: { entity_context: entityResult, intent: intentResult, answer: answerResult, recall: recallResult },
         tauTrace: { boundary: 'memory.intent', action: intentAction || answerAction || '' },
         voicePolicy,
+        pauseStrategy: voicePolicy.pauseStrategy,
+        interruptPolicy: voicePolicy.interruptPolicy,
         live: true,
         mocked: false,
       },
@@ -11320,6 +11380,10 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
     const receiptUrl = `/chatterbox-artifacts/${receiptPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`
     const enrichedVoiceEnvelope = {
       ...voiceEnvelope,
+      pause_strategy: voicePolicy.pause_strategy,
+      pauseStrategy: voicePolicy.pauseStrategy,
+      interrupt_policy: voicePolicy.interrupt_policy,
+      interruptPolicy: voicePolicy.interruptPolicy,
       voice_policy: voicePolicy,
       voicePolicy,
     }
@@ -11347,6 +11411,10 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
       tone,
       conversation_tone: tone,
       delivery_stage: deliveryStage,
+      pause_strategy: voicePolicy.pause_strategy,
+      pauseStrategy: voicePolicy.pauseStrategy,
+      interrupt_policy: voicePolicy.interrupt_policy,
+      interruptPolicy: voicePolicy.interruptPolicy,
       emotion_tags: voicePolicy.emotion_tags,
       chatterbox_tags: voicePolicy.chatterbox_tags,
       cue_policy: voicePolicy.cue_policy,
@@ -11375,6 +11443,10 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
       conversation_tone: tone,
       deliveryStage,
       delivery_stage: deliveryStage,
+      pause_strategy: voicePolicy.pause_strategy,
+      pauseStrategy: voicePolicy.pauseStrategy,
+      interrupt_policy: voicePolicy.interrupt_policy,
+      interruptPolicy: voicePolicy.interruptPolicy,
       emotion_tags: voicePolicy.emotion_tags,
       emotionTags: voicePolicy.emotionTags,
       chatterbox_tags: voicePolicy.chatterbox_tags,
