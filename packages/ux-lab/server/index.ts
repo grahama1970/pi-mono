@@ -10638,6 +10638,143 @@ function normalizeChatterboxDeliveryStage(value: unknown, tone: string): string 
   return CHATTERBOX_TONE_TO_DELIVERY_STAGE[tone] || 'neutral'
 }
 
+function arrayOfStrings(value: unknown): string[] {
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === 'string' && item.trim()).map((item) => item.trim())
+    : []
+}
+
+function firstRecord(...values: unknown[]): JsonRecord | null {
+  for (const value of values) {
+    if (value && typeof value === 'object' && !Array.isArray(value)) return value as JsonRecord
+  }
+  return null
+}
+
+function toneEmotionTags(tone: string): string[] {
+  const mapping: Record<string, string[]> = {
+    neutral_warm: ['warm', 'steady'],
+    calm_precise: ['calm', 'precise'],
+    careful_concerned: ['careful', 'concerned'],
+    serious_low_energy: ['serious', 'low_energy'],
+    memory_confident: ['memory_confident', 'grounded'],
+    memory_uncertain: ['memory_uncertain', 'careful'],
+    curious_searching: ['curious', 'searching'],
+    playful_light: ['playful', 'light'],
+    relieved: ['relieved'],
+    firm_boundary: ['firm', 'boundary'],
+    identity_clarification: ['identity_clarification', 'careful'],
+    one_at_a_time_interrupt: ['firm', 'turn_taking'],
+    deflect_calm: ['calm', 'deflect'],
+    grief_safe: ['grief_safe', 'gentle'],
+    wait_presence: ['wait_presence', 'present'],
+  }
+  return mapping[tone] ?? ['warm']
+}
+
+function normalizeChatterboxTags(value: unknown): string[] {
+  const tags = arrayOfStrings(value)
+    .map((item) => item.trim().toLowerCase())
+    .map((item) => CHATTERBOX_PARALINGUISTIC_ALIASES[item.replace(/^\[|\]$/g, '')] || item)
+    .filter((item) => CHATTERBOX_ALLOWED_PARALINGUISTIC_CUES.has(item))
+  return [...new Set(tags)]
+}
+
+function buildEmbryVoicePolicy(params: {
+  requestBody: JsonRecord
+  intentResult: unknown
+  fallbackTone: string
+  fallbackDeliveryStage: string
+  directSanity?: boolean
+}): JsonRecord {
+  const intent = firstRecord(params.intentResult)
+  const voiceDelivery = firstRecord(
+    intent?.voice_delivery,
+    intent?.voiceDelivery,
+    intent?.voice_delivery_policy,
+    intent?.voiceDeliveryPolicy,
+    intent?.delivery_policy,
+    intent?.deliveryPolicy,
+  )
+  const requestedPolicy = firstRecord(params.requestBody.voice_policy, params.requestBody.voicePolicy)
+  const source = firstString(
+    voiceDelivery?.source,
+    requestedPolicy?.intent_policy_source,
+    requestedPolicy?.intentPolicySource,
+    params.requestBody.intent_policy_source,
+    params.requestBody.intentPolicySource,
+  )
+  const sourceIsMemory = Boolean(intent) && (!source || source === 'memory_intent' || source === 'memory.intent')
+  const intentPolicySource = params.directSanity
+    ? 'direct_sanity_explicit_policy'
+    : sourceIsMemory
+      ? 'memory.intent'
+      : source || 'intent_missing_voice_delivery_policy'
+  const tone = normalizeChatterboxTone(
+    voiceDelivery?.tone
+      ?? requestedPolicy?.tone
+      ?? requestedPolicy?.conversation_tone
+      ?? params.requestBody.tone
+      ?? params.requestBody.conversation_tone
+      ?? params.fallbackTone,
+  )
+  const deliveryStage = normalizeChatterboxDeliveryStage(
+    voiceDelivery?.delivery_stage
+      ?? voiceDelivery?.deliveryStage
+      ?? requestedPolicy?.delivery_stage
+      ?? requestedPolicy?.deliveryStage
+      ?? params.requestBody.delivery_stage
+      ?? params.requestBody.deliveryStage
+      ?? params.fallbackDeliveryStage,
+    tone,
+  )
+  const emotionTags = arrayOfStrings(
+    voiceDelivery?.emotion_tags
+      ?? voiceDelivery?.emotionTags
+      ?? requestedPolicy?.emotion_tags
+      ?? requestedPolicy?.emotionTags
+      ?? params.requestBody.emotion_tags
+      ?? params.requestBody.emotionTags,
+  )
+  const chatterboxTags = normalizeChatterboxTags(
+    voiceDelivery?.chatterbox_tags
+      ?? voiceDelivery?.chatterboxTags
+      ?? requestedPolicy?.chatterbox_tags
+      ?? requestedPolicy?.chatterboxTags
+      ?? params.requestBody.chatterbox_tags
+      ?? params.requestBody.chatterboxTags,
+  )
+  const cuePolicy = firstString(
+    voiceDelivery?.cue_policy,
+    voiceDelivery?.cuePolicy,
+    requestedPolicy?.cue_policy,
+    requestedPolicy?.cuePolicy,
+    params.requestBody.cue_policy,
+    params.requestBody.cuePolicy,
+  ) || (chatterboxTags.length ? 'memory_intent_literal_chatterbox_tag' : 'memory_intent_no_literal_tag')
+  return {
+    schema: 'ux_lab.embry_voice.delivery_policy.v1',
+    conversation_tone: tone,
+    tone,
+    delivery_stage: deliveryStage,
+    deliveryStage,
+    pace: firstString(voiceDelivery?.pace, requestedPolicy?.pace, params.requestBody.pace) || 'measured',
+    pause_strategy: firstString(voiceDelivery?.pause_strategy, voiceDelivery?.pauseStrategy, requestedPolicy?.pause_strategy, requestedPolicy?.pauseStrategy, params.requestBody.pause_strategy, params.requestBody.pauseStrategy) || 'chunk_pause_150_350ms',
+    emotion_tags: emotionTags.length ? emotionTags : toneEmotionTags(tone),
+    emotionTags: emotionTags.length ? emotionTags : toneEmotionTags(tone),
+    chatterbox_tags: chatterboxTags,
+    chatterboxTags,
+    cue_policy: cuePolicy,
+    cuePolicy,
+    cue_reason: firstString(voiceDelivery?.cue_reason, voiceDelivery?.cueReason, requestedPolicy?.cue_reason, requestedPolicy?.cueReason) || `Derived from ${intentPolicySource}`,
+    cueReason: firstString(voiceDelivery?.cue_reason, voiceDelivery?.cueReason, requestedPolicy?.cue_reason, requestedPolicy?.cueReason) || `Derived from ${intentPolicySource}`,
+    intent_policy_source: intentPolicySource,
+    intentPolicySource: intentPolicySource,
+    memory_voice_delivery: voiceDelivery,
+    memoryVoiceDelivery: voiceDelivery,
+  }
+}
+
 function clampPauseMs(value: unknown): number {
   const parsed = typeof value === 'number' ? value : Number(value)
   if (!Number.isFinite(parsed)) return 0
@@ -10718,9 +10855,41 @@ function liveTurnStep(id: string, label: string, status: string, detail: string,
   return { id, label, status, detail, icon, branch: 'embry-voice', disclosureVariant: 'thinking' }
 }
 
+app.get('/api/projects/embry-voice/health', (_req, res) => {
+  res.json({
+    status: 'ok',
+    version: 'ux-lab-embry-voice-control-v1',
+    memory: { status: 'configured', url: MEMORY_HTTP_URL, socket: MEMORY_SOCKET },
+    tau: { status: 'adapter', boundary: 'memory.intent' },
+    chatterbox: { status: 'configured', url: CHATTERBOX_AGENT_URL },
+    listener: { status: 'not_exercised_by_health' },
+    chat_ux: { status: 'configured', url: 'http://127.0.0.1:3002/#embry-voice' },
+  })
+})
+
+app.get('/api/projects/embry-voice/readiness', (_req, res) => {
+  res.json({
+    schema: 'ux_lab.embry_voice.readiness.v1',
+    overall_readiness: 'USABLE_WITH_GAPS',
+    mocked: false,
+    live: true,
+    established: [
+      'text turn memory.intent voice policy mapping',
+      'direct Chatterbox speech policy envelope',
+      'audio authority receipt fields',
+    ],
+    gaps: [
+      'listener-live RealtimeSTT capture is not exercised by controlled-live readiness',
+      'browser WebRTC microphone quality requires listener-live or release profile',
+      'full replay and interruption require release profile receipts',
+    ],
+  })
+})
+
 app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
   const createdAt = new Date().toISOString()
   try {
+    const requestBody = req.body && typeof req.body === 'object' ? req.body as JsonRecord : {}
     const text = typeof req.body?.text === 'string' ? req.body.text.trim() : ''
     const sessionId = typeof req.body?.sessionId === 'string' && req.body.sessionId.trim()
       ? req.body.sessionId.trim()
@@ -10729,8 +10898,8 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       ? safeReceiptName(req.body.turnId.trim())
       : ''
     const voiceEnabled = req.body?.voiceEnabled !== false
-    const tone = normalizeChatterboxTone(req.body?.tone)
-    const deliveryStage = normalizeChatterboxDeliveryStage(req.body?.deliveryStage, tone)
+    const requestedTone = normalizeChatterboxTone(req.body?.tone)
+    const requestedDeliveryStage = normalizeChatterboxDeliveryStage(req.body?.deliveryStage, requestedTone)
     if (!text) return res.status(400).json({ status: 'error', error: 'text required' })
     if (text.length > 2000) return res.status(400).json({ status: 'error', error: 'text exceeds 2000 characters' })
 
@@ -10802,6 +10971,19 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
         : (memoryAnswer || recallAnswer || "I heard you. I need a grounded memory result before I can answer that confidently."),
     )
     const answerText = cleanAnswerText || "I heard you. I need a grounded memory result before I can answer that confidently."
+    const voicePolicy = buildEmbryVoicePolicy({
+      requestBody,
+      intentResult,
+      fallbackTone: requestedTone,
+      fallbackDeliveryStage: requestedDeliveryStage,
+    })
+    const tone = String(voicePolicy.tone)
+    const deliveryStage = String(voicePolicy.delivery_stage)
+    const chatterboxTags = arrayOfStrings(voicePolicy.chatterbox_tags)
+    const selectedChatterboxTag = chatterboxTags[0] || ''
+    const ttsRenderText = buildChatterboxRenderText(answerText, stripSpeechControls(answerText), selectedChatterboxTag)
+    const answerTextHash = createHash('sha256').update(answerText).digest('hex')
+    const ttsRenderTextHash = createHash('sha256').update(ttsRenderText).digest('hex')
 
     let audioPath = ''
     let audioUrl = ''
@@ -10813,7 +10995,6 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
     if (voiceEnabled) {
       const refReal = realpathSync(resolve(CHATTERBOX_HOST_REF_DIR, 'embry_authorized_ref_30s_8s.wav'))
       const chatterboxRefAudio = resolveChatterboxReferencePath(refReal)
-      const ttsRenderText = buildChatterboxRenderText(answerText, stripSpeechControls(answerText), '')
       const upstream = await fetch(`${CHATTERBOX_AGENT_URL.replace(/\/+$/, '')}/synthesize`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -10851,7 +11032,11 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
             sha256: audioSha256,
             durationMs: (voiceEnvelope as { durationMs?: number }).durationMs,
             localPlayback: null,
-            envelope: voiceEnvelope,
+            envelope: {
+              ...(voiceEnvelope && typeof voiceEnvelope === 'object' ? voiceEnvelope as JsonRecord : {}),
+              voice_policy: voicePolicy,
+              voicePolicy,
+            },
           }
         }
       }
@@ -10901,9 +11086,19 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       session_id: sessionId,
       input_text: text,
       answer_text: answerText,
+      tts_render_text: ttsRenderText,
+      answer_text_hash: answerTextHash,
+      tts_render_text_hash: ttsRenderTextHash,
       turn_id: turnId,
       tone,
       delivery_stage: deliveryStage,
+      conversation_tone: tone,
+      emotion_tags: voicePolicy.emotion_tags,
+      chatterbox_tags: voicePolicy.chatterbox_tags,
+      cue_policy: voicePolicy.cue_policy,
+      cue_reason: voicePolicy.cue_reason,
+      intent_policy_source: voicePolicy.intent_policy_source,
+      voice_policy: voicePolicy,
       memory: {
         entity_context: entityResult,
         intent: intentResult,
@@ -10937,6 +11132,7 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
         audioArtifacts: audioAuthority ? [audioAuthority] : [],
         memoryTrace: { entity_context: entityResult, intent: intentResult, answer: answerResult, recall: recallResult },
         tauTrace: { boundary: 'memory.intent', action: intentAction || answerAction || '' },
+        voicePolicy,
         live: true,
         mocked: false,
       },
@@ -10965,12 +11161,25 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       tauBoundary: 'memory.intent',
       turnId,
       answerText,
+      ttsRenderText,
+      answerTextHash,
+      ttsRenderTextHash,
       audioPath: audioPath || null,
       audioUrl: audioUrl || null,
       receiptPath,
       receiptUrl: `/chatterbox-artifacts/${receiptPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`,
       audioAuthority,
-      voiceEnvelope,
+      voiceEnvelope: {
+        ...(voiceEnvelope && typeof voiceEnvelope === 'object' ? voiceEnvelope as JsonRecord : {}),
+        voice_policy: voicePolicy,
+        voicePolicy,
+      },
+      voicePolicy,
+      conversation_tone: tone,
+      emotion_tags: voicePolicy.emotion_tags,
+      chatterbox_tags: voicePolicy.chatterbox_tags,
+      cue_policy: voicePolicy.cue_policy,
+      intent_policy_source: voicePolicy.intent_policy_source,
       turnAuthority: {
         turnId,
         userText: text,
@@ -10985,6 +11194,7 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
         audioArtifacts: audioAuthority ? [audioAuthority] : [],
         memoryTrace: { entity_context: entityResult, intent: intentResult, answer: answerResult, recall: recallResult },
         tauTrace: { boundary: 'memory.intent', action: intentAction || answerAction || '' },
+        voicePolicy,
         live: true,
         mocked: false,
       },
@@ -11002,6 +11212,7 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       },
       tone,
       deliveryStage,
+      delivery_stage: deliveryStage,
     })
   } catch (err) {
     res.status(500).json({
@@ -11017,9 +11228,10 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
 app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
   const createdAt = new Date().toISOString()
   try {
+    const requestBody = req.body && typeof req.body === 'object' ? req.body as JsonRecord : {}
     const text = typeof req.body?.text === 'string' ? req.body.text.trim() : ''
-    const tone = normalizeChatterboxTone(req.body?.tone)
-    const deliveryStage = normalizeChatterboxDeliveryStage(req.body?.deliveryStage, tone)
+    const requestedTone = normalizeChatterboxTone(req.body?.tone)
+    const requestedDeliveryStage = normalizeChatterboxDeliveryStage(req.body?.deliveryStage, requestedTone)
     const playLocal = req.body?.playLocal === true
     const localPlaybackTarget = typeof req.body?.localPlaybackTarget === 'string' ? req.body.localPlaybackTarget.trim() : ''
     if (!text) return res.status(400).json({ status: 'error', error: 'text required' })
@@ -11027,10 +11239,20 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
 
     const cleanText = stripSpeechControls(text)
     if (!cleanText) return res.status(400).json({ status: 'error', error: 'text contains only unsupported speech controls' })
+    const voicePolicy = buildEmbryVoicePolicy({
+      requestBody,
+      intentResult: null,
+      fallbackTone: requestedTone,
+      fallbackDeliveryStage: requestedDeliveryStage,
+      directSanity: true,
+    })
+    const tone = String(voicePolicy.tone)
+    const deliveryStage = String(voicePolicy.delivery_stage)
 
     const refReal = realpathSync(resolve(CHATTERBOX_HOST_REF_DIR, 'embry_authorized_ref_30s_8s.wav'))
     const chatterboxRefAudio = resolveChatterboxReferencePath(refReal)
-    const ttsRenderText = buildChatterboxRenderText(text, cleanText, '')
+    const selectedChatterboxTag = arrayOfStrings(voicePolicy.chatterbox_tags)[0] || ''
+    const ttsRenderText = buildChatterboxRenderText(text, cleanText, selectedChatterboxTag)
     const upstream = await fetch(`${CHATTERBOX_AGENT_URL.replace(/\/+$/, '')}/synthesize`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -11096,6 +11318,11 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
     }
     const audioUrl = `/chatterbox-artifacts/${audioPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`
     const receiptUrl = `/chatterbox-artifacts/${receiptPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`
+    const enrichedVoiceEnvelope = {
+      ...voiceEnvelope,
+      voice_policy: voicePolicy,
+      voicePolicy,
+    }
     const audioAuthority = {
       authority: 'server-chatterbox-wav-envelope-v1',
       artifactId: textHash,
@@ -11104,7 +11331,7 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
       sha256: audioSha256,
       durationMs: voiceEnvelope.durationMs,
       localPlayback,
-      envelope: voiceEnvelope,
+      envelope: enrichedVoiceEnvelope,
     }
     const receipt = {
       schema: 'ux_lab.embry_voice.direct_speak_receipt.v1',
@@ -11115,13 +11342,22 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
       input_text: text,
       tts_render_text: ttsRenderText,
       tts_render_text_sha256: createHash('sha256').update(ttsRenderText).digest('hex'),
+      answer_text_hash: createHash('sha256').update(cleanText).digest('hex'),
+      tts_render_text_hash: createHash('sha256').update(ttsRenderText).digest('hex'),
       tone,
+      conversation_tone: tone,
       delivery_stage: deliveryStage,
+      emotion_tags: voicePolicy.emotion_tags,
+      chatterbox_tags: voicePolicy.chatterbox_tags,
+      cue_policy: voicePolicy.cue_policy,
+      cue_reason: voicePolicy.cue_reason,
+      intent_policy_source: voicePolicy.intent_policy_source,
+      voice_policy: voicePolicy,
       ref_audio: chatterboxRefAudio,
       chatterbox: payload,
       output_wav: audioPath,
       audio_authority: audioAuthority,
-      voice_envelope: voiceEnvelope,
+      voice_envelope: enrichedVoiceEnvelope,
     }
     await writeFile(receiptPath, JSON.stringify(receipt, null, 2))
 
@@ -11136,9 +11372,20 @@ app.post('/api/projects/embry-voice/direct-speak', async (req, res) => {
       receiptPath,
       receiptUrl,
       tone,
+      conversation_tone: tone,
       deliveryStage,
+      delivery_stage: deliveryStage,
+      emotion_tags: voicePolicy.emotion_tags,
+      emotionTags: voicePolicy.emotionTags,
+      chatterbox_tags: voicePolicy.chatterbox_tags,
+      chatterboxTags: voicePolicy.chatterboxTags,
+      cue_policy: voicePolicy.cue_policy,
+      cuePolicy: voicePolicy.cuePolicy,
+      intent_policy_source: voicePolicy.intent_policy_source,
+      intentPolicySource: voicePolicy.intentPolicySource,
+      voicePolicy,
       localPlayback,
-      voiceEnvelope,
+      voiceEnvelope: enrichedVoiceEnvelope,
       audioAuthority,
     })
   } catch (err) {
