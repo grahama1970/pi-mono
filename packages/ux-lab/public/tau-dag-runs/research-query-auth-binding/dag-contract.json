@@ -1,0 +1,89 @@
+{
+  "schema": "tau.dag_contract.v1",
+  "dag_id": "tau-research-query-auth-binding",
+  "goal": {
+    "goal_id": "tau-itar-research-query-gate",
+    "goal_version": 1,
+    "goal_hash": "sha256:research-query-auth-binding-fixture"
+  },
+  "target": {
+    "repo": "grahama1970/tau",
+    "target": "research/external-query exfiltration gate"
+  },
+  "entry_node": "research-query-gate",
+  "terminal_nodes": ["human"],
+  "limits": {
+    "resume": false,
+    "default_timeout_seconds": 300,
+    "max_total_attempts": 6
+  },
+  "nodes": [
+    {
+      "id": "research-query-gate",
+      "agent": "coder",
+      "executor": "local",
+      "max_attempts": 1,
+      "required_evidence": [
+        "research_query_safety_receipt schema",
+        "policy and data-boundary binding checks"
+      ]
+    },
+    {
+      "id": "zero-trust-redteam",
+      "agent": "reviewer",
+      "executor": "local",
+      "max_attempts": 1,
+      "required_evidence": [
+        "controlled snippet query blocked",
+        "authorization boundary mismatch blocked"
+      ]
+    },
+    {
+      "id": "project-dag-regression",
+      "agent": "reviewer",
+      "executor": "local",
+      "max_attempts": 1,
+      "required_evidence": [
+        "project DAG regression suite passed"
+      ]
+    },
+    {
+      "id": "demo-receipt",
+      "agent": "reviewer",
+      "executor": "local",
+      "max_attempts": 1,
+      "required_evidence": [
+        "research query auth binding demo receipt"
+      ]
+    },
+    {
+      "id": "human",
+      "agent": "human",
+      "executor": "human",
+      "max_attempts": 1,
+      "required_evidence": [
+        "human accepts remaining non-claims"
+      ]
+    }
+  ],
+  "edges": [
+    { "from": "research-query-gate", "to": "zero-trust-redteam" },
+    { "from": "zero-trust-redteam", "to": "project-dag-regression" },
+    { "from": "project-dag-regression", "to": "demo-receipt" },
+    { "from": "demo-receipt", "to": "human" }
+  ],
+  "required_evidence": [
+    "research_query_safety_receipt schema",
+    "red-team fail-closed attempts",
+    "project DAG regression suite",
+    "demo receipt"
+  ],
+  "fail_closed_on": [
+    "goal_hash_mismatch",
+    "target_changed",
+    "malformed_receipt",
+    "unsafe_external_research_query",
+    "research_authorization_boundary_mismatch",
+    "missing_required_evidence"
+  ]
+}

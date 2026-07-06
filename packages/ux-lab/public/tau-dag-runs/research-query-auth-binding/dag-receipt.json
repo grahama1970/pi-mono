@@ -1,0 +1,81 @@
+{
+  "schema": "tau.dag_receipt.v1",
+  "ok": true,
+  "status": "PASS",
+  "verdict": "PASS",
+  "mocked": false,
+  "live": false,
+  "provider_live": false,
+  "source": "static_ui_fixture",
+  "dag_id": "tau-research-query-auth-binding",
+  "goal_hash": "sha256:research-query-auth-binding-fixture",
+  "target": {
+    "repo": "grahama1970/tau",
+    "target": "research/external-query exfiltration gate"
+  },
+  "selected_agents": [
+    "coder",
+    "reviewer",
+    "reviewer",
+    "reviewer"
+  ],
+  "observed_nodes": [
+    "research-query-gate",
+    "zero-trust-redteam",
+    "project-dag-regression",
+    "demo-receipt"
+  ],
+  "node_results": {
+    "research-query-gate": {
+      "status": "PASS",
+      "receipt": "src/tau_coding/research_query_gate.py",
+      "summary": "Added deterministic research-query safety gate and policy/data-boundary binding."
+    },
+    "zero-trust-redteam": {
+      "status": "PASS",
+      "receipt": "tests/test_zero_trust_redteam.py",
+      "summary": "Expanded fail-closed red-team checks for research-query exfiltration attempts."
+    },
+    "project-dag-regression": {
+      "status": "PASS",
+      "receipt": "tests/test_project_dag.py",
+      "summary": "Project DAG regression suite passed with research authorization binding."
+    },
+    "demo-receipt": {
+      "status": "PASS",
+      "receipt": "/tmp/tau-itar-research-query-auth-binding-demo-final/demo-receipt.json",
+      "summary": "Demo receipt written by the Tau research-query auth binding slice."
+    }
+  },
+  "commands_run": [
+    "uv run ruff check src/tau_coding/research_query_gate.py src/tau_coding/zero_trust_redteam.py src/tau_coding/project_dag.py tests/test_research_query_gate.py tests/test_zero_trust_redteam.py tests/test_project_dag.py",
+    "uv run pytest tests/test_research_query_gate.py tests/test_zero_trust_redteam.py tests/test_project_dag.py -q",
+    "uv run python scripts/demo_research_query_auth_binding.py --out /tmp/tau-itar-research-query-auth-binding-demo-final"
+  ],
+  "artifact_refs": [
+    {
+      "kind": "source_commit",
+      "path": "/home/graham/workspace/experiments/tau",
+      "sha": "2ec6be1e6d68fe7c5259028fe32e32467ff4ce39"
+    },
+    {
+      "kind": "demo_receipt",
+      "path": "/tmp/tau-itar-research-query-auth-binding-demo-final/demo-receipt.json"
+    }
+  ],
+  "alerts": [],
+  "proof_scope": {
+    "proves": [
+      "Static UI fixture can represent a Tau DAG contract and receipt as React Flow evidence.",
+      "Research-query gate slice had deterministic local proof before fixture capture.",
+      "This page displays receipt-backed statuses from fixture artifacts instead of invented live state."
+    ],
+    "does_not_prove": [
+      "Live Tau DAG execution from the browser.",
+      "Herdr-visible provider execution.",
+      "Provider/model semantic quality.",
+      "GitHub mutation.",
+      "Human acceptance of remaining non-claims."
+    ]
+  }
+}

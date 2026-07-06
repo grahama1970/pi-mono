@@ -50,6 +50,7 @@ const PdfLabInitialSweepProof = React.lazy(() => import('./components/pdf-lab/In
 const PdfLabParityAuditProof = React.lazy(() => import('./components/pdf-lab/ParityAuditStaticProof').then(m => ({ default: m.ParityAuditStaticProof })));
 const WatchReportView = React.lazy(() => import('./components/watch/WatchReportView').then(m => ({ default: m.WatchReportView })));
 const HumBakeoffView = React.lazy(() => import('./components/hum/HumBakeoffView').then(m => ({ default: m.HumBakeoffView })));
+const TauDagRunView = React.lazy(() => import('./components/tau/TauDagRunView').then(m => ({ default: m.TauDagRunView })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { TestingPanel } from './components/TestingPanel';
 import { HackEvolveMonitor } from './components/hack/HackEvolveMonitor';
@@ -264,6 +265,14 @@ const Mockups = ({ projectId }: { projectId: string }) => {
 };
 
 const FinalSite = ({ projectId, subpath }: { projectId: string; subpath?: string }) => {
+  if (projectId === 'tau' && subpath === 'dag') {
+    return (
+      <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_TAU_DAG...</div>}>
+        <TauDagRunView />
+      </React.Suspense>
+    );
+  }
+
   return (
     <div className="flex-1 min-h-0 flex flex-col bg-surface-base">
       <div className="p-2 border-b border-white/10 flex items-center justify-between bg-surface-low shrink-0">
@@ -1688,7 +1697,8 @@ export default function App() {
   const isPdfLabFocus = activeProjectId === 'pdf-lab'
     && activeView === 'final-site'
     && (hashSubpath === 'triage' || hashSubpath === 'surgical-triage' || hashSubpath === 'labeling');
-  const isFocusMode = isPdfLabFocus;
+  const isTauDagFocus = activeProjectId === 'tau' && activeView === 'final-site' && hashSubpath === 'dag';
+  const isFocusMode = isPdfLabFocus || isTauDagFocus;
   const deployBlockedReason = activeProjectId === 'scillm'
     && activeView === 'final-site'
     && hashSubpath === 'dag-planner'

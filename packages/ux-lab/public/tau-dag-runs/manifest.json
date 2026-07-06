@@ -1,0 +1,14 @@
+{
+  "schema": "ux_lab.tau_dag_run_manifest.v1",
+  "defaultRunId": "research-query-auth-binding",
+  "runs": [
+    {
+      "id": "research-query-auth-binding",
+      "label": "Research Query Auth Binding",
+      "path": "/tau-dag-runs/research-query-auth-binding",
+      "source": "static_fixture_from_tau_research_query_gate_slice",
+      "source_repo": "/home/graham/workspace/experiments/tau",
+      "source_commit": "2ec6be1e6d68fe7c5259028fe32e32467ff4ce39"
+    }
+  ]
+}
