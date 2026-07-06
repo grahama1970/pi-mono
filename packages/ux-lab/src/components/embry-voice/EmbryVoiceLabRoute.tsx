@@ -1296,20 +1296,11 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     audio.style.display = 'none'
     document.body.appendChild(audio)
     directPlaybackAudioRef.current = audio
-    bindActiveSpeech({
-      id: audioState.id,
-      turnId: audioState.audioAuthority?.artifactId ?? audioState.id,
-      audioElement: audio,
-      source: 'direct',
-      text: audioState.text,
-      audioUrl: audioState.url,
-      startedAtMs: audioState.startedAtMs ?? performance.now(),
-      voiceEnvelope: audioState.voiceEnvelope,
-    })
 
     return new Promise((resolve, reject) => {
       let settled = false
       let playbackStarted = false
+      let orbBound = false
       const timeout = window.setTimeout(() => {
         finish(new Error('direct Embry audio did not become playable'))
       }, 8000)
@@ -1317,6 +1308,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       const cleanup = (): void => {
         window.clearTimeout(timeout)
         audio.removeEventListener('canplay', onCanPlay)
+        audio.removeEventListener('playing', onPlaying)
         audio.removeEventListener('ended', onEnded)
         audio.removeEventListener('error', onError)
       }
@@ -1344,6 +1336,21 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         })
       }
 
+      function onPlaying(): void {
+        if (orbBound) return
+        orbBound = true
+        bindActiveSpeech({
+          id: audioState.id,
+          turnId: audioState.audioAuthority?.artifactId ?? audioState.id,
+          audioElement: audio,
+          source: 'direct',
+          text: audioState.text,
+          audioUrl: audio.currentSrc || audio.src || audioState.url,
+          startedAtMs: performance.now(),
+          voiceEnvelope: audioState.voiceEnvelope,
+        })
+      }
+
       function onCanPlay(): void {
         startPlayback()
       }
@@ -1357,6 +1364,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       }
 
       audio.addEventListener('canplay', onCanPlay)
+      audio.addEventListener('playing', onPlaying)
       audio.addEventListener('ended', onEnded, { once: true })
       audio.addEventListener('error', onError, { once: true })
       audio.load()
