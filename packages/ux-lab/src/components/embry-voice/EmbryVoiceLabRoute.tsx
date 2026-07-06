@@ -661,7 +661,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const [isStreaming, setIsStreaming] = useState(false)
   const [replayState, setReplayState] = useState<ReplayState>({ playing: false, activeIndex: -1, phase: 'idle' })
   const [orbStatusOverride, setOrbStatusOverride] = useState<OrbStatusOverride>(null)
-  const [orbPhaseSpeedMs, setOrbPhaseSpeedMs] = useState(650)
+  const orbPhaseSpeedMs = 650
   const [activeSpeech, setActiveSpeech] = useState<ActiveSpeechSource | null>(null)
   const [lastTurnAuthority, setLastTurnAuthority] = useState<EmbryTurnAuthority | null>(null)
   const [directSpeakBusy, setDirectSpeakBusy] = useState(false)
@@ -1350,10 +1350,6 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           isStreaming={isStreaming}
           tone={effectiveVoiceStatus === 'idle' ? undefined : selectedTurn.tone}
           activeSpeech={activeSpeech}
-          orbStatusOverride={orbStatusOverride}
-          orbPhaseSpeedMs={orbPhaseSpeedMs}
-          onOrbStatusOverride={setOrbStatusOverride}
-          onOrbPhaseSpeedChange={setOrbPhaseSpeedMs}
           onReplay={replaySession}
           onStopReplay={stopReplay}
         />
@@ -1386,7 +1382,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             shellQid="embry-voice:shared-chat-shell"
             className="ux-lab-watch-chat-shell"
             qid="embry-voice:shared-chat"
-            surface="watch"
+            surface="embry-voice"
             hideHeader
             defaultMode="compliance"
             showModeToggle={false}
@@ -1472,7 +1468,7 @@ function ChatReplayHeader({
   return (
     <header
       data-qid="embry-voice:center-replay-header"
-      className="flex items-center justify-between gap-4 border-b border-[#2d2d31] bg-[#151518] px-4 py-3"
+      className="flex flex-wrap items-center justify-between gap-3 border-b border-[#2d2d31] bg-[#151518] px-4 py-3"
     >
       <div className="shrink-0" data-qid="embry-voice:center-orb">
         <IdentityNode
@@ -1491,7 +1487,7 @@ function ChatReplayHeader({
           speechEnvelope={activeSpeech?.voiceEnvelope}
         />
       </div>
-      <div className="min-w-0">
+      <div className="min-w-[220px] flex-1">
         <div className="flex items-center gap-2">
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-200">Shared Chat Replay</span>
           <StatusPill label={playing ? `playing ${replayState.phase}` : `replay ${replayState.phase}`} tone={playing ? 'good' : replayState.phase === 'interrupted' ? 'warn' : undefined} />
@@ -1501,7 +1497,7 @@ function ChatReplayHeader({
           {selectedSessionTitle} rebuilds in the center chat with human turns, Embry turns, inline memory trace, and Chatterbox audio.
         </div>
       </div>
-      <div className="flex shrink-0 items-center gap-2">
+      <div className="flex flex-wrap items-center justify-end gap-2">
         <button
           type="button"
           data-qid="embry-voice:replay-all"
@@ -1547,10 +1543,6 @@ function SessionController({
   isStreaming,
   tone,
   activeSpeech,
-  orbStatusOverride,
-  orbPhaseSpeedMs,
-  onOrbStatusOverride,
-  onOrbPhaseSpeedChange,
   onReplay,
   onStopReplay,
 }: {
@@ -1561,10 +1553,6 @@ function SessionController({
   isStreaming: boolean
   tone?: string
   activeSpeech: ActiveSpeechSource | null
-  orbStatusOverride: OrbStatusOverride
-  orbPhaseSpeedMs: number
-  onOrbStatusOverride: (status: OrbStatusOverride) => void
-  onOrbPhaseSpeedChange: (value: number) => void
   onReplay: (session?: TestSession) => void
   onStopReplay: () => void
 }): JSX.Element {
@@ -1573,33 +1561,18 @@ function SessionController({
   return (
     <div
       data-qid="embry-voice:command-rail"
+      data-active-speech-id={activeSpeech?.id ?? ''}
+      data-voice-status={voiceStatus}
+      data-is-streaming={isStreaming ? 'true' : 'false'}
+      data-tone={tone ?? ''}
       className="flex h-full min-h-0 w-[320px] shrink-0 flex-col border-r border-[#2d2d31] bg-[#121214]"
     >
-      <IdentityNode
-        voiceStatus={voiceStatus}
-        isStreaming={isStreaming}
-        tone={tone}
-        height={300}
-        phaseSpeedMs={orbPhaseSpeedMs}
-        speechAudioElement={activeSpeech?.audioElement ?? null}
-        speechSourceId={activeSpeech?.turnId ?? activeSpeech?.id}
-        speechAudioUrl={activeSpeech?.audioUrl}
-        speechStartedAtMs={activeSpeech?.startedAtMs}
-        speechEnvelope={activeSpeech?.voiceEnvelope}
-      />
-      <OrbPhaseControls
-        status={orbStatusOverride}
-        effectiveStatus={voiceStatus}
-        phaseSpeedMs={orbPhaseSpeedMs}
-        onStatusChange={onOrbStatusOverride}
-        onPhaseSpeedChange={onOrbPhaseSpeedChange}
-      />
       <div className="min-h-0 flex-1 [&>div]:h-full">
     <LeftPane
       title="Sessions"
       width={320}
       searchable
-      collapsible={false}
+      collapsible
       searchTestId="embry-voice:sessions:search"
       searchPlaceholder="Filter sessions"
     >
@@ -1621,72 +1594,6 @@ function SessionController({
         onStopReplay={onStopReplay}
       />
     </LeftPane>
-      </div>
-    </div>
-  )
-}
-
-function OrbPhaseControls({
-  status,
-  effectiveStatus,
-  phaseSpeedMs,
-  onStatusChange,
-  onPhaseSpeedChange,
-}: {
-  status: OrbStatusOverride
-  effectiveStatus: EmbryVoiceStatus
-  phaseSpeedMs: number
-  onStatusChange: (status: OrbStatusOverride) => void
-  onPhaseSpeedChange: (value: number) => void
-}): JSX.Element {
-  const phases: { label: string; value: OrbStatusOverride }[] = [
-    { label: 'Live', value: null },
-    { label: 'Idle', value: 'idle' },
-    { label: 'Listening', value: 'listening' },
-    { label: 'Thinking', value: 'processing' },
-    { label: 'Speaking', value: 'speaking' },
-  ]
-  return (
-    <div data-qid="embry-voice:orb-controls" className="border-b border-[#27272a] px-4 py-3">
-      <div className="grid grid-cols-2 gap-2">
-        {phases.map((phase) => {
-          const active = status === phase.value || (phase.value === null && status === null)
-          return (
-            <button
-              key={phase.label}
-              type="button"
-              data-qid={`embry-voice:orb-phase:${phase.label.toLowerCase()}`}
-              data-active={active ? 'true' : 'false'}
-              onClick={() => onStatusChange(phase.value)}
-              className={`border px-3 py-2 text-left font-mono text-[10px] font-bold uppercase tracking-[0.16em] transition ${
-                active
-                  ? 'border-cyan-300/70 bg-cyan-400/15 text-cyan-100'
-                  : 'border-[#27272a] bg-[#101012] text-zinc-400 hover:border-cyan-300/40 hover:text-cyan-100'
-              }`}
-            >
-              {phase.label}
-            </button>
-          )
-        })}
-      </div>
-      <label className="mt-3 block">
-        <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
-          <span>Phase speed</span>
-          <span data-qid="embry-voice:orb-phase-speed-value" className="text-cyan-200">{phaseSpeedMs}ms</span>
-        </div>
-        <input
-          data-qid="embry-voice:orb-phase-speed"
-          type="range"
-          min={180}
-          max={1800}
-          step={10}
-          value={phaseSpeedMs}
-          onChange={(event) => onPhaseSpeedChange(Number(event.currentTarget.value))}
-          className="mt-2 w-full accent-cyan-400"
-        />
-      </label>
-      <div data-qid="embry-voice:orb-effective-state" className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
-        Effective: <span className="text-cyan-200">{effectiveStatus}</span>
       </div>
     </div>
   )

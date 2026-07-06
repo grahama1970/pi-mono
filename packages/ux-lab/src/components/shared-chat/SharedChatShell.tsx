@@ -5,6 +5,7 @@
  */
 import React, { useMemo, useRef, useState } from 'react'
 import { Mic, Shield } from 'lucide-react'
+import { EmbryVoiceOrb } from '../embry-voice/EmbryVoiceOrb'
 import ComplianceChatWell, { type ComplianceChatWellProps, type StarterChip, type InputMode } from './ComplianceChatWell'
 import {
   createAdapterRegistry,
@@ -38,7 +39,7 @@ export type SharedChatShellProps = Omit<
   messages?: ChatMessage[]
   initialMessages?: ChatMessage[]
   onMessagesChange?: (messages: ChatMessage[]) => void
-  onSend?: (...args: any[]) => void | Promise<void>
+  onSend?: (...args: unknown[]) => void | Promise<void>
   streamingSteps?: StreamingStep[]
   isStreaming?: boolean
   activeBranch?: TurnBranch
@@ -62,6 +63,8 @@ export type SharedChatShellProps = Omit<
   context?: TurnInput['context']
   matrixContext?: TurnInput['matrixContext']
   starterChips?: StarterChip[]
+  /** Active Chatterbox receipt tone for secondary orb modulation */
+  voiceTone?: string
   /** Optional: convert filesystem paths to URLs for inline media (image=/path, clip=/path, audio=/path) */
   mediaUrl?: (path: string) => string
 }
@@ -110,8 +113,11 @@ export function SharedChatShell({
   mediaUrl,
   voiceEnabled,
   voiceStatus,
+  voiceTone,
   voiceLabel,
   onVoiceToggle,
+  activeProcessingTurnId,
+  activeProcessingMessageId,
 }: SharedChatShellProps): JSX.Element {
   const [mode, setModeState] = useState<PersonaPlexChatMode>(defaultMode)
   const [internalMessages, setInternalMessages] = useState<ChatMessage[]>(initialMessages)
@@ -254,13 +260,24 @@ export function SharedChatShell({
             justifyContent: 'space-between',
             gap: 12,
             minWidth: 0,
-            padding: '8px 12px',
+            minHeight: voiceStatus !== undefined ? 104 : undefined,
+            padding: voiceStatus !== undefined ? '10px 16px' : '8px 12px',
           }}
         >
           <div style={{ minWidth: 0 }}>
             <div style={{ color: '#e2e8f0', fontWeight: 600, fontSize: 14, letterSpacing: '-0.02em' }}>{projectLabel}</div>
           </div>
-          {showModeToggle && <ModeToggle mode={mode} labels={modeLabels} titles={modeTitles} onModeChange={setMode} />}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+            {voiceStatus !== undefined && (
+              <EmbryVoiceOrb
+                voiceStatus={voiceStatus}
+                isStreaming={displayIsStreaming}
+                tone={voiceTone}
+                size={96}
+              />
+            )}
+            {showModeToggle && <ModeToggle mode={mode} labels={modeLabels} titles={modeTitles} onModeChange={setMode} />}
+          </div>
         </header>
       )}
 
@@ -275,7 +292,7 @@ export function SharedChatShell({
         streamingSteps={displayStreamingSteps}
         isStreaming={displayIsStreaming}
         activeBranch={displayActiveBranch}
-        onSend={(text) => void handleSend(text)}
+        onSend={(text) => void handleSend(String(text))}
         placeholder={placeholder ?? (mode === 'personaplex' ? 'Ask Embry…' : 'Ask a question…')}
         disabled={disabled}
         composerDisabled={composerDisabled}
@@ -299,6 +316,8 @@ export function SharedChatShell({
         voiceStatus={voiceStatus}
         voiceLabel={voiceLabel}
         onVoiceToggle={onVoiceToggle}
+        activeProcessingTurnId={activeProcessingTurnId}
+        activeProcessingMessageId={activeProcessingMessageId}
       />
     </section>
   )
