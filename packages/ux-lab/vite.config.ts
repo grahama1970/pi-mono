@@ -2,7 +2,7 @@ import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
-import { createReadStream, mkdirSync, readFileSync, statSync, writeFileSync, existsSync } from 'fs'
+import { createReadStream, mkdirSync, readFileSync, realpathSync, statSync, writeFileSync, existsSync } from 'fs'
 import type { Plugin } from 'vite'
 import { transportReviewBundlePlugin } from './plugins/transportReviewBundlePlugin'
 
@@ -46,6 +46,133 @@ function chatterboxArtifactsPlugin(): Plugin {
         } catch {
           res.statusCode = 404
           res.end('not found')
+        }
+      })
+    },
+  }
+}
+
+function tauDagLiveRunPlugin(): Plugin {
+  const TAU_ROOT = resolve(process.env.TAU_PROJECT_ROOT ?? '/home/graham/workspace/experiments/tau')
+  const DEFAULT_RUN_ROOT = resolve(TAU_ROOT, 'experiments/goal-locked-subagents/proofs')
+  const RUN_ROOT = resolve(process.env.TAU_DAG_RUN_ROOT ?? DEFAULT_RUN_ROOT)
+  const ALLOWED_ROOTS = [TAU_ROOT, '/tmp'].map((entry) => realpathSync(entry))
+
+  const insideAllowedRoot = (absolutePath: string) => {
+    const realPath = realpathSync(absolutePath)
+    return ALLOWED_ROOTS.some((root) => realPath === root || realPath.startsWith(`${root}/`))
+  }
+
+  const readJsonFile = (path: string) => JSON.parse(readFileSync(path, 'utf-8')) as Record<string, unknown>
+
+  const resolveExistingFile = (runDir: string, candidates: string[]) => {
+    for (const candidate of candidates) {
+      const absolutePath = resolve(runDir, candidate)
+      if (existsSync(absolutePath) && statSync(absolutePath).isFile()) return absolutePath
+    }
+    return null
+  }
+
+  const findDagFiles = (runDir: string) => {
+    const contractPath = resolveExistingFile(runDir, [
+      'dag-contract.json',
+      'project-dag-contract.json',
+      'contract/dag-contract.json',
+    ])
+    const receiptPath = resolveExistingFile(runDir, [
+      'dag-receipt.json',
+      'run/dag-receipt.json',
+      'receipts/dag-receipt.json',
+    ])
+    return { contractPath, receiptPath }
+  }
+
+  return {
+    name: 'tau-dag-live-run',
+    configureServer(server) {
+      server.middlewares.use('/tau-dag-live-run', (req, res) => {
+        try {
+          const url = new URL(req.url ?? '/', 'http://127.0.0.1')
+          const runParam = url.searchParams.get('run')?.trim()
+          if (!runParam) {
+            res.statusCode = 400
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ ok: false, error: 'run query parameter is required' }))
+            return
+          }
+
+          const runDir = resolve(runParam.startsWith('/') ? runParam : resolve(RUN_ROOT, runParam))
+          if (!existsSync(runDir) || !statSync(runDir).isDirectory()) {
+            res.statusCode = 404
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ ok: false, error: 'Tau DAG run directory not found', runDir }))
+            return
+          }
+          if (!insideAllowedRoot(runDir)) {
+            res.statusCode = 403
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ ok: false, error: 'Tau DAG run is outside allowed roots', runDir }))
+            return
+          }
+
+          const { contractPath, receiptPath } = findDagFiles(runDir)
+          if (!contractPath || !receiptPath) {
+            res.statusCode = 404
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({
+              ok: false,
+              error: 'Tau DAG run is missing dag-contract.json or dag-receipt.json',
+              runDir,
+              searched: [
+                'dag-contract.json',
+                'project-dag-contract.json',
+                'contract/dag-contract.json',
+                'dag-receipt.json',
+                'run/dag-receipt.json',
+                'receipts/dag-receipt.json',
+              ],
+            }))
+            return
+          }
+
+          const label = runDir.split('/').filter(Boolean).at(-1) ?? 'Tau DAG run'
+          const payload = {
+            ok: true,
+            schema: 'ux_lab.tau_dag_live_run_bundle.v1',
+            manifest: {
+              schema: 'ux_lab.tau_dag_run_manifest.v1',
+              defaultRunId: runParam,
+              runs: [{
+                id: runParam,
+                label,
+                path: runDir,
+                source: 'live_local_tau_run',
+                source_repo: TAU_ROOT,
+              }],
+            },
+            selected: {
+              id: runParam,
+              label,
+              path: runDir,
+              source: 'live_local_tau_run',
+              source_repo: TAU_ROOT,
+            },
+            contract: readJsonFile(contractPath),
+            receipt: readJsonFile(receiptPath),
+            artifact_paths: {
+              run_dir: runDir,
+              contract: contractPath,
+              receipt: receiptPath,
+            },
+          }
+
+          res.statusCode = 200
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify(payload))
+        } catch (err) {
+          res.statusCode = 500
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ ok: false, error: 'Tau DAG live run load failed', detail: String(err) }))
         }
       })
     },
@@ -162,7 +289,7 @@ function pdfLabSignoffsPlugin(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), chatterboxArtifactsPlugin(), pdfLabSignoffsPlugin(), transportReviewBundlePlugin()],
+  plugins: [react(), tailwindcss(), chatterboxArtifactsPlugin(), tauDagLiveRunPlugin(), pdfLabSignoffsPlugin(), transportReviewBundlePlugin()],
   resolve: {
     alias: {
       // Import skill components directly — no duplication

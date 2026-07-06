@@ -72,9 +72,15 @@ export type LoadedTauDagRun = {
 	selected: TauDagRunManifest["runs"][number];
 	contract: TauDagContract;
 	receipt: TauDagReceipt;
+	artifact_paths?: {
+		run_dir?: string;
+		contract?: string;
+		receipt?: string;
+	};
 };
 
 const RUN_MANIFEST_URL = "/tau-dag-runs/manifest.json";
+const LIVE_RUN_URL = "/tau-dag-live-run";
 
 function normalizeArray(value: unknown): string[] {
 	return Array.isArray(value) ? value.map((item) => String(item)) : [];
@@ -197,7 +203,7 @@ export function buildTauDagEvidence(loaded: LoadedTauDagRun): TransportDagEviden
 		transport_run_id: `tau-${loaded.selected.id}`,
 		dag_id: loaded.contract.dag_id || loaded.receipt.dag_id,
 		graph_id: loaded.contract.dag_id || loaded.selected.id,
-		proof_path: `${loaded.selected.path}/dag-receipt.json`,
+		proof_path: loaded.artifact_paths?.receipt || `${loaded.selected.path}/dag-receipt.json`,
 		nodes,
 		edges,
 		layers: layersFromTauDag(loaded.contract),
@@ -216,7 +222,23 @@ async function fetchJson<T>(url: string): Promise<T> {
 	return response.json() as Promise<T>;
 }
 
+export function isTauDagLiveRunReference(runReference: string | undefined): boolean {
+	if (!runReference) return false;
+	return runReference.startsWith("/") || runReference.startsWith(".") || runReference.includes("/");
+}
+
+export function tauDagLiveRunUrl(runReference: string): string {
+	return `${LIVE_RUN_URL}?run=${encodeURIComponent(runReference)}`;
+}
+
+async function loadTauDagLiveRun(runReference: string): Promise<LoadedTauDagRun> {
+	const payload = await fetchJson<LoadedTauDagRun & { ok?: boolean }>(tauDagLiveRunUrl(runReference));
+	if (payload.ok === false) throw new Error(`Tau DAG live run loader rejected ${runReference}`);
+	return payload;
+}
+
 export async function loadTauDagRun(runId?: string): Promise<LoadedTauDagRun> {
+	if (runId && isTauDagLiveRunReference(runId)) return loadTauDagLiveRun(runId);
 	const manifest = await fetchJson<TauDagRunManifest>(RUN_MANIFEST_URL);
 	const selected =
 		manifest.runs.find((run) => run.id === runId) ||

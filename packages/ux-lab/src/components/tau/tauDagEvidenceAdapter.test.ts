@@ -1,5 +1,12 @@
-import { describe, expect, it } from "vitest";
-import { buildTauDagEvidence, layersFromTauDag, type LoadedTauDagRun } from "./tauDagEvidenceAdapter";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import {
+	buildTauDagEvidence,
+	isTauDagLiveRunReference,
+	layersFromTauDag,
+	loadTauDagRun,
+	tauDagLiveRunUrl,
+	type LoadedTauDagRun,
+} from "./tauDagEvidenceAdapter";
 
 function loadedFixture(overrides: Partial<LoadedTauDagRun["receipt"]> = {}): LoadedTauDagRun {
 	return {
@@ -42,6 +49,10 @@ function loadedFixture(overrides: Partial<LoadedTauDagRun["receipt"]> = {}): Loa
 }
 
 describe("tauDagEvidenceAdapter", () => {
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
 	it("maps a Tau DAG contract and receipt into transport DAG evidence", () => {
 		const evidence = buildTauDagEvidence(loadedFixture());
 
@@ -89,5 +100,41 @@ describe("tauDagEvidenceAdapter", () => {
 		});
 
 		expect(layers).toEqual([["a", "b"]]);
+	});
+
+	it("treats absolute or path-like run parameters as live Tau run references", () => {
+		expect(isTauDagLiveRunReference("/tmp/tau-run")).toBe(true);
+		expect(isTauDagLiveRunReference("real-world-sanity/run-001")).toBe(true);
+		expect(isTauDagLiveRunReference("research-query-auth-binding")).toBe(false);
+		expect(tauDagLiveRunUrl("/tmp/tau run")).toBe("/tau-dag-live-run?run=%2Ftmp%2Ftau%20run");
+	});
+
+	it("loads a live Tau run bundle from the read-only live-run endpoint", async () => {
+		const liveBundle = {
+			ok: true,
+			...loadedFixture(),
+			selected: {
+				id: "/tmp/tau-live-run",
+				label: "tau-live-run",
+				path: "/tmp/tau-live-run",
+				source: "live_local_tau_run",
+			},
+			artifact_paths: {
+				run_dir: "/tmp/tau-live-run",
+				contract: "/tmp/tau-live-run/dag-contract.json",
+				receipt: "/tmp/tau-live-run/run/dag-receipt.json",
+			},
+		};
+		const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue({
+			ok: true,
+			json: async () => liveBundle,
+		} as Response);
+
+		const loaded = await loadTauDagRun("/tmp/tau-live-run");
+		const evidence = buildTauDagEvidence(loaded);
+
+		expect(fetchMock).toHaveBeenCalledWith("/tau-dag-live-run?run=%2Ftmp%2Ftau-live-run", { cache: "no-store" });
+		expect(loaded.selected.source).toBe("live_local_tau_run");
+		expect(evidence.proof_path).toBe("/tmp/tau-live-run/run/dag-receipt.json");
 	});
 });

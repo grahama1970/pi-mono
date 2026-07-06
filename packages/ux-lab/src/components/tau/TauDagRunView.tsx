@@ -18,8 +18,15 @@ function statusTone(status?: string): string {
 	return EMBRY.dim;
 }
 
+function initialTauDagRunReference(): string | undefined {
+	const hash = window.location.hash || "";
+	const query = hash.includes("?") ? hash.slice(hash.indexOf("?") + 1) : window.location.search.slice(1);
+	const value = new URLSearchParams(query).get("run")?.trim();
+	return value || undefined;
+}
+
 export function TauDagRunView() {
-	const [selectedRunId, setSelectedRunId] = useState<string | undefined>(undefined);
+	const [selectedRunId, setSelectedRunId] = useState<string | undefined>(() => initialTauDagRunReference());
 	const [loaded, setLoaded] = useState<LoadedTauDagRun | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -57,6 +64,8 @@ export function TauDagRunView() {
 	const doesNotProve = normalizeArray(loaded?.receipt.proof_scope?.does_not_prove);
 	const alerts = loaded?.receipt.alerts || [];
 	const artifacts = loaded?.receipt.artifact_refs || [];
+	const contractPath = loaded?.artifact_paths?.contract || (loaded ? `${loaded.selected.path}/dag-contract.json` : "");
+	const receiptPath = loaded?.artifact_paths?.receipt || (loaded ? `${loaded.selected.path}/dag-receipt.json` : "");
 
 	return (
 		<section className="tau-dag-root" data-qid="tau:dag:artifact-viewer">
@@ -251,6 +260,8 @@ export function TauDagRunView() {
 								<strong>{String(loaded.receipt.provider_live ?? "not stated")}</strong>
 								<span>source</span>
 								<strong>{loaded.receipt.source || loaded.selected.source}</strong>
+								<span>run source</span>
+								<strong>{loaded.selected.source}</strong>
 							</div>
 						</div>
 
@@ -319,10 +330,10 @@ export function TauDagRunView() {
 							</h3>
 							<div className="tau-dag-paths">
 								<div>
-									contract <code>{loaded.selected.path}/dag-contract.json</code>
+									contract <code>{contractPath}</code>
 								</div>
 								<div>
-									receipt <code>{loaded.selected.path}/dag-receipt.json</code>
+									receipt <code>{receiptPath}</code>
 								</div>
 								{artifacts.map((artifact, index) => (
 									<div key={`${artifact.kind || "artifact"}-${index}`}>
