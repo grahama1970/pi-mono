@@ -9765,6 +9765,8 @@ const SCREENSHOTS_DIR = resolve(__dirname, '../screenshots')
 const PERSONA_DREAM_OUTPUTS_DIR = '/mnt/storage12tb/skills/persona-dream/outputs'
 const PERSONA_DREAM_REPORTS_DIR = '/home/graham/workspace/experiments/agent-skills/skills/persona-dream/reports'
 const PERSONA_MEDIA_DIR = '/mnt/storage12tb/media/personas'
+const PERSONA_DREAM_CLIPBOARD_BUNDLE_DIR = '/tmp/persona-dream-panel-prompt-bundles'
+const CLIPBOARD_FILE_SCRIPT = '/home/graham/workspace/experiments/agent-skills/skills/clipboard-file/scripts/copy-file-to-clipboard.sh'
 
 type DreamRunSummary = {
   id: string
@@ -9845,6 +9847,29 @@ function isAllowedDreamPath(real: string): boolean {
     .filter((root) => existsSync(root))
     .map((root) => realpathSync(root))
   return roots.some((root) => real === root || real.startsWith(`${root}/`))
+}
+
+function dreamSafeZipEntryName(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+  const cleaned = value
+    .replace(/\\/g, '/')
+    .split('/')
+    .map(part => part.replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, ''))
+    .filter(Boolean)
+    .join('/')
+  if (!cleaned || cleaned.startsWith('/') || cleaned.includes('..')) return null
+  return cleaned.slice(0, 220)
+}
+
+function dreamSafeZipFileName(value: unknown): string {
+  const raw = typeof value === 'string' ? value : 'storyboard-panel-prompt-payload.zip'
+  const cleaned = raw
+    .replace(/[^a-zA-Z0-9._-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 140)
+  return (cleaned || 'storyboard-panel-prompt-payload.zip').endsWith('.zip')
+    ? (cleaned || 'storyboard-panel-prompt-payload.zip')
+    : `${cleaned || 'storyboard-panel-prompt-payload'}.zip`
 }
 
 function dreamArtifactKind(path: string): DreamStageSummary['artifacts'][number]['kind'] {
@@ -10501,6 +10526,73 @@ app.get('/api/projects/dream/asset', async (req, res) => {
     createReadStream(real).pipe(res)
   } catch {
     res.status(404).send('asset not found')
+  }
+})
+
+app.post('/api/projects/dream/panel-prompt-bundle', async (req, res) => {
+  try {
+    const filename = dreamSafeZipFileName(req.body?.filename)
+    const entries = Array.isArray(req.body?.entries) ? req.body.entries : []
+    if (entries.length === 0) return res.status(400).json({ status: 'error', error: 'entries are required' })
+
+    const createdAt = new Date().toISOString()
+    const bundleId = `${createdAt.replace(/[:.]/g, '-')}-${createHash('sha256').update(`${filename}:${entries.length}:${createdAt}`).digest('hex').slice(0, 10)}`
+    const bundleRoot = resolve(PERSONA_DREAM_CLIPBOARD_BUNDLE_DIR, bundleId)
+    const zipPath = resolve(PERSONA_DREAM_CLIPBOARD_BUNDLE_DIR, `${bundleId}-${filename}`)
+    await mkdir(bundleRoot, { recursive: true })
+
+    const writtenEntries: Array<{ name: string; source: 'text' | 'asset'; path: string }> = []
+    for (const entry of entries) {
+      const entryName = dreamSafeZipEntryName(entry?.name)
+      if (!entryName) return res.status(400).json({ status: 'error', error: 'invalid zip entry name', entry })
+      const destination = resolve(bundleRoot, entryName)
+      if (!destination.startsWith(`${bundleRoot}/`)) return res.status(400).json({ status: 'error', error: 'zip entry escaped bundle root', entryName })
+      await mkdir(dirname(destination), { recursive: true })
+
+      if (typeof entry?.text === 'string') {
+        await writeFile(destination, entry.text)
+        writtenEntries.push({ name: entryName, source: 'text', path: destination })
+        continue
+      }
+
+      if (typeof entry?.path === 'string') {
+        const real = realpathSync(entry.path)
+        if (!isAllowedDreamPath(real)) return res.status(403).json({ status: 'error', error: 'asset path not allowed', path: entry.path })
+        await copyFile(real, destination)
+        writtenEntries.push({ name: entryName, source: 'asset', path: real })
+        continue
+      }
+
+      return res.status(400).json({ status: 'error', error: 'entry must include text or path', entryName })
+    }
+
+    await execFileAsync('zip', ['-qr', zipPath, '.'], { cwd: bundleRoot, timeout: 30_000, maxBuffer: 4 * 1024 * 1024 })
+
+    try {
+      const { stdout, stderr } = await execFileAsync(CLIPBOARD_FILE_SCRIPT, [zipPath], { timeout: 10_000, maxBuffer: 4 * 1024 * 1024 })
+      res.json({
+        status: 'ok',
+        mocked: false,
+        live: true,
+        zipPath,
+        copiedToClipboard: true,
+        clipboardProof: stdout,
+        clipboardStderr: stderr,
+        entries: writtenEntries,
+      })
+    } catch (clipboardErr: any) {
+      res.status(500).json({
+        status: 'error',
+        error: 'zip created but desktop clipboard copy failed',
+        detail: clipboardErr instanceof Error ? clipboardErr.message : String(clipboardErr),
+        stdout: clipboardErr?.stdout,
+        stderr: clipboardErr?.stderr,
+        fallbackZipPath: zipPath,
+        entries: writtenEntries,
+      })
+    }
+  } catch (err) {
+    res.status(500).json({ status: 'error', error: err instanceof Error ? err.message : String(err) })
   }
 })
 
