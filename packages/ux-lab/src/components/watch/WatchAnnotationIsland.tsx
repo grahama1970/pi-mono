@@ -113,6 +113,28 @@ interface DetectorLabelRejection {
   createdAt: string
 }
 
+interface WatchYoloLabelEvent {
+  id?: string
+  action?: string
+  status?: string
+  track_id?: string
+  box_key?: string
+  time_seconds?: number | null
+  character_name?: string
+  actor_name?: string
+  confidence?: number
+  created_at?: string
+}
+
+interface WatchYoloBoxRejection {
+  boxKey?: string
+  trackId?: string
+  timeSeconds?: number
+  status?: string
+  source?: string
+  updatedAt?: string
+}
+
 type WatchJsonRecord = Record<string, unknown>
 
 interface DetectorCandidatePayload {
@@ -251,8 +273,63 @@ function detectorCandidateLabelKey(candidate: DetectorCandidate, characterName: 
   return `${candidate.trackId}:${characterKey(characterName)}`
 }
 
+function detectorCandidateBoxKey(candidate: DetectorCandidate): string {
+  return `${candidate.trackId}@${Math.round(candidate.timeSeconds * 100)}`
+}
+
 function detectorLabelRejectionKey(trackId: string, characterName: string): string {
   return `${trackId}:${characterKey(characterName)}`
+}
+
+function normalizeYoloLabelEvent(value: unknown): WatchYoloLabelEvent | null {
+  if (!isWatchJsonRecord(value)) return null
+  const trackId = typeof value.track_id === 'string' ? value.track_id.trim() : ''
+  if (!trackId) return null
+  const action = typeof value.action === 'string' ? value.action : ''
+  const status = typeof value.status === 'string' ? value.status : ''
+  const characterName = typeof value.character_name === 'string' ? value.character_name.trim() : ''
+  const actorName = typeof value.actor_name === 'string' ? value.actor_name.trim() : ''
+  const timeSeconds = typeof value.time_seconds === 'number'
+    ? value.time_seconds
+    : Number.isFinite(Number(value.time_seconds))
+      ? Number(value.time_seconds)
+      : null
+  return {
+    id: typeof value.id === 'string' ? value.id : undefined,
+    action,
+    status,
+    track_id: trackId,
+    box_key: typeof value.box_key === 'string' ? value.box_key : undefined,
+    time_seconds: timeSeconds,
+    character_name: characterName || undefined,
+    actor_name: actorName || undefined,
+    confidence: typeof value.confidence === 'number' ? value.confidence : undefined,
+    created_at: typeof value.created_at === 'string' ? value.created_at : undefined,
+  }
+}
+
+function yoloEventTimeSeconds(event: WatchYoloLabelEvent): number {
+  return typeof event.time_seconds === 'number' && Number.isFinite(event.time_seconds) ? event.time_seconds : 0
+}
+
+function isYoloStopEvent(event: WatchYoloLabelEvent): boolean {
+  const action = (event.action || '').toLowerCase()
+  const status = (event.status || '').toLowerCase()
+  const name = characterKey(event.character_name || '')
+  return action === 'reject_box'
+    || action === 'reset_box'
+    || action === 'reset'
+    || action === 'reject'
+    || status === 'rejected_box'
+    || name === 'unassigned'
+}
+
+function isYoloAcceptedEvent(event: WatchYoloLabelEvent): boolean {
+  const action = (event.action || '').toLowerCase()
+  const status = (event.status || '').toLowerCase()
+  return !isYoloStopEvent(event)
+    && (status === 'accepted' || action === 'accept' || action === 'label')
+    && Boolean(event.character_name && characterKey(event.character_name) !== 'unassigned')
 }
 
 function isWatchJsonRecord(value: unknown): value is WatchJsonRecord {
@@ -734,6 +811,8 @@ export function WatchAnnotationIsland({
   const [detectorSuggestions, setDetectorSuggestions] = useState<Record<string, DetectorCandidateAssignment>>({})
   const [detectorSuggestionDiagnostics, setDetectorSuggestionDiagnostics] = useState<Record<string, DetectorSuggestionDiagnostic>>({})
   const [detectorLabelRejections, setDetectorLabelRejections] = useState<Record<string, DetectorLabelRejection>>({})
+  const [yoloLabelEvents, setYoloLabelEvents] = useState<WatchYoloLabelEvent[]>([])
+  const [yoloBoxRejections, setYoloBoxRejections] = useState<Record<string, WatchYoloBoxRejection>>({})
   const [identityReadiness, setIdentityReadiness] = useState<IdentityReadinessPayload | null>(null)
   const [identityReadinessStatus, setIdentityReadinessStatus] = useState('')
   const [videoDimensions, setVideoDimensions] = useState({ width: 1280, height: 696 })
@@ -782,6 +861,31 @@ export function WatchAnnotationIsland({
       setLoading(false)
     }
   }, [characterOptions, row])
+
+  const hydrateYoloLabelLedger = useCallback(async (): Promise<void> => {
+    try {
+      const params = new URLSearchParams({
+        asset_uid: resolvedAssetUid,
+        row_index: String(row.index),
+      })
+      const response = await fetch(`/api/projects/watch/yolo-labels?${params.toString()}`)
+      const payload = await readJsonResponse(response)
+      if (!response.ok || payload.error) {
+        throw new Error(payload.error || payload.detail || `yolo_labels_http_${response.status}`)
+      }
+      const events = Array.isArray(payload.events)
+        ? payload.events.map(normalizeYoloLabelEvent).filter(Boolean) as WatchYoloLabelEvent[]
+        : []
+      const boxRejections = isWatchJsonRecord(payload.box_rejections)
+        ? payload.box_rejections as Record<string, WatchYoloBoxRejection>
+        : {}
+      setYoloLabelEvents(events.sort((left, right) => yoloEventTimeSeconds(left) - yoloEventTimeSeconds(right)))
+      setYoloBoxRejections(boxRejections)
+    } catch {
+      setYoloLabelEvents([])
+      setYoloBoxRejections({})
+    }
+  }, [resolvedAssetUid, row.index])
 
   const hydrateDetectorCandidates = useCallback(async (): Promise<void> => {
     try {
@@ -857,10 +961,13 @@ export function WatchAnnotationIsland({
       setDetectorSuggestions({})
       setDetectorSuggestionDiagnostics({})
       setDetectorLabelRejections({})
+      setYoloLabelEvents([])
+      setYoloBoxRejections({})
       setStatus('Loading live row annotations...')
     }
     void hydrateRow()
-  }, [characterOptions, hydrateRow, row, rowSessionKey])
+    void hydrateYoloLabelLedger()
+  }, [characterOptions, hydrateRow, hydrateYoloLabelLedger, row, rowSessionKey])
 
   useEffect(() => {
     void hydrateDetectorCandidates()
@@ -997,6 +1104,28 @@ export function WatchAnnotationIsland({
         entry.evidenceCount = evidenceCounts.get(`${entry.originTrackId}:${characterKey(entry.characterName)}`)?.size || 1
       }
     }
+    const eventsByTrack = new Map<string, WatchYoloLabelEvent[]>()
+    for (const event of yoloLabelEvents) {
+      const trackId = typeof event.track_id === 'string' ? event.track_id.trim() : ''
+      if (!trackId) continue
+      const entries = eventsByTrack.get(trackId) || []
+      entries.push(event)
+      eventsByTrack.set(trackId, entries)
+    }
+    for (const entries of eventsByTrack.values()) {
+      entries.sort((left, right) => yoloEventTimeSeconds(left) - yoloEventTimeSeconds(right))
+    }
+
+    const latestYoloEventForCandidate = (candidate: DetectorCandidate): WatchYoloLabelEvent | null => {
+      const entries = eventsByTrack.get(candidate.trackId) || []
+      let latest: WatchYoloLabelEvent | null = null
+      for (const event of entries) {
+        if (yoloEventTimeSeconds(event) <= candidate.timeSeconds + 0.03) {
+          latest = event
+        }
+      }
+      return latest
+    }
 
     const isRejected = (candidate: DetectorCandidate, assignment: DetectorCandidateAssignment | null | undefined): boolean => {
       if (!assignment) return false
@@ -1030,6 +1159,19 @@ export function WatchAnnotationIsland({
 
     for (const candidate of visibleDetectorCandidates) {
       if (assignments.has(candidate.id)) continue
+      const latestYoloEvent = latestYoloEventForCandidate(candidate)
+      if (latestYoloEvent && isYoloStopEvent(latestYoloEvent)) continue
+      if (latestYoloEvent && isYoloAcceptedEvent(latestYoloEvent)) {
+        const characterName = latestYoloEvent.character_name || ''
+        assignments.set(candidate.id, {
+          characterName,
+          actorName: latestYoloEvent.actor_name || actorLookup(characterName),
+          confidence: latestYoloEvent.confidence,
+          source: 'propagated',
+          originTrackId: candidate.trackId,
+        })
+        continue
+      }
       const savedAssignment = findSavedDetectorAssignment(candidate)
       if (savedAssignment && !isRejected(candidate, savedAssignment)) {
         assignments.set(candidate.id, savedAssignment)
@@ -1084,6 +1226,7 @@ export function WatchAnnotationIsland({
     session.selectedCharacterName,
     session.tracks,
     visibleDetectorCandidates,
+    yoloLabelEvents,
   ])
   const selectedDetectorCandidate = useMemo(() => (
     selectedDetectorCandidateId
@@ -1091,7 +1234,7 @@ export function WatchAnnotationIsland({
       : null
   ), [selectedDetectorCandidateId, visibleDetectorCandidates])
   const selectedDetectorAssignment = selectedDetectorCandidate
-    ? detectorCandidateAssignments.get(selectedDetectorCandidate.id) || findSavedDetectorAssignment(selectedDetectorCandidate)
+    ? detectorCandidateAssignments.get(selectedDetectorCandidate.id) || null
     : null
   const detectorFirstMode = visibleDetectorCandidates.length > 0
   const manualDrawEnabled = manualAnnotationEnabled
@@ -1174,6 +1317,41 @@ export function WatchAnnotationIsland({
     ))
   }, [actorLookup, detectorCandidates, detectorLabelRejections, detectorSuggestions, findSavedDetectorAssignment, identityReadiness])
 
+  const yoloSequenceRows = useMemo(() => (
+    yoloLabelEvents
+      .map((event, index) => {
+        const timeSeconds = yoloEventTimeSeconds(event)
+        const isStop = isYoloStopEvent(event)
+        const label = isStop
+          ? 'Unassigned'
+          : (typeof event.character_name === 'string' && event.character_name.trim()
+            ? event.character_name.trim()
+            : 'YOLO track')
+        const trackId = typeof event.track_id === 'string' && event.track_id.trim() ? event.track_id.trim() : 'track'
+        const eventId = typeof event.id === 'string' && event.id.trim()
+          ? event.id.trim()
+          : `${trackId}:${event.box_key || 'track'}:${event.action || 'event'}:${index}`
+        return {
+          id: eventId,
+          index,
+          action: event.action || '',
+          actorName: event.actor_name || '',
+          boxKey: event.box_key || '',
+          createdAt: event.created_at || '',
+          detail: isStop ? 'holds until reassigned' : (event.actor_name || 'accepted label'),
+          isStop,
+          label,
+          leftPercent: Math.max(0, Math.min(100, (timeSeconds / Math.max(segmentDuration, 0.001)) * 100)),
+          timeSeconds,
+          trackId,
+        }
+      })
+      .sort((left, right) => (
+        left.timeSeconds - right.timeSeconds
+        || left.index - right.index
+      ))
+  ), [segmentDuration, yoloLabelEvents])
+
   const commonMutationBody = useCallback((
     timeSeconds: number,
     mutationAssetUid = resolvedAssetUid,
@@ -1198,6 +1376,26 @@ export function WatchAnnotationIsland({
     row.timecode,
     row.video_clip_path,
   ])
+
+  const persistYoloLabelEvent = useCallback(async (
+    candidate: DetectorCandidate,
+    action: 'accept' | 'reject_box',
+    assignment?: { characterName?: string; actorName?: string; confidence?: number },
+  ): Promise<MutationReceipt> => {
+    return requestJson('/api/projects/watch/yolo-labels', {
+      asset_uid: resolvedAssetUid,
+      row_index: row.index,
+      timecode: row.timecode,
+      movie_segment: row.movie_segment || row.timecode,
+      time_seconds: candidate.timeSeconds,
+      track_id: candidate.trackId,
+      box_key: detectorCandidateBoxKey(candidate),
+      action,
+      ...(assignment?.characterName ? { character_name: assignment.characterName } : {}),
+      ...(assignment?.actorName ? { actor_name: assignment.actorName } : {}),
+      ...(typeof assignment?.confidence === 'number' ? { confidence: assignment.confidence } : {}),
+    })
+  }, [resolvedAssetUid, row.index, row.movie_segment, row.timecode])
 
   const persistKeyframe = useCallback(async (
     keyframe: PersistableKeyframe,
@@ -1453,37 +1651,18 @@ export function WatchAnnotationIsland({
     const savedAssignment = findSavedDetectorAssignment(candidate)
     const visibleAssignment = detectorCandidateAssignments.get(candidate.id)
     const assignmentToClear = savedAssignment || visibleAssignment || null
-    if (!assignmentToClear) {
-      setDetectorSuggestions((current) => {
-        const next = { ...current }
-        delete next[candidate.id]
-        return next
-      })
-      setDetectorSuggestionDiagnostics((current) => {
-        const next = { ...current }
-        delete next[candidate.id]
-        return next
-      })
-      if (pendingTargetBbox) {
-        cancelPendingTarget()
-        setStatus(`Discarded pending label for ${candidate.trackId}; showing ${detectorBaseLabel(candidate)}.`)
-      } else {
-        setStatus(`${candidate.trackId} has no saved character label to clear.`)
-      }
-      setInlineLabelEditorCandidateId(null)
-      return
+    if (assignmentToClear) {
+      setDetectorLabelRejections((current) => ({
+        ...current,
+        [detectorCandidateLabelKey(candidate, assignmentToClear.characterName)]: {
+          trackId: candidate.trackId,
+          characterName: assignmentToClear.characterName,
+          actorName: assignmentToClear.actorName,
+          source: assignmentToClear.source,
+          createdAt: new Date().toISOString(),
+        },
+      }))
     }
-
-    setDetectorLabelRejections((current) => ({
-      ...current,
-      [detectorCandidateLabelKey(candidate, assignmentToClear.characterName)]: {
-        trackId: candidate.trackId,
-        characterName: assignmentToClear.characterName,
-        actorName: assignmentToClear.actorName,
-        source: assignmentToClear.source,
-        createdAt: new Date().toISOString(),
-      },
-    }))
     setDetectorSuggestions((current) => {
       const next = { ...current }
       delete next[candidate.id]
@@ -1495,45 +1674,22 @@ export function WatchAnnotationIsland({
       return next
     })
     setSaving(true)
-    setStatus(`Clearing ${assignmentToClear.characterName} label from ${candidate.trackId}...`)
+    setStatus(`Marking ${candidate.trackId} unassigned at ${candidate.timeSeconds.toFixed(2)}s...`)
     setSelectedDetectorCandidateId(null)
     setInlineLabelEditorCandidateId(null)
     setPendingTargetBbox(null)
     setDraftBbox(null)
-    setSession((current) => {
-      const tracks = Object.fromEntries(Object.entries(current.tracks).map(([trackKey, track]) => [
-        trackKey,
-        {
-          ...track,
-          keyframes: track.keyframes.filter((trackKeyframe) => (
-            !(
-              characterKey(trackKeyframe.characterName) === characterKey(assignmentToClear.characterName)
-              && trackKeyframe.detectorObservationRef?.track_id === candidate.trackId
-            )
-          )),
-        },
-      ]))
-      return { ...current, tracks, selectedOverlayId: null, revision: current.revision + 1 }
-    })
+    setSession((current) => ({ ...current, selectedOverlayId: null, revision: current.revision + 1 }))
 
     try {
-      const receipt = await requestJson('/api/projects/watch/annotations/delete-keyframe', {
-        ...commonMutationBody(candidate.timeSeconds, resolvedAssetUid),
-        detector_track_id: candidate.trackId,
-        detector_observation_ref: detectorObservationRefForCandidate(candidate),
-        persist_rejection: true,
-        character_name: assignmentToClear.characterName,
-        actor_name: assignmentToClear.actorName,
-        reason: `clear_yolo_track_label:${candidate.trackId}:${characterKey(assignmentToClear.characterName)}`,
-      }) as MutationReceipt & { deleted_count?: number }
-      const deletedCount = typeof receipt.deleted_count === 'number' ? receipt.deleted_count : 0
+      await persistYoloLabelEvent(candidate, 'reject_box', assignmentToClear || undefined)
+      await hydrateYoloLabelLedger()
       await hydrateRow()
       await hydrateIdentityReadiness()
-      setStatus(deletedCount > 0
-        ? `Cleared ${deletedCount} ${assignmentToClear.characterName} label${deletedCount === 1 ? '' : 's'} from ${candidate.trackId}; showing ${detectorBaseLabel(candidate)}.`
-        : `No persisted keyframe was cleared for ${candidate.trackId}; row reloaded.`)
+      setStatus(`${candidate.trackId} marked Unassigned at ${candidate.timeSeconds.toFixed(2)}s; it stays unassigned until the next label event.`)
     } catch (error) {
-      setStatus(`Clear label failed: ${error instanceof Error ? error.message : String(error)}`)
+      setStatus(`Unassign failed: ${error instanceof Error ? error.message : String(error)}`)
+      await hydrateYoloLabelLedger()
       await hydrateRow()
       await hydrateIdentityReadiness()
     } finally {
@@ -1561,7 +1717,9 @@ export function WatchAnnotationIsland({
     if (persistedAssignment?.keyframe && !labelChanged) {
       setSaving(true)
       try {
+        await persistYoloLabelEvent(candidate, 'accept', { characterName, actorName, confidence: 1 })
         const materialized = await materializeDetectorTrackExamples(candidate, characterName, actorName)
+        await hydrateYoloLabelLedger()
         await hydrateRow()
         await hydrateIdentityReadiness()
         setStatus(materialized.total > 0
@@ -1626,8 +1784,10 @@ export function WatchAnnotationIsland({
           reason: `replace_yolo_candidate_label:${candidate.trackId}`,
         })
       }
+      await persistYoloLabelEvent(candidate, 'accept', { characterName, actorName, confidence: 1 })
       await persistKeyframe(keyframe)
       const materialized = await materializeDetectorTrackExamples(candidate, characterName, actorName)
+      await hydrateYoloLabelLedger()
       await hydrateRow()
       await hydrateIdentityReadiness()
       setStatus(materialized.total > 0
@@ -3198,6 +3358,98 @@ export function WatchAnnotationIsland({
                 </button>
               )
             })}
+          </section>
+
+          <section
+            data-qid="watch:annotation-island:yolo-sequence-ledger"
+            style={{ border: '1px solid rgba(148,163,184,0.16)', borderRadius: 12, padding: 12, background: 'rgba(15,23,42,0.72)', maxHeight: 210, overflow: 'auto' }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
+              <div style={{ color: '#94a3b8', fontSize: 10, fontWeight: 900, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                Identity sequence
+              </div>
+              <strong style={{ color: yoloSequenceRows.length > 0 ? '#67e8f9' : '#64748b', fontSize: 10, fontWeight: 900 }}>
+                {yoloSequenceRows.length} event{yoloSequenceRows.length === 1 ? '' : 's'} · {Object.keys(yoloBoxRejections).length} stop{Object.keys(yoloBoxRejections).length === 1 ? '' : 's'}
+              </strong>
+            </div>
+            {yoloSequenceRows.length === 0 ? (
+              <div style={{ color: '#64748b', fontSize: 12 }}>
+                No YOLO label stop/assignment events stored for this row.
+              </div>
+            ) : (
+              <>
+                <div
+                  data-qid="watch:annotation-island:yolo-sequence-timeline"
+                  aria-label="YOLO identity sequence timeline"
+                  style={{
+                    position: 'relative',
+                    height: 24,
+                    border: '1px solid rgba(148,163,184,0.18)',
+                    borderRadius: 999,
+                    background: 'linear-gradient(90deg, rgba(2,6,23,0.92), rgba(15,23,42,0.88))',
+                    overflow: 'hidden',
+                    marginBottom: 8,
+                  }}
+                >
+                  {yoloSequenceRows.map((event) => {
+                    const color = event.isStop ? '#facc15' : '#a78bfa'
+                    return (
+                      <span
+                        key={`${event.id}:marker`}
+                        title={`${event.trackId} ${event.label} at ${event.timeSeconds.toFixed(2)}s: ${event.detail}`}
+                        style={{
+                          position: 'absolute',
+                          left: `${event.leftPercent}%`,
+                          top: 3,
+                          width: 8,
+                          height: 16,
+                          borderRadius: 999,
+                          background: color,
+                          boxShadow: `0 0 14px ${color}`,
+                          transform: 'translateX(-50%)',
+                        }}
+                      />
+                    )
+                  })}
+                </div>
+                <div style={{ display: 'grid', gap: 6 }}>
+                  {yoloSequenceRows.map((event) => (
+                    <div
+                      key={event.id}
+                      data-qid="watch:annotation-island:yolo-sequence-row"
+                      data-track-id={event.trackId}
+                      data-action={event.action}
+                      data-label={event.label}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '58px 1fr auto',
+                        gap: 8,
+                        alignItems: 'center',
+                        borderBottom: '1px solid rgba(148,163,184,0.08)',
+                        padding: '6px 0',
+                        color: '#cbd5e1',
+                        fontSize: 11,
+                      }}
+                    >
+                      <span style={{ color: '#94a3b8', fontVariantNumeric: 'tabular-nums' }}>
+                        {event.timeSeconds.toFixed(2)}s
+                      </span>
+                      <span style={{ minWidth: 0 }}>
+                        <strong style={{ color: event.isStop ? '#facc15' : '#c4b5fd' }}>{event.label}</strong>
+                        <span style={{ color: '#64748b' }}> · {event.trackId}</span>
+                        {event.boxKey ? <span style={{ color: '#475569' }}> · {event.boxKey}</span> : null}
+                      </span>
+                      <strong style={{ color: event.isStop ? '#facc15' : '#2dd4bf', textTransform: 'uppercase', fontSize: 9 }}>
+                        {event.isStop ? 'stop' : 'label'}
+                      </strong>
+                      <span style={{ color: '#94a3b8', gridColumn: '2 / -1', fontSize: 10 }}>
+                        {event.detail}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </section>
 
           <section style={{ border: '1px solid rgba(148,163,184,0.16)', borderRadius: 12, padding: 12, background: 'rgba(15,23,42,0.72)', maxHeight: 150, overflow: 'auto' }}>

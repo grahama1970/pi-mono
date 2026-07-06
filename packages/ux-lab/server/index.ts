@@ -11873,11 +11873,185 @@ const WATCH_ANNOTATIONS_DIR = process.env.WATCH_ANNOTATIONS_DIR
   ?? resolve(WATCH_SKILL_DIR, 'docs/architecture/generated/watch_human_character_annotations')
 const WATCH_ORPHEUS_REVIEWS_DIR = process.env.WATCH_ORPHEUS_REVIEWS_DIR
   ?? resolve(WATCH_SKILL_DIR, 'docs/architecture/generated/watch_orpheus_reviews')
+const WATCH_YOLO_LABEL_DIR = process.env.WATCH_YOLO_LABEL_DIR
+  ?? resolve(WATCH_SKILL_DIR, 'docs/architecture/generated/watch_yolo_track_labels')
 const WATCH_TRACKER_EVENT_LOG_DIRS = [
   ...(process.env.WATCH_TRACKER_EVENT_LOG_DIRS ?? '').split(':').map((entry) => entry.trim()).filter(Boolean),
   '/tmp',
   resolve(WATCH_SKILL_DIR, 'docs/architecture/generated'),
 ]
+
+function safeWatchFilePart(value: unknown, fallback: string): string {
+  const raw = typeof value === 'string' && value.trim() ? value.trim() : fallback
+  return raw.replace(/[^a-zA-Z0-9._-]+/g, '_').replace(/^_+|_+$/g, '') || fallback
+}
+
+function watchYoloLabelFilePath(assetUid: unknown, rowIndex: unknown): string {
+  const asset = safeWatchFilePart(assetUid, 'watch_asset')
+  const row = Number.isFinite(Number(rowIndex)) ? String(Number(rowIndex)).padStart(4, '0') : 'unknown'
+  return resolve(WATCH_YOLO_LABEL_DIR, `${asset}_row${row}.json`)
+}
+
+function watchYoloBoxInstanceKey(trackId: string, timeSeconds: unknown): string {
+  const seconds = Number.isFinite(Number(timeSeconds)) ? Math.max(0, Number(timeSeconds)) : 0
+  return `${trackId}@${Math.round(seconds * 100)}`
+}
+
+function readWatchYoloLabelReceipt(assetUid: unknown, rowIndex: unknown): any {
+  const receiptPath = watchYoloLabelFilePath(assetUid, rowIndex)
+  if (!existsSync(receiptPath)) {
+    return {
+      schema: 'watch.yolo_track_labels.v1',
+      asset_uid: assetUid || null,
+      row_index: rowIndex ?? null,
+      labels: {},
+      box_rejections: {},
+      events: [],
+      receipt_path: receiptPath,
+      updated_at: null,
+    }
+  }
+  return JSON.parse(readFileSync(receiptPath, 'utf-8'))
+}
+
+async function storeWatchYoloLabelInMemory(document: Record<string, unknown>): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await proxyPost('/upsert', {
+      collection: 'watch_yolo_track_labels',
+      documents: [document],
+    }, 8_000)
+    return { ok: true }
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : String(err) }
+  }
+}
+
+app.get('/api/projects/watch/yolo-labels', async (req, res) => {
+  const assetUid = typeof req.query.asset_uid === 'string' ? req.query.asset_uid : ''
+  const rowIndex = Number(req.query.row_index)
+  if (!assetUid || !Number.isFinite(rowIndex)) {
+    res.status(400).json({ error: 'asset_uid and numeric row_index are required' })
+    return
+  }
+  try {
+    res.json(readWatchYoloLabelReceipt(assetUid, rowIndex))
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to read YOLO label receipt', detail: err instanceof Error ? err.message : String(err) })
+  }
+})
+
+app.post('/api/projects/watch/yolo-labels', async (req, res) => {
+  const assetUid = typeof req.body?.asset_uid === 'string' ? req.body.asset_uid : ''
+  const rowIndex = Number(req.body?.row_index)
+  const trackId = typeof req.body?.track_id === 'string' ? req.body.track_id : ''
+  const action = typeof req.body?.action === 'string' ? req.body.action : 'accept'
+
+  if (!assetUid || !Number.isFinite(rowIndex) || !trackId) {
+    res.status(400).json({ error: 'asset_uid, numeric row_index, and track_id are required' })
+    return
+  }
+
+  try {
+    const receiptPath = watchYoloLabelFilePath(assetUid, rowIndex)
+    const now = new Date().toISOString()
+    const receipt = readWatchYoloLabelReceipt(assetUid, rowIndex)
+    const labels = receipt.labels && typeof receipt.labels === 'object' ? { ...receipt.labels } : {}
+    const boxRejections = receipt.box_rejections && typeof receipt.box_rejections === 'object' ? { ...receipt.box_rejections } : {}
+    const events = Array.isArray(receipt.events) ? receipt.events : []
+    const bodyBoxKey = typeof req.body?.box_key === 'string' && req.body.box_key.trim() ? req.body.box_key.trim() : ''
+    const boxKey = bodyBoxKey || watchYoloBoxInstanceKey(trackId, req.body?.time_seconds)
+    const event: Record<string, unknown> = {
+      id: `yolo_label_${Date.now()}_${safeWatchFilePart(trackId, 'track')}`,
+      asset_uid: assetUid,
+      row_index: rowIndex,
+      track_id: trackId,
+      box_key: boxKey,
+      action,
+      time_seconds: Number.isFinite(Number(req.body?.time_seconds)) ? Number(req.body.time_seconds) : null,
+      bbox: Array.isArray(req.body?.bbox) ? req.body.bbox : null,
+      confidence: Number.isFinite(Number(req.body?.confidence)) ? Number(req.body.confidence) : null,
+      source: typeof req.body?.source === 'string' ? req.body.source : 'watch-ui',
+      created_at: now,
+    }
+
+    if (action === 'reject_box' || action === 'reset_box') {
+      boxRejections[boxKey] = {
+        track_id: trackId,
+        box_key: boxKey,
+        time_seconds: event.time_seconds,
+        bbox: event.bbox,
+        action,
+        reason: typeof req.body?.reason === 'string' ? req.body.reason : 'human_rejected_detector_box_identity',
+        created_at: now,
+      }
+      event.status = 'rejected_box'
+    } else if (action === 'reset' || action === 'reject') {
+      delete labels[trackId]
+      event.status = action
+    } else {
+      const characterName = typeof req.body?.character_name === 'string' ? req.body.character_name.trim() : ''
+      if (!characterName) {
+        res.status(400).json({ error: 'character_name is required for accepted labels' })
+        return
+      }
+      const actorName = typeof req.body?.actor_name === 'string' ? req.body.actor_name.trim() : ''
+      const label = {
+        track_id: trackId,
+        character_name: characterName,
+        actor_name: actorName,
+        confidence: event.confidence,
+        source: event.source,
+        updated_at: now,
+      }
+      labels[trackId] = label
+      delete boxRejections[boxKey]
+      event.status = 'accepted'
+      event.character_name = characterName
+      event.actor_name = actorName
+    }
+
+    const nextEvents = [...events, event]
+    const nextReceipt = {
+      schema: 'watch.yolo_track_labels.v1',
+      asset_uid: assetUid,
+      row_index: rowIndex,
+      labels,
+      box_rejections: boxRejections,
+      events: nextEvents,
+      receipt_path: receiptPath,
+      updated_at: now,
+    }
+    await mkdir(dirname(receiptPath), { recursive: true })
+    writeFileSync(receiptPath, JSON.stringify(nextReceipt, null, 2))
+
+    const eventMemoryKey = [
+      'watch_yolo_label',
+      safeWatchFilePart(assetUid, 'asset'),
+      `row${String(rowIndex).padStart(4, '0')}`,
+      safeWatchFilePart(trackId, 'track'),
+      safeWatchFilePart(String(event.id || Date.now()), 'id'),
+    ].join('_')
+    const memorySync = await storeWatchYoloLabelInMemory({
+      _key: eventMemoryKey,
+      kind: 'watch_yolo_track_label_event',
+      schema: 'watch_yolo_track_label_event.v1',
+      ...event,
+      labels_after_event: labels,
+      box_rejections_after_event: boxRejections,
+      tags: ['watch', 'watch_yolo_track_label', `asset:${assetUid}`, `row:${rowIndex}`, `track:${trackId}`],
+      updated_at: now,
+    })
+
+    res.json({
+      ...nextReceipt,
+      memory_key: eventMemoryKey,
+      memory_sync: memorySync.ok ? 'stored' : 'failed',
+      memory_sync_error: memorySync.error,
+    })
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to persist YOLO label', detail: err instanceof Error ? err.message : String(err) })
+  }
+})
 
 type WatchIngestJobStageStatus = 'pending' | 'running' | 'complete' | 'blocked'
 type WatchIngestJobStage = {
