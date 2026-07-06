@@ -94,6 +94,22 @@ type ActiveSpeechSource = {
   voiceEnvelope?: EmbryVoiceEnvelope
 }
 
+type BrowserListenerSession = {
+  id: string
+  stop: () => void
+}
+
+type BrowserListenerTelemetry = {
+  state: 'idle' | 'connecting' | 'listening' | 'transcribing' | 'error'
+  finalTranscript?: string
+  realtimeTranscript?: string
+  error?: string
+  rmsDb?: number
+  peakDb?: number
+  packetsSent?: number
+  lastEventType?: string
+}
+
 type TestSession = {
   id: string
   title: string
@@ -113,6 +129,8 @@ const surfaceClass = 'bg-[#121214] text-[#e4e4e7] antialiased'
 const panelClass = 'border border-[#2d2d31] bg-[#18181b]'
 const panelSoftClass = 'border border-[#2d2d31] bg-[#17171a]'
 const mutedTextClass = 'text-[#a1a1aa]'
+const REALTIMESTT_TARGET_SAMPLE_RATE = 16000
+const REALTIMESTT_BROWSER_WS_URL = 'ws://127.0.0.1:8010/ws/transcribe'
 
 function artifactUrl(path: string): string {
   return `/chatterbox-artifacts${path.replace('/tmp/chatterbox-fork-agent-out', '')}`
@@ -129,6 +147,51 @@ function serverEpochToClientPerfMs(startedAtEpochMs?: number): number {
 
 function authorityRecord(value: unknown): Record<string, unknown> {
   return value && typeof value === 'object' ? value as Record<string, unknown> : {}
+}
+
+function resampleFloat32(input: Float32Array, inputRate: number, outputRate: number): Float32Array {
+  if (inputRate === outputRate) return input
+  const outputLength = Math.max(1, Math.round((input.length * outputRate) / inputRate))
+  const output = new Float32Array(outputLength)
+  const ratio = inputRate / outputRate
+  for (let index = 0; index < outputLength; index += 1) {
+    const sourceIndex = index * ratio
+    const before = Math.floor(sourceIndex)
+    const after = Math.min(input.length - 1, before + 1)
+    const weight = sourceIndex - before
+    output[index] = input[before] * (1 - weight) + input[after] * weight
+  }
+  return output
+}
+
+function pcm16PacketFromFloat32(input: Float32Array, inputRate: number): { packet: ArrayBuffer; rmsDb: number; peakDb: number; frames: number } {
+  const samples = resampleFloat32(input, inputRate, REALTIMESTT_TARGET_SAMPLE_RATE)
+  const pcm = new Int16Array(samples.length)
+  let peak = 0
+  let sumSquares = 0
+  for (let index = 0; index < samples.length; index += 1) {
+    const gained = Math.max(-1, Math.min(1, samples[index] * 3.2))
+    const abs = Math.abs(gained)
+    peak = Math.max(peak, abs)
+    sumSquares += gained * gained
+    pcm[index] = gained < 0 ? Math.round(gained * 32768) : Math.round(gained * 32767)
+  }
+  const rms = Math.sqrt(sumSquares / Math.max(1, samples.length))
+  const rmsDb = rms > 0 ? 20 * Math.log10(rms) : -120
+  const peakDb = peak > 0 ? 20 * Math.log10(peak) : -120
+  const metadata = JSON.stringify({
+    sampleRate: REALTIMESTT_TARGET_SAMPLE_RATE,
+    channels: 1,
+    format: 'pcm_s16le',
+    frames: pcm.length,
+  })
+  const metadataBytes = new TextEncoder().encode(metadata)
+  const packet = new ArrayBuffer(4 + metadataBytes.byteLength + pcm.byteLength)
+  const view = new DataView(packet)
+  view.setUint32(0, metadataBytes.byteLength, true)
+  new Uint8Array(packet, 4, metadataBytes.byteLength).set(metadataBytes)
+  new Uint8Array(packet, 4 + metadataBytes.byteLength).set(new Uint8Array(pcm.buffer))
+  return { packet, rmsDb, peakDb, frames: pcm.length }
 }
 
 function turnAuthorityForVoiceTurn(turn: VoiceTurn, createdAt: string): EmbryTurnAuthority {
@@ -655,7 +718,7 @@ function memoryReasoningTraceForTurn(turn: VoiceTurn): NonNullable<ChatMessage['
 export function EmbryVoiceLabRoute(): JSX.Element {
   const [selectedRunId, setSelectedRunId] = useState<string>(initialVisibleTurn?.relatedRunIds[0] ?? sanityRuns[0]?.id ?? '')
   const [selectedTurnId, setSelectedTurnId] = useState<string>(initialVisibleTurn?.id ?? '')
-  const [voiceEnabled, setVoiceEnabled] = useState(true)
+  const [voiceEnabled, setVoiceEnabled] = useState(false)
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(() => chatMessagesFromVoiceTurns(voiceTurns))
   const [streamingSteps, setStreamingSteps] = useState<StreamingStep[]>([])
   const [isStreaming, setIsStreaming] = useState(false)
@@ -665,11 +728,13 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const [activeSpeech, setActiveSpeech] = useState<ActiveSpeechSource | null>(null)
   const [lastTurnAuthority, setLastTurnAuthority] = useState<EmbryTurnAuthority | null>(null)
   const [directSpeakBusy, setDirectSpeakBusy] = useState(false)
+  const [listenerTelemetry, setListenerTelemetry] = useState<BrowserListenerTelemetry>({ state: 'idle' })
   const replayStopRef = useRef(false)
   const directSpeakBusyRef = useRef(false)
   const directPlaybackAudioRef = useRef<HTMLAudioElement | null>(null)
   const directPlaybackRunRef = useRef(0)
   const activeSpeechIdRef = useRef('')
+  const browserListenerRef = useRef<BrowserListenerSession | null>(null)
   const selectedRun = sanityRuns.find((run) => run.id === selectedRunId)
   const selectedTurn = voiceTurns.find((turn) => turn.id === selectedTurnId) ?? voiceTurns[0]
   const gateSummary = useMemo(() => summarizeGates(sanityRuns), [])
@@ -704,14 +769,24 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     setOrbStatusOverride((current) => (current === 'speaking' ? null : current))
   }, [])
 
+  const stopBrowserListener = useCallback(() => {
+    const session = browserListenerRef.current
+    browserListenerRef.current = null
+    session?.stop()
+    setVoiceEnabled(false)
+    setListenerTelemetry((current) => ({ ...current, state: 'idle' }))
+    setOrbStatusOverride((current) => (current === 'listening' || current === 'processing' ? null : current))
+  }, [])
+
   const handleMessagesChange = useCallback((...args: unknown[]) => {
     const [messages] = args
     if (Array.isArray(messages)) setChatMessages(messages as ChatMessage[])
   }, [])
 
-  const handleSend = useCallback(async (text: string) => {
+  const handleSend = useCallback(async (text: string, options: { forceVoice?: boolean } = {}) => {
     const trimmed = text.trim()
     if (!trimmed || isStreaming) return
+    const turnVoiceEnabled = options.forceVoice || voiceEnabled
     const createdAt = new Date().toISOString()
     const turnId = `embry-live-turn-${Date.now()}`
     setChatMessages((messages) => [
@@ -723,7 +798,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         createdAt,
         metadata: {
           surface: 'ux-lab/embry-voice',
-          inputChannel: voiceEnabled ? 'voice-or-text' : 'text',
+          inputChannel: turnVoiceEnabled ? 'voice-or-text' : 'text',
           branch: 'embry-voice',
           turnId,
         },
@@ -782,7 +857,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           text: trimmed,
           turnId,
           sessionId: 'ux-lab-embry-voice',
-          voiceEnabled,
+          voiceEnabled: turnVoiceEnabled,
           tone: 'neutral_warm',
         }),
       })
@@ -845,7 +920,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           backend: payload.backend || 'tau-memory-chatterbox',
           live: true,
           mocked: false,
-          inputChannel: voiceEnabled ? 'voice-or-text' : 'text',
+          inputChannel: turnVoiceEnabled ? 'voice-or-text' : 'text',
           turnId: responseTurnId,
           turnAuthority,
           audioAuthority,
@@ -893,7 +968,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       setReplayState({ playing: false, activeIndex: -1, activeTurnId: responseTurnId, phase: 'response' })
       window.setTimeout(() => {
         scrollSharedChatToBottom()
-        if (!voiceEnabled || !payload.audioUrl) return
+        if (!turnVoiceEnabled || !payload.audioUrl) return
         const audios = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
         const latestAudio = audios.at(-1)
         if (!latestAudio) return
@@ -957,6 +1032,152 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       window.setTimeout(() => setStreamingSteps([]), 1200)
     }
   }, [bindActiveSpeech, clearActiveSpeech, isStreaming, voiceEnabled])
+
+  const startBrowserListener = useCallback(async () => {
+    if (browserListenerRef.current) return
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setListenerTelemetry({ state: 'error', error: 'Browser microphone API is unavailable.' })
+      setOrbStatusOverride('idle')
+      return
+    }
+
+    const listenerId = `browser-listener-${Date.now()}`
+    setVoiceEnabled(true)
+    setOrbStatusOverride('listening')
+    setListenerTelemetry({ state: 'connecting', packetsSent: 0 })
+
+    let stream: MediaStream | null = null
+    let audioContext: AudioContext | null = null
+    let processor: ScriptProcessorNode | null = null
+    let source: MediaStreamAudioSourceNode | null = null
+    let muteGain: GainNode | null = null
+    let socket: WebSocket | null = null
+    let stopped = false
+    let packetsSent = 0
+    let transcriptInFlight = false
+
+    const stop = (): void => {
+      stopped = true
+      processor?.disconnect()
+      source?.disconnect()
+      muteGain?.disconnect()
+      stream?.getTracks().forEach((track) => track.stop())
+      if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ type: 'stop' }))
+      socket?.close()
+      void audioContext?.close().catch(() => undefined)
+    }
+
+    browserListenerRef.current = { id: listenerId, stop }
+
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+          channelCount: 1,
+        },
+      })
+      const AudioContextCtor = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
+      if (!AudioContextCtor) throw new Error('AudioContext is unavailable.')
+      audioContext = new AudioContextCtor()
+      source = audioContext.createMediaStreamSource(stream)
+      processor = audioContext.createScriptProcessor(2048, 1, 1)
+      muteGain = audioContext.createGain()
+      muteGain.gain.value = 0
+      source.connect(processor)
+      processor.connect(muteGain)
+      muteGain.connect(audioContext.destination)
+
+      socket = new WebSocket(REALTIMESTT_BROWSER_WS_URL)
+      socket.binaryType = 'arraybuffer'
+
+      socket.onopen = () => {
+        if (stopped) return
+        socket?.send(JSON.stringify({ type: 'start' }))
+        setListenerTelemetry({ state: 'listening', packetsSent: 0 })
+        setOrbStatusOverride('listening')
+      }
+
+      socket.onmessage = (event) => {
+        let message: Record<string, unknown>
+        try {
+          message = JSON.parse(String(event.data)) as Record<string, unknown>
+        } catch {
+          return
+        }
+        const eventType = typeof message.type === 'string' ? message.type : 'unknown'
+        const text = typeof message.text === 'string'
+          ? message.text.trim()
+          : typeof message.sentence === 'string'
+            ? message.sentence.trim()
+            : ''
+        setListenerTelemetry((current) => ({
+          ...current,
+          state: eventType === 'final' && text ? 'transcribing' : current.state,
+          lastEventType: eventType,
+          realtimeTranscript: eventType === 'realtime' && text ? text : current.realtimeTranscript,
+          finalTranscript: eventType === 'final' && text ? text : current.finalTranscript,
+        }))
+        if (eventType !== 'final' || !text || transcriptInFlight) return
+        transcriptInFlight = true
+        setOrbStatusOverride('processing')
+        void handleSend(text, { forceVoice: true }).finally(() => {
+          transcriptInFlight = false
+          if (!stopped) setOrbStatusOverride('listening')
+        })
+      }
+
+      socket.onerror = () => {
+        setListenerTelemetry((current) => ({
+          ...current,
+          state: 'error',
+          error: `RealtimeSTT listener WebSocket failed at ${REALTIMESTT_BROWSER_WS_URL}`,
+        }))
+        setOrbStatusOverride('idle')
+      }
+
+      socket.onclose = () => {
+        if (browserListenerRef.current?.id === listenerId) browserListenerRef.current = null
+        if (!stopped) {
+          setListenerTelemetry((current) => ({ ...current, state: 'error', error: 'RealtimeSTT listener WebSocket closed.' }))
+          setOrbStatusOverride('idle')
+        }
+      }
+
+      processor.onaudioprocess = (event) => {
+        if (stopped || socket?.readyState !== WebSocket.OPEN || !audioContext) return
+        const input = event.inputBuffer.getChannelData(0)
+        const { packet, rmsDb, peakDb } = pcm16PacketFromFloat32(input, audioContext.sampleRate)
+        packetsSent += 1
+        setListenerTelemetry((current) => ({
+          ...current,
+          rmsDb: Number(rmsDb.toFixed(1)),
+          peakDb: Number(peakDb.toFixed(1)),
+          packetsSent,
+        }))
+        socket.send(packet)
+      }
+    } catch (error) {
+      stop()
+      if (browserListenerRef.current?.id === listenerId) browserListenerRef.current = null
+      setVoiceEnabled(false)
+      setListenerTelemetry({
+        state: 'error',
+        error: error instanceof Error ? error.message : String(error),
+        packetsSent,
+      })
+      setOrbStatusOverride('idle')
+    }
+  }, [handleSend])
+
+  const handleVoiceToggle = useCallback((enabled: boolean) => {
+    if (enabled) {
+      void startBrowserListener()
+      return
+    }
+    stopBrowserListener()
+  }, [startBrowserListener, stopBrowserListener])
 
   const replaySession = useCallback(async (session?: TestSession) => {
     const turnsToReplay = session
@@ -1336,6 +1557,9 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         <div className="flex shrink-0 flex-wrap justify-end gap-1.5">
           <StatusPill label="memory-first voice lab" tone="good" />
           <StatusPill label={`replay ${replayState.phase}`} tone={replayState.playing ? 'good' : replayState.phase === 'interrupted' ? 'warn' : undefined} />
+          <StatusPill label={`listener ${listenerTelemetry.state}`} tone={listenerTelemetry.state === 'error' ? 'bad' : listenerTelemetry.state === 'listening' || listenerTelemetry.state === 'transcribing' ? 'good' : undefined} />
+          {listenerTelemetry.packetsSent !== undefined && <StatusPill label={`pcm ${listenerTelemetry.packetsSent}`} />}
+          {listenerTelemetry.rmsDb !== undefined && <StatusPill label={`rms ${listenerTelemetry.rmsDb}db`} tone={listenerTelemetry.rmsDb < -45 ? 'warn' : undefined} />}
           <StatusPill label="Chatterbox Turbo" />
           <StatusPill label="Embry" />
         </div>
@@ -1359,6 +1583,13 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           data-active-turn-id={lastTurnAuthority?.turnId ?? ''}
           data-active-audio-artifact-id={lastTurnAuthority?.audioAuthority?.artifactId ?? ''}
           data-active-speech-turn-id={activeSpeech?.turnId ?? ''}
+          data-listener-state={listenerTelemetry.state}
+          data-listener-final-transcript={listenerTelemetry.finalTranscript ?? ''}
+          data-listener-realtime-transcript={listenerTelemetry.realtimeTranscript ?? ''}
+          data-listener-packets-sent={listenerTelemetry.packetsSent ?? 0}
+          data-listener-rms-db={listenerTelemetry.rmsDb ?? ''}
+          data-listener-peak-db={listenerTelemetry.peakDb ?? ''}
+          data-listener-error={listenerTelemetry.error ?? ''}
           data-replay-phase={replayState.phase}
           data-visible-turn-count={replayState.visibleTurnCount ?? chatMessages.length}
           className={`min-h-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden ${panelClass}`}
@@ -1410,7 +1641,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             voiceEnabled={voiceEnabled}
             voiceStatus={effectiveVoiceStatus}
             voiceLabel="Embry voice"
-            onVoiceToggle={setVoiceEnabled}
+            onVoiceToggle={handleVoiceToggle}
             activeProcessingTurnId={isStreaming ? replayState.activeTurnId : undefined}
             activeProcessingMessageId={isStreaming && !replayState.activeTurnId
               ? chatMessages.filter((message) => message.role === 'user').at(-1)?.id
