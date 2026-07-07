@@ -18918,6 +18918,692 @@ app.post('/api/evidence-case', async (req, res) => {
   }
 })
 
+type TauChatStepStatus = 'pending' | 'running' | 'completed' | 'failed' | 'skipped' | 'done'
+type TauChatBranch = 'compliance' | 'evidence-case'
+
+function tauChatIsoNow(): string {
+  return new Date().toISOString()
+}
+
+function tauChatStep(args: {
+  id: string
+  branch?: TauChatBranch
+  status?: TauChatStepStatus
+  label?: string
+  liveStatusLabel?: string
+  detail?: string
+  data?: unknown
+  error?: string
+}): JsonRecord {
+  const status = args.status ?? 'running'
+  const branch = args.branch ?? 'compliance'
+  const timestamp = tauChatIsoNow()
+  return {
+    kind: args.error ? 'error' : 'step',
+    id: args.id,
+    label: args.label ?? tauChatStepLabel(args.id),
+    status,
+    branch,
+    disclosureVariant: branch === 'evidence-case' ? 'evidence-case' : 'thinking',
+    liveStatusLabel: args.liveStatusLabel ?? 'Thinking...',
+    detail: args.detail,
+    data: args.data,
+    error: args.error,
+    startedAt: status === 'running' || status === 'pending' ? timestamp : undefined,
+    completedAt: status === 'completed' || status === 'failed' || status === 'skipped' ? timestamp : undefined,
+  }
+}
+
+function tauChatStepLabel(id: string): string {
+  return id === 'extracting-entities' ? 'Extracting entities'
+    : id === 'looking-in-memory' ? 'Looking in memory'
+      : id === 'checking-gates' ? 'Checking gates'
+        : id === 'clarifying' ? 'Checking clarification'
+          : id === 'finalizing-intent' ? 'Finalizing intent'
+            : id === 'getting-results' ? 'Getting results'
+              : id === 'answering' ? 'Answering'
+                : id
+}
+
+function tauChatTraceFromSteps(steps: JsonRecord[]): JsonRecord[] {
+  const latest = new Map<string, JsonRecord>()
+  for (const step of steps) {
+    if (step.kind === 'final' || step.kind === 'token' || step.kind === 'message') continue
+    const id = typeof step.id === 'string' ? step.id : ''
+    if (!id) continue
+    latest.set(id, {
+      id,
+      label: typeof step.label === 'string' ? step.label : tauChatStepLabel(id),
+      status: typeof step.status === 'string' ? step.status : 'completed',
+      detail: typeof step.detail === 'string' ? step.detail : undefined,
+      disclosureVariant: step.disclosureVariant === 'evidence-case' ? 'evidence-case' : 'thinking',
+      icon: step.disclosureVariant === 'evidence-case' ? 'shield' : 'sparkles',
+      startedAt: typeof step.startedAt === 'string' ? step.startedAt : undefined,
+      completedAt: typeof step.completedAt === 'string' ? step.completedAt : undefined,
+      data: step.data,
+    })
+  }
+  return [...latest.values()]
+}
+
+function tauChatString(value: unknown): string | undefined {
+  return typeof value === 'string' && value.trim() ? value.trim() : undefined
+}
+
+function tauChatNumber(value: unknown): number | undefined {
+  if (typeof value === 'number' && Number.isFinite(value)) return value
+  if (typeof value === 'string') {
+    const parsed = Number(value)
+    if (Number.isFinite(parsed)) return parsed
+  }
+  return undefined
+}
+
+function tauChatRecord(value: unknown): JsonRecord {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value as JsonRecord : {}
+}
+
+function tauChatArrayLength(value: unknown): number | undefined {
+  return Array.isArray(value) ? value.length : undefined
+}
+
+function tauChatExtractContent(value: unknown): string {
+  if (typeof value === 'string') return value.trim()
+  const record = tauChatRecord(value)
+  for (const key of ['answer', 'content', 'message', 'response', 'text', 'final']) {
+    const direct = tauChatString(record[key])
+    if (direct) return direct
+  }
+  for (const key of ['data', 'result', 'packet', 'answerPacket', 'payload']) {
+    const nested = tauChatRecord(record[key])
+    for (const nestedKey of ['answer', 'content', 'message', 'response', 'text', 'final']) {
+      const nestedValue = tauChatString(nested[nestedKey])
+      if (nestedValue) return nestedValue
+    }
+  }
+  return ''
+}
+
+function tauChatSummarizeEntities(entities: JsonRecord): string {
+  const parts = ['entities', 'controls', 'domains', 'artifacts']
+    .map((key) => [key, tauChatArrayLength(entities[key])] as const)
+    .filter(([, count]) => count !== undefined)
+    .map(([key, count]) => `${count} ${key}`)
+  return parts.length ? parts.join(', ') : 'Entity extraction completed'
+}
+
+function tauChatSummarizeRecall(recall: JsonRecord): string {
+  const confidence = tauChatNumber(recall.confidence)
+  if (confidence !== undefined) return `Recall confidence ${confidence.toFixed(2)}`
+  const hits = tauChatArrayLength(recall.hits ?? recall.items ?? recall.results)
+  const citations = tauChatArrayLength(recall.citations)
+  const parts: string[] = []
+  if (hits !== undefined) parts.push(`${hits} hits`)
+  if (citations !== undefined) parts.push(`${citations} citations`)
+  return parts.length ? parts.join(', ') : 'Recall completed'
+}
+
+function tauChatEvaluateGates(args: {
+  entities: JsonRecord
+  recall: JsonRecord
+  gateDepth: string
+}): JsonRecord {
+  const reasons: string[] = []
+  const confidence = tauChatNumber(args.recall.confidence)
+  const entityCount = tauChatArrayLength(args.entities.entities) ?? tauChatArrayLength(args.entities.controls) ?? 0
+  const strict = args.gateDepth === 'strict'
+  const balanced = args.gateDepth === 'balanced'
+  if (confidence !== undefined && confidence < (strict ? 0.45 : balanced ? 0.25 : 0.1)) reasons.push('low recall confidence')
+  if (strict && entityCount === 0) reasons.push('no extracted entities')
+  const needsClarification = reasons.length > 0 && args.gateDepth !== 'light'
+  return {
+    ok: reasons.length === 0,
+    needsClarification,
+    reasons,
+    summary: reasons.length ? `Needs clarification: ${reasons.join(', ')}` : 'Gates passed',
+  }
+}
+
+function tauChatIsClarificationRequired(clarification: JsonRecord): boolean {
+  const state = String(clarification.status ?? clarification.state ?? '').toUpperCase()
+  return state === 'INCONCLUSIVE' || state === 'CLARIFY' || Array.isArray(clarification.options) || Array.isArray(clarification.clarifyOptions)
+}
+
+function tauChatIntentSummary(intent: JsonRecord): string {
+  const type = tauChatString(intent.intent) ?? tauChatString(intent.type) ?? tauChatString(intent.route) ?? tauChatString(intent.action)
+  return type ? `Intent: ${type}` : 'Intent finalized'
+}
+
+function tauChatIsEvidenceIntent(intent: JsonRecord, branchHint: unknown, question: string): boolean {
+  const queryPlan = tauChatRecord(intent.query_plan)
+  const toolCalls = Array.isArray(intent.tool_calls) ? intent.tool_calls : []
+  const normalized = question.toLowerCase()
+  return branchHint === 'evidence-case'
+    || intent.content_type === 'evidence_case'
+    || intent.render_style_id === 'evidence_case_panel'
+    || queryPlan.strategy === 'sparta_evidence_case'
+    || toolCalls.some((call) => tauChatRecord(call).endpoint === '/create-evidence-case')
+    || normalized.includes('evidence case')
+    || normalized.includes('countermeasure')
+}
+
+function tauChatContextControlId(matrixContext: JsonRecord, context: JsonRecord): string | undefined {
+  const direct = tauChatString(matrixContext.controlId)
+    ?? tauChatString(matrixContext.control_id)
+    ?? tauChatString(matrixContext.primaryControlId)
+  if (direct) return direct
+
+  const selectedQra = tauChatRecord(context.selectedQra ?? context.selected_qra)
+  return tauChatString(selectedQra.control_id)
+    ?? tauChatString(selectedQra.controlId)
+    ?? tauChatString(selectedQra.primaryControlId)
+}
+
+function tauChatScopedQraContext(context: JsonRecord): JsonRecord | null {
+  const selectedQra = tauChatRecord(context.selectedQra ?? context.selected_qra)
+  if (Object.keys(selectedQra).length === 0) return null
+  return {
+    key: tauChatString(selectedQra.key) ?? tauChatString(selectedQra._key) ?? null,
+    qra_id: tauChatString(selectedQra.qra_id) ?? tauChatString(selectedQra.qraId) ?? null,
+    control_id: tauChatString(selectedQra.control_id) ?? tauChatString(selectedQra.controlId) ?? null,
+    question: tauChatString(selectedQra.question) ?? null,
+    answer: tauChatString(selectedQra.answer) ?? null,
+    reasoning: tauChatString(selectedQra.reasoning) ?? null,
+  }
+}
+
+function tauChatPrimaryControlId(entities: JsonRecord, intent: JsonRecord, matrixContext: JsonRecord = {}, context: JsonRecord = {}): string | undefined {
+  const agentDecision = tauChatRecord(entities.agent_decision)
+  const primaryEntityId = tauChatString(agentDecision.primary_entity_id)
+  if (primaryEntityId) return primaryEntityId
+  const controlIds = Array.isArray(entities.control_ids) ? entities.control_ids : []
+  const control = controlIds.find((value) => typeof value === 'string' && value.trim())
+  if (typeof control === 'string') return control
+  const intentEntities = Array.isArray(intent.entities) ? intent.entities : []
+  const intentEntity = intentEntities.find((value) => typeof value === 'string' && value.trim())
+  if (typeof intentEntity === 'string') return intentEntity
+  return tauChatContextControlId(matrixContext, context)
+}
+
+function tauChatResponseAction(value: unknown): 'answer' | 'deflect' | 'clarify' {
+  return value === 'answer' || value === 'deflect' || value === 'clarify' ? value : 'clarify'
+}
+
+function tauChatEvidenceContent(evidenceCase: JsonRecord, action: 'answer' | 'deflect' | 'clarify'): string {
+  const responsePolicy = tauChatRecord(evidenceCase.response_policy)
+  const userMessage = tauChatString(responsePolicy.user_message)
+  const answer = tauChatString(evidenceCase.answer)
+  const questions = Array.isArray(responsePolicy.clarifying_questions)
+    ? responsePolicy.clarifying_questions.map((question) => tauChatString(question)).filter(Boolean).join('\n')
+    : ''
+  if (action === 'answer') return userMessage || answer || 'SPARTA evidence policy returned an answer without renderable text.'
+  if (action === 'deflect') return userMessage || 'I cannot provide an authoritative answer from the selected SPARTA evidence route.'
+  return userMessage || questions || 'I need one more detail before I can ground this in SPARTA evidence.'
+}
+
+function tauChatEvidenceSummary(evidenceCase: JsonRecord): string {
+  const responsePolicy = tauChatRecord(evidenceCase.response_policy)
+  const action = tauChatResponseAction(responsePolicy.response_action ?? evidenceCase.response_action)
+  const gateTrace = Array.isArray(evidenceCase.gate_trace) ? evidenceCase.gate_trace : []
+  if (gateTrace.length) {
+    const passed = gateTrace.filter((gate) => tauChatRecord(gate).passed !== false).length
+    return `Evidence policy ${action}; ${passed}/${gateTrace.length} gates passed`
+  }
+  return `Evidence policy ${action}`
+}
+
+function tauChatSelectedQraAnswer(question: string, selectedQra: JsonRecord | null, controlId: unknown): string | null {
+  if (!selectedQra) return null
+  const answer = tauChatString(selectedQra.answer)
+  if (!answer) return null
+
+  const q = question.toLowerCase()
+  const candidates = [
+    tauChatString(controlId),
+    tauChatString(selectedQra.control_id),
+    tauChatString(selectedQra.qra_id),
+    tauChatString(selectedQra.key),
+  ].filter((value): value is string => Boolean(value && value.trim()))
+
+  const matchesScope = candidates.length === 0 || candidates.some((value) => q.includes(value.toLowerCase()))
+  if (!matchesScope) return null
+
+  const reasoning = tauChatString(selectedQra.reasoning)
+  return reasoning ? `${answer}\n\nSelected QRA reasoning: ${reasoning}` : answer
+}
+
+async function buildSpartaEvidenceCaseRunPayload(question: string, controlId: unknown, selectedProfile: unknown, requestContext: JsonRecord = {}): Promise<JsonRecord> {
+  const scopedQra = tauChatScopedQraContext(requestContext)
+  const preflight = detectEvidenceCasePreflight(question, selectedProfile)
+  if (preflight) {
+    const payload = evidenceCasePreflightPayload(question, preflight, selectedProfile)
+    if (scopedQra) {
+      payload.context = { ...tauChatRecord(payload.context), selected_qra: scopedQra }
+      payload.diagnostics = { ...tauChatRecord(payload.diagnostics), scoped_qra_context_used: true }
+    }
+    if (evidenceCaseNeedsGapReview(payload)) {
+      const gapReview = buildAdvisoryGapReview(question, controlId, payload)
+      payload.gap_review = gapReview
+      payload.gap_review_status = gapReview.gap_review_status
+      payload.human_review_state = gapReview.human_review_state
+      payload.proposed_correction = gapReview.proposed_correction
+      payload.correction_lineage = gapReview.correction_lineage
+      payload.evidence_case_version = gapReview.evidence_case_version
+    }
+    return attachSpartaChatResponsePolicy(question, payload, selectedProfile)
+  }
+
+  const ambiguousReferents = detectAmbiguousQraReferents(question)
+  if (ambiguousReferents.length > 0) {
+    return attachSpartaChatResponsePolicy(question, evidenceCaseAmbiguousPayload(question, ambiguousReferents), selectedProfile)
+  }
+
+  try {
+    const result = await proxyPost('/create-evidence-case', {
+      question,
+      source_id: controlId || null,
+      selected_qra: scopedQra,
+      skip_qra_recall: false,
+      enable_llm: false,
+    })
+    const payload = normalizeEvidenceCaseWorkflowResult(question, controlId, result)
+    if (scopedQra) {
+      payload.context = { ...tauChatRecord(payload.context), selected_qra: scopedQra }
+      payload.diagnostics = { ...tauChatRecord(payload.diagnostics), scoped_qra_context_used: true }
+    }
+    if (evidenceCaseNeedsGapReview(payload)) {
+      const gapReview = buildAdvisoryGapReview(question, controlId, payload)
+      payload.gap_review = gapReview
+      payload.gap_review_status = gapReview.gap_review_status
+      payload.human_review_state = gapReview.human_review_state
+      payload.proposed_correction = gapReview.proposed_correction
+      payload.correction_lineage = gapReview.correction_lineage
+      payload.evidence_case_version = gapReview.evidence_case_version
+    }
+    return attachSpartaChatResponsePolicy(question, payload, selectedProfile)
+  } catch (e: any) {
+    console.error('[tau/chat/turn] Evidence case daemon call failed:', e.message)
+    const recall = await proxyPost('/recall', {
+      q: question,
+      k: 5,
+      collections: ['sparta_qra', 'sparta_controls'],
+    })
+    const items = Array.isArray(recall.items) ? recall.items : []
+    const payload: JsonRecord = {
+      verdict: { state: items.length > 0 ? 'inconclusive' : 'not_satisfied', grade: items.length > 0 ? 'C' : 'F', score: items.length > 0 ? 0.4 : 0 },
+      gate_trace: [
+        { gate: 'recall_fallback', passed: items.length > 0, detail: `${items.length} items via /recall` },
+      ],
+      evidence: items.slice(0, 3).map((i: any) => ({
+        method: 'EXAMINE',
+        layer: i._collection || 'sparta_qra',
+        result: { qra_text: i.problem || i.question || i.name, control_id: i.control_id || i._key },
+        confidence: i.scores?.bm25 || 0.5,
+      })),
+      diagnostics: {
+        authority: 'server_deterministic_gate',
+        workflow: 'create-evidence-case',
+        mode: 'recall_fallback',
+        daemon_error: e?.message || String(e),
+        recall_count: items.length,
+        scoped_qra_context_used: Boolean(scopedQra),
+      },
+      context: scopedQra ? { selected_qra: scopedQra } : {},
+      answer: items.length > 0 ? `Found ${items.length} items. Full evidence case requires daemon.` : 'No results found.',
+    }
+    const gapReview = buildAdvisoryGapReview(question, controlId, payload)
+    payload.gap_review = gapReview
+    payload.gap_review_status = gapReview.gap_review_status
+    payload.human_review_state = gapReview.human_review_state
+    payload.proposed_correction = gapReview.proposed_correction
+    payload.correction_lineage = gapReview.correction_lineage
+    payload.evidence_case_version = gapReview.evidence_case_version
+    return attachSpartaChatResponsePolicy(question, payload, selectedProfile)
+  }
+}
+
+app.post('/api/tau/chat/turn', async (req, res) => {
+  const question = tauChatString(req.body?.question ?? req.body?.query ?? req.body?.text)
+  if (!question) return res.status(400).json({ error: 'question required' })
+
+  const steps: JsonRecord[] = []
+  const addStep = (step: JsonRecord) => {
+    steps.push(step)
+    return step
+  }
+  const matrixContext = tauChatRecord(req.body?.matrix_context)
+  const requestContext = tauChatRecord(req.body?.context)
+  const gateDepth = tauChatString(req.body?.gate_depth) ?? 'balanced'
+  const branchHint = req.body?.branch_hint
+  const selectedProfile = req.body?.evidenceProfile ?? req.body?.profile
+
+  try {
+    addStep(tauChatStep({
+      id: 'extracting-entities',
+      status: 'running',
+      liveStatusLabel: 'Tau: extracting entities...',
+      detail: 'Memory /extract-entities is the first SPARTA chat-turn step.',
+    }))
+    const entities = tauChatRecord(await proxyPost('/extract-entities', {
+      text: question,
+      query: question,
+      surface: 'sparta-explorer',
+      matrix_context: matrixContext,
+    }))
+    addStep(tauChatStep({
+      id: 'extracting-entities',
+      status: 'completed',
+      liveStatusLabel: 'Tau: extracting entities...',
+      detail: tauChatSummarizeEntities(entities),
+      data: entities,
+    }))
+
+    addStep(tauChatStep({
+      id: 'looking-in-memory',
+      status: 'running',
+      liveStatusLabel: 'Tau: looking in memory...',
+      detail: 'Memory /recall checks SPARTA training and prior evidence before intent finalization.',
+    }))
+    const trainingRecall = tauChatRecord(await proxyPost('/recall', {
+      q: question,
+      query: question,
+      text: question,
+      profile: 'intent-training-v2',
+      entities,
+      matrix_context: matrixContext,
+      surface: 'sparta-explorer',
+    }))
+    addStep(tauChatStep({
+      id: 'looking-in-memory',
+      status: 'completed',
+      liveStatusLabel: 'Tau: looking in memory...',
+      detail: tauChatSummarizeRecall(trainingRecall),
+      data: trainingRecall,
+    }))
+
+    const gates = tauChatEvaluateGates({ entities, recall: trainingRecall, gateDepth })
+    addStep(tauChatStep({
+      id: 'checking-gates',
+      status: 'completed',
+      liveStatusLabel: 'Tau: checking gates...',
+      detail: tauChatString(gates.summary) ?? 'Gates checked',
+      data: gates,
+    }))
+
+    if (gates.needsClarification) {
+      addStep(tauChatStep({
+        id: 'clarifying',
+        status: 'running',
+        liveStatusLabel: 'Tau: checking clarification...',
+        detail: 'Memory /clarify determines whether the turn should ask a follow-up.',
+      }))
+      const clarification = tauChatRecord(await proxyPost('/clarify', {
+        q: question,
+        query: question,
+        text: question,
+        entities,
+        recall: trainingRecall,
+        gates,
+        matrix_context: matrixContext,
+      }))
+      addStep(tauChatStep({
+        id: 'clarifying',
+        status: 'completed',
+        liveStatusLabel: 'Tau: checking clarification...',
+        detail: tauChatString(clarification.status ?? clarification.state) ? `Clarify state: ${clarification.status ?? clarification.state}` : 'Clarification checked',
+        data: clarification,
+      }))
+      if (tauChatIsClarificationRequired(clarification)) {
+        addStep(tauChatStep({
+          id: 'answering',
+          status: 'completed',
+          liveStatusLabel: 'Tau: answering...',
+          detail: 'Tau selected clarify.',
+        }))
+        const content = tauChatExtractContent(clarification) || 'I need one more detail before I can ground this in SPARTA memory.'
+        const thinkingTrace = tauChatTraceFromSteps(steps)
+        const message = {
+          role: 'assistant',
+          content,
+          reasoningSteps: thinkingTrace,
+          thinkingTrace,
+          metadata: {
+            branch: 'compliance',
+            disclosureVariant: 'thinking',
+            source: 'tau-chat-turn',
+            tauBackend: true,
+            memoryBacked: true,
+            responseAction: 'clarify',
+            entities,
+            trainingRecall,
+            gates,
+            clarification,
+          },
+        }
+        return res.json({ ok: true, branch: 'compliance', response_action: 'clarify', steps, thinkingTrace, message, receipt: message.metadata })
+      }
+    } else {
+      addStep(tauChatStep({
+        id: 'clarifying',
+        status: 'skipped',
+        liveStatusLabel: 'Tau: checking clarification...',
+        detail: 'No clarification needed',
+      }))
+    }
+
+    addStep(tauChatStep({
+      id: 'finalizing-intent',
+      status: 'running',
+      liveStatusLabel: 'Tau: finalizing intent...',
+      detail: 'Memory /intent chooses answer, deflect, clarify, or evidence-case policy.',
+    }))
+    const intent = tauChatRecord(await proxyPost('/intent', {
+      q: question,
+      query: question,
+      text: question,
+      entities,
+      recall: trainingRecall,
+      gates,
+      matrix_context: matrixContext,
+      surface: 'sparta-explorer',
+      scope: 'sparta',
+    }))
+    addStep(tauChatStep({
+      id: 'finalizing-intent',
+      status: 'completed',
+      liveStatusLabel: 'Tau: finalizing intent...',
+      detail: tauChatIntentSummary(intent),
+      data: intent,
+    }))
+
+    if (tauChatIsEvidenceIntent(intent, branchHint, question)) {
+      const branch: TauChatBranch = 'evidence-case'
+      const controlId = tauChatPrimaryControlId(entities, intent, matrixContext, requestContext)
+      addStep(tauChatStep({
+        id: 'getting-results',
+        branch,
+        status: 'running',
+        liveStatusLabel: 'Tau: running SPARTA evidence policy...',
+        detail: controlId ? `Evidence route for ${controlId}` : 'Evidence route selected by Tau memory intent',
+      }))
+      const evidenceCase = await buildSpartaEvidenceCaseRunPayload(question, controlId, selectedProfile, requestContext)
+      const responsePolicy = tauChatRecord(evidenceCase.response_policy)
+      const scopedQra = tauChatScopedQraContext(requestContext)
+      const scopedQraContent = tauChatSelectedQraAnswer(question, scopedQra, controlId)
+      const policyResponseAction = tauChatResponseAction(responsePolicy.response_action ?? evidenceCase.response_action)
+      const responseAction = scopedQraContent && policyResponseAction !== 'answer' ? 'answer' : policyResponseAction
+      if (scopedQraContent && policyResponseAction !== 'answer') {
+        evidenceCase.response_policy = {
+          ...responsePolicy,
+          response_action: 'answer',
+          user_message: scopedQraContent,
+          override_reason: 'selected_qra_context',
+        }
+        evidenceCase.response_action = 'answer'
+        evidenceCase.diagnostics = {
+          ...tauChatRecord(evidenceCase.diagnostics),
+          scoped_qra_answer_override: true,
+          original_response_action: policyResponseAction,
+        }
+      }
+      addStep(tauChatStep({
+        id: 'getting-results',
+        branch,
+        status: 'completed',
+        liveStatusLabel: 'Tau: running SPARTA evidence policy...',
+        detail: tauChatEvidenceSummary(evidenceCase),
+        data: evidenceCase,
+      }))
+      addStep(tauChatStep({
+        id: 'answering',
+        branch,
+        status: 'completed',
+        liveStatusLabel: 'Tau: answering...',
+        detail: scopedQraContent && policyResponseAction !== 'answer'
+          ? `Tau response policy: answer via selected QRA context; original policy ${policyResponseAction}`
+          : `Tau response policy: ${responseAction}`,
+      }))
+      const content = scopedQraContent && policyResponseAction !== 'answer'
+        ? scopedQraContent
+        : tauChatEvidenceContent(evidenceCase, responseAction)
+      const thinkingTrace = tauChatTraceFromSteps(steps)
+      const message = {
+        role: 'assistant',
+        content,
+        skillUsed: 'create-evidence-case',
+        evidenceCase: true,
+        reasoningSteps: thinkingTrace,
+        thinkingTrace,
+        metadata: {
+          branch,
+          disclosureVariant: 'evidence-case',
+          source: 'tau-chat-turn',
+          tauBackend: true,
+          memoryBacked: true,
+          responseAction,
+          controlId,
+          entities,
+          trainingRecall,
+          gates,
+          intent,
+          evidenceCase,
+          routedBy: 'tau.memory.intent',
+        },
+      }
+      return res.json({ ok: true, branch, response_action: responseAction, steps, thinkingTrace, message, receipt: message.metadata })
+    }
+
+    addStep(tauChatStep({
+      id: 'getting-results',
+      status: 'running',
+      liveStatusLabel: 'Tau: getting results...',
+      detail: 'Memory /recall runs the finalized query specification.',
+    }))
+    const querySpec = tauChatRecord(intent.query_spec ?? intent.querySpec ?? intent)
+    const memoryResults = tauChatRecord(await proxyPost('/recall', {
+      q: question,
+      query: question,
+      text: question,
+      query_spec: querySpec,
+      entities,
+      intent,
+      matrix_context: matrixContext,
+      surface: 'sparta-explorer',
+    }))
+    addStep(tauChatStep({
+      id: 'getting-results',
+      status: 'completed',
+      liveStatusLabel: 'Tau: getting results...',
+      detail: tauChatSummarizeRecall(memoryResults),
+      data: memoryResults,
+    }))
+
+    addStep(tauChatStep({
+      id: 'answering',
+      status: 'running',
+      liveStatusLabel: 'Tau: answering...',
+      detail: 'Tau is composing from grounded memory results.',
+    }))
+    let content = tauChatExtractContent(memoryResults)
+    let fallbackUsed = false
+    let fallback: JsonRecord | null = null
+    if (!content) {
+      fallbackUsed = true
+      fallback = tauChatRecord(await proxyPost('/answer', {
+        q: question,
+        query: question,
+        text: question,
+        entities,
+        intent,
+        recall: memoryResults,
+        matrix_context: matrixContext,
+      }))
+      content = tauChatExtractContent(fallback) || 'I could not find enough grounded SPARTA memory to answer this turn.'
+    }
+    addStep(tauChatStep({
+      id: 'answering',
+      status: 'completed',
+      liveStatusLabel: 'Tau: answering...',
+      detail: fallbackUsed ? 'Answered with Memory /answer fallback' : 'Answered from Memory /recall',
+      data: fallback ?? memoryResults,
+    }))
+    const thinkingTrace = tauChatTraceFromSteps(steps)
+    const message = {
+      role: 'assistant',
+      content,
+      reasoningSteps: thinkingTrace,
+      thinkingTrace,
+      metadata: {
+        branch: 'compliance',
+        disclosureVariant: 'thinking',
+        source: 'tau-chat-turn',
+        tauBackend: true,
+        memoryBacked: true,
+        responseAction: 'answer',
+        entities,
+        trainingRecall,
+        gates,
+        intent,
+        memoryResults,
+        fallbackUsed,
+      },
+    }
+    return res.json({ ok: true, branch: 'compliance', response_action: 'answer', steps, thinkingTrace, message, receipt: message.metadata })
+  } catch (error: any) {
+    const message = error?.message || String(error)
+    addStep(tauChatStep({
+      id: 'answering',
+      status: 'failed',
+      liveStatusLabel: 'Tau: stopped fail-closed...',
+      detail: message,
+      error: message,
+    }))
+    const thinkingTrace = tauChatTraceFromSteps(steps)
+    return res.status(502).json({
+      ok: false,
+      error: 'tau_chat_turn_failed',
+      detail: message,
+      branch: 'compliance',
+      steps,
+      thinkingTrace,
+      message: {
+        role: 'assistant',
+        content: `Tau could not complete the SPARTA chat turn: ${message}`,
+        reasoningSteps: thinkingTrace,
+        thinkingTrace,
+        metadata: {
+          branch: 'compliance',
+          disclosureVariant: 'thinking',
+          source: 'tau-chat-turn',
+          tauBackend: true,
+          memoryBacked: false,
+          error: message,
+        },
+      },
+    })
+  }
+})
+
 app.post('/api/evidence-case/run', async (req, res) => {
   // Call daemon /create-evidence-case directly (no subprocess, <1s per best-practices-arangodb)
   const { question, controlId, profile, evidenceProfile } = req.body
