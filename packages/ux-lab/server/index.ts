@@ -5209,6 +5209,9 @@ app.all('/api/memory/{*path}', (req, res) => {
 app.post('/api/scillm', (req, res) => {
   const body = JSON.stringify(req.body)
   const url = new URL(`${SCILLM_URL}/v1/chat/completions`)
+  const authorization = typeof req.headers.authorization === 'string'
+    ? req.headers.authorization
+    : `Bearer ${SCILLM_PROXY_KEY}`
 
   const proxyReq = httpRequest(
     {
@@ -5219,7 +5222,8 @@ app.post('/api/scillm', (req, res) => {
       headers: {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(body),
-        'Authorization': `Bearer ${SCILLM_PROXY_KEY}`,
+        'Authorization': authorization,
+        'X-Caller-Skill': String(req.headers['x-caller-skill'] ?? 'ux-lab'),
       },
     },
     (proxyRes) => {
@@ -19106,6 +19110,9 @@ function tauChatScopedQraContext(context: JsonRecord): JsonRecord | null {
     key: tauChatString(selectedQra.key) ?? tauChatString(selectedQra._key) ?? null,
     qra_id: tauChatString(selectedQra.qra_id) ?? tauChatString(selectedQra.qraId) ?? null,
     control_id: tauChatString(selectedQra.control_id) ?? tauChatString(selectedQra.controlId) ?? null,
+    extracted_control_id: tauChatString(selectedQra.extracted_control_id) ?? tauChatString(selectedQra.extractedControlId) ?? null,
+    canonical_name: tauChatString(selectedQra.canonical_name) ?? tauChatString(selectedQra.canonicalName) ?? null,
+    descriptor: tauChatString(selectedQra.descriptor) ?? null,
     question: tauChatString(selectedQra.question) ?? null,
     answer: tauChatString(selectedQra.answer) ?? null,
     reasoning: tauChatString(selectedQra.reasoning) ?? null,
@@ -19155,11 +19162,11 @@ function tauChatEvidenceSummary(evidenceCase: JsonRecord): string {
 function tauChatSelectedQraAnswer(question: string, selectedQra: JsonRecord | null, controlId: unknown): string | null {
   if (!selectedQra) return null
   const answer = tauChatString(selectedQra.answer)
-  if (!answer) return null
 
   const q = question.toLowerCase()
   const candidates = [
     tauChatString(controlId),
+    tauChatString(selectedQra.extracted_control_id),
     tauChatString(selectedQra.control_id),
     tauChatString(selectedQra.qra_id),
     tauChatString(selectedQra.key),
@@ -19168,7 +19175,19 @@ function tauChatSelectedQraAnswer(question: string, selectedQra: JsonRecord | nu
   const matchesScope = candidates.length === 0 || candidates.some((value) => q.includes(value.toLowerCase()))
   if (!matchesScope) return null
 
+  const scopedControlId = tauChatString(selectedQra.extracted_control_id) ?? tauChatString(selectedQra.control_id) ?? tauChatString(controlId)
+  const canonicalName = tauChatString(selectedQra.canonical_name) ?? tauChatString(selectedQra.name)
+  const descriptor = tauChatString(selectedQra.descriptor)
   const reasoning = tauChatString(selectedQra.reasoning)
+  if (scopedControlId && canonicalName) {
+    const descriptorClause = descriptor && descriptor !== canonicalName
+      ? ` It is associated with the descriptor "${descriptor}" in the selected QRA context.`
+      : ''
+    const reasoningClause = reasoning ? `\n\nSelected QRA reasoning: ${reasoning}` : ''
+    const answerClause = answer ? `\n\nSelected QRA answer: ${answer}` : ''
+    return `${scopedControlId} is an existing, grounded SPARTA countermeasure named "${canonicalName}".${descriptorClause}${reasoningClause}${answerClause}`
+  }
+  if (!answer) return null
   return reasoning ? `${answer}\n\nSelected QRA reasoning: ${reasoning}` : answer
 }
 
@@ -20043,8 +20062,35 @@ try {
 // ── Serve production build if dist/ exists ──────────────────────────────────
 const distPath = resolve(__dirname, '../dist')
 if (existsSync(distPath)) {
-  app.use(express.static(distPath))
-  app.get('{*path}', (_req, res) => {
+  const assetsPath = resolve(distPath, 'assets')
+  const setNoStoreHeaders = (res: express.Response) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+    res.setHeader('Pragma', 'no-cache')
+    res.setHeader('Expires', '0')
+  }
+
+  app.use('/assets', express.static(assetsPath, {
+    fallthrough: false,
+    immutable: true,
+    maxAge: '1y',
+    setHeaders: (res) => {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
+    },
+  }))
+  app.use(express.static(distPath, {
+    index: false,
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('.html')) {
+        setNoStoreHeaders(res)
+      }
+    },
+  }))
+  app.get('{*path}', (req, res) => {
+    if (req.path.startsWith('/assets/')) {
+      res.status(404).type('text/plain').send('asset not found')
+      return
+    }
+    setNoStoreHeaders(res)
     res.sendFile(resolve(distPath, 'index.html'))
   })
   console.log(`  Serving production build from ${distPath}`)

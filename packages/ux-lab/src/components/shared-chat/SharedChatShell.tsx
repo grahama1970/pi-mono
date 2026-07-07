@@ -22,6 +22,7 @@ import {
   type TurnSurface,
   type WatchChatAdapterOptions,
 } from './memory-turn'
+import { extractEntitiesForSpartaChatMessage } from './spartaEntityExtraction'
 
 export type PersonaPlexChatMode = 'compliance' | 'personaplex'
 
@@ -162,12 +163,23 @@ export function SharedChatShell({
       return
     }
 
+    const entityContext = surface === 'sparta-explorer'
+      ? await extractEntitiesForSpartaChatMessage(trimmed)
+      : null
     const userMessage: ChatMessage = {
       id: makeMessageId('user'),
       role: 'user',
       content: trimmed,
       createdAt: new Date().toISOString(),
-      metadata: { surface, mode },
+      metadata: {
+        surface,
+        mode,
+        ...(entityContext ? {
+          entities: entityContext,
+          extract_entities: entityContext,
+          entityContext,
+        } : {}),
+      },
     }
 
     const baseMessages = [...displayMessages, userMessage]
@@ -222,7 +234,23 @@ export function SharedChatShell({
         finalMessage = awaited as ChatMessage
       }
 
-      if (finalMessage) replaceMessages([...baseMessages, finalMessage])
+      if (finalMessage) {
+        const assistantEntityContext = surface === 'sparta-explorer'
+          ? await extractEntitiesForSpartaChatMessage(finalMessage.content)
+          : null
+        const renderableFinalMessage: ChatMessage = assistantEntityContext
+          ? {
+            ...finalMessage,
+            metadata: {
+              ...(finalMessage.metadata ?? {}),
+              response_entities: assistantEntityContext,
+              extract_entities: assistantEntityContext,
+              entityContext: assistantEntityContext,
+            },
+          }
+          : finalMessage
+        replaceMessages([...baseMessages, renderableFinalMessage])
+      }
     } catch (error) {
       replaceMessages([
         ...baseMessages,

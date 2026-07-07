@@ -62,6 +62,7 @@ import {
   thinkingStepsForMessage,
   thinkingTraceDisclosureParts,
 } from './thinkingTraceHelpers'
+import { entitySpansFromStructuredContext } from './entityContextSpans'
 
 export interface StarterChip {
   label: string
@@ -217,81 +218,22 @@ function isRecord(value: unknown): value is UnknownRecord {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
 }
 
-function spanPair(value: unknown): [number, number] | null {
-  if (!Array.isArray(value) || value.length !== 2) return null
-  const [start, end] = value
-  return typeof start === 'number' && typeof end === 'number' && end > start ? [start, end] : null
-}
-
-function spanFromExtractEntityNode(value: unknown): EvidenceCaseSpan | null {
-  if (!isRecord(value)) return null
-  const extracted = isRecord(value.extracted) ? value.extracted : {}
-  const metadata = isRecord(value.metadata) ? value.metadata : {}
-  const span = spanPair(value.span) ?? spanPair(extracted.span)
-  if (!span) return null
-  const text = value.mention ?? value.text ?? value.entity ?? extracted.text ?? metadata.control_id ?? metadata.name
-  const name = metadata.name ?? value.name ?? text
-  const framework = metadata.framework ?? value.framework
-  const kind = extracted.kind ?? value.kind ?? value.node_kind ?? metadata.type
-  return {
-    text: typeof text === 'string' ? text : undefined,
-    span,
-    kind: typeof kind === 'string' ? kind : undefined,
-    framework: typeof framework === 'string' ? framework : undefined,
-    name: typeof name === 'string' ? name : undefined,
-    grounded_to_framework: metadata.grounded === true || metadata.exists === true || value.status === 'grounded',
-  }
-}
-
-function collectExtractEntitySpans(value: unknown): EvidenceCaseSpan[] {
-  if (Array.isArray(value)) return value.map(spanFromExtractEntityNode).filter((span): span is EvidenceCaseSpan => Boolean(span))
-  if (!isRecord(value)) return []
-
-  const spans: EvidenceCaseSpan[] = []
-  for (const key of ['entitySpans', 'entity_spans', 'spans', 'glossary', 'entity_nodes']) {
-    spans.push(...collectExtractEntitySpans(value[key]))
-  }
-  const nodes = isRecord(value.nodes) ? value.nodes : undefined
-  if (nodes) {
-    for (const key of ['anchors', 'validated_context', 'context_terms', 'unsupported']) {
-      spans.push(...collectExtractEntitySpans(nodes[key]))
-    }
-  }
-  const packet = isRecord(value.proof_packet) ? value.proof_packet : undefined
-  if (packet) {
-    for (const key of ['anchors', 'validated_context', 'context_terms', 'unsupported']) {
-      spans.push(...collectExtractEntitySpans(packet[key]))
-    }
-  }
-  return spans
-}
-
 function extractEntitySpansFromMessage(message: ChatMessage, meta: UnknownRecord): EvidenceCaseSpan[] {
-  const spans: EvidenceCaseSpan[] = []
   const messageRecord = message as unknown as UnknownRecord
-  for (const source of [
+  return entitySpansFromStructuredContext(message.content, [
     messageRecord.entitySpans,
     messageRecord.entity_spans,
+    messageRecord.entities,
+    messageRecord.evidenceCase,
     meta.entitySpans,
     meta.entity_spans,
     meta.entityContext,
     meta.entity_context,
     meta.extract_entities,
     meta.entities,
-  ]) {
-    spans.push(...collectExtractEntitySpans(source))
-  }
-
-  const seen = new Set<string>()
-  return spans
-    .filter((span): span is EvidenceCaseSpan & { span: [number, number] } => Boolean(spanPair(span.span)))
-    .sort((left, right) => (left.span?.[0] ?? 0) - (right.span?.[0] ?? 0))
-    .filter((span) => {
-      const key = `${span.span[0]}:${span.span[1]}:${span.text ?? ''}`
-      if (seen.has(key)) return false
-      seen.add(key)
-      return true
-    })
+    meta.evidenceCase,
+    meta.evidence_case,
+  ])
 }
 
 function ContentTypeBadge({ type }: { type: string }) {
@@ -1177,7 +1119,7 @@ function DashboardMessageBubble({
         leadingIcon={leadingIconForBranch(branch, disclosure.disclosureVariant)}
         placement="header"
         displayMode="full"
-        defaultOpen={branch === 'embry-voice'}
+        defaultOpen={branch === 'embry-voice' || branch === 'compliance'}
         dataQid="shared-chat:message:thinking-trace"
       />
     </div>

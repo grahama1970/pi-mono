@@ -4,11 +4,19 @@ import { EMBRY, glowDot, label } from '../common/EmbryStyle'
 import { normalizeFramework, qraDetailPost, useCollectionCounts, useQRAs, useQRAStatusCounts } from '../../../hooks/useSpartaCollections'
 import type { SpartaQRA, QRASource, EvidenceCase } from '../../../hooks/useSpartaCollections'
 import { useSpartaNav } from './SpartaExplorer'
+import { PageDistanceRoot, usePageDistanceMode } from './pageDistance/PageDistanceMode'
+import { PageDistanceScroll, PageGlanceBand, PageMetricCard, PageMetricGrid, PageTriageList } from './pageDistance/PageDistanceGlance'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import { EvidenceView } from './EvidenceView'
 import { Search, CheckCircle2, XCircle, PanelLeftClose, PanelLeft, Layers, X, AlertTriangle, Clipboard, RotateCcw, Activity, MessageSquareWarning, ChevronDown, Download, ExternalLink, MoreHorizontal, SlidersHorizontal, KeyRound, Paperclip, SendHorizontal, Pencil, Undo2, LockKeyhole } from 'lucide-react'
 import { inlineHighlight } from './explorerUtils'
 import type { GlossaryEntryLike, HighlightEmphasis } from './explorerUtils'
+import ThinkingTrace, { type ThinkingTraceStep } from '../../shared-chat/ThinkingTrace'
+import { MessageActionRow } from '../../shared-chat/MessageActionRow'
+import { MarkdownRenderer } from '../../shared-chat/MarkdownRenderer'
+import { entitySpansFromStructuredContext } from '../../shared-chat/entityContextSpans'
+import { extractEntitiesForSpartaChatMessage } from '../../shared-chat/spartaEntityExtraction'
+import type { EvidenceCaseSpan } from '../../shared-chat/types'
 
 type EntityViewMode = 'anchors' | 'context' | 'full'
 
@@ -48,6 +56,16 @@ type SourceHoverState = { key: string; x: number; y: number } | null
 type QraDraft = { question: string; reasoning: string; answer: string }
 type EvidenceFreshness = { qraKey: string; draftHash: string; ok: boolean; runId?: string | null; checkedAt: string }
 type DraftExtractionEntity = { id?: string; label?: string; name?: string; type?: string; framework?: string; exists?: boolean }
+type QraScopedChatTurn = {
+  id: string
+  role: 'user' | 'assistant'
+  content: string
+  thinkingTrace?: ThinkingTraceStep[]
+  glossary?: GlossaryEntryLike[]
+  entitySpans?: EvidenceCaseSpan[]
+  status?: 'ok' | 'error'
+  createdAt: string
+}
 type DraftExtractionGlossaryEntry = GlossaryEntryLike & { mention?: string; span?: [number, number] | number[]; grounded?: boolean; exists?: boolean; reason?: string | null; control_id?: string | null; canonical_name?: string | null }
 type DraftExtractionExternalEntity = { mention?: string; normalized_text?: string; entity_type?: string; routing_effect?: string; source?: string }
 type DraftExtractionNodeMetadata = {
@@ -140,10 +158,6 @@ function formatCount(value: number | undefined) {
   return Number(value ?? 0).toLocaleString()
 }
 
-function escapeRegExp(value: string) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
 function hashDraft(draft: QraDraft | null | undefined): string {
   if (!draft) return ''
   const payload = JSON.stringify({
@@ -157,6 +171,31 @@ function hashDraft(draft: QraDraft | null | undefined): string {
     hash = Math.imul(hash, 16777619)
   }
   return `fnv1a:${(hash >>> 0).toString(16).padStart(8, '0')}`
+}
+
+function normalizePhraseText(value: string): string {
+  let output = ''
+  let pendingSpace = false
+  for (const char of value.toLowerCase()) {
+    if (char === '(' || char === ')') {
+      pendingSpace = true
+      continue
+    }
+    if (char === ' ' || char === '\n' || char === '\t' || char === '\r') {
+      pendingSpace = true
+      continue
+    }
+    if (pendingSpace && output) output += ' '
+    output += char
+    pendingSpace = false
+  }
+  return output.trim()
+}
+
+function containsDescriptorAsName(text: string, descriptor: string): boolean {
+  const normalizedText = normalizePhraseText(text)
+  const normalizedDescriptor = normalizePhraseText(descriptor)
+  return Boolean(normalizedDescriptor && normalizedText.includes(`name ${normalizedDescriptor}`))
 }
 
 function evidenceRunId(payload: Record<string, unknown>): string | null {
@@ -987,6 +1026,10 @@ export function QRAsView() {
   const [caeCollapsed, setCaeCollapsed] = useState(false)
   const [draftExtraction, setDraftExtraction] = useState<DraftExtractionResult | null>(null)
   const [draftExtractionLoading, setDraftExtractionLoading] = useState(false)
+  const [qraChatPrompt, setQraChatPrompt] = useState('')
+  const [qraChatTurns, setQraChatTurns] = useState<QraScopedChatTurn[]>([])
+  const [qraChatFeedback, setQraChatFeedback] = useState<Record<string, 'up' | 'down'>>({})
+  const [qraChatLoading, setQraChatLoading] = useState(false)
 
   const baseVisibleQras = useMemo(
     () => qras
@@ -1072,9 +1115,6 @@ export function QRAsView() {
   const draftSuggestedReasoning = draftPrimaryControlId && draftPrimaryCanonicalName
     ? buildDirectLookupReasoning(draftPrimaryControlId, draftPrimaryCanonicalName, draftValidatedDescriptor)
     : ''
-  const descriptorAsNamePattern = draftValidatedDescriptor
-    ? new RegExp(`\\bname\\s*\\(?\\s*${escapeRegExp(draftValidatedDescriptor)}\\s*\\)?`, 'i')
-    : null
   const draftWordingRepairNeeded = Boolean(
     isInformationalLookupQra(current)
     && draftPrimaryControlId
@@ -1082,7 +1122,7 @@ export function QRAsView() {
     && draftValidatedDescriptor
     && currentDraft
     && (
-      descriptorAsNamePattern?.test(currentDraft.reasoning || '')
+      containsDescriptorAsName(currentDraft.reasoning || '', draftValidatedDescriptor)
       || (
         currentDraft.answer.includes(`(${draftValidatedDescriptor})`)
         && !currentDraft.answer.includes(`${draftPrimaryControlId} is the SPARTA countermeasure ${draftPrimaryCanonicalName}`)
@@ -1353,6 +1393,119 @@ export function QRAsView() {
   }, [currentListItem?._key, currentListItem?.qra_id, qraDetails, source])
 
   const relatedQras = useMemo(() => buildRelatedQras(current, qras, draftValidatedDescriptor), [current, qras, draftValidatedDescriptor])
+
+  const sendScopedQraChat = useCallback(async () => {
+    const prompt = qraChatPrompt.trim()
+    if (!prompt || qraChatLoading) return
+
+    const createdAt = new Date().toISOString()
+    const requestEntities = await extractEntitiesForSpartaChatMessage(prompt)
+    const userTurn: QraScopedChatTurn = {
+      id: `qra-user-${Date.now()}`,
+      role: 'user',
+      content: prompt,
+      entitySpans: entitySpansFromStructuredContext(prompt, [requestEntities]),
+      createdAt,
+    }
+    setQraChatTurns((prev) => [...prev, userTurn])
+    setQraChatPrompt('')
+    setQraChatLoading(true)
+
+    try {
+      const response = await fetch('/api/tau/chat/turn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: prompt,
+          query: prompt,
+          text: prompt,
+          surface: 'sparta-explorer',
+          branch_hint: 'evidence-case',
+          gate_depth: 'light',
+          matrix_context: {
+            activeTab: 'qras',
+            qraKey: current?._key ?? null,
+            qraId: current?.qra_id ?? null,
+            controlId: current?.control_id ?? null,
+            source,
+          },
+          context: {
+            selectedQra: current ? {
+              key: current._key,
+              qra_id: current.qra_id,
+              control_id: current.control_id,
+              extracted_control_id: current.control_id || draftPrimaryControlId,
+              canonical_name: draftPrimaryCanonicalName || null,
+              descriptor: draftValidatedDescriptor || null,
+              question: currentDraft?.question ?? current.question,
+              answer: currentDraft?.answer ?? current.answer,
+              reasoning: currentDraft?.reasoning ?? current.reasoning,
+            } : null,
+          },
+        }),
+      })
+      const payload = await response.json().catch(() => ({})) as {
+        message?: { content?: unknown; thinkingTrace?: unknown; reasoningSteps?: unknown; metadata?: Record<string, unknown> }
+        thinkingTrace?: unknown
+        detail?: unknown
+        error?: unknown
+      }
+      if (!response.ok) {
+        throw new Error(typeof payload.detail === 'string' ? payload.detail : typeof payload.error === 'string' ? payload.error : `Tau chat turn failed with HTTP ${response.status}`)
+      }
+      const content = typeof payload.message?.content === 'string' && payload.message.content.trim()
+        ? payload.message.content
+        : 'Tau returned no renderable scoped QRA answer.'
+      const rawTrace = Array.isArray(payload.message?.thinkingTrace)
+        ? payload.message?.thinkingTrace
+        : Array.isArray(payload.message?.reasoningSteps)
+          ? payload.message?.reasoningSteps
+          : payload.thinkingTrace
+      const thinkingTrace = Array.isArray(rawTrace)
+        ? rawTrace.filter((step): step is ThinkingTraceStep => Boolean(step && typeof step === 'object' && 'id' in step && 'label' in step))
+        : []
+      const metadata = payload.message?.metadata ?? {}
+      const evidenceCase = metadata.evidenceCase && typeof metadata.evidenceCase === 'object' ? metadata.evidenceCase as Record<string, unknown> : {}
+      const entities = metadata.entities && typeof metadata.entities === 'object' ? metadata.entities as Record<string, unknown> : {}
+      const responseEntities = await extractEntitiesForSpartaChatMessage(content)
+      const glossary = [
+        ...(Array.isArray(evidenceCase.glossary) ? evidenceCase.glossary : []),
+        ...(Array.isArray(entities.glossary) ? entities.glossary : []),
+        ...(responseEntities && typeof responseEntities === 'object' && Array.isArray((responseEntities as Record<string, unknown>).glossary) ? (responseEntities as Record<string, unknown>).glossary : []),
+      ].filter((entry): entry is GlossaryEntryLike => Boolean(entry && typeof entry === 'object'))
+      const assistantTurn: QraScopedChatTurn = {
+        id: `qra-assistant-${Date.now()}`,
+        role: 'assistant',
+        content,
+        thinkingTrace,
+        glossary,
+        entitySpans: entitySpansFromStructuredContext(content, [responseEntities]),
+        status: 'ok',
+        createdAt: new Date().toISOString(),
+      }
+      setQraChatTurns((prev) => [...prev, assistantTurn])
+    } catch (error) {
+      const assistantTurn: QraScopedChatTurn = {
+        id: `qra-assistant-error-${Date.now()}`,
+        role: 'assistant',
+        content: `Tau could not complete the scoped QRA chat turn: ${error instanceof Error ? error.message : String(error)}`,
+        thinkingTrace: [
+          {
+            id: 'answering',
+            label: 'Tau scoped chat failed',
+            status: 'failed',
+            detail: error instanceof Error ? error.message : String(error),
+            disclosureVariant: 'thinking',
+          },
+        ],
+        status: 'error',
+        createdAt: new Date().toISOString(),
+      }
+      setQraChatTurns((prev) => [...prev, assistantTurn])
+    } finally {
+      setQraChatLoading(false)
+    }
+  }, [current, currentDraft, qraChatLoading, qraChatPrompt, source])
   const payloadModalQra = useMemo(() => {
     if (!payloadModalKey) return null
     return qraDetails.get(payloadModalKey) ?? qras.find((entry) => entry._key === payloadModalKey) ?? null
@@ -1642,8 +1795,58 @@ export function QRAsView() {
     </>
   ) : null
 
+  const { mode: pageDistanceMode } = usePageDistanceMode()
+  const reviewQueue = qras.filter((q) => {
+    const status = deriveEvidenceStatus(q)
+    return status === 'review' || status === 'missing' || status === 'failed'
+  }).slice(0, 8)
+
   if (error) {
     return <div style={{ padding: 20, color: EMBRY.red, border: `1px solid ${EMBRY.red}33`, borderRadius: 8, margin: 16 }}>Error: {error}</div>
+  }
+
+  if (pageDistanceMode === '10ft') {
+    return (
+      <PageDistanceRoot qid="qras-mode-root">
+        <PageDistanceScroll qid="qras:view-glance">
+          <PageGlanceBand
+            mode="10ft"
+            question="Is the QRA corpus review-ready?"
+            headline={`${formatCount(qraStatusCounts.total || qraTotal)} QRAs in corpus`}
+            lead={`${formatCount(qraStatusCounts.counts.review)} need review · ${formatCount(qraStatusCounts.counts.missing)} missing evidence.`}
+            tone={qraStatusCounts.counts.review + qraStatusCounts.counts.missing > 0 ? EMBRY.amber : EMBRY.green}
+            qid="qras:glance-band"
+          >
+            <PageMetricGrid qid="qras:glance-metrics">
+              <PageMetricCard qid="qras:metric:review" label="Review" value={formatCount(qraStatusCounts.counts.review)} tone={EMBRY.amber} />
+              <PageMetricCard qid="qras:metric:passed" label="Passed" value={formatCount(qraStatusCounts.counts.passed)} tone={EMBRY.green} />
+              <PageMetricCard qid="qras:metric:missing" label="Missing" value={formatCount(qraStatusCounts.counts.missing)} tone={EMBRY.red} />
+            </PageMetricGrid>
+          </PageGlanceBand>
+        </PageDistanceScroll>
+      </PageDistanceRoot>
+    )
+  }
+
+  if (pageDistanceMode === '5ft') {
+    return (
+      <PageDistanceRoot qid="qras-mode-root">
+        <PageDistanceScroll qid="qras:view-triage">
+          <PageGlanceBand mode="5ft" question="Which QRAs need analyst attention?" headline={`${reviewQueue.length} QRAs in triage queue`} lead="Review, missing, or failed evidence on the loaded page slice." tone={EMBRY.amber} qid="qras:triage-band" />
+          <PageTriageList
+            qid="qras:triage-queue"
+            title="QRA review queue"
+            items={reviewQueue.map((qra) => ({
+              id: qra._key,
+              primary: qra.control_id ?? qra._key,
+              secondary: String(qra.question ?? '').slice(0, 140),
+              tone: EMBRY.amber,
+              onSelect: () => setCurrentIndexRaw(qras.findIndex((q) => q._key === qra._key)),
+            }))}
+          />
+        </PageDistanceScroll>
+      </PageDistanceRoot>
+    )
   }
 
   const tripaneQraReview = true
@@ -2044,6 +2247,7 @@ export function QRAsView() {
     const questionHoverBadge = questionHoverQra ? queueStatusBadge(deriveEvidenceStatus(questionHoverQra)) : null
 
     return (
+      <PageDistanceRoot qid="qras-mode-root">
       <>
       <div style={{
         display: 'grid',
@@ -2764,13 +2968,107 @@ export function QRAsView() {
                   </div>
                 </div>
 
+                {qraChatTurns.map((turn, index) => {
+                  const isUser = turn.role === 'user'
+                  return (
+                    <div
+                      key={turn.id}
+                      data-qid={`qras:chat:turn:${turn.role}`}
+                      style={{
+                        alignSelf: isUser ? 'flex-end' : 'stretch',
+                        flexShrink: 0,
+                        maxWidth: isUser ? '94%' : '100%',
+                        border: `1px solid ${isUser ? EMBRY.border : turn.status === 'error' ? EMBRY.red : EMBRY.blue}35`,
+                        backgroundColor: isUser ? 'rgba(148,163,184,0.08)' : turn.status === 'error' ? `${EMBRY.red}08` : `${EMBRY.blue}07`,
+                        borderRadius: 7,
+                        padding: 8,
+                      }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', color: EMBRY.dim, fontSize: 9.5, fontFamily: 'monospace', marginBottom: 5, gap: 14 }}>
+                        <span>{isUser ? 'User' : 'SPARTA Agent'}</span>
+                        <span>{String(index + 2).padStart(2, '0')}</span>
+                      </div>
+                      {!isUser && turn.thinkingTrace && turn.thinkingTrace.length > 0 && (
+                        <div data-qid="qras:chat:thinking-trace" style={{ marginBottom: 8 }}>
+                          <ThinkingTrace
+                            steps={turn.thinkingTrace}
+                            title="Tau memory trace"
+                            disclosureVariant="thinking"
+                            leadingIcon="shield"
+                            placement="header"
+                            displayMode="full"
+                            defaultOpen
+                            dataQid="qras:chat:thinking-trace"
+                          />
+                        </div>
+                      )}
+                      <div style={{ color: EMBRY.white, fontSize: 12, lineHeight: 1.4, overflowWrap: 'anywhere' }}>
+                        <MarkdownRenderer
+                          content={turn.content}
+                          entitySpans={turn.entitySpans ?? []}
+                          sidebarMode
+                        />
+                      </div>
+                      {!isUser && (
+                        <MessageActionRow
+                          messageId={`qras:${turn.id}`}
+                          copyText={turn.content}
+                          feedback={qraChatFeedback[turn.id]}
+                          onFeedback={(feedback) => setQraChatFeedback(prev => ({ ...prev, [turn.id]: feedback }))}
+                        />
+                      )}
+                    </div>
+                  )
+                })}
+                {qraChatLoading && (
+                  <div data-qid="qras:chat:thinking-live" style={{ alignSelf: 'stretch', border: `1px solid ${EMBRY.blue}35`, backgroundColor: `${EMBRY.blue}07`, borderRadius: 7, padding: 8 }}>
+                    <ThinkingTrace
+                      steps={[
+                        { id: 'extracting-entities', label: 'Extracting entities', status: 'running', detail: 'Calling Tau scoped chat turn', disclosureVariant: 'thinking' },
+                      ]}
+                      title="Tau memory trace"
+                      disclosureVariant="thinking"
+                      leadingIcon="shield"
+                      placement="header"
+                      displayMode="full"
+                      defaultOpen
+                      isStreaming
+                      dataQid="qras:chat:thinking-trace"
+                    />
+                  </div>
+                )}
+
               </div>
 
               <div style={{ padding: '10px', borderTop: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgDeep }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'auto minmax(0, 1fr) auto', gap: 8, alignItems: 'end' }}>
                   <button type="button" data-qid="qras:chat:attach-evidence" data-qs-action="ATTACH_QRA_CHAT_EVIDENCE" aria-label="Attach evidence" title="Attach source excerpt, payload evidence, or audit packet" style={{ width: 38, height: 54, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.border}`, borderRadius: 6, background: EMBRY.bgPanel, color: EMBRY.dim, cursor: 'pointer', padding: 0 }}><Paperclip size={17} strokeWidth={1.8} /></button>
-                  <textarea data-qid="qras:chat:prompt" data-qs-action="EDIT_QRA_CHAT_PROMPT" title="Scoped QRA chat prompt" placeholder="Ask about evidence, repair, or fixture retention" rows={2} style={{ height: 54, minWidth: 0, resize: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, background: EMBRY.bg, color: EMBRY.white, padding: '8px 10px', fontSize: 12, lineHeight: 1.35, outline: 'none', fontFamily: 'inherit' }} />
-                  <button type="button" data-qid="qras:chat:send" data-qs-action="SEND_QRA_CHAT_PROMPT" aria-label="Send message" title="Send scoped QRA chat prompt" style={{ width: 42, height: 54, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.green}44`, borderRadius: 6, background: `${EMBRY.green}10`, color: EMBRY.green, cursor: 'pointer', padding: 0 }}><SendHorizontal size={18} strokeWidth={1.9} /></button>
+                  <textarea
+                    data-qid="qras:chat:prompt"
+                    data-qs-action="EDIT_QRA_CHAT_PROMPT"
+                    title="Scoped QRA chat prompt"
+                    placeholder="Ask about evidence, repair, or fixture retention"
+                    rows={2}
+                    value={qraChatPrompt}
+                    onChange={(event) => setQraChatPrompt(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' && !event.shiftKey) {
+                        event.preventDefault()
+                        void sendScopedQraChat()
+                      }
+                    }}
+                    style={{ height: 54, minWidth: 0, resize: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, background: EMBRY.bg, color: EMBRY.white, padding: '8px 10px', fontSize: 12, lineHeight: 1.35, outline: 'none', fontFamily: 'inherit' }}
+                  />
+                  <button
+                    type="button"
+                    data-qid="qras:chat:send"
+                    data-qs-action="SEND_QRA_CHAT_PROMPT"
+                    aria-label="Send message"
+                    title="Send scoped QRA chat prompt through Tau"
+                    onClick={() => void sendScopedQraChat()}
+                    disabled={qraChatLoading || !qraChatPrompt.trim()}
+                    style={{ width: 42, height: 54, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.green}44`, borderRadius: 6, background: `${EMBRY.green}10`, color: qraChatLoading || !qraChatPrompt.trim() ? EMBRY.dim : EMBRY.green, cursor: qraChatLoading || !qraChatPrompt.trim() ? 'wait' : 'pointer', padding: 0 }}
+                  ><SendHorizontal size={18} strokeWidth={1.9} /></button>
                 </div>
               </div>
             </>
@@ -2946,6 +3244,7 @@ export function QRAsView() {
         </div>
       )}
       </>
+      </PageDistanceRoot>
     )
   }
 

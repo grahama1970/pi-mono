@@ -5,6 +5,7 @@
  */
 import type { ReactNode } from 'react';
 import type { EntityType, EvidenceCaseSpan } from './types';
+export type { EntityType } from './types';
 
 // Patterns for compliance/security entities + skills
 // NOTE: Domain phrases come from /create-evidence-case glossary, NOT hardcoded here
@@ -219,7 +220,7 @@ function entityTypeForSpan(span: EvidenceCaseSpan): EntityType {
     return 'control';
   }
   if (span.kind === 'phrase' || span.kind === 'aerospace_term') return 'domain';
-  return classifyEntity(span.text);
+  return classifyEntity(span.text ?? '');
 }
 
 /**
@@ -234,7 +235,7 @@ export function highlightWithSpans(
   if (!spans.length) return highlightEntities(text, onEntityClick);
 
   const sorted = [...spans]
-    .filter((s) => Array.isArray(s.span) && s.span.length === 2 && s.span[1] > s.span[0])
+    .filter((s): s is EvidenceCaseSpan & { span: [number, number] } => Array.isArray(s.span) && s.span.length === 2 && s.span[1] > s.span[0])
     .sort((a, b) => a.span[0] - b.span[0]);
 
   const nodes: ReactNode[] = [];
