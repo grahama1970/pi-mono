@@ -1,0 +1,86 @@
+{
+  "app": "UX Lab",
+  "total": 3,
+  "passed": 3,
+  "failed": 0,
+  "warned": 0,
+  "skipped": 0,
+  "interactions": [
+    {
+      "surface": "embry-voice-10ft",
+      "element": "ten-foot-summary",
+      "action": "screenshot",
+      "description": "Embry Voice default 10ft orb-forward summary",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/embry-voice-10ft/embry-voice-10ft/0001_ten-foot-summary_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/embry-voice-10ft/embry-voice-10ft/0001_ten-foot-summary_screenshot.png",
+      "duration_ms": 752,
+      "assertions": [
+        {
+          "check": "assert_selector([data-qid='embry-voice:ten-foot:orb'])",
+          "status": "PASS",
+          "evidence": "text='idle\u2026'"
+        },
+        {
+          "check": "assert_visible([data-qid='embry-voice:ten-foot:summary'])",
+          "status": "PASS",
+          "evidence": "visible"
+        },
+        {
+          "check": "assert_attribute([data-qid='embry-voice:route'], data-distance-mode)",
+          "status": "PASS",
+          "evidence": "data-distance-mode='10ft' == '10ft'"
+        }
+      ]
+    },
+    {
+      "surface": "embry-voice-10ft",
+      "element": "ten-foot-action-contracts",
+      "action": "screenshot",
+      "description": "Embry Voice 10ft action bar has registered operator actions",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/embry-voice-10ft/embry-voice-10ft/0002_ten-foot-action-contracts_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/embry-voice-10ft/embry-voice-10ft/0002_ten-foot-action-contracts_screenshot.png",
+      "duration_ms": 702,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='embry-voice:distance:lean-in'], 44x44)",
+          "status": "PASS",
+          "evidence": "151x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='embry-voice:distance:lean-in'])",
+          "status": "PASS",
+          "evidence": "title='Open the full Embry Voice console'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='embry-voice:distance:lean-in'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='EMBRY_VOICE_OPEN_LEAN_IN'"
+        }
+      ]
+    },
+    {
+      "surface": "embry-voice-10ft-to-console",
+      "element": "open-console-transition",
+      "action": "click",
+      "description": "Open full Embry Voice console from 10ft",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Open console'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/embry-voice-10ft/embry-voice-10ft-to-console/0001_open-console-transition_click.png",
+      "duration_ms": 1900,
+      "assertions": [
+        {
+          "check": "assert_visible([data-qid='embry-voice:evidence-timeline'])",
+          "status": "PASS",
+          "evidence": "visible"
+        },
+        {
+          "check": "assert_attribute([data-qid='embry-voice:route'], data-distance-mode)",
+          "status": "PASS",
+          "evidence": "data-distance-mode='lean-in' == 'lean-in'"
+        }
+      ]
+    }
+  ]
+}

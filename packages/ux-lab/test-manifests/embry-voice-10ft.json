@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "app": "UX Lab",
+  "base_url": "http://localhost:3002",
+  "surfaces": [
+    {
+      "name": "embry-voice-10ft",
+      "path": "/#embry-voice",
+      "wait_ready": "[data-qid='embry-voice:route']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "ten-foot-summary",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Embry Voice default 10ft orb-forward summary",
+              "assert_attribute": {
+                "selector": "[data-qid='embry-voice:route']",
+                "attribute": "data-distance-mode",
+                "value": "10ft"
+              },
+              "assert_selector": "[data-qid='embry-voice:ten-foot:orb']",
+              "assert_visible": "[data-qid='embry-voice:ten-foot:summary']"
+            }
+          ]
+        },
+        {
+          "name": "ten-foot-action-contracts",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Embry Voice 10ft action bar has registered operator actions",
+              "assert_qs_action": "[data-qid='embry-voice:distance:lean-in']",
+              "assert_title": "[data-qid='embry-voice:distance:lean-in']",
+              "assert_min_size": {
+                "selector": "[data-qid='embry-voice:distance:lean-in']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "embry-voice-10ft-to-console",
+      "path": "/#embry-voice",
+      "wait_ready": "[data-qid='embry-voice:route']",
+      "qid_compliance": false,
+      "elements": [
+        {
+          "name": "open-console-transition",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='embry-voice:distance:lean-in']",
+              "description": "Open full Embry Voice console from 10ft",
+              "screenshot_after": true,
+              "assert_attribute": {
+                "selector": "[data-qid='embry-voice:route']",
+                "attribute": "data-distance-mode",
+                "value": "lean-in"
+              },
+              "assert_visible": "[data-qid='embry-voice:evidence-timeline']"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

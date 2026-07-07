@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { CheckCircle2, ChevronDown, FlaskConical, Folder, Mic, PauseCircle, PlayCircle, Radio, SearchCode, XCircle } from 'lucide-react'
+import { CheckCircle2, ChevronDown, FlaskConical, Folder, Maximize2, Mic, PauseCircle, PlayCircle, Radio, SearchCode, XCircle } from 'lucide-react'
 import { LeftPane, LeftPaneSection, useLeftPaneSearch } from '../common/LeftPane'
 import { SharedChatShell } from '../shared-chat/SharedChatShell'
 import { IdentityNode } from './IdentityNode'
@@ -9,6 +9,7 @@ import { deriveEmbryVoiceStatus } from './embryOrbState'
 import type { ChatMessage, StreamingStep } from '../shared-chat/memory-turn'
 import type { EmbryTurnAuthority, EmbryVoiceAudioAuthority } from '@agent-skills/ux-lab-ui/memory-turn/EmbryVoiceAuthority'
 import type { EmbryVoiceEnvelope } from '../../hooks/useEmbryPlaybackAudioLevel'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 type AudioArtifact = {
   id: string
@@ -54,6 +55,7 @@ type VoiceTurn = {
 type ReplayPhase = 'idle' | 'request' | 'thinking' | 'response' | 'complete' | 'interrupted'
 type ReplayState = { playing: boolean; activeIndex: number; activeTurnId?: string; activeSessionId?: string; phase: ReplayPhase; visibleTurnCount?: number }
 type OrbStatusOverride = Exclude<EmbryVoiceStatus, 'off' | 'error'> | null
+type EmbryVoiceDistanceMode = '10ft' | '5ft' | 'lean-in'
 type EmbryAudioAuthority = EmbryVoiceAudioAuthority & {
   authority: 'server-chatterbox-wav-envelope-v1'
   artifactId: string
@@ -124,6 +126,14 @@ type SessionFolder = {
   id: string
   title: string
   sessions: TestSession[]
+}
+
+type StressRouteFamily = {
+  id: string
+  title: string
+  route: string
+  turnIds: string[]
+  questions: string[]
 }
 
 const fullSuite = '/tmp/chatterbox-fork-agent-out/voice-chat-e2e/voice-chat-e2e-20260703T214538Z-audible-all-v2'
@@ -994,6 +1004,186 @@ const voiceTurns: VoiceTurn[] = [
 
 const initialVisibleTurn = voiceTurns[voiceTurns.length - 1]
 
+const stressDifficulties = ['simple', 'medium', 'advanced', 'adversarial', 'soak'] as const
+
+const stressRouteFamilies: StressRouteFamily[] = [
+  {
+    id: 'sparta-qra-compliance',
+    title: 'SPARTA QRA Compliance',
+    route: 'memory.sparta_qra',
+    turnIds: ['evidence-case-request', 'qra-cache-hit', 'qra-cache-disabled'],
+    questions: [
+      'What evidence should a SPARTA QRA include to be acceptable?',
+      'Which SPARTA QRA evidence fields are mandatory before Embry can answer?',
+      'Show the evidence trail for a spacecraft mission-control SPARTA QRA.',
+      'What should Embry do when a SPARTA QRA has weak or missing evidence?',
+    ],
+  },
+  {
+    id: 'persona-memory-recall',
+    title: 'Persona Memory Recall',
+    route: 'memory.persona_memory',
+    turnIds: ['known-horus-memory', 'research-memory-question', 'wait-memory-latency'],
+    questions: [
+      'Where did Horus Lupercal grow up?',
+      'What did Horus last ask Embry about voice testing?',
+      'What should Embry remember about Horus and factory-floor voice tests?',
+      'What was the last conversation Embry had with Horus about QRA caching?',
+    ],
+  },
+  {
+    id: 'persona-memory-miss',
+    title: 'Persona Memory Miss',
+    route: 'memory.persona_memory.fail_closed',
+    turnIds: ['memory-miss-no-hallucination', 'unknown-speaker', 'ambiguous-speaker-clarify'],
+    questions: [
+      'What private code word did I tell Embry yesterday?',
+      'What unrecorded nickname did Horus give the WebRTC bug?',
+      'What was the undocumented promise Embry made in the last room test?',
+      'What secret factory phrase did I say when the microphone was muted?',
+    ],
+  },
+  {
+    id: 'brave-research',
+    title: 'External Research',
+    route: 'brave-search.source_receipt',
+    turnIds: ['research-memory-question', 'evidence-case-request', 'analytics-figure-request'],
+    questions: [
+      'Research current pyannote.audio support for overlap detection.',
+      'Find current RealtimeSTT guidance for external audio feed_audio usage.',
+      'Search for browser getUserMedia audio processing constraints relevant to ASR.',
+      'Research current open-source approaches for streaming speaker diarization.',
+    ],
+  },
+  {
+    id: 'tau-tool-orchestration',
+    title: 'Tau Tool Orchestration',
+    route: 'tau.agent_handoff',
+    turnIds: ['evidence-case-request', 'analytics-figure-request', 'wait-memory-latency'],
+    questions: [
+      'Ask Tau to create an evidence-case for a failed Embry voice receipt.',
+      'Ask Tau to route a memory failure to the correct repair owner.',
+      'Ask Tau to create a figure from analytics on the latest voice stress run.',
+      'Ask Tau to verify that a Chatterbox receipt and Chat UX run id agree.',
+    ],
+  },
+  {
+    id: 'chat-ux-sync',
+    title: 'Chat UX Sync',
+    route: 'ux-lab.shared_chat',
+    turnIds: ['browser-webcam-success', 'known-horus-memory', 'tone-pause-policy'],
+    questions: [
+      'Replay the latest Embry stress session and show each spoken turn in chat.',
+      'Show the memory reasoning trace inline for the current spoken response.',
+      'Prove the chat text and Chatterbox audio share the same turn id.',
+      'Show the entity underlines from memory extraction in the spoken transcript.',
+    ],
+  },
+  {
+    id: 'interruption',
+    title: 'Interruption And Barge-In',
+    route: 'chatterbox.turn_control',
+    turnIds: ['natural-interruption', 'interrupt-during-tool-use', 'nonprimary-interrupt-ignored', 'cancel-witness'],
+    questions: [
+      'Interrupt Embry mid-answer with a new Horus question.',
+      'Interrupt a blessed QRA cached response and prove stale audio stops.',
+      'Have a non-primary speaker interrupt Embry and prove the new turn is rejected.',
+      'Interrupt Embry during a Tau tool wait and verify a natural stop phrase.',
+    ],
+  },
+  {
+    id: 'speaker-identity',
+    title: 'Speaker Identity',
+    route: 'memory.speaker.resolve',
+    turnIds: ['known-horus-memory', 'unknown-speaker', 'ambiguous-speaker-clarify', 'female-distractor-primary-gate'],
+    questions: [
+      'Known Horus asks for personal memory with clean audio.',
+      'Unknown speaker asks for Horus memory and must be asked to identify.',
+      'Ambiguous speaker scores must fail closed before recall.',
+      'Female distractor overlaps Horus and must not become memory authority.',
+    ],
+  },
+  {
+    id: 'factory-noise',
+    title: 'Factory Noise',
+    route: 'realtimestt.factory_capture',
+    turnIds: ['factory-noise-listening', 'factory-source67-pass', 'factory-source68-fail', 'jabra-source62-silent'],
+    questions: [
+      'Horus asks a QRA question over factory-floor background noise.',
+      'Horus asks a memory question while a female voice speaks nearby.',
+      'Horus asks a compliance question through the Jabra speaker/mic path.',
+      'Horus asks a research question through the HD webcam microphone path.',
+    ],
+  },
+  {
+    id: 'tone-emotion',
+    title: 'Tone And Emotion',
+    route: 'memory.intent.voice_delivery',
+    turnIds: ['negative-frustrated-deescalation', 'negative-hostile-boundary', 'sadness-support', 'one-at-a-time'],
+    questions: [
+      'User is frustrated; Embry should de-escalate with a warm concise tone.',
+      'User is hostile; Embry should use a firm humorous boundary.',
+      'User is discouraged; Embry should answer gently and offer the next check.',
+      'Two speakers overlap; Embry should say a human one-at-a-time boundary.',
+    ],
+  },
+]
+
+const stressCurrentResults: Record<string, { status: 'passed' | 'failed'; failedGates: string[]; observed: string }> = {
+  'sparta-qra-compliance-simple-01': {
+    status: 'failed',
+    failedGates: ['sparta_qra_answer_overfit_to_unrelated_control_exclusion', 'sparta_qra_answer_missing_acceptance_terms'],
+    observed: 'Returned unrelated S0609/deprecated-control answer.',
+  },
+  'persona-memory-recall-simple-01': {
+    status: 'failed',
+    failedGates: ['persona_memory_answer_wrong_or_unrelated'],
+    observed: 'Returned Horus TTS skill description instead of Cthonia.',
+  },
+  'persona-memory-miss-simple-01': {
+    status: 'failed',
+    failedGates: ['memory_miss_should_not_answer_unrelated_record'],
+    observed: 'Returned unrelated Embry config skill instead of clarifying.',
+  },
+  'brave-research-simple-01': {
+    status: 'passed',
+    failedGates: [],
+    observed: 'Brave Search returned relevant pyannote sources.',
+  },
+  'factory-noise-simple-01': {
+    status: 'failed',
+    failedGates: ['factory_noise_matrix_ok'],
+    observed: 'Source 67 captured RMS 7 against played WAV RMS 542.',
+  },
+}
+
+function stressSessionSubtitle(route: string, difficulty: string, status: string, observed?: string): string {
+  const receipt = status === 'not_run' ? 'no receipt yet' : 'receipt logged'
+  return `${status.toUpperCase()} | ${difficulty} | ${route} | ${observed ?? receipt}`
+}
+
+function buildStressMatrixSessions(): TestSession[] {
+  const sessions: TestSession[] = []
+  for (const family of stressRouteFamilies) {
+    for (const difficulty of stressDifficulties) {
+      family.questions.forEach((question, index) => {
+        const id = `${family.id}-${difficulty}-${String(index + 1).padStart(2, '0')}`
+        const result = stressCurrentResults[id]
+        sessions.push({
+          id,
+          title: `${family.title}: ${difficulty} ${index + 1}`,
+          subtitle: stressSessionSubtitle(family.route, difficulty, result?.status ?? 'not_run', result?.observed),
+          turnIds: family.turnIds,
+          runIds: result ? ['embry-intelligence-stress-scripted'] : ['embry-stress-session-matrix-not-run'],
+        })
+      })
+    }
+  }
+  return sessions
+}
+
+const stressMatrixSessions = buildStressMatrixSessions()
+
 const sessionFolders: SessionFolder[] = [
   {
     id: 'core-memory-voice',
@@ -1251,6 +1441,11 @@ const sessionFolders: SessionFolder[] = [
         runIds: ['browser-asr-blocker'],
       },
     ],
+  },
+  {
+    id: 'embry-stress-matrix',
+    title: `Embry Stress Matrix (${stressMatrixSessions.length})`,
+    sessions: stressMatrixSessions,
   },
 ]
 
@@ -1558,6 +1753,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const [lastTurnAuthority, setLastTurnAuthority] = useState<EmbryTurnAuthority | null>(null)
   const [directSpeakBusy, setDirectSpeakBusy] = useState(false)
   const [listenerTelemetry, setListenerTelemetry] = useState<BrowserListenerTelemetry>({ state: 'idle' })
+  const [distanceMode, setDistanceMode] = useState<EmbryVoiceDistanceMode>('10ft')
   const replayStopRef = useRef(false)
   const directSpeakBusyRef = useRef(false)
   const directPlaybackAudioRef = useRef<HTMLAudioElement | null>(null)
@@ -1570,6 +1766,57 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const gateSummary = useMemo(() => summarizeGates(sanityRuns), [])
   const liveVoiceStatus = deriveEmbryVoiceStatus({ voiceEnabled, replayPhase: replayState.phase })
   const effectiveVoiceStatus = orbStatusOverride ?? liveVoiceStatus
+  const totalAudio = useMemo(() => voiceTurns.reduce((count, turn) => count + turn.audioArtifacts.length, 0), [])
+  const totalKnownSpeakers = useMemo(() => voiceTurns.filter((turn) => Boolean(turn.speaker)).length, [])
+  const activeSessionTitle = sessionTitleForReplay(replayState.activeSessionId)
+
+  useRegisterAction('embry-voice:distance:lean-in', {
+    app: 'ux-lab',
+    action: 'EMBRY_VOICE_OPEN_LEAN_IN',
+    label: 'Open Embry Voice console',
+    description: 'Switch Embry Voice from 10ft glance mode to the full lean-in console',
+  })
+  useRegisterAction('embry-voice:action:replay-glance', {
+    app: 'ux-lab',
+    action: 'EMBRY_VOICE_REPLAY_GLANCE',
+    label: 'Replay Embry conversation',
+    description: 'Replay the visible Embry voice conversation from the 10ft view',
+  })
+  useRegisterAction('embry-voice:action:direct-speak-glance', {
+    app: 'ux-lab',
+    action: 'EMBRY_VOICE_DIRECT_SPEAK_GLANCE',
+    label: 'Render Embry voice',
+    description: 'Render a direct Chatterbox Embry voice sample from the 10ft view',
+  })
+  useRegisterAction('embry-voice:action:listen-glance', {
+    app: 'ux-lab',
+    action: 'EMBRY_VOICE_LISTEN_GLANCE',
+    label: 'Toggle Embry listener',
+    description: 'Toggle live browser listening from the Embry Voice 10ft view',
+  })
+
+  useEffect(() => {
+    const handleKeyDown = () => setDistanceMode('lean-in')
+    const handleEmbryIdle = () => setDistanceMode('10ft')
+    const handleVoiceState = (event: Event) => {
+      const detail = (event as CustomEvent<{ state?: EmbryVoiceStatus; status?: EmbryVoiceStatus }>).detail
+      const state = detail?.state ?? detail?.status
+      if (state === 'listening' || state === 'processing' || state === 'speaking' || state === 'spoken') setDistanceMode('5ft')
+      if (state === 'idle') setDistanceMode('10ft')
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('sparta:embry-idle', handleEmbryIdle)
+    window.addEventListener('sparta:embry-voice-state', handleVoiceState)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('sparta:embry-idle', handleEmbryIdle)
+      window.removeEventListener('sparta:embry-voice-state', handleVoiceState)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (effectiveVoiceStatus === 'listening' || effectiveVoiceStatus === 'processing' || effectiveVoiceStatus === 'speaking') setDistanceMode('5ft')
+  }, [effectiveVoiceStatus])
 
   const focusTurn = useCallback((turnId: string, runId?: string) => {
     setSelectedTurnId(turnId)
@@ -2432,8 +2679,33 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     audio.addEventListener('pause', finish, { once: true })
   }, [bindActiveSpeech, clearActiveSpeech])
 
+  if (distanceMode === '10ft') {
+    return (
+      <EmbryVoiceTenFootView
+        voiceStatus={effectiveVoiceStatus}
+        isStreaming={isStreaming}
+        tone={selectedTurn.tone}
+        activeSpeech={activeSpeech}
+        phaseSpeedMs={orbPhaseSpeedMs}
+        gateSummary={gateSummary}
+        totalTurns={voiceTurns.length}
+        totalAudio={totalAudio}
+        knownSpeakers={totalKnownSpeakers}
+        activeSessionTitle={activeSessionTitle}
+        replayState={replayState}
+        listenerTelemetry={listenerTelemetry}
+        directSpeakBusy={directSpeakBusy}
+        voiceEnabled={voiceEnabled}
+        onOpenConsole={() => setDistanceMode('lean-in')}
+        onReplay={() => replayState.playing ? stopReplay() : replaySession()}
+        onDirectSpeak={speakDirectEmbry}
+        onToggleListener={() => handleVoiceToggle(!voiceEnabled)}
+      />
+    )
+  }
+
   return (
-    <section data-qid="embry-voice:route" className={`h-full min-h-0 grid grid-rows-[auto_minmax(0,1fr)] ${surfaceClass}`}>
+    <section data-qid="embry-voice:route" data-distance-mode={distanceMode} className={`h-full min-h-0 grid grid-rows-[auto_minmax(0,1fr)] ${surfaceClass}`}>
       <header className="border-b border-[#2d2d31] px-5 py-4 flex items-center justify-between gap-4">
         <div className="min-w-0">
           <div className="flex items-center gap-2 text-lg font-bold"><Mic className="w-5 h-5" />Embry Voice Chat</div>
@@ -2550,6 +2822,186 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         </aside>
       </div>
     </section>
+  )
+}
+
+function EmbryVoiceTenFootView({
+  voiceStatus,
+  isStreaming,
+  tone,
+  activeSpeech,
+  phaseSpeedMs,
+  gateSummary,
+  totalTurns,
+  totalAudio,
+  knownSpeakers,
+  activeSessionTitle,
+  replayState,
+  listenerTelemetry,
+  directSpeakBusy,
+  voiceEnabled,
+  onOpenConsole,
+  onReplay,
+  onDirectSpeak,
+  onToggleListener,
+}: {
+  voiceStatus: EmbryVoiceStatus
+  isStreaming: boolean
+  tone?: string
+  activeSpeech: ActiveSpeechSource | null
+  phaseSpeedMs: number
+  gateSummary: { passed: number; pending: number; failed: number }
+  totalTurns: number
+  totalAudio: number
+  knownSpeakers: number
+  activeSessionTitle: string
+  replayState: ReplayState
+  listenerTelemetry: BrowserListenerTelemetry
+  directSpeakBusy: boolean
+  voiceEnabled: boolean
+  onOpenConsole: () => void
+  onReplay: () => void
+  onDirectSpeak: (text?: string) => Promise<DirectEmbryAudio | null>
+  onToggleListener: () => void
+}): JSX.Element {
+  const voiceTone = voiceStatus === 'speaking' || voiceStatus === 'listening' || voiceStatus === 'processing' ? 'good' : undefined
+  return (
+    <section
+      data-qid="embry-voice:route"
+      data-distance-mode="10ft"
+      className={`h-full min-h-0 overflow-hidden ${surfaceClass}`}
+    >
+      <div className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)]">
+        <header className="flex items-center justify-between gap-4 border-b border-[#2d2d31] px-7 py-5">
+          <div className="min-w-0">
+            <div className="font-mono text-[11px] uppercase tracking-[0.26em] text-cyan-200">Embry Voice</div>
+            <h1 className="mt-1 truncate text-3xl font-semibold tracking-[0] text-[#f4f4f5]">Memory-first voice monitor</h1>
+          </div>
+          <div className="flex shrink-0 flex-wrap justify-end gap-2">
+            <StatusPill label="10ft" tone="good" />
+            <StatusPill label={`voice ${voiceStatus}`} tone={voiceTone} />
+            <StatusPill label={`listener ${listenerTelemetry.state}`} tone={listenerTelemetry.state === 'error' ? 'bad' : listenerTelemetry.state === 'listening' || listenerTelemetry.state === 'transcribing' ? 'good' : undefined} />
+          </div>
+        </header>
+
+        <main className="grid min-h-0 grid-cols-[minmax(360px,0.95fr)_minmax(420px,1.05fr)] gap-8 px-10 py-8">
+          <section data-qid="embry-voice:ten-foot:orb-stage" className="grid min-h-0 place-items-center">
+            <div className="grid justify-items-center gap-6">
+              <div className="w-[min(42vw,420px)] min-w-[280px]" data-qid="embry-voice:ten-foot:orb">
+                <IdentityNode
+                  voiceStatus={voiceStatus}
+                  isStreaming={isStreaming}
+                  tone={voiceStatus === 'idle' ? undefined : tone}
+                  height={360}
+                  orbSize={230}
+                  compact
+                  showCopy={false}
+                  phaseSpeedMs={phaseSpeedMs}
+                  speechAudioElement={null}
+                  speechSourceId={activeSpeech?.turnId ?? activeSpeech?.id}
+                  speechAudioUrl={activeSpeech?.audioUrl}
+                  speechStartedAtMs={activeSpeech?.startedAtMs}
+                  speechEnvelope={activeSpeech?.voiceEnvelope}
+                />
+              </div>
+              <div className="grid justify-items-center gap-2 text-center">
+                <div className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-100">{activeSessionTitle}</div>
+                <div className="max-w-xl text-lg leading-snug text-zinc-300">
+                  {replayState.playing
+                    ? `Replaying turn ${Math.max(1, replayState.visibleTurnCount ?? 1)} of ${totalTurns}.`
+                    : 'Idle and ready for speech, replay, or memory-first chat.'}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section data-qid="embry-voice:ten-foot:summary" className="grid min-h-0 content-center gap-5">
+            <div className="grid grid-cols-2 gap-3">
+              <TenFootMetric label="passed gates" value={gateSummary.passed} tone="good" />
+              <TenFootMetric label="pending gates" value={gateSummary.pending} tone={gateSummary.pending ? 'warn' : undefined} />
+              <TenFootMetric label="voice turns" value={totalTurns} />
+              <TenFootMetric label="audio artifacts" value={totalAudio} />
+              <TenFootMetric label="known speakers" value={knownSpeakers} />
+              <TenFootMetric label="failed gates" value={gateSummary.failed} tone={gateSummary.failed ? 'bad' : 'good'} />
+            </div>
+
+            <div data-qid="embry-voice:ten-foot:status-band" className="border border-[#2d2d31] bg-[#17171a] p-5">
+              <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500">Current state</div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <StatusPill label={`replay ${replayState.phase}`} tone={replayState.playing ? 'good' : replayState.phase === 'interrupted' ? 'warn' : undefined} />
+                <StatusPill label={voiceEnabled ? 'listener enabled' : 'listener idle'} tone={voiceEnabled ? 'good' : undefined} />
+                {listenerTelemetry.packetsSent !== undefined && <StatusPill label={`pcm ${listenerTelemetry.packetsSent}`} />}
+                {listenerTelemetry.rmsDb !== undefined && <StatusPill label={`rms ${listenerTelemetry.rmsDb}db`} tone={listenerTelemetry.rmsDb < -45 ? 'warn' : undefined} />}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-3" data-qid="embry-voice:ten-foot:actions">
+              <button
+                type="button"
+                data-qid="embry-voice:action:replay-glance"
+                data-qs-action="EMBRY_VOICE_REPLAY_GLANCE"
+                title={replayState.playing ? 'Stop Embry voice replay' : 'Replay Embry voice conversation'}
+                onClick={onReplay}
+                className="inline-flex min-h-11 items-center gap-2 border border-emerald-300/35 bg-emerald-400/10 px-4 text-sm font-semibold text-emerald-100 hover:bg-emerald-400/15"
+              >
+                {replayState.playing ? <PauseCircle className="h-4 w-4" /> : <PlayCircle className="h-4 w-4" />}
+                {replayState.playing ? 'Stop replay' : 'Replay'}
+              </button>
+              <button
+                type="button"
+                data-qid="embry-voice:action:direct-speak-glance"
+                data-qs-action="EMBRY_VOICE_DIRECT_SPEAK_GLANCE"
+                title="Render a direct Chatterbox Embry voice sample"
+                onClick={() => void onDirectSpeak()}
+                disabled={directSpeakBusy}
+                className="inline-flex min-h-11 items-center gap-2 border border-cyan-300/35 bg-cyan-400/10 px-4 text-sm font-semibold text-cyan-100 hover:bg-cyan-400/15 disabled:cursor-wait disabled:opacity-60"
+              >
+                <Radio className="h-4 w-4" />
+                {directSpeakBusy ? 'Rendering' : 'Speak'}
+              </button>
+              <button
+                type="button"
+                data-qid="embry-voice:action:listen-glance"
+                data-qs-action="EMBRY_VOICE_LISTEN_GLANCE"
+                title={voiceEnabled ? 'Stop Embry live listener' : 'Start Embry live listener'}
+                onClick={onToggleListener}
+                className="inline-flex min-h-11 items-center gap-2 border border-teal-300/35 bg-teal-400/10 px-4 text-sm font-semibold text-teal-100 hover:bg-teal-400/15"
+              >
+                <Mic className="h-4 w-4" />
+                {voiceEnabled ? 'Stop listening' : 'Listen'}
+              </button>
+              <button
+                type="button"
+                data-qid="embry-voice:distance:lean-in"
+                data-qs-action="EMBRY_VOICE_OPEN_LEAN_IN"
+                title="Open the full Embry Voice console"
+                onClick={onOpenConsole}
+                className="inline-flex min-h-11 items-center gap-2 border border-white/15 bg-white/5 px-4 text-sm font-semibold text-zinc-100 hover:bg-white/10"
+              >
+                <Maximize2 className="h-4 w-4" />
+                Open console
+              </button>
+            </div>
+          </section>
+        </main>
+      </div>
+    </section>
+  )
+}
+
+function TenFootMetric({ label, value, tone }: { label: string; value: number; tone?: 'good' | 'bad' | 'warn' }): JSX.Element {
+  const toneClass = tone === 'good'
+    ? 'text-emerald-200'
+    : tone === 'bad'
+      ? 'text-red-200'
+      : tone === 'warn'
+        ? 'text-orange-200'
+        : 'text-zinc-100'
+  return (
+    <div className="border border-[#2d2d31] bg-[#17171a] p-5">
+      <div className={`font-mono text-4xl font-semibold tracking-[0] ${toneClass}`}>{value}</div>
+      <div className="mt-2 font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-500">{label}</div>
+    </div>
   )
 }
 
