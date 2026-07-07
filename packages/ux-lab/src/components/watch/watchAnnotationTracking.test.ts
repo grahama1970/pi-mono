@@ -119,4 +119,54 @@ describe("watch annotation runtime tracking", () => {
 		expect(heldAfterReusedTrackStop?.runtimePolicy).toBe("hold_from_last_keyframe_until_offscreen");
 		expect(heldAfterReusedTrackStop?.sourceKeyframeId).toBe("legacy-kf-2");
 	});
+
+	test("keeps a YOLO-linked character unassigned after a stop until reassigned", () => {
+		const row10TrackEvents: WatchKeyframeAnnotationBox[] = [
+			{
+				id: "row10-track15-willie-kf-1",
+				characterName: "Willie",
+				actorName: "Billy Bob Thornton",
+				timestampSeconds: 0.9,
+				bbox: [0.2, 0.05, 0.5, 0.9],
+				annotationTrackId: "bad_santa:row10:yolo:track_15",
+				visibilityState: "visible",
+				status: "receipt_written",
+			},
+			{
+				id: "row10-track15-stop-1",
+				characterName: "Willie",
+				actorName: "Billy Bob Thornton",
+				timestampSeconds: 1.792,
+				bbox: null,
+				annotationTrackId: "bad_santa:row10:yolo:track_15",
+				visibilityState: "offscreen",
+				trackControlAction: "stop_character_scan",
+				status: "receipt_written",
+			},
+			{
+				id: "row10-track15-willie-kf-2",
+				characterName: "Willie",
+				actorName: "Billy Bob Thornton",
+				timestampSeconds: 4.542,
+				bbox: [0.25, 0.1, 0.55, 0.85],
+				annotationTrackId: "bad_santa:row10:yolo:track_15",
+				visibilityState: "visible",
+				status: "receipt_written",
+			},
+		];
+
+		const beforeStop = runtimeTrackedKeyframeBoxAtTime(row10TrackEvents, 1.25, "Willie");
+		expect(beforeStop?.runtimePolicy).toBe("hold_from_last_keyframe_until_offscreen");
+		expect(beforeStop?.sourceKeyframeId).toBe("row10-track15-willie-kf-1");
+
+		expect(runtimeTrackedKeyframeBoxAtTime(row10TrackEvents, 2.02, "Willie")).toBeNull();
+		expect(runtimeTrackedKeyframeBoxAtTime(row10TrackEvents, 3.5, "Willie")).toBeNull();
+		expect(isCharacterOffscreenAtTime(row10TrackEvents, "Willie", 3.5)).toBe(true);
+		expect(runtimeTrackedKeyframeBoxAtTime(row10TrackEvents, 3.5, "Unassigned")).toBeNull();
+
+		const afterReassignment = runtimeTrackedKeyframeBoxAtTime(row10TrackEvents, 5.0, "Willie");
+		expect(afterReassignment?.runtimePolicy).toBe("hold_from_last_keyframe_until_offscreen");
+		expect(afterReassignment?.sourceKeyframeId).toBe("row10-track15-willie-kf-2");
+		expect(isCharacterOffscreenAtTime(row10TrackEvents, "Willie", 5.0)).toBe(false);
+	});
 });

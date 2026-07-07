@@ -1327,8 +1327,8 @@ export function WatchAnnotationIsland({
   }, [actorLookup, detectorCandidates, detectorLabelRejections, detectorSuggestions, findSavedDetectorAssignment, identityReadiness])
 
   const yoloSequenceRows = useMemo(() => (
-    yoloLabelEvents
-      .map((event, index) => {
+    [
+      ...yoloLabelEvents.map((event, index) => {
         const timeSeconds = yoloEventTimeSeconds(event)
         const isStop = isYoloStopEvent(event)
         const label = isStop
@@ -1354,12 +1354,27 @@ export function WatchAnnotationIsland({
           timeSeconds,
           trackId,
         }
-      })
+      }),
+      ...Object.values(session.tracks).flatMap((track) => track.controls.map((control, index) => ({
+        id: control.recordId || control.id || `${track.characterKey}:control:${index}`,
+        index: yoloLabelEvents.length + index,
+        action: 'stop_character_scan',
+        actorName: control.actorName || track.actorName || '',
+        boxKey: '',
+        createdAt: '',
+        detail: `stops ${control.characterName || track.characterName} until reassigned`,
+        isStop: true,
+        label: 'Unassigned',
+        leftPercent: Math.max(0, Math.min(100, (control.timeSeconds / Math.max(segmentDuration, 0.001)) * 100)),
+        timeSeconds: control.timeSeconds,
+        trackId: track.characterName,
+      }))),
+    ]
       .sort((left, right) => (
         left.timeSeconds - right.timeSeconds
         || left.index - right.index
       ))
-  ), [segmentDuration, yoloLabelEvents])
+  ), [segmentDuration, session.tracks, yoloLabelEvents])
 
   const commonMutationBody = useCallback((
     timeSeconds: number,
@@ -1688,10 +1703,38 @@ export function WatchAnnotationIsland({
     setInlineLabelEditorCandidateId(null)
     setPendingTargetBbox(null)
     setDraftBbox(null)
-    setSession((current) => ({ ...current, selectedOverlayId: null, revision: current.revision + 1 }))
+    setSession((current) => {
+      const cleared = { ...current, selectedOverlayId: null, revision: current.revision + 1 }
+      if (!assignmentToClear?.characterName || characterKey(assignmentToClear.characterName) === 'unassigned') {
+        return cleared
+      }
+      return appendTrackControlLocally(cleared, {
+        characterName: assignmentToClear.characterName,
+        actorName: assignmentToClear.actorName || actorLookup(assignmentToClear.characterName),
+        timeSeconds: candidate.timeSeconds,
+        kind: 'offscreen',
+      })
+    })
 
     try {
       await persistYoloLabelEvent(candidate, 'reject_box', assignmentToClear || undefined)
+      if (assignmentToClear?.characterName && characterKey(assignmentToClear.characterName) !== 'unassigned') {
+        await requestJson('/api/projects/watch/annotations/track-control', {
+          ...commonMutationBody(candidate.timeSeconds, resolvedAssetUid),
+          box_id: `${detectorCandidateBoxKey(candidate)}:stop:${characterKey(assignmentToClear.characterName)}`,
+          annotation_track_id: `${resolvedAssetUid}:row${row.index}:yolo:${candidate.trackId}`,
+          character_name: assignmentToClear.characterName,
+          actor_name: assignmentToClear.actorName || actorLookup(assignmentToClear.characterName),
+          visibility_state: 'offscreen',
+          detector_observation_ref: detectorObservationRefForCandidate(candidate),
+          track_control: {
+            action: 'stop_character_scan',
+            reason: 'yolo_candidate_unassigned',
+            track_id: candidate.trackId,
+            detector_candidate_id: candidate.id,
+          },
+        })
+      }
       await hydrateYoloLabelLedger()
       await hydrateRow()
       await hydrateIdentityReadiness()
@@ -2244,10 +2287,64 @@ export function WatchAnnotationIsland({
     }
   }
 
+  async function stopOverlayAtPlayheadForUnassign(overlay: WatchAnnotationOverlay, timeSeconds: number): Promise<void> {
+    const characterName = overlay.characterName
+    const actorName = overlay.actorName || actorLookup(characterName)
+
+    setSaving(true)
+    setStatus(`Marking ${characterName} unassigned at ${timeSeconds.toFixed(2)}s...`)
+    setSession((state) => setSelectedCharacter(
+      appendTrackControlLocally(state, {
+        characterName,
+        actorName,
+        timeSeconds,
+        kind: 'offscreen',
+      }),
+      'Unassigned',
+      '',
+    ))
+    try {
+      await requestJson('/api/projects/watch/annotations/track-control', {
+        ...commonMutationBody(timeSeconds, resolvedAssetUid),
+        character_name: characterName,
+        actor_name: actorName,
+        visibility_state: 'offscreen',
+        track_control: {
+          action: 'stop_character_scan',
+          reason: 'selected_overlay_unassigned',
+          source_overlay_id: overlay.id,
+          source_keyframe_ids: overlay.sourceKeyframeIds,
+        },
+      })
+      await hydrateRow()
+      await hydrateIdentityReadiness()
+      setStatus(`${characterName} marked Unassigned at ${timeSeconds.toFixed(2)}s; the sequence stays stopped until reassigned.`)
+    } catch (error) {
+      setStatus(`Unassign failed: ${error instanceof Error ? error.message : String(error)}`)
+      await hydrateRow()
+      await hydrateIdentityReadiness()
+    } finally {
+      setSaving(false)
+    }
+  }
+
   function onCharacterChange(event: React.ChangeEvent<HTMLSelectElement>): void {
     const name = event.target.value
     const option = characterOptions.find((candidate) => candidate.name === name)
     event.currentTarget.blur()
+    const current = sessionRef.current || session
+    const overlayToStop = selectedCurrentOverlay(current)
+    if (
+      characterKey(name) === 'unassigned'
+      && !pendingTargetBbox
+      && !selectedDetectorCandidate
+      && overlayToStop
+      && !overlayToStop.isExactKeyframe
+      && characterKey(overlayToStop.characterName) !== 'unassigned'
+    ) {
+      void stopOverlayAtPlayheadForUnassign(overlayToStop, current.playheadSeconds)
+      return
+    }
     setSession((current) => {
       const next = setSelectedCharacter(current, name, option?.actorName || actorLookup(name))
       if (!pendingTargetBbox) return next
