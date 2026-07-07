@@ -671,6 +671,23 @@ function scrollSharedChatToBottom(): void {
   messagePane.scrollTo({ top: messagePane.scrollHeight, behavior: 'smooth' })
 }
 
+function normalizeAudioUrl(url: string): string {
+  try {
+    return new URL(url, window.location.href).href
+  } catch {
+    return url
+  }
+}
+
+function visibleAudioForArtifact(artifact: AudioArtifact): HTMLAudioElement | null {
+  const expectedUrl = normalizeAudioUrl(artifact.url || artifactUrl(artifact.path))
+  const filename = artifact.path.split('/').at(-1) ?? artifact.id
+  const audios = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
+  return audios.find((audio) => normalizeAudioUrl(audio.currentSrc || audio.src) === expectedUrl)
+    ?? audios.find((audio) => (audio.currentSrc || audio.src).includes(filename))
+    ?? null
+}
+
 function memoryReasoningTraceForTurn(turn: VoiceTurn): NonNullable<ChatMessage['reasoningSteps']> {
   const speakerKnown = Boolean(turn.speaker)
   return [
@@ -1219,17 +1236,19 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       for (let artifactIndex = 0; artifactIndex < turn.audioArtifacts.length; artifactIndex += 1) {
         if (replayStopRef.current) break
         const artifact = turn.audioArtifacts[artifactIndex]
-        const existingReplayAudio = replayPlaybackAudioRef.current
-        const audio = existingReplayAudio ?? new Audio()
-        replayPlaybackAudioRef.current = audio
-        audio.setAttribute('data-qid', 'embry-voice:replay-session-audio')
-        audio.setAttribute('data-embry-session-audio', 'true')
-        audio.setAttribute('data-embry-replay-text', turn.assistantText)
+        const fallbackAudio = replayPlaybackAudioRef.current ?? new Audio()
+        const audio = visibleAudioForArtifact(artifact) ?? fallbackAudio
+        replayPlaybackAudioRef.current = fallbackAudio
+        if (audio === fallbackAudio) {
+          audio.setAttribute('data-qid', 'embry-voice:replay-session-audio')
+          audio.setAttribute('data-embry-session-audio', 'true')
+          audio.setAttribute('data-embry-replay-text', turn.assistantText)
+          audio.style.display = 'none'
+          if (!fallbackAudio.parentElement) document.body.appendChild(fallbackAudio)
+        }
         audio.preload = 'auto'
         audio.muted = false
         audio.volume = 1
-        audio.style.display = 'none'
-        if (!existingReplayAudio) document.body.appendChild(audio)
         audio.src = artifact.url || artifactUrl(artifact.path)
         setReplayState({ playing: true, activeIndex: audioIndex, activeTurnId: turn.id, activeSessionId: session?.id, phase: 'response', visibleTurnCount: turnIndex + 1 })
         audioIndex += 1
@@ -1260,6 +1279,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           })
         } catch {
           clearActiveSpeech(speechId)
+          replayStopRef.current = true
+          setReplayState({ playing: false, activeIndex: -1, activeTurnId: turn.id, activeSessionId: session?.id, phase: 'interrupted', visibleTurnCount: turnIndex + 1 })
           await new Promise((resolve) => window.setTimeout(resolve, 450))
         }
       }
