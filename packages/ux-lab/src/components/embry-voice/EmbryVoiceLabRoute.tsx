@@ -1245,7 +1245,10 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         audio.preload = 'auto'
         audio.muted = false
         audio.volume = 1
-        audio.src = artifact.url || artifactUrl(artifact.path)
+        const artifactAudioUrl = artifact.url || artifactUrl(artifact.path)
+        if (normalizeAudioUrl(audio.currentSrc || audio.src) !== normalizeAudioUrl(artifactAudioUrl)) {
+          audio.src = artifactAudioUrl
+        }
         setReplayState({ playing: true, activeIndex: audioIndex, activeTurnId: turn.id, activeSessionId: session?.id, phase: 'response', visibleTurnCount: turnIndex + 1 })
         audioIndex += 1
         const speechId = `embry-replay-${turn.id}-${artifactIndex}-${audioIndex - 1}`
@@ -1261,17 +1264,32 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         })
         audio.currentTime = 0
         try {
-          audio.load()
+          if (normalizeAudioUrl(audio.currentSrc || audio.src) !== normalizeAudioUrl(artifactAudioUrl)) audio.load()
           await audio.play()
           await new Promise<void>((resolve) => {
+            let resumeAttempts = 0
+            const timeoutMs = Math.max(1500, ((Number.isFinite(audio.duration) ? audio.duration : 0) * 1000) + 1000)
+            const timeout = window.setTimeout(() => {
+              finish()
+            }, timeoutMs)
             const finish = (): void => {
+              window.clearTimeout(timeout)
               audio.removeEventListener('ended', finish)
-              audio.removeEventListener('pause', finish)
+              audio.removeEventListener('pause', resumeUnexpectedPause)
               clearActiveSpeech(speechId)
               resolve()
             }
+            const resumeUnexpectedPause = (): void => {
+              if (replayStopRef.current || audio.ended) {
+                finish()
+                return
+              }
+              if (resumeAttempts >= 2) return
+              resumeAttempts += 1
+              void audio.play().catch(() => undefined)
+            }
             audio.addEventListener('ended', finish, { once: true })
-            audio.addEventListener('pause', finish, { once: true })
+            audio.addEventListener('pause', resumeUnexpectedPause)
           })
         } catch {
           clearActiveSpeech(speechId)
