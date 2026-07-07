@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Camera, Move, Pause, Pencil, Play, Trash2 } from 'lucide-react'
+import { Camera, ChevronLeft, ChevronRight, Move, Pause, Pencil, Play, Trash2 } from 'lucide-react'
 import {
   characterKey,
   clamp01,
@@ -49,6 +49,14 @@ export interface WatchAnnotationIslandProps {
   characters?: Array<string | WatchAnnotationCharacterOption>
   actorByCharacter?: Record<string, string>
   actorForCharacter?: (name: string) => string | null
+  clipNavigation?: {
+    currentPosition: number
+    total: number
+    previousLabel?: string
+    nextLabel?: string
+    onPrevious?: () => void
+    onNext?: () => void
+  }
   onClose?: () => void
 }
 
@@ -771,6 +779,7 @@ export function WatchAnnotationIsland({
   characters = EMPTY_CHARACTER_OPTIONS,
   actorByCharacter = EMPTY_ACTOR_BY_CHARACTER,
   actorForCharacter,
+  clipNavigation,
   onClose,
 }: WatchAnnotationIslandProps): React.ReactElement {
   const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -2633,7 +2642,8 @@ export function WatchAnnotationIsland({
       }}
     >
       <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-        <div style={{ minWidth: 0 }}>
+        <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <div style={{ minWidth: 0 }}>
           <div style={{ color: '#67e8f9', fontSize: 11, fontWeight: 900, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
             Watch annotation session island
           </div>
@@ -2643,6 +2653,64 @@ export function WatchAnnotationIsland({
               row {row.index} · {row.movie_segment || 'single frame'} · {stats.exactKeyframes} exact · {stats.controls} controls
             </span>
           </div>
+          </div>
+          {clipNavigation ? (
+            <nav
+              data-qid="watch:annotation-island:clip-navigation"
+              aria-label="Clip row navigation"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '36px minmax(72px, auto) 36px',
+                alignItems: 'center',
+                gap: 6,
+                padding: 4,
+                border: '1px solid rgba(148,163,184,0.18)',
+                borderRadius: 10,
+                background: 'rgba(15,23,42,0.68)',
+              }}
+            >
+              <button
+                type="button"
+                data-qid="watch:annotation-island:previous-clip"
+                data-qs-action="WATCH_ANNOTATION_PREVIOUS_CLIP"
+                aria-label={clipNavigation.previousLabel ? `Open previous clip ${clipNavigation.previousLabel}` : 'No previous clip'}
+                title={clipNavigation.previousLabel ? `Previous clip: ${clipNavigation.previousLabel}` : 'No previous clip'}
+                disabled={!clipNavigation.onPrevious}
+                onClick={clipNavigation.onPrevious}
+                style={iconButtonStyle(Boolean(clipNavigation.onPrevious))}
+              >
+                <ChevronLeft size={16} aria-hidden="true" />
+              </button>
+              <div
+                data-qid="watch:annotation-island:clip-position"
+                style={{
+                  minWidth: 72,
+                  textAlign: 'center',
+                  color: '#cbd5e1',
+                  fontSize: 11,
+                  fontWeight: 850,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  fontVariantNumeric: 'tabular-nums',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {clipNavigation.currentPosition}/{clipNavigation.total}
+              </div>
+              <button
+                type="button"
+                data-qid="watch:annotation-island:next-clip"
+                data-qs-action="WATCH_ANNOTATION_NEXT_CLIP"
+                aria-label={clipNavigation.nextLabel ? `Open next clip ${clipNavigation.nextLabel}` : 'No next clip'}
+                title={clipNavigation.nextLabel ? `Next clip: ${clipNavigation.nextLabel}` : 'No next clip'}
+                disabled={!clipNavigation.onNext}
+                onClick={clipNavigation.onNext}
+                style={iconButtonStyle(Boolean(clipNavigation.onNext))}
+              >
+                <ChevronRight size={16} aria-hidden="true" />
+              </button>
+            </nav>
+          ) : null}
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <button

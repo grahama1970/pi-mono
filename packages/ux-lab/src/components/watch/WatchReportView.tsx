@@ -3211,6 +3211,22 @@ export function WatchReportView({
 	    ? reportWithDiff.scene_elements.find((row) => row.index === expandedClip.rowIndex) ?? null
 	    : null
 
+  const expandedClipRows = useMemo(() => (
+    reportWithDiff?.scene_elements.filter((row) => Boolean(segmentVideoUrl(row))) ?? []
+  ), [reportWithDiff])
+
+  const expandedClipRowPosition = expandedClipRow
+    ? expandedClipRows.findIndex((row) => row.index === expandedClipRow.index)
+    : -1
+
+  const previousExpandedClipRow = expandedClipRowPosition > 0
+    ? expandedClipRows[expandedClipRowPosition - 1]
+    : null
+
+  const nextExpandedClipRow = expandedClipRowPosition >= 0 && expandedClipRowPosition < expandedClipRows.length - 1
+    ? expandedClipRows[expandedClipRowPosition + 1]
+    : null
+
 	  const clipModalCharacterOptions = useMemo(() => {
 	    if (!expandedClipRow) return ['Unassigned']
 	    const candidate = candidateCharacterForRow(expandedClipRow)
@@ -4522,6 +4538,14 @@ export function WatchReportView({
             thumbnailSrc={sceneThumbUrl(expandedClipRow)}
             characters={[...CHARACTER_OPTIONS, ...expandedClip.entities]}
             actorForCharacter={(name) => actorForCharacter(name) || ''}
+            clipNavigation={expandedClipRowPosition >= 0 ? {
+              currentPosition: expandedClipRowPosition + 1,
+              total: expandedClipRows.length,
+              previousLabel: previousExpandedClipRow ? `row ${previousExpandedClipRow.index} · ${previousExpandedClipRow.timecode}` : undefined,
+              nextLabel: nextExpandedClipRow ? `row ${nextExpandedClipRow.index} · ${nextExpandedClipRow.timecode}` : undefined,
+              onPrevious: previousExpandedClipRow ? () => openExpandedClipForRow(previousExpandedClipRow) : undefined,
+              onNext: nextExpandedClipRow ? () => openExpandedClipForRow(nextExpandedClipRow) : undefined,
+            } : undefined}
             onClose={closeExpandedClip}
           />
         </div>,
