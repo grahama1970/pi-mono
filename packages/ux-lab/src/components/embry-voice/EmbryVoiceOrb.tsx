@@ -556,42 +556,6 @@ export function EmbryVoiceOrb({
             pointerEvents: 'none',
           }}
         />
-        <div
-          aria-hidden
-          data-qid="embry-voice:audio-band-meter"
-          style={{
-            position: 'absolute',
-            left: '18%',
-            right: '18%',
-            bottom: '16%',
-            zIndex: 3,
-            display: visualState === 'speaking' ? 'grid' : 'none',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            alignItems: 'end',
-            gap: Math.max(2, size * 0.012),
-            height: Math.max(12, size * 0.16),
-            pointerEvents: 'none',
-          }}
-        >
-          {[audio.level, audio.bass, audio.mid, audio.treble].map((band, index) => (
-            <span
-              key={index}
-              style={{
-                display: 'block',
-                minHeight: 2,
-                height: `${Math.max(8, Math.round((0.18 + band * 0.82) * 100))}%`,
-                borderRadius: 999,
-                background: index === 1
-                  ? 'rgba(128, 255, 210, 0.9)'
-                  : index === 2
-                    ? 'rgba(190, 255, 225, 0.86)'
-                    : 'rgba(80, 255, 180, 0.78)',
-                boxShadow: '0 0 10px rgba(80, 255, 180, 0.5)',
-                transition: 'height 55ms linear',
-              }}
-            />
-          ))}
-        </div>
         <canvas
           ref={canvasRef}
           width={MICRO_CANVAS_SIZE}

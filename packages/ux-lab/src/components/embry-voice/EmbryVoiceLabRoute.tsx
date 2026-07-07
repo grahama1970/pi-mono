@@ -732,6 +732,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const replayStopRef = useRef(false)
   const directSpeakBusyRef = useRef(false)
   const directPlaybackAudioRef = useRef<HTMLAudioElement | null>(null)
+  const replayPlaybackAudioRef = useRef<HTMLAudioElement | null>(null)
   const directPlaybackRunRef = useRef(0)
   const activeSpeechIdRef = useRef('')
   const browserListenerRef = useRef<BrowserListenerSession | null>(null)
@@ -1217,14 +1218,21 @@ export function EmbryVoiceLabRoute(): JSX.Element {
 
       for (let artifactIndex = 0; artifactIndex < turn.audioArtifacts.length; artifactIndex += 1) {
         if (replayStopRef.current) break
-        const audioElements = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]'))
-        const audio = audioElements[audioIndex]
+        const artifact = turn.audioArtifacts[artifactIndex]
+        const existingReplayAudio = replayPlaybackAudioRef.current
+        const audio = existingReplayAudio ?? new Audio()
+        replayPlaybackAudioRef.current = audio
+        audio.setAttribute('data-qid', 'embry-voice:replay-session-audio')
+        audio.setAttribute('data-embry-session-audio', 'true')
+        audio.setAttribute('data-embry-replay-text', turn.assistantText)
+        audio.preload = 'auto'
+        audio.muted = false
+        audio.volume = 1
+        audio.style.display = 'none'
+        if (!existingReplayAudio) document.body.appendChild(audio)
+        audio.src = artifact.url || artifactUrl(artifact.path)
         setReplayState({ playing: true, activeIndex: audioIndex, activeTurnId: turn.id, activeSessionId: session?.id, phase: 'response', visibleTurnCount: turnIndex + 1 })
         audioIndex += 1
-        if (!audio) {
-          await new Promise((resolve) => window.setTimeout(resolve, 450))
-          continue
-        }
         const speechId = `embry-replay-${turn.id}-${artifactIndex}-${audioIndex - 1}`
         bindActiveSpeech({
           id: speechId,
@@ -1238,6 +1246,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         })
         audio.currentTime = 0
         try {
+          audio.load()
           await audio.play()
           await new Promise<void>((resolve) => {
             const finish = (): void => {
@@ -1267,6 +1276,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
 
   const stopReplay = useCallback(() => {
     replayStopRef.current = true
+    replayPlaybackAudioRef.current?.pause()
     document.querySelectorAll<HTMLAudioElement>('[data-embry-session-audio="true"]').forEach((audio) => audio.pause())
     setReplayState({ playing: false, activeIndex: -1, phase: 'interrupted' })
     setIsStreaming(false)
@@ -1519,6 +1529,12 @@ export function EmbryVoiceLabRoute(): JSX.Element {
 
   useEffect(() => {
     return () => {
+      const replayAudio = replayPlaybackAudioRef.current
+      if (replayAudio) {
+        replayAudio.pause()
+        replayAudio.remove()
+        replayPlaybackAudioRef.current = null
+      }
       const audio = directPlaybackAudioRef.current
       if (audio) {
         audio.pause()
