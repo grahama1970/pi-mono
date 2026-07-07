@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "app": "SPARTA Explorer Data Views",
+  "base_url": "http://localhost:3002",
+  "surfaces": [
+    {
+      "name": "sparta-posture-live-dom",
+      "path": "/#sparta-explorer/posture",
+      "wait_ready": "[data-qid='sparta:page-purpose:posture']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "posture-shell",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Posture page live DOM baseline",
+              "assert_visible": "[data-qid='sparta:page-purpose:posture']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:button:embry-assistant']",
+              "description": "Open shared SPARTA chat from Posture",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='sparta:button:embry-assistant']",
+              "assert_qs_action": "[data-qid='sparta:button:embry-assistant']",
+              "assert_min_size": {
+                "selector": "[data-qid='sparta:button:embry-assistant']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            },
+            {
+              "action": "wait",
+              "target": "[data-qid='sparta:chat:shell:slideover']",
+              "timeout_ms": 5000,
+              "description": "Shared SPARTA chat shell appears"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sparta-coverage-live-dom",
+      "path": "/#sparta-explorer/coverage",
+      "wait_ready": "[data-qid='coverage-mode-root']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "coverage-actions",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Coverage page live DOM baseline",
+              "assert_visible": "[data-qid='coverage-mode-root']"
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='coverage:button:refresh']",
+              "description": "Refresh control exposes a stable hover target",
+              "assert_title": "[data-qid='coverage:button:refresh']",
+              "assert_qs_action": "[data-qid='coverage:button:refresh']",
+              "assert_min_size": {
+                "selector": "[data-qid='coverage:button:refresh']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='coverage:macro:status']",
+              "description": "Coverage Stream Deck macro is instrumented",
+              "assert_title": "[data-qid='coverage:macro:status']",
+              "assert_qs_action": "[data-qid='coverage:macro:status']",
+              "assert_min_size": {
+                "selector": "[data-qid='coverage:macro:status']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:chat:distance:glance']",
+              "description": "Switch Coverage to 10ft glance through the global mode selector",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='sparta:chat:distance:glance']",
+              "assert_qs_action": "[data-qid='sparta:chat:distance:glance']",
+              "assert_attribute": {
+                "selector": "[data-qid='coverage-mode-root']",
+                "attribute": "data-page-distance-mode",
+                "value": "10ft"
+              },
+              "assert_min_size": {
+                "selector": "[data-qid='sparta:chat:distance:glance']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='sparta:chat:distance:triage']",
+              "description": "Switch Coverage to 5ft triage through the global mode selector",
+              "screenshot_after": true,
+              "assert_title": "[data-qid='sparta:chat:distance:triage']",
+              "assert_qs_action": "[data-qid='sparta:chat:distance:triage']",
+              "assert_attribute": {
+                "selector": "[data-qid='coverage-mode-root']",
+                "attribute": "data-page-distance-mode",
+                "value": "5ft"
+              },
+              "assert_min_size": {
+                "selector": "[data-qid='sparta:chat:distance:triage']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            },
+            {
+              "action": "key",
+              "key": "A",
+              "description": "Any keyboard input moves the global Embry view state to lean-in",
+              "screenshot_after": true,
+              "assert_attribute": {
+                "selector": "[data-qid='coverage-mode-root']",
+                "attribute": "data-page-distance-mode",
+                "value": "lean-in"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sparta-sources-live-dom",
+      "path": "/?chatMode=glance#sparta-explorer/sources",
+      "wait_ready": "[data-qid='sources-mode-root']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "sources-readiness",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Sources page live DOM baseline",
+              "assert_visible": "[data-qid='sources-mode-root']"
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='sparta:button:tab-sources']",
+              "description": "Sources tab remains instrumented in the shared SPARTA navigation",
+              "assert_title": "[data-qid='sparta:button:tab-sources']",
+              "assert_qs_action": "[data-qid='sparta:button:tab-sources']",
+              "assert_min_size": {
+                "selector": "[data-qid='sparta:button:tab-sources']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sparta-urls-live-dom",
+      "path": "/?chatMode=glance#sparta-explorer/urls",
+      "wait_ready": "[data-qid='urls-mode-root']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "urls-readiness",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "URLs page live DOM baseline",
+              "assert_visible": "[data-qid='urls-mode-root']"
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='sparta:button:tab-urls']",
+              "description": "URLs tab remains instrumented in the shared SPARTA navigation",
+              "assert_title": "[data-qid='sparta:button:tab-urls']",
+              "assert_qs_action": "[data-qid='sparta:button:tab-urls']",
+              "assert_min_size": {
+                "selector": "[data-qid='sparta:button:tab-urls']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

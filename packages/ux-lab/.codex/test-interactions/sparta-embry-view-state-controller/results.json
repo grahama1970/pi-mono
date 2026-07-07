@@ -1,0 +1,41 @@
+{
+  "schema": "ux_lab.sparta_embry_view_state_controller.results.v1",
+  "mocked": false,
+  "live": true,
+  "url": "http://localhost:3002/?chatMode=triage#sparta-explorer/coverage",
+  "passed": 5,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "url-chatMode-triage-starts-5ft",
+      "passed": true,
+      "expected": "5ft",
+      "actual": "5ft"
+    },
+    {
+      "name": "keyboard-keydown-switches-lean-in",
+      "passed": true,
+      "expected": "lean-in",
+      "actual": "lean-in"
+    },
+    {
+      "name": "embry-listening-switches-5ft",
+      "passed": true,
+      "expected": "5ft",
+      "actual": "5ft"
+    },
+    {
+      "name": "embry-idle-switches-10ft",
+      "passed": true,
+      "expected": "10ft",
+      "actual": "10ft"
+    },
+    {
+      "name": "sparta-chat-voice-button-switches-5ft",
+      "passed": true,
+      "expected": "5ft",
+      "actual": "5ft"
+    }
+  ],
+  "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-embry-view-state-controller/final.png"
+}

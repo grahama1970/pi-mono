@@ -6,7 +6,7 @@ import { ChatWell, SharedChatShell, type StreamingStep } from '../../shared-chat
 import type { ChatMessage, CascadeLayer, EntityRef, EvidenceGate } from '../../shared-chat'
 import { useCollectionCounts } from '../../../hooks/useSpartaCollections'
 import { useMemoryHealth } from '../../../hooks/useMemoryHealth'
-import { Zap, FileSpreadsheet, Shield, Link, HelpCircle, Target, Settings, MessageSquare, ShieldCheck, Network, X, ChevronLeft, Sparkles, Activity } from 'lucide-react'
+import { Zap, FileSpreadsheet, Shield, Link, HelpCircle, Target, Settings, MessageSquare, ShieldCheck, Network, X, Terminal, Activity } from 'lucide-react'
 import EntitySpanViewer from '../../shared-chat/EntitySpanViewer'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import PostureDashboard from '../dashboard/PostureDashboard'
@@ -14,6 +14,8 @@ import { OverviewLanding } from './OverviewLanding'
 import { EvidenceWorkspace } from './EvidenceWorkspace'
 import { useReducedMotion } from 'motion/react'
 import { PagePurposeStrip } from './PagePurposeStrip'
+import { PageDistanceModeSwitcher, PageDistanceProvider } from './pageDistance/PageDistanceMode'
+import { MatrixCurationProvider } from './matrixCurationContext'
 import { PAGE_PURPOSE_CONTRACTS, TAB_PURPOSE_CONTRACTS, deriveCoveragePagePurposeState, deriveSpartaChatPagePurposeState, type CoverageHealthSnapshot } from './pagePurposeContracts'
 
 export type Scope = 'sparta' | 'f36' | 'both'
@@ -61,6 +63,28 @@ function writeCoverageHealthCache(payload: CoverageHealthSnapshot): void {
   } catch {
     // Ignore quota/private-mode failures; live fetch remains source of truth.
   }
+}
+
+function extractScillmContent(payload: unknown): string {
+  if (!payload || typeof payload !== 'object') return ''
+  const record = payload as Record<string, unknown>
+  const choices = Array.isArray(record.choices) ? record.choices : []
+  const firstChoice = choices[0] as Record<string, unknown> | undefined
+  const message = firstChoice?.message as Record<string, unknown> | undefined
+  if (typeof message?.content === 'string' && message.content.trim()) return message.content
+  if (typeof firstChoice?.text === 'string' && firstChoice.text.trim()) return firstChoice.text
+  if (typeof record.content === 'string' && record.content.trim()) return record.content
+  if (typeof record.text === 'string' && record.text.trim()) return record.text
+  if (typeof record.response === 'string' && record.response.trim()) return record.response
+  const error = record.error
+  if (typeof error === 'string' && error.trim()) return `Error: ${error}`
+  if (error && typeof error === 'object') {
+    const errRecord = error as Record<string, unknown>
+    const message = typeof errRecord.message === 'string' ? errRecord.message : ''
+    const advice = typeof errRecord.advice === 'string' ? errRecord.advice : ''
+    return [message && `Error: ${message}`, advice].filter(Boolean).join('\n')
+  }
+  return ''
 }
 
 const EVIDENCE_CASE_COMMAND_RE = /^\s*\/create-evidence-case(?:\s+|$)/i
@@ -192,6 +216,8 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   const [leftOpen, setLeftOpen] = useState(false)
   const [rightOpen, setRightOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [matrixCurationMode, setMatrixCurationMode] = useState(false)
+  const [openMatrixCurationItems, setOpenMatrixCurationItems] = useState(0)
 
   // Chat state
   const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -223,7 +249,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
   useRegisterAction('sparta:button:settings-depth', { app: 'sparta-explorer', action: 'SET_GATE_DEPTH', label: 'Set Gate Depth', description: 'Set evidence gate depth (fast, medium, accurate)' })
   useRegisterAction('sparta:button:settings-framework', { app: 'sparta-explorer', action: 'TOGGLE_FRAMEWORK_FILTER', label: 'Toggle Framework', description: 'Enable/disable a framework filter' })
   useRegisterAction('sparta:button:chat-close', { app: 'sparta-explorer', action: 'CLOSE_CHAT', label: 'Close Chat', description: 'Close Ask Embry chat panel' })
-  useRegisterAction('sparta:button:ask-ai', { app: 'sparta-explorer', action: 'OPEN_CHAT', label: 'Ask AI', description: 'Open Ask Embry chat' })
+  useRegisterAction('sparta:button:embry-assistant', { app: 'sparta-explorer', action: 'OPEN_CHAT', label: 'Ask Embry', description: 'Open Ask Embry chat' })
   useRegisterAction('sparta:button:settings', { app: 'sparta-explorer', action: 'OPEN_SETTINGS', label: 'Open Settings', description: 'Open query settings' })
   useRegisterAction('sparta:button:chat-scope-sparta', { app: 'sparta-explorer', action: 'SET_CHAT_SCOPE', label: 'Scope: SPARTA', description: 'Set chat scope to SPARTA' })
   useRegisterAction('sparta:button:chat-scope-f36', { app: 'sparta-explorer', action: 'SET_CHAT_SCOPE', label: 'Scope: F-36', description: 'Set chat scope to F-36' })
@@ -343,6 +369,18 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     clearTabFilter,
   }
 
+  const toggleMatrixCurationMode = useCallback(() => {
+    setMatrixCurationMode((current) => !current)
+  }, [])
+
+  const matrixCurationContextValue = useMemo(() => ({
+    curationMode: matrixCurationMode,
+    setCurationMode: setMatrixCurationMode,
+    toggleCurationMode: toggleMatrixCurationMode,
+    openCurationItems: openMatrixCurationItems,
+    setOpenCurationItems: setOpenMatrixCurationItems,
+  }), [matrixCurationMode, openMatrixCurationItems, toggleMatrixCurationMode])
+
   // Chat panel state
   const [chatOpen, setChatOpen] = useState(() => hashRequestsChat())
   const [currentHash, setCurrentHash] = useState(() => window.location.hash || '')
@@ -442,8 +480,8 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           ? supervisor.blocked.length
           : 0
       const inventory = body?.corpusInventory ?? {}
-      const missingTotal = Object.values(inventory).reduce(
-        (sum: number, lane: { missing?: number }) => sum + Number(lane?.missing ?? 0),
+      const missingTotal = (Object.values(inventory) as Array<{ missing?: number }>).reduce(
+        (sum: number, lane) => sum + Number(lane?.missing ?? 0),
         0,
       )
       const blockers = [
@@ -896,10 +934,12 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       if (!content) {
         layer = 'llm'
         const llmRes = await fetch(`${API}/api/scillm`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ model: 'text', messages: [{ role: 'system', content: 'You are Embry, a helpful SPARTA security controls assistant. Answer concisely.' }, { role: 'user', content: query }], temperature: 0.3, max_tokens: 512 }),
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Caller-Skill': 'ux-lab-sparta-explorer' },
+          body: JSON.stringify({ model: 'text', messages: [{ role: 'system', content: 'You are Embry, a helpful SPARTA security controls assistant. Answer concisely.' }, { role: 'user', content: query }], temperature: 0.3 }),
         })
-        content = (await llmRes.json()).choices?.[0]?.message?.content || 'No response'
+        const llmPayload = await llmRes.json()
+        content = extractScillmContent(llmPayload) || `Error: scillm returned ${llmRes.status} without response text.`
       }
 
       addMsg({ role: 'system', content, type: 'natural', cascadeLayer: layer, resultCount, entities, _querySpec: querySpec ?? undefined, verdict: gates.length > 0 ? { state: gateState, gates } : undefined })
@@ -1051,6 +1091,25 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
     ? latestEvidenceMessage
     : undefined
   const showEvidenceWorkspace = evidenceStreaming || Boolean(evidenceWorkspaceMessage)
+  const [chatVoiceEnabled, setChatVoiceEnabled] = useState(false)
+  const [chatVoiceStatus, setChatVoiceStatus] = useState<'off' | 'idle' | 'listening' | 'processing' | 'speaking' | 'error'>('off')
+  const emitChatVoiceState = useCallback((state: 'off' | 'idle' | 'listening' | 'processing' | 'speaking' | 'error') => {
+    if (typeof window === 'undefined') return
+    window.dispatchEvent(new CustomEvent('sparta:embry-voice-state', { detail: { state, surface: 'sparta-explorer' } }))
+  }, [])
+  const handleChatVoiceToggle = useCallback((enabled: boolean) => {
+    setChatVoiceEnabled(enabled)
+    const nextState = enabled ? 'listening' : 'off'
+    setChatVoiceStatus(nextState)
+    emitChatVoiceState(nextState)
+  }, [emitChatVoiceState])
+  const handleChatStreamingChange = useCallback((streaming: boolean) => {
+    setEvidenceStreaming(streaming)
+    if (!chatVoiceEnabled) return
+    const nextState = streaming ? 'processing' : 'idle'
+    setChatVoiceStatus(nextState)
+    emitChatVoiceState(nextState)
+  }, [chatVoiceEnabled, emitChatVoiceState])
   return (
     <div style={S.container}>
       {/* Offline Banner — shown when memory daemon is unreachable */}
@@ -1061,6 +1120,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
         onReload={() => window.location.reload()}
       />
 
+      <PageDistanceProvider activeTab={activeTab}>
       {/* Horizontal Tab Strip */}
       <div style={S.tabStrip} role="tablist" aria-label="Sparta Explorer Tabs">
         <div style={S.tabStripLeft}>
@@ -1075,25 +1135,28 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
               backgroundColor: chatOpen ? 'rgba(0, 209, 255, 0.08)' : 'transparent',
               color: chatOpen ? '#00D1FF' : '#fff',
               borderColor: chatOpen ? 'rgba(0, 209, 255, 0.4)' : 'rgba(0, 209, 255, 0.2)',
-              boxShadow: chatOpen
-                ? '0 0 24px rgba(0, 209, 255, 0.6), 0 0 8px rgba(0, 209, 255, 0.4)'
-                : '0 0 12px rgba(0, 209, 255, 0.3), 0 0 4px rgba(0, 209, 255, 0.2)',
+              boxShadow: 'none',
+              filter: chatOpen
+                ? 'drop-shadow(0 0 5px rgba(0, 209, 255, 0.16))'
+                : 'drop-shadow(0 0 3px rgba(0, 209, 255, 0.1))',
               transition: 'all 0.2s ease',
             }}
             onMouseEnter={(e) => {
               if (!chatOpen) {
-                e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 209, 255, 0.5), 0 0 6px rgba(0, 209, 255, 0.35)'
+                e.currentTarget.style.boxShadow = 'none'
+                e.currentTarget.style.filter = 'drop-shadow(0 0 5px rgba(0, 209, 255, 0.14))'
                 e.currentTarget.style.borderColor = 'rgba(0, 209, 255, 0.35)'
               }
             }}
             onMouseLeave={(e) => {
               if (!chatOpen) {
-                e.currentTarget.style.boxShadow = '0 0 12px rgba(0, 209, 255, 0.3), 0 0 4px rgba(0, 209, 255, 0.2)'
+                e.currentTarget.style.boxShadow = 'none'
+                e.currentTarget.style.filter = 'drop-shadow(0 0 3px rgba(0, 209, 255, 0.1))'
                 e.currentTarget.style.borderColor = 'rgba(0, 209, 255, 0.2)'
               }
             }}
           >
-            <Sparkles size={16} />
+            <Terminal size={13} strokeWidth={1.8} />
           </button>
           <div style={{ width: 1, height: 24, backgroundColor: EMBRY.border, margin: '0 8px' }} />
           {NAV_GROUPS.map((group, groupIndex) => (
@@ -1131,6 +1194,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           ))}
         </div>
         <div style={S.tabStripRight}>
+          <PageDistanceModeSwitcher compact />
           <button
             data-qid="sparta:button:settings"
             data-qs-action="OPEN_SETTINGS"
@@ -1156,40 +1220,36 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
               transition: reducedMotion ? 'none' : S.chatPanel.transition,
             }}
           >
-            <div style={S.chatHeader}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <MessageSquare size={16} style={{ color: EMBRY.accent }} />
-                <span style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white }}>Ask Embry</span>
-              </div>
-              <button
-                data-qid="sparta:button:chat-close"
-                data-qs-action="CLOSE_CHAT"
-                onClick={() => setChatOpen(false)}
-                title="Close chat (Cmd+\\)"
-                style={S.chatCloseBtn}
-              >
-                <ChevronLeft size={18} />
-              </button>
-            </div>
-            {/* Scope/Gate toggles */}
-            <div style={{ padding: '8px 16px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', gap: 8 }}>
-              <div style={{ display: 'flex', gap: 2, flex: 1 }}>
-                {(['sparta', 'f36', 'both'] as const).map(s => (
-                  <button key={s} data-qid={`sparta:button:chat-scope-${s}`} data-qs-action="SET_CHAT_SCOPE" onClick={() => setScope(s)} title={`Scope: ${s}`} style={{ ...toggleSm, ...(scope === s ? toggleActive : {}) }}>
-                    {s === 'f36' ? 'F-36' : s === 'both' ? 'Both' : 'SPARTA'}
-                  </button>
-                ))}
-              </div>
-              <div style={{ display: 'flex', gap: 2 }}>
-                {(['fast', 'medium', 'accurate'] as const).map(g => (
-                  <button key={g} data-qid={`sparta:button:chat-depth-${g}`} data-qs-action="SET_CHAT_DEPTH" onClick={() => setGateDepth(g)} title={`Depth: ${g}`} style={{ ...toggleSm, ...(gateDepth === g ? toggleActive : {}) }}>
-                    {g[0].toUpperCase()}
-                  </button>
-                ))}
-              </div>
-            </div>
             <div style={{ flex: 1, overflow: 'hidden' }}>
-              <SharedChatShell surface="sparta-explorer" shellQid="sparta:chat:shell:slideover" hideHeader showModeToggle={false} messages={messages} onSend={handleSend} onFeedback={handleFeedback} onClarifyClick={handleClarify} onRunEvidenceCase={handleRunEvidenceCase} evidenceCaseLoading={evidenceCaseLoading} preSignoffWarning={chatReadiness.warning} starterMode={chatReadiness.ready ? 'normal' : 'verification'} isStreaming={evidenceStreaming} streamingSteps={evidenceStreamingSteps} />
+              <SharedChatShell
+                surface="sparta-explorer"
+                shellQid="sparta:chat:shell:slideover"
+                hideHeader
+                showModeToggle={false}
+                messages={messages}
+                onMessagesChange={setMessages}
+                onFeedback={handleFeedback}
+                onClarifyClick={handleClarify}
+                onRunEvidenceCase={handleRunEvidenceCase}
+                evidenceCaseLoading={Boolean(evidenceCaseLoading)}
+                preSignoffWarning={chatReadiness.warning ?? undefined}
+                starterMode={chatReadiness.ready ? 'normal' : 'verification'}
+                voiceEnabled={chatVoiceEnabled}
+                voiceStatus={chatVoiceEnabled ? chatVoiceStatus : 'off'}
+                voiceLabel="Embry voice"
+                onVoiceToggle={handleChatVoiceToggle}
+                onStreamingChange={handleChatStreamingChange}
+                onStreamingStepsChange={setEvidenceStreamingSteps}
+                matrixContext={{ activeTab, scope, sessionId }}
+                adapterOptions={{
+                  sparta: {
+                    gateDepth: gateDepth === 'accurate' ? 'strict' : gateDepth === 'medium' ? 'balanced' : 'light',
+                    matrixContext: { activeTab, scope, sessionId },
+                    evidenceCaseEndpoint: '/api/evidence-case/stream',
+                    evidenceCaseRunEndpoint: '/api/evidence-case/run',
+                  },
+                }}
+              />
             </div>
           </div>
         )}
@@ -1197,15 +1257,17 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
         {/* Main Content Area */}
         <div style={S.mainContent}>
           <SpartaNavContext.Provider value={navContextValue}>
-            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
+            <MatrixCurationProvider value={matrixCurationContextValue}>
               <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
-                {(() => {
-                  const pageContract = effectivePagePurposeContract ?? TAB_PURPOSE_CONTRACTS[activeTab]
-                  return pageContract ? <PagePurposeStrip contract={pageContract} /> : null
-                })()}
-                {activeView}
+                <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
+                  {(() => {
+                    const pageContract = effectivePagePurposeContract ?? TAB_PURPOSE_CONTRACTS[activeTab]
+                    return pageContract ? <PagePurposeStrip contract={pageContract} /> : null
+                  })()}
+                  {activeView}
+                </div>
               </div>
-            </div>
+            </MatrixCurationProvider>
           </SpartaNavContext.Provider>
 
         </div>
@@ -1291,6 +1353,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           </div>
         </div>
       )}
+      </PageDistanceProvider>
     </div>
   )
 }

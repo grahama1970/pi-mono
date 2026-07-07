@@ -3,7 +3,7 @@
  * 
  * Passes through all props to ComplianceChatWell for the dashboard experience
  */
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Mic, Shield } from 'lucide-react'
 import { EmbryVoiceOrb } from '../embry-voice/EmbryVoiceOrb'
 import ComplianceChatWell, { type ComplianceChatWellProps, type StarterChip, type InputMode } from './ComplianceChatWell'
@@ -132,6 +132,34 @@ export function SharedChatShell({
   const displayIsStreaming = isExternalMode ? (externalIsStreaming ?? false) : internalIsStreaming
   const displayActiveBranch = externalActiveBranch ?? (surface === 'watch' ? 'watch' : mode === 'personaplex' ? 'personaplex' : undefined)
 
+  useEffect(() => {
+    if (typeof window === 'undefined' || voiceStatus === undefined) return
+    window.dispatchEvent(new CustomEvent('sparta:embry-voice-state', { detail: { state: voiceStatus, surface } }))
+  }, [surface, voiceStatus])
+
+  async function renderApprovedTextWithChatterbox(text: string, turnId: string): Promise<unknown> {
+    if (!voiceEnabled || surface !== 'sparta-explorer') return null
+    const clean = text.trim()
+    if (!clean) return null
+    window.dispatchEvent(new CustomEvent('sparta:embry-voice-state', { detail: { state: 'processing', surface } }))
+    const response = await fetch('/api/projects/embry-voice/direct-speak', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: clean,
+        tone: 'calm_precise',
+        deliveryStage: 'neutral',
+        playLocal: false,
+        source: 'sparta-approved-chat-answer',
+        turnId,
+      }),
+    })
+    const payload = await response.json().catch(() => null)
+    if (!response.ok) throw new Error(payload?.error || `Chatterbox direct-speak failed with HTTP ${response.status}`)
+    window.dispatchEvent(new CustomEvent('sparta:embry-voice-state', { detail: { state: 'speaking', surface } }))
+    return payload
+  }
+
   const registry = useMemo(
     () =>
       createAdapterRegistry({
@@ -235,17 +263,35 @@ export function SharedChatShell({
       }
 
       if (finalMessage) {
+        let voiceReceipt: unknown = null
+        try {
+          voiceReceipt = await renderApprovedTextWithChatterbox(finalMessage.content, finalMessage.id ?? makeMessageId('voice-turn'))
+        } catch (voiceError) {
+          voiceReceipt = {
+            status: 'error',
+            mocked: false,
+            live: true,
+            backend: 'chatterbox-direct',
+            error: errorToMessage(voiceError),
+          }
+        }
         const assistantEntityContext = surface === 'sparta-explorer'
           ? await extractEntitiesForSpartaChatMessage(finalMessage.content)
           : null
-        const renderableFinalMessage: ChatMessage = assistantEntityContext
+        const renderableFinalMessage: ChatMessage = assistantEntityContext || voiceReceipt
           ? {
             ...finalMessage,
             metadata: {
               ...(finalMessage.metadata ?? {}),
-              response_entities: assistantEntityContext,
-              extract_entities: assistantEntityContext,
-              entityContext: assistantEntityContext,
+              ...(assistantEntityContext ? {
+                response_entities: assistantEntityContext,
+                extract_entities: assistantEntityContext,
+                entityContext: assistantEntityContext,
+              } : {}),
+              ...(voiceReceipt ? {
+                chatterboxVoice: voiceReceipt,
+                voiceRendered: (voiceReceipt as { status?: string } | null)?.status === 'ok',
+              } : {}),
             },
           }
           : finalMessage

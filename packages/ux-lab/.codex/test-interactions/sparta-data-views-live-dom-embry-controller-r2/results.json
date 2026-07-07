@@ -1,0 +1,305 @@
+{
+  "app": "SPARTA Explorer Data Views",
+  "total": 13,
+  "passed": 13,
+  "failed": 0,
+  "warned": 0,
+  "skipped": 0,
+  "interactions": [
+    {
+      "surface": "sparta-posture-live-dom",
+      "element": "posture-shell",
+      "action": "screenshot",
+      "description": "Posture page live DOM baseline",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-posture-live-dom/0001_posture-shell_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-posture-live-dom/0001_posture-shell_screenshot.png",
+      "duration_ms": 679,
+      "assertions": [
+        {
+          "check": "assert_visible([data-qid='sparta:page-purpose:posture'])",
+          "status": "PASS",
+          "evidence": "visible"
+        }
+      ]
+    },
+    {
+      "surface": "sparta-posture-live-dom",
+      "element": "posture-shell",
+      "action": "click",
+      "description": "Open shared SPARTA chat from Posture",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> ''",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-posture-live-dom/0002_posture-shell_click.png",
+      "duration_ms": 994,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='sparta:button:embry-assistant'], 44x44)",
+          "status": "PASS",
+          "evidence": "44x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='sparta:button:embry-assistant'])",
+          "status": "PASS",
+          "evidence": "title='Ask Embry (\u2318J)'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='sparta:button:embry-assistant'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='OPEN_CHAT'"
+        }
+      ]
+    },
+    {
+      "surface": "sparta-posture-live-dom",
+      "element": "posture-shell",
+      "action": "wait",
+      "description": "Shared SPARTA chat shell appears",
+      "status": "PASS",
+      "evidence": "found [data-qid='sparta:chat:shell:slideover'] within 5000ms",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-posture-live-dom/0003_posture-shell_wait.png",
+      "duration_ms": 1121,
+      "assertions": []
+    },
+    {
+      "surface": "sparta-coverage-live-dom",
+      "element": "coverage-actions",
+      "action": "screenshot",
+      "description": "Coverage page live DOM baseline",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-coverage-live-dom/0001_coverage-actions_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-coverage-live-dom/0001_coverage-actions_screenshot.png",
+      "duration_ms": 806,
+      "assertions": [
+        {
+          "check": "assert_visible([data-qid='coverage-mode-root'])",
+          "status": "PASS",
+          "evidence": "visible"
+        }
+      ]
+    },
+    {
+      "surface": "sparta-coverage-live-dom",
+      "element": "coverage-actions",
+      "action": "hover",
+      "description": "Refresh control exposes a stable hover target",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> 'Refresh Now' at (1491, 446)",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-coverage-live-dom/0002_coverage-actions_hover.png",
+      "duration_ms": 1135,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='coverage:button:refresh'], 44x44)",
+          "status": "PASS",
+          "evidence": "149x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='coverage:button:refresh'])",
+          "status": "PASS",
+          "evidence": "title='Refresh SPARTA coverage and health data'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='coverage:button:refresh'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='REFRESH_COVERAGE'"
+        }
+      ]
+    },
+    {
+      "surface": "sparta-coverage-live-dom",
+      "element": "coverage-actions",
+      "action": "hover",
+      "description": "Coverage Stream Deck macro is instrumented",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> 'Status' at (759, 799)",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-coverage-live-dom/0003_coverage-actions_hover.png",
+      "duration_ms": 1047,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='coverage:macro:status'], 44x44)",
+          "status": "PASS",
+          "evidence": "110x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='coverage:macro:status'])",
+          "status": "PASS",
+          "evidence": "title='Stream Deck macro: Status'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='coverage:macro:status'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='COVERAGE_MACRO_STATUS'"
+        }
+      ]
+    },
+    {
+      "surface": "sparta-coverage-live-dom",
+      "element": "coverage-actions",
+      "action": "click",
+      "description": "Switch Coverage to 10ft glance through the global mode selector",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Glance'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-coverage-live-dom/0004_coverage-actions_click.png",
+      "duration_ms": 1056,
+      "assertions": [
+        {
+          "check": "assert_attribute([data-qid='coverage-mode-root'], data-page-distance-mode)",
+          "status": "PASS",
+          "evidence": "data-page-distance-mode='10ft' == '10ft'"
+        },
+        {
+          "check": "assert_min_size([data-qid='sparta:chat:distance:glance'], 44x44)",
+          "status": "PASS",
+          "evidence": "67x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='sparta:chat:distance:glance'])",
+          "status": "PASS",
+          "evidence": "title='Wall / plant distance'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='sparta:chat:distance:glance'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='PAGE_DISTANCE_10FT'"
+        }
+      ]
+    },
+    {
+      "surface": "sparta-coverage-live-dom",
+      "element": "coverage-actions",
+      "action": "click",
+      "description": "Switch Coverage to 5ft triage through the global mode selector",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Triage'",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-coverage-live-dom/0005_coverage-actions_click.png",
+      "duration_ms": 1129,
+      "assertions": [
+        {
+          "check": "assert_attribute([data-qid='coverage-mode-root'], data-page-distance-mode)",
+          "status": "PASS",
+          "evidence": "data-page-distance-mode='5ft' == '5ft'"
+        },
+        {
+          "check": "assert_min_size([data-qid='sparta:chat:distance:triage'], 44x44)",
+          "status": "PASS",
+          "evidence": "61x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='sparta:chat:distance:triage'])",
+          "status": "PASS",
+          "evidence": "title='Standing operator queue'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='sparta:chat:distance:triage'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='PAGE_DISTANCE_5FT'"
+        }
+      ]
+    },
+    {
+      "surface": "sparta-coverage-live-dom",
+      "element": "coverage-actions",
+      "action": "key",
+      "description": "Any keyboard input moves the global Embry view state to lean-in",
+      "status": "PASS",
+      "evidence": "pressed A, focus on qid=None",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-coverage-live-dom/0006_coverage-actions_key.png",
+      "duration_ms": 1085,
+      "assertions": [
+        {
+          "check": "assert_attribute([data-qid='coverage-mode-root'], data-page-distance-mode)",
+          "status": "PASS",
+          "evidence": "data-page-distance-mode='lean-in' == 'lean-in'"
+        }
+      ]
+    },
+    {
+      "surface": "sparta-sources-live-dom",
+      "element": "sources-readiness",
+      "action": "screenshot",
+      "description": "Sources page live DOM baseline",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-sources-live-dom/0001_sources-readiness_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-sources-live-dom/0001_sources-readiness_screenshot.png",
+      "duration_ms": 691,
+      "assertions": [
+        {
+          "check": "assert_visible([data-qid='sources-mode-root'])",
+          "status": "PASS",
+          "evidence": "visible"
+        }
+      ]
+    },
+    {
+      "surface": "sparta-sources-live-dom",
+      "element": "sources-readiness",
+      "action": "hover",
+      "description": "Sources tab remains instrumented in the shared SPARTA navigation",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> 'Sources' at (809, 104)",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-sources-live-dom/0002_sources-readiness_hover.png",
+      "duration_ms": 979,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='sparta:button:tab-sources'], 44x44)",
+          "status": "PASS",
+          "evidence": "96x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='sparta:button:tab-sources'])",
+          "status": "PASS",
+          "evidence": "title='Sources - Nico maintenance'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='sparta:button:tab-sources'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='NAVIGATE_TAB'"
+        }
+      ]
+    },
+    {
+      "surface": "sparta-urls-live-dom",
+      "element": "urls-readiness",
+      "action": "screenshot",
+      "description": "URLs page live DOM baseline",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-urls-live-dom/0001_urls-readiness_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-urls-live-dom/0001_urls-readiness_screenshot.png",
+      "duration_ms": 675,
+      "assertions": [
+        {
+          "check": "assert_visible([data-qid='urls-mode-root'])",
+          "status": "PASS",
+          "evidence": "visible"
+        }
+      ]
+    },
+    {
+      "surface": "sparta-urls-live-dom",
+      "element": "urls-readiness",
+      "action": "hover",
+      "description": "URLs tab remains instrumented in the shared SPARTA navigation",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> 'URLs' at (900, 104)",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/.codex/test-interactions/sparta-data-views-live-dom-embry-controller-r2/sparta-urls-live-dom/0002_urls-readiness_hover.png",
+      "duration_ms": 1010,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='sparta:button:tab-urls'], 44x44)",
+          "status": "PASS",
+          "evidence": "78x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='sparta:button:tab-urls'])",
+          "status": "PASS",
+          "evidence": "title='URLs - Nico maintenance'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='sparta:button:tab-urls'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='NAVIGATE_TAB'"
+        }
+      ]
+    }
+  ]
+}
