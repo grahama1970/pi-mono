@@ -15,7 +15,7 @@ type AudioArtifact = {
   label: string
   path: string
   url: string
-  role?: 'embry-output' | 'input-evidence'
+  role?: 'embry-output' | 'input-evidence' | 'idle-hum'
 }
 
 type SanityRun = {
@@ -214,6 +214,7 @@ function turnAuthorityForVoiceTurn(turn: VoiceTurn, createdAt: string): EmbryTur
       label: audio.label,
       path: audio.path,
       url: audio.url,
+      role: audio.role,
     } as Record<string, unknown>)),
     memoryTrace: {
       action: turn.memoryAction,
@@ -434,6 +435,139 @@ const voiceTurns: VoiceTurn[] = [
     ],
     relatedRunIds: ['personality-audition'],
   },
+  {
+    id: 'factory-noise-listening',
+    userText: 'Horus asks through factory-floor background noise.',
+    assistantText: 'Listening through the noise floor before Embry answers.',
+    speaker: 'horus_lupercal',
+    tone: 'calm_precise',
+    memoryAction: 'LISTEN',
+    receiptPath: `${fullSuite}/S06-factory-noise/rung8-loopback-listener.json`,
+    componentPath: '/realtimestt/listener/factory-noise',
+    telemetry: [
+      { label: 'Speakers', value: '1' },
+      { label: 'Noise', value: 'factory' },
+      { label: 'Gate', value: 'primary' },
+    ],
+    audioArtifacts: [
+      artifact('factory-noise-capture', 'Factory-noise input', `${fullSuite}/S06-factory-noise/loopback-captured.wav`, 'input-evidence'),
+    ],
+    relatedRunIds: ['factory-noise', 'full-audible-suite'],
+  },
+  {
+    id: 'cancel-witness',
+    userText: 'Primary speaker interrupts stale Embry output.',
+    assistantText: 'Old turn audio stops before stale bytes can continue.',
+    speaker: 'horus_lupercal',
+    tone: 'firm_boundary',
+    memoryAction: 'CANCEL',
+    receiptPath: `${fullSuite}/S08-stream-cancel/stream-cancel.json`,
+    componentPath: '/embry-chatterbox-voice/stream-cancel',
+    telemetry: [
+      { label: 'Cancel', value: '19ms' },
+      { label: 'Stale', value: '0 bytes' },
+      { label: 'Gate', value: 'stop' },
+    ],
+    audioArtifacts: [
+      artifact('cancel-witness-audio', 'Cancel audible witness', `${fullSuite}/S08-stream-cancel/stream-cancel-audible-witness.wav`),
+    ],
+    relatedRunIds: ['stream-cancel', 'full-audible-suite'],
+  },
+  {
+    id: 'research-memory-question',
+    userText: 'Horus asks Embry to compare what she remembers with current research before answering.',
+    assistantText: '[hmm] I will check memory first, then research only where memory is thin.',
+    speaker: 'horus_lupercal',
+    tone: 'curious_searching',
+    memoryAction: 'RESEARCH',
+    receiptPath: `${fullSuite}/S01-S02-S08-S09-S12-continuous-core/continuous-voice-loop.json`,
+    componentPath: '/memory/tau/research',
+    telemetry: [
+      { label: 'Route', value: 'memory-first' },
+      { label: 'Research', value: 'fallback' },
+      { label: 'Tone', value: 'curious' },
+    ],
+    audioArtifacts: [
+      artifact('research-memory-response', 'Research-aware Embry response', '/tmp/chatterbox-fork-agent-out/tau_voice_render_smoke/finished_response.wav'),
+    ],
+    relatedRunIds: ['full-audible-suite', 'repeat-stress'],
+  },
+  {
+    id: 'evidence-case-request',
+    userText: 'Horus asks Embry to open an evidence case for the QRA before making a claim.',
+    assistantText: '[careful] I will keep the answer bounded and show the evidence case before I speak past the receipts.',
+    speaker: 'horus_lupercal',
+    tone: 'careful_concerned',
+    memoryAction: 'EVIDENCE_CASE',
+    receiptPath: '/home/graham/workspace/experiments/agent-skills/skills/create-evidence-case/SKILL.md',
+    componentPath: '/skills/create-evidence-case',
+    telemetry: [
+      { label: 'Skill', value: '$create-evidence-case' },
+      { label: 'Claim', value: 'bounded' },
+      { label: 'Trace', value: 'required' },
+    ],
+    audioArtifacts: [
+      artifact('evidence-case-response', 'Evidence-case spoken response', `${fullSuite}/S03-unknown-speaker/identity-clarification-render.wav`),
+    ],
+    relatedRunIds: ['full-audible-suite'],
+  },
+  {
+    id: 'analytics-figure-request',
+    userText: 'Horus asks Embry to use $analytics on the sanity receipt and return a $create-figure chart for failed gates.',
+    assistantText: '[laugh] Tiny dashboard trap avoided: $analytics reads the receipt first, then $create-figure renders only the grounded gate counts.',
+    speaker: 'horus_lupercal',
+    tone: 'playful_light',
+    memoryAction: 'SKILL_CHAIN',
+    receiptPath: '/home/graham/workspace/experiments/agent-skills/skills/create-figure/SKILL.md',
+    componentPath: '/skills/analytics/create-figure',
+    telemetry: [
+      { label: 'Skill 1', value: '$analytics' },
+      { label: 'Skill 2', value: '$create-figure' },
+      { label: 'Input', value: 'receipt' },
+    ],
+    audioArtifacts: [
+      artifact('analytics-figure-response', 'Analytics-to-figure spoken response', '/tmp/chatterbox-fork-agent-out/tau_voice_render_smoke/finished_response.wav'),
+    ],
+    relatedRunIds: ['browser-asr-blocker', 'full-audible-suite'],
+  },
+  {
+    id: 'natural-interruption',
+    userText: 'Horus interrupts Embry mid-answer to correct the request.',
+    assistantText: '[small stop] Wait, okay. Go ahead; I will hold the old turn and let the new one win.',
+    speaker: 'horus_lupercal',
+    tone: 'firm_boundary',
+    memoryAction: 'INTERRUPT',
+    receiptPath: `${fullSuite}/S08-stream-cancel/stream-cancel.json`,
+    componentPath: '/embry-chatterbox-voice/interruption',
+    telemetry: [
+      { label: 'Stop', value: 'natural' },
+      { label: 'Old turn', value: 'cancelled' },
+      { label: 'New turn', value: 'wins' },
+    ],
+    audioArtifacts: [
+      artifact('natural-interruption-response', 'Natural interruption witness', `${fullSuite}/S08-stream-cancel/stream-cancel-audible-witness.wav`),
+    ],
+    relatedRunIds: ['stream-cancel', 'full-audible-suite'],
+  },
+  {
+    id: 'idle-hum',
+    userText: 'Long idle after a hard answer.',
+    assistantText: '[soft hum]',
+    speaker: 'horus_lupercal',
+    tone: 'wait_presence',
+    memoryAction: 'IDLE',
+    receiptPath: '/home/graham/workspace/experiments/agent-skills/skills/hum/SKILL.md',
+    componentPath: '/skills/hum/idle-presence',
+    telemetry: [
+      { label: 'Idle', value: 'long' },
+      { label: 'Mode', value: 'hum' },
+      { label: 'Source', value: '$hum' },
+    ],
+    audioArtifacts: [
+      artifact('idle-hum-little-grass-shack', 'Idle hum artifact', '/tmp/chatterbox-fork-agent-out/embry-hum-artifacts/little_grass_shack.wav', 'idle-hum'),
+    ],
+    relatedRunIds: ['full-audible-suite'],
+  },
 ]
 
 const initialVisibleTurn = voiceTurns[voiceTurns.length - 1]
@@ -476,6 +610,75 @@ const sessionFolders: SessionFolder[] = [
         subtitle: 'Unknown speaker asks personal-memory question',
         turnIds: ['unknown-speaker'],
         runIds: ['personality-audition'],
+      },
+    ],
+  },
+  {
+    id: 'stress-ladder',
+    title: 'Stress Ladder',
+    sessions: [
+      {
+        id: 'simple-known-answer',
+        title: 'Simple: known answer',
+        subtitle: 'Horus asks a remembered question; Embry responds with memory-confident Chatterbox voice',
+        turnIds: ['known-horus-memory', 'idle-hum'],
+        runIds: ['full-audible-suite'],
+      },
+      {
+        id: 'simple-identity-clarify',
+        title: 'Simple: identity clarify',
+        subtitle: 'Unknown speaker asks memory question; Embry asks who is speaking before recall',
+        turnIds: ['unknown-speaker', 'idle-hum'],
+        runIds: ['personality-audition'],
+      },
+      {
+        id: 'medium-research-evidence',
+        title: 'Medium: research plus evidence',
+        subtitle: 'Memory-first answer escalates to research fallback, then creates an evidence-case before claiming',
+        turnIds: ['research-memory-question', 'evidence-case-request', 'known-horus-memory'],
+        runIds: ['full-audible-suite', 'repeat-stress'],
+      },
+      {
+        id: 'medium-analytics-figure',
+        title: 'Medium: analytics to figure',
+        subtitle: '$analytics reads the receipt; $create-figure is requested from grounded gate counts',
+        turnIds: ['analytics-figure-request', 'known-horus-memory'],
+        runIds: ['browser-asr-blocker', 'full-audible-suite'],
+      },
+      {
+        id: 'medium-memory-overlap',
+        title: 'Medium: memory plus overlap',
+        subtitle: 'Known answer followed by two-speaker input evidence and identity clarification',
+        turnIds: ['known-horus-memory', 'one-at-a-time', 'unknown-speaker', 'idle-hum'],
+        runIds: ['full-audible-suite', 'overlap-boundary', 'personality-audition'],
+      },
+      {
+        id: 'medium-noise-identity',
+        title: 'Medium: noise plus identity',
+        subtitle: 'Factory-floor input evidence followed by identity clarification',
+        turnIds: ['factory-noise-listening', 'unknown-speaker', 'known-horus-memory'],
+        runIds: ['factory-noise', 'personality-audition', 'full-audible-suite'],
+      },
+      {
+        id: 'complex-factory-overlap-cancel',
+        title: 'Complex: factory, overlap, cancel',
+        subtitle: 'Noisy Horus input, overlap boundary, natural interruption, stale-turn cancel, and recovery answer',
+        turnIds: ['factory-noise-listening', 'research-memory-question', 'one-at-a-time', 'natural-interruption', 'cancel-witness', 'known-horus-memory'],
+        runIds: ['factory-noise', 'overlap-boundary', 'stream-cancel', 'full-audible-suite'],
+      },
+      {
+        id: 'complex-ux-skill-drive',
+        title: 'Complex: skill-driven Chat UX',
+        subtitle: 'Embry uses memory intent, evidence-case, analytics, and create-figure while speaking each turn',
+        turnIds: ['research-memory-question', 'evidence-case-request', 'analytics-figure-request', 'idle-hum', 'known-horus-memory'],
+        runIds: ['full-audible-suite', 'browser-asr-blocker'],
+      },
+      {
+        id: 'complex-all-gates',
+        title: 'Complex: all gates',
+        subtitle: 'All seeded voice turns for replay, audio, orb, memory trace, skills, idle hum, and interruption review',
+        turnIds: voiceTurns.map((turn) => turn.id),
+        runIds: ['full-audible-suite', 'repeat-stress', 'stream-cancel', 'factory-noise', 'browser-asr-blocker'],
       },
     ],
   },
@@ -618,6 +821,7 @@ function chatMessagesForTurn(turn: VoiceTurn, index: number): ChatMessage[] {
           label: audio.label,
           url: audio.url,
           path: audio.path,
+          role: audio.role,
         })),
         audioAuthority: turn.audioAuthority,
         turnAuthority,
@@ -631,6 +835,15 @@ function chatMessagesFromVoiceTurns(turns: VoiceTurn[]): ChatMessage[] {
 }
 
 function replayThinkingStepsForTurn(turn: VoiceTurn, activeIndex: number): StreamingStep[] {
+  const renderStep = turn.memoryAction === 'IDLE'
+    ? 'Hold idle presence / hum artifact'
+    : turn.memoryAction === 'SKILL_CHAIN'
+      ? 'Drive shared Chat UX skill output'
+      : turn.memoryAction === 'EVIDENCE_CASE'
+        ? 'Open evidence-case before answer'
+        : turn.memoryAction === 'INTERRUPT'
+          ? 'Apply interruption controller'
+          : 'Render Chatterbox audio'
   const definitions: Array<Pick<StreamingStep, 'id' | 'label' | 'detail'>> = [
     {
       id: 'speaker-resolve',
@@ -651,10 +864,10 @@ function replayThinkingStepsForTurn(turn: VoiceTurn, activeIndex: number): Strea
     },
     {
       id: 'persona-answer',
-      label: 'Render Chatterbox audio',
+      label: renderStep,
       detail: turn.audioArtifacts.length
-        ? `${turn.audioArtifacts.length} Chatterbox artifact(s) attached to the shared chat turn.`
-        : 'No Chatterbox audio artifact attached.',
+        ? `${turn.audioArtifacts.length} audio artifact(s) attached to the shared chat turn.`
+        : 'No audio artifact attached.',
     },
   ]
   return definitions.map((step, index) => ({
@@ -692,7 +905,45 @@ function visibleAudioForArtifact(artifact: AudioArtifact): HTMLAudioElement | nu
 
 function memoryReasoningTraceForTurn(turn: VoiceTurn): NonNullable<ChatMessage['reasoningSteps']> {
   const speakerKnown = Boolean(turn.speaker)
-  return [
+  type ReasoningStep = NonNullable<ChatMessage['reasoningSteps']>[number]
+  const actionStep: ReasoningStep | null = turn.memoryAction === 'SKILL_CHAIN'
+    ? {
+        id: 'skill-chain',
+        label: 'Drive skill-backed Chat UX output',
+        status: 'completed' as const,
+        detail: '$analytics must read the receipt before $create-figure renders the grounded chart request.',
+        icon: 'tool',
+        disclosureVariant: 'thinking' as const,
+      }
+    : turn.memoryAction === 'EVIDENCE_CASE'
+      ? {
+          id: 'evidence-case',
+          label: 'Open evidence case',
+          status: 'completed' as const,
+          detail: 'Create or inspect the evidence case before allowing the spoken claim.',
+          icon: 'check',
+          disclosureVariant: 'thinking' as const,
+        }
+      : turn.memoryAction === 'INTERRUPT'
+        ? {
+            id: 'interruption',
+            label: 'Apply natural interruption policy',
+            status: 'completed' as const,
+            detail: 'Use a short human stop utterance, cancel stale audio, and let the new turn win.',
+            icon: 'mic',
+            disclosureVariant: 'thinking' as const,
+          }
+        : turn.memoryAction === 'IDLE'
+          ? {
+              id: 'idle-hum',
+              label: 'Hold idle presence',
+              status: 'completed' as const,
+              detail: 'Use a hum artifact during long idle without treating it as an answer.',
+              icon: 'mic',
+              disclosureVariant: 'thinking' as const,
+            }
+          : null
+  const steps: ReasoningStep[] = [
     {
       id: 'speaker-resolve',
       label: 'Resolve speaker identity',
@@ -721,17 +972,19 @@ function memoryReasoningTraceForTurn(turn: VoiceTurn): NonNullable<ChatMessage['
       icon: speakerKnown ? 'search' : 'check',
       disclosureVariant: 'thinking',
     },
+    ...(actionStep ? [actionStep] : []),
     {
       id: 'chatterbox-render',
-      label: 'Render Chatterbox audio',
+      label: turn.memoryAction === 'IDLE' ? 'Attach hum artifact' : 'Render Chatterbox audio',
       status: turn.audioArtifacts.length ? 'completed' : 'pending',
       detail: turn.audioArtifacts.length
-        ? `Attached ${turn.audioArtifacts.length} Chatterbox audio artifact(s) to this chat turn.`
+        ? `Attached ${turn.audioArtifacts.length} audio artifact(s) to this chat turn.`
         : 'No Chatterbox artifact is attached to this turn yet.',
       icon: 'mic',
       disclosureVariant: 'thinking',
     },
   ]
+  return steps
 }
 
 export function EmbryVoiceLabRoute(): JSX.Element {
@@ -779,14 +1032,19 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const bindActiveSpeech = useCallback((source: ActiveSpeechSource) => {
     activeSpeechIdRef.current = source.id
     setActiveSpeech(source)
-    setOrbStatusOverride(source.artifactRole === 'input-evidence' ? 'listening' : 'speaking')
+    const status: OrbStatusOverride = source.artifactRole === 'input-evidence'
+      ? 'listening'
+      : source.artifactRole === 'idle-hum'
+        ? 'idle'
+        : 'speaking'
+    setOrbStatusOverride(status)
   }, [])
 
   const clearActiveSpeech = useCallback((speechId: string) => {
     if (activeSpeechIdRef.current !== speechId) return
     activeSpeechIdRef.current = ''
     setActiveSpeech(null)
-    setOrbStatusOverride((current) => (current === 'speaking' || current === 'listening' ? null : current))
+    setOrbStatusOverride((current) => (current === 'speaking' || current === 'listening' || current === 'idle' ? null : current))
   }, [])
 
   const stopBrowserListener = useCallback(() => {
@@ -925,6 +1183,9 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         live: true,
         mocked: false,
       }
+      const payloadReasoningSteps = Array.isArray(payload.reasoningSteps)
+        ? payload.reasoningSteps as NonNullable<ChatMessage['reasoningSteps']>
+        : undefined
 
       const assistantMessage: ChatMessage = {
         id: `${responseTurnId}:assistant`,
@@ -932,8 +1193,8 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         content: turnAuthority.assistantText,
         createdAt: turnAuthority.createdAt,
         skillUsed: 'embry-chatterbox-voice',
-        reasoningSteps: Array.isArray(payload.reasoningSteps) ? payload.reasoningSteps : undefined,
-        thinkingTrace: Array.isArray(payload.reasoningSteps) ? payload.reasoningSteps : undefined,
+        reasoningSteps: payloadReasoningSteps,
+        thinkingTrace: payloadReasoningSteps,
         metadata: {
           surface: 'ux-lab/embry-voice',
           branch: 'embry-voice',
@@ -1052,6 +1313,11 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       window.setTimeout(() => setStreamingSteps([]), 1200)
     }
   }, [bindActiveSpeech, clearActiveSpeech, isStreaming, voiceEnabled])
+
+  const handleSharedChatSend = useCallback((...args: unknown[]): Promise<void> => {
+    const [text] = args
+    return handleSend(typeof text === 'string' ? text : '')
+  }, [handleSend])
 
   const startBrowserListener = useCallback(async () => {
     if (browserListenerRef.current) return
@@ -1681,7 +1947,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             showModeToggle={false}
             messages={chatMessages}
             onMessagesChange={handleMessagesChange}
-            onSend={handleSend}
+            onSend={handleSharedChatSend}
             streamingSteps={streamingSteps}
             isStreaming={isStreaming}
             activeBranch="embry-voice"
