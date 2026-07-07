@@ -19179,6 +19179,7 @@ function tauChatSelectedQraAnswer(question: string, selectedQra: JsonRecord | nu
   const canonicalName = tauChatString(selectedQra.canonical_name) ?? tauChatString(selectedQra.name)
   const descriptor = tauChatString(selectedQra.descriptor)
   const reasoning = tauChatString(selectedQra.reasoning)
+  if (answer && /\b(what is|what's|define|definition|countermeasure)\b/.test(q)) return answer
   if (scopedControlId && canonicalName) {
     const descriptorClause = descriptor && descriptor !== canonicalName
       ? ` It is associated with the descriptor "${descriptor}" in the selected QRA context.`
@@ -19450,8 +19451,8 @@ app.post('/api/tau/chat/turn', async (req, res) => {
       const scopedQra = tauChatScopedQraContext(requestContext)
       const scopedQraContent = tauChatSelectedQraAnswer(question, scopedQra, controlId)
       const policyResponseAction = tauChatResponseAction(responsePolicy.response_action ?? evidenceCase.response_action)
-      const responseAction = scopedQraContent && policyResponseAction !== 'answer' ? 'answer' : policyResponseAction
-      if (scopedQraContent && policyResponseAction !== 'answer') {
+      const responseAction = scopedQraContent ? 'answer' : policyResponseAction
+      if (scopedQraContent) {
         evidenceCase.response_policy = {
           ...responsePolicy,
           response_action: 'answer',
@@ -19478,11 +19479,11 @@ app.post('/api/tau/chat/turn', async (req, res) => {
         branch,
         status: 'completed',
         liveStatusLabel: 'Tau: answering...',
-        detail: scopedQraContent && policyResponseAction !== 'answer'
+        detail: scopedQraContent
           ? `Tau response policy: answer via selected QRA context; original policy ${policyResponseAction}`
           : `Tau response policy: ${responseAction}`,
       }))
-      const content = scopedQraContent && policyResponseAction !== 'answer'
+      const content = scopedQraContent
         ? scopedQraContent
         : tauChatEvidenceContent(evidenceCase, responseAction)
       const thinkingTrace = tauChatTraceFromSteps(steps)

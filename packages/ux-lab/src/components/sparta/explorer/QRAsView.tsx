@@ -17,6 +17,7 @@ import { MarkdownRenderer } from '../../shared-chat/MarkdownRenderer'
 import { entitySpansFromStructuredContext } from '../../shared-chat/entityContextSpans'
 import { extractEntitiesForSpartaChatMessage } from '../../shared-chat/spartaEntityExtraction'
 import type { EvidenceCaseSpan } from '../../shared-chat/types'
+import './qra-forensic-chat.css'
 
 type EntityViewMode = 'anchors' | 'context' | 'full'
 
@@ -1030,6 +1031,7 @@ export function QRAsView() {
   const [qraChatTurns, setQraChatTurns] = useState<QraScopedChatTurn[]>([])
   const [qraChatFeedback, setQraChatFeedback] = useState<Record<string, 'up' | 'down'>>({})
   const [qraChatLoading, setQraChatLoading] = useState(false)
+  const [qraChatFocusMode, setQraChatFocusMode] = useState(true)
 
   const baseVisibleQras = useMemo(
     () => qras
@@ -2597,7 +2599,7 @@ export function QRAsView() {
           }}
         />
 
-        <aside data-qid="qras:review-pane" style={{ minWidth: 0, minHeight: 0, overflow: 'hidden', display: 'grid', gridTemplateRows: undoTimer ? 'auto auto minmax(0, 1fr) auto' : 'auto minmax(0, 1fr) auto', backgroundColor: EMBRY.bgPanel }}>
+        <aside className={`sparta-qra-forensic-chat${qraChatFocusMode ? ' sparta-qra-forensic-chat--focus' : ''}`} data-qid="qras:review-pane" style={{ minWidth: 0, minHeight: 0, overflow: 'hidden', display: 'grid', gridTemplateRows: undoTimer ? 'auto auto minmax(0, 1fr) auto' : 'auto minmax(0, 1fr) auto', backgroundColor: EMBRY.bgPanel }}>
           {!current ? (
             qraKeyFilter ? (
               <DeepLinkRecoveryState
@@ -2625,17 +2627,39 @@ export function QRAsView() {
             )
           ) : (
             <>
-              <div style={{ padding: '10px 12px', borderBottom: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgDeep }}>
+              <div className="qra-forensic-focus-bar" data-qid="qras:chat:focus-bar">
+                <div className="qra-forensic-focus-bar__meta">
+                  <span className="qra-forensic-focus-bar__scope">SPARTA</span>
+                  <span className="qra-forensic-focus-bar__title">QRA Scoped Chat</span>
+                  <span className="qra-forensic-focus-bar__id" title={current.qra_id || current._key}>{current.qra_id || current._key}</span>
+                  <span className="qra-forensic-focus-bar__state">
+                    {draftWordingRepairNeeded ? 'REPAIR WORDING' : qraDraftDirty && !evidenceFreshForDraft ? 'RERUN EVIDENCE' : canApproveCurrent ? 'APPROVAL READY' : 'REVIEW REQUIRED'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className="qra-forensic-focus-bar__toggle"
+                  data-qid="qras:chat:focus-toggle"
+                  data-qs-action="TOGGLE_QRA_CHAT_FOCUS_MODE"
+                  aria-expanded={!qraChatFocusMode}
+                  title={qraChatFocusMode ? 'Show QRA context controls' : 'Enter compact forensic chat'}
+                  onClick={() => setQraChatFocusMode((value) => !value)}
+                >
+                  <ChevronDown size={15} strokeWidth={1.9} style={{ transform: qraChatFocusMode ? 'rotate(0deg)' : 'rotate(180deg)', transition: 'transform 140ms ease' }} />
+                </button>
+              </div>
+              {!qraChatFocusMode && (
+              <div className="qra-forensic-chat-chrome" style={{ padding: '10px 12px', borderBottom: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgDeep }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'start' }}>
                   <div>
                     <div style={{ ...label, marginBottom: 5 }}>QRA Review Workspace</div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap', marginBottom: 6 }}>
                       <span style={{ fontSize: 15, fontWeight: 800, color: EMBRY.white }}>QRA Scoped Chat</span>
-                      <span title={current.qra_id || current._key} style={{ color: EMBRY.blue, fontSize: 10, fontFamily: 'monospace', border: `1px solid ${EMBRY.blue}55`, borderRadius: 999, padding: '2px 7px' }}>SELECTED QRA</span>
+                      <span className="qra-forensic-status-badge" title={current.qra_id || current._key} style={{ color: EMBRY.blue, fontSize: 10, fontFamily: 'monospace', border: `1px solid ${EMBRY.blue}55`, borderRadius: 999, padding: '2px 7px' }}>SELECTED QRA</span>
                       {selectedBadge && <span style={{ color: selectedBadge.color, fontSize: 10, fontWeight: 850, border: `1px solid ${selectedBadge.color}66`, borderRadius: 999, padding: '2px 7px' }}>{selectedBadge.label}</span>}
                     </div>
                   </div>
-                  <span style={{ color: draftWordingRepairNeeded || (qraDraftDirty && !evidenceFreshForDraft) ? EMBRY.amber : canApproveCurrent ? EMBRY.green : EMBRY.red, border: `1px solid ${draftWordingRepairNeeded || (qraDraftDirty && !evidenceFreshForDraft) ? EMBRY.amber : canApproveCurrent ? EMBRY.green : EMBRY.red}55`, borderRadius: 999, padding: '3px 7px', fontSize: 9, fontWeight: 900, whiteSpace: 'nowrap' }}>
+                  <span className="qra-forensic-status-badge qra-forensic-status-badge--decision" style={{ color: draftWordingRepairNeeded || (qraDraftDirty && !evidenceFreshForDraft) ? EMBRY.amber : canApproveCurrent ? EMBRY.green : EMBRY.red, border: `1px solid ${draftWordingRepairNeeded || (qraDraftDirty && !evidenceFreshForDraft) ? EMBRY.amber : canApproveCurrent ? EMBRY.green : EMBRY.red}55`, borderRadius: 999, padding: '3px 7px', fontSize: 9, fontWeight: 900, whiteSpace: 'nowrap' }}>
                     {draftWordingRepairNeeded ? 'REPAIR WORDING' : qraDraftDirty && !evidenceFreshForDraft ? 'RERUN EVIDENCE' : canApproveCurrent ? 'APPROVAL READY' : 'APPROVAL BLOCKED'}
                   </span>
                 </div>
@@ -2757,6 +2781,7 @@ export function QRAsView() {
                   </div>
                 </div>
               </div>
+              )}
 
               {undoTimer && (
                 <div style={{ padding: '7px 12px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', gap: 6, flexWrap: 'wrap', backgroundColor: EMBRY.bg }}>
@@ -2767,11 +2792,11 @@ export function QRAsView() {
               )}
 
               <div data-qid="qras:review-pane:scroll" style={{ minHeight: 0, overflowY: 'auto', overscrollBehavior: 'contain', padding: '9px 12px 18px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <div data-qid="qras:artifact:evidence:root" style={{ alignSelf: 'stretch', flexShrink: 0, width: '100%', border: `1px solid ${EMBRY.amber}55`, borderLeft: `4px solid ${EMBRY.amber}`, backgroundColor: 'rgba(20,16,8,0.26)', borderRadius: 9, overflow: 'hidden' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', padding: '9px 10px', borderBottom: `1px solid ${EMBRY.amber}33`, backgroundColor: 'rgba(15,23,42,0.20)' }}>
+                <div data-qid="qras:artifact:evidence:root" style={{ alignSelf: 'stretch', flexShrink: 0, width: '100%', border: `1px solid ${EMBRY.border}`, borderLeft: `3px solid rgba(148,163,184,0.52)`, backgroundColor: 'rgba(7,12,20,0.48)', borderRadius: 9, overflow: 'hidden' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', padding: '9px 10px', borderBottom: `1px solid ${EMBRY.border}`, backgroundColor: 'rgba(15,23,42,0.20)' }}>
                     <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: 9, flexWrap: 'wrap' }}>
                       <div style={{ minWidth: 0 }}>
-                        <div style={{ ...label, color: EMBRY.amber }}>{evidenceArtifactTitle}</div>
+                        <div className="qra-forensic-section-label" style={{ ...label, color: EMBRY.dim }}>{evidenceArtifactTitle}</div>
                       </div>
                       <span style={{ color: draftWordingRepairNeeded ? EMBRY.amber : canApproveCurrent ? EMBRY.green : EMBRY.amber, border: `1px solid ${draftWordingRepairNeeded ? EMBRY.amber : canApproveCurrent ? EMBRY.green : EMBRY.amber}44`, borderRadius: 999, padding: '2px 8px', fontSize: 9, fontWeight: 650, whiteSpace: 'nowrap' }}>
                         {evidenceArtifactStatus}
@@ -2881,14 +2906,14 @@ export function QRAsView() {
                   </div>
                 </div>
 
-                <div style={{ alignSelf: 'stretch', flexShrink: 0, maxWidth: '100%', border: `1px solid ${EMBRY.blue}35`, backgroundColor: `${EMBRY.blue}07`, borderRadius: 7, padding: 8 }}>
+                <div className="qra-forensic-chat-turn qra-forensic-chat-turn--assistant" style={{ alignSelf: 'stretch', flexShrink: 0, maxWidth: '100%', border: `1px solid ${EMBRY.border}`, backgroundColor: 'rgba(7,12,20,0.52)', borderRadius: 8, padding: 12 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: EMBRY.dim, fontSize: 9.5, fontFamily: 'monospace', marginBottom: 5, gap: 14 }}>
                     <span style={{ display: 'inline-flex', gap: 6, alignItems: 'center' }}><span style={glowDot(EMBRY.green, 6)} />SPARTA Agent</span>
                     <span style={{ color: canApproveCurrent ? EMBRY.green : EMBRY.red, fontSize: 9 }}>
                       {canApproveCurrent ? 'READY' : draftWordingRepairNeeded ? 'BLOCKING: WORDING REPAIR REQUIRED' : qraDraftDirty && !evidenceFreshForDraft ? 'BLOCKING: RERUN EVIDENCE REQUIRED' : 'BLOCKING: REVIEW REQUIRED'}
                     </span>
                   </div>
-                  <div style={{ color: EMBRY.white, fontSize: 12, lineHeight: 1.36 }}>
+                  <div className="qra-forensic-message-text" style={{ color: EMBRY.white, fontSize: 12, lineHeight: 1.48 }}>
                     I found the highest-related loaded QRAs for {renderEvidenceText(selectedEntityLabel)}. Compare these before taking the approval action.
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '62px 1fr', gap: 5, marginTop: 7, paddingTop: 7, borderTop: `1px solid ${EMBRY.border}`, fontSize: 11.5 }}>
@@ -2972,16 +2997,17 @@ export function QRAsView() {
                   const isUser = turn.role === 'user'
                   return (
                     <div
+                      className={`qra-forensic-chat-turn qra-forensic-chat-turn--${turn.role}${turn.status === 'error' ? ' qra-forensic-chat-turn--error' : ''}`}
                       key={turn.id}
                       data-qid={`qras:chat:turn:${turn.role}`}
                       style={{
                         alignSelf: isUser ? 'flex-end' : 'stretch',
                         flexShrink: 0,
                         maxWidth: isUser ? '94%' : '100%',
-                        border: `1px solid ${isUser ? EMBRY.border : turn.status === 'error' ? EMBRY.red : EMBRY.blue}35`,
-                        backgroundColor: isUser ? 'rgba(148,163,184,0.08)' : turn.status === 'error' ? `${EMBRY.red}08` : `${EMBRY.blue}07`,
-                        borderRadius: 7,
-                        padding: 8,
+                        border: `1px solid ${isUser ? EMBRY.border : turn.status === 'error' ? EMBRY.red : EMBRY.border}`,
+                        backgroundColor: isUser ? 'rgba(148,163,184,0.07)' : turn.status === 'error' ? 'rgba(127,29,29,0.12)' : 'rgba(7,12,20,0.52)',
+                        borderRadius: 8,
+                        padding: 12,
                       }}
                     >
                       <div style={{ display: 'flex', justifyContent: 'space-between', color: EMBRY.dim, fontSize: 9.5, fontFamily: 'monospace', marginBottom: 5, gap: 14 }}>
@@ -3002,7 +3028,7 @@ export function QRAsView() {
                           />
                         </div>
                       )}
-                      <div style={{ color: EMBRY.white, fontSize: 12, lineHeight: 1.4, overflowWrap: 'anywhere' }}>
+                      <div className="qra-forensic-message-text" style={{ color: EMBRY.white, fontSize: 12, lineHeight: 1.52, overflowWrap: 'anywhere' }}>
                         <MarkdownRenderer
                           content={turn.content}
                           entitySpans={turn.entitySpans ?? []}
@@ -3021,7 +3047,7 @@ export function QRAsView() {
                   )
                 })}
                 {qraChatLoading && (
-                  <div data-qid="qras:chat:thinking-live" style={{ alignSelf: 'stretch', border: `1px solid ${EMBRY.blue}35`, backgroundColor: `${EMBRY.blue}07`, borderRadius: 7, padding: 8 }}>
+                  <div className="qra-forensic-chat-turn qra-forensic-chat-turn--assistant" data-qid="qras:chat:thinking-live" style={{ alignSelf: 'stretch', border: `1px solid ${EMBRY.border}`, backgroundColor: 'rgba(7,12,20,0.52)', borderRadius: 8, padding: 12 }}>
                     <ThinkingTrace
                       steps={[
                         { id: 'extracting-entities', label: 'Extracting entities', status: 'running', detail: 'Calling Tau scoped chat turn', disclosureVariant: 'thinking' },
@@ -3040,10 +3066,11 @@ export function QRAsView() {
 
               </div>
 
-              <div style={{ padding: '10px', borderTop: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgDeep }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'auto minmax(0, 1fr) auto', gap: 8, alignItems: 'end' }}>
-                  <button type="button" data-qid="qras:chat:attach-evidence" data-qs-action="ATTACH_QRA_CHAT_EVIDENCE" aria-label="Attach evidence" title="Attach source excerpt, payload evidence, or audit packet" style={{ width: 38, height: 54, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.border}`, borderRadius: 6, background: EMBRY.bgPanel, color: EMBRY.dim, cursor: 'pointer', padding: 0 }}><Paperclip size={17} strokeWidth={1.8} /></button>
+              <div className="qra-forensic-composer-shell" style={{ padding: '12px', borderTop: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgDeep }}>
+                <div className="qra-forensic-composer" style={{ display: 'grid', gridTemplateColumns: 'auto minmax(0, 1fr) auto', gap: 10, alignItems: 'end' }}>
+                  <button className="qra-forensic-icon-button" type="button" data-qid="qras:chat:attach-evidence" data-qs-action="ATTACH_QRA_CHAT_EVIDENCE" aria-label="Attach evidence" title="Attach source excerpt, payload evidence, or audit packet" style={{ width: 40, height: 56, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.border}`, borderRadius: 6, background: EMBRY.bgPanel, color: EMBRY.dim, cursor: 'pointer', padding: 0 }}><Paperclip size={17} strokeWidth={1.8} /></button>
                   <textarea
+                    className="qra-forensic-composer__input"
                     data-qid="qras:chat:prompt"
                     data-qs-action="EDIT_QRA_CHAT_PROMPT"
                     title="Scoped QRA chat prompt"
@@ -3057,9 +3084,10 @@ export function QRAsView() {
                         void sendScopedQraChat()
                       }
                     }}
-                    style={{ height: 54, minWidth: 0, resize: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, background: EMBRY.bg, color: EMBRY.white, padding: '8px 10px', fontSize: 12, lineHeight: 1.35, outline: 'none', fontFamily: 'inherit' }}
+                    style={{ height: 56, minWidth: 0, resize: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, background: EMBRY.bg, color: EMBRY.white, padding: '10px 12px', fontSize: 12.5, lineHeight: 1.45, outline: 'none', fontFamily: 'var(--font-ui)' }}
                   />
                   <button
+                    className="qra-forensic-send-button"
                     type="button"
                     data-qid="qras:chat:send"
                     data-qs-action="SEND_QRA_CHAT_PROMPT"
@@ -3067,7 +3095,7 @@ export function QRAsView() {
                     title="Send scoped QRA chat prompt through Tau"
                     onClick={() => void sendScopedQraChat()}
                     disabled={qraChatLoading || !qraChatPrompt.trim()}
-                    style={{ width: 42, height: 54, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.green}44`, borderRadius: 6, background: `${EMBRY.green}10`, color: qraChatLoading || !qraChatPrompt.trim() ? EMBRY.dim : EMBRY.green, cursor: qraChatLoading || !qraChatPrompt.trim() ? 'wait' : 'pointer', padding: 0 }}
+                    style={{ width: 44, height: 56, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${EMBRY.green}44`, borderRadius: 6, background: `${EMBRY.green}10`, color: qraChatLoading || !qraChatPrompt.trim() ? EMBRY.dim : EMBRY.green, cursor: qraChatLoading || !qraChatPrompt.trim() ? 'wait' : 'pointer', padding: 0 }}
                   ><SendHorizontal size={18} strokeWidth={1.9} /></button>
                 </div>
               </div>

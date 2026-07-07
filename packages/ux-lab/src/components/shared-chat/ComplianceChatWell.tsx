@@ -948,13 +948,15 @@ function EmptyState({
         </div>
       )}
 
-      <div style={{
+      <div className="embry-chat-empty-icon" style={{
         display: 'inline-grid',
         placeItems: 'center',
         width: 40,
         height: 40,
-        borderRadius: 12,
-        background: 'rgba(255,255,255,0.04)',
+        borderRadius: 999,
+        background: 'rgba(255,255,255,0.035)',
+        boxShadow: 'none',
+        filter: 'drop-shadow(0 0 8px rgba(3, 218, 198, 0.34))',
         marginBottom: 16
       }}>
         <Sparkles size={20} strokeWidth={1.7} aria-hidden="true" color="#a3a3a3" />
@@ -1292,6 +1294,8 @@ function DashboardMessageBubble({
             </div>
           )}
 
+          {completedThinkingTrace}
+
           {/* Content */}
           <div>
           {/* Tool action line */}
@@ -1376,8 +1380,6 @@ function DashboardMessageBubble({
                 <MarkdownRenderer content={textContent} sidebarMode={sidebar} entitySpans={entitySpans} mediaUrl={mediaUrl ?? defaultMediaUrl} />
             </div>
           )}
-
-          {completedThinkingTrace}
 
           {!isUser && audioArtifacts.length > 0 && (
             <VoiceAudioArtifacts artifacts={audioArtifacts} mediaUrl={mediaUrl ?? defaultMediaUrl} />

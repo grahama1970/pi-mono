@@ -53,6 +53,28 @@ const ENTITY_STYLES: Record<EntityType, { color: string; bg: string }> = {
   domain:    { color: '#f472b6', bg: 'rgba(244,114,182,0.08)' },
 };
 
+function forensicEntityStyle(style: { color: string; bg: string }, type: EntityType, onEntityClick?: unknown) {
+  return {
+    color: 'inherit',
+    fontWeight: type === 'control' || type === 'cwe' || type === 'attack' || type === 'sparta' ? 650 : 560,
+    fontSize: '1em',
+    background: 'transparent',
+    boxShadow: 'none',
+    borderBottom: `1px solid ${style.color}66`,
+    textDecorationLine: 'none' as const,
+    textDecorationColor: `${style.color}66`,
+    textUnderlineOffset: '3px',
+    padding: 0,
+    borderRadius: 0,
+    fontFamily: type === 'skill' ? 'var(--font-mono, monospace)' : 'inherit',
+    cursor: onEntityClick ? 'pointer' : 'help',
+    position: 'relative' as const,
+    display: 'inline',
+    boxSizing: 'border-box' as const,
+    transition: 'filter 0.15s ease, border-color 0.15s ease, color 0.15s ease',
+  };
+}
+
 // Map daemon glossary types to UI EntityType
 export function glossaryTypeToEntityType(gType: GlossaryType): EntityType {
   switch (gType) {
@@ -99,25 +121,9 @@ export function highlightEntities(
         <span
           key={i}
           onClick={onEntityClick ? (e) => { e.stopPropagation(); onEntityClick(part, type); } : undefined}
-          style={{
-            color: style.color, fontWeight: type === 'control' || type === 'cwe' || type === 'attack' || type === 'sparta' ? 700 : 600,
-            fontSize: '1em',
-            background: 'transparent',
-            boxShadow: `inset 0 -0.28em 0 ${style.bg}`,
-            borderBottom: `1px solid ${style.color}44`,
-            textDecorationLine: onEntityClick ? 'underline' : 'none',
-            textDecorationColor: `${style.color}66`,
-            textUnderlineOffset: '2px',
-            padding: '0 1px',
-            borderRadius: 0,
-            fontFamily: type === 'skill' ? 'var(--font-mono, monospace)' : 'inherit',
-            cursor: onEntityClick ? 'pointer' : 'inherit',
-            position: 'relative', display: 'inline',
-            boxSizing: 'border-box',
-            transition: 'filter 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.15)'; e.currentTarget.style.borderBottomColor = style.color; }}
-          onMouseLeave={e => { e.currentTarget.style.filter = ''; e.currentTarget.style.borderBottomColor = `${style.color}44`; }}
+          style={forensicEntityStyle(style, type, onEntityClick)}
+          onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.12)'; e.currentTarget.style.color = style.color; e.currentTarget.style.borderBottomColor = style.color; }}
+          onMouseLeave={e => { e.currentTarget.style.filter = ''; e.currentTarget.style.color = 'inherit'; e.currentTarget.style.borderBottomColor = `${style.color}66`; }}
           data-qs-action={type === "skill" ? `SKILL_INVOKE_${part.slice(1).toUpperCase().replace(/-/g,"_")}` : `NAVIGATE_ENTITY_${part.replace(/[^A-Za-z0-9]/g,"_").toUpperCase()}`} data-qid={type === "skill" ? `skill:${part.slice(1)}:ref` : `entity:${part}`}
           title={tooltip}
         >
@@ -173,25 +179,9 @@ export function highlightWithGlossary(
         <span
           key={i}
           onClick={onEntityClick ? (e) => { e.stopPropagation(); onEntityClick(part, type); } : undefined}
-          style={{
-            color: style.color, fontWeight: type === 'control' || type === 'cwe' || type === 'attack' || type === 'sparta' ? 700 : 600,
-            fontSize: '1em',
-            background: 'transparent',
-            boxShadow: `inset 0 -0.28em 0 ${style.bg}`,
-            borderBottom: `1px solid ${style.color}44`,
-            textDecorationLine: onEntityClick ? 'underline' : 'none',
-            textDecorationColor: `${style.color}66`,
-            textUnderlineOffset: '2px',
-            padding: '0 1px',
-            borderRadius: 0,
-            fontFamily: type === 'skill' ? 'var(--font-mono, monospace)' : 'inherit',
-            cursor: onEntityClick ? 'pointer' : 'inherit',
-            position: 'relative', display: 'inline',
-            boxSizing: 'border-box',
-            transition: 'filter 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.15)'; e.currentTarget.style.borderBottomColor = style.color; }}
-          onMouseLeave={e => { e.currentTarget.style.filter = ''; e.currentTarget.style.borderBottomColor = `${style.color}44`; }}
+          style={forensicEntityStyle(style, type, onEntityClick)}
+          onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.12)'; e.currentTarget.style.color = style.color; e.currentTarget.style.borderBottomColor = style.color; }}
+          onMouseLeave={e => { e.currentTarget.style.filter = ''; e.currentTarget.style.color = 'inherit'; e.currentTarget.style.borderBottomColor = `${style.color}66`; }}
           data-qs-action={type === "skill" ? `SKILL_INVOKE_${part.slice(1).toUpperCase().replace(/-/g,"_")}` : `NAVIGATE_ENTITY_${part.replace(/[^A-Za-z0-9]/g,"_").toUpperCase()}`}
           data-qid={type === "skill" ? `skill:${part.slice(1)}:ref` : `entity:${part}`}
           title={tooltip}
@@ -261,16 +251,9 @@ export function highlightWithSpans(
         data-qid={`entity-span:${start}-${end}`}
         data-entity-grounded={s.grounded_to_framework ? 'true' : 'false'}
         onClick={onEntityClick ? (e) => { e.stopPropagation(); onEntityClick(slice, type); } : undefined}
-        style={{
-          color: style.color,
-          fontWeight: 700,
-          background: 'transparent',
-          boxShadow: `inset 0 -0.28em 0 ${style.bg}`,
-          borderBottom: `1px solid ${style.color}44`,
-          textDecorationLine: onEntityClick ? 'underline' : 'none',
-          textUnderlineOffset: '2px',
-          cursor: onEntityClick ? 'pointer' : 'inherit',
-        }}
+        style={forensicEntityStyle(style, type, onEntityClick)}
+        onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.12)'; e.currentTarget.style.color = style.color; e.currentTarget.style.borderBottomColor = style.color; }}
+        onMouseLeave={e => { e.currentTarget.style.filter = ''; e.currentTarget.style.color = 'inherit'; e.currentTarget.style.borderBottomColor = `${style.color}66`; }}
         title={tooltip}
       >
         {slice}

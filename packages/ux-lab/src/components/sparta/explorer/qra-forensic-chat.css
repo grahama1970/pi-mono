@@ -1,0 +1,191 @@
+.sparta-qra-forensic-chat {
+  --qra-forensic-text: #e0e0e0;
+  --qra-forensic-muted: #9aa6b7;
+  --qra-forensic-border: rgba(148, 163, 184, 0.18);
+  --qra-forensic-panel: rgba(7, 12, 20, 0.52);
+  font-family: var(--font-ui);
+}
+
+.qra-forensic-focus-bar {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 10px 4px 12px;
+  border-bottom: 1px solid var(--qra-forensic-border);
+  background: rgba(5, 9, 16, 0.92);
+}
+
+.qra-forensic-focus-bar__meta {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.qra-forensic-focus-bar__scope,
+.qra-forensic-focus-bar__state,
+.qra-forensic-status-badge,
+.qra-forensic-section-label {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.qra-forensic-focus-bar__scope {
+  color: #8ab4f8;
+  font-size: 10px;
+  font-weight: 760;
+}
+
+.qra-forensic-focus-bar__title {
+  color: var(--qra-forensic-text);
+  font-size: 12.5px;
+  font-weight: 720;
+}
+
+.qra-forensic-focus-bar__id {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--qra-forensic-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.qra-forensic-focus-bar__state {
+  color: #b8c2d0;
+  border: 1px solid rgba(184, 194, 208, 0.22);
+  border-radius: 999px;
+  padding: 2px 7px;
+  font-size: 9px;
+  line-height: 1.2;
+}
+
+.qra-forensic-focus-bar__toggle,
+.qra-forensic-icon-button,
+.qra-forensic-send-button {
+  transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease;
+}
+
+.qra-forensic-focus-bar__toggle {
+  width: 26px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border: 1px solid var(--qra-forensic-border);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--qra-forensic-muted);
+  cursor: pointer;
+  padding: 0;
+}
+
+.qra-forensic-focus-bar__toggle:hover,
+.qra-forensic-focus-bar__toggle:focus-visible,
+.qra-forensic-icon-button:hover,
+.qra-forensic-icon-button:focus-visible {
+  border-color: rgba(224, 224, 224, 0.32) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: var(--qra-forensic-text) !important;
+}
+
+.qra-forensic-chat-chrome {
+  border-bottom-color: var(--qra-forensic-border) !important;
+}
+
+.sparta-qra-forensic-chat .qra-forensic-chat-turn {
+  border-color: var(--qra-forensic-border) !important;
+  background: var(--qra-forensic-panel) !important;
+  box-shadow: none !important;
+}
+
+.sparta-qra-forensic-chat .qra-forensic-chat-turn--error {
+  border-color: rgba(248, 113, 113, 0.42) !important;
+  background: rgba(127, 29, 29, 0.12) !important;
+}
+
+.sparta-qra-forensic-chat .qra-forensic-message-text,
+.sparta-qra-forensic-chat .chat-prose {
+  color: var(--qra-forensic-text) !important;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+.sparta-qra-forensic-chat .chat-prose p,
+.sparta-qra-forensic-chat .chat-prose ul,
+.sparta-qra-forensic-chat .chat-prose ol {
+  margin-top: 0.45em;
+  margin-bottom: 0.45em;
+}
+
+.sparta-qra-forensic-chat .chat-entity-hit,
+.sparta-qra-forensic-chat .sentence-entity-hit {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.sparta-qra-forensic-chat .chat-turn-actions__btn,
+.sparta-qra-forensic-chat .message-action-row button {
+  border-color: rgba(148, 163, 184, 0.14) !important;
+  background: rgba(15, 23, 42, 0.52) !important;
+  color: #9aa6b7 !important;
+}
+
+.sparta-qra-forensic-chat .chat-turn-actions__btn:hover,
+.sparta-qra-forensic-chat .chat-turn-actions__btn:focus-visible,
+.sparta-qra-forensic-chat .message-action-row button:hover,
+.sparta-qra-forensic-chat .message-action-row button:focus-visible {
+  border-color: rgba(224, 224, 224, 0.32) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: var(--qra-forensic-text) !important;
+}
+
+.qra-forensic-composer-shell {
+  border-top-color: var(--qra-forensic-border) !important;
+}
+
+.qra-forensic-composer {
+  border-radius: 8px;
+}
+
+.qra-forensic-composer:focus-within {
+  outline: none !important;
+}
+
+.qra-forensic-composer__input {
+  box-shadow: none !important;
+}
+
+.qra-forensic-composer__input:focus,
+.qra-forensic-composer__input:focus-visible {
+  outline: none !important;
+  border-color: rgba(224, 224, 224, 0.34) !important;
+  box-shadow: none !important;
+}
+
+.qra-forensic-composer__input::placeholder {
+  color: rgba(154, 166, 183, 0.72);
+}
+
+.qra-forensic-send-button:not(:disabled):hover,
+.qra-forensic-send-button:not(:disabled):focus-visible {
+  border-color: rgba(0, 255, 136, 0.48) !important;
+  background: rgba(0, 255, 136, 0.14) !important;
+}
+
+.qra-forensic-status-badge {
+  background: rgba(255, 255, 255, 0.03) !important;
+  font-size: 9.5px !important;
+  font-weight: 760 !important;
+}
+
+.qra-forensic-status-badge--decision {
+  background: transparent !important;
+}
