@@ -1770,7 +1770,7 @@ function ChatReplayHeader({
           compact
           showCopy={false}
           phaseSpeedMs={phaseSpeedMs}
-          speechAudioElement={activeSpeech?.audioElement ?? null}
+          speechAudioElement={null}
           speechSourceId={activeSpeech?.turnId ?? activeSpeech?.id}
           speechAudioUrl={activeSpeech?.audioUrl}
           speechStartedAtMs={activeSpeech?.startedAtMs}
