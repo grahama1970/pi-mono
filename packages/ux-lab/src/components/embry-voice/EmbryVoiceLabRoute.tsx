@@ -1218,20 +1218,16 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       const [userMessage, assistantMessage] = chatMessagesForTurn(turn, turnIndex)
       setChatMessages((messages) => [...messages, userMessage])
       setIsStreaming(true)
-      for (let stepIndex = 0; stepIndex < 4; stepIndex += 1) {
-        if (replayStopRef.current) break
-        setReplayState({ playing: true, activeIndex: audioIndex - 1, activeTurnId: turn.id, activeSessionId: session?.id, phase: 'thinking', visibleTurnCount: turnIndex + 1 })
-        setStreamingSteps(replayThinkingStepsForTurn(turn, stepIndex))
-        await new Promise((resolve) => window.setTimeout(resolve, 320))
-      }
+      if (replayStopRef.current) break
+      setReplayState({ playing: true, activeIndex: audioIndex - 1, activeTurnId: turn.id, activeSessionId: session?.id, phase: 'thinking', visibleTurnCount: turnIndex + 1 })
       setStreamingSteps(replayThinkingStepsForTurn(turn, 4))
-      await new Promise((resolve) => window.setTimeout(resolve, 80))
+      await new Promise((resolve) => window.requestAnimationFrame(resolve))
       setIsStreaming(false)
       setStreamingSteps([])
       setChatMessages((messages) => [...messages, assistantMessage])
-      await new Promise((resolve) => window.setTimeout(resolve, 80))
+      await new Promise((resolve) => window.requestAnimationFrame(resolve))
       scrollSharedChatToBottom()
-      await new Promise((resolve) => window.setTimeout(resolve, 900))
+      await new Promise((resolve) => window.requestAnimationFrame(resolve))
 
       for (let artifactIndex = 0; artifactIndex < turn.audioArtifacts.length; artifactIndex += 1) {
         if (replayStopRef.current) break
