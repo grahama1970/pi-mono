@@ -30,7 +30,7 @@ const SIGNAL_ACCENT: Record<IdentitySignal, string> = {
 };
 
 function statusLabelFor(visualState: EmbryState, signal: IdentitySignal): string {
-	if (signal === "off") return "offline";
+	if (signal === "off") return "idle…";
 	if (signal === "clarify") return "listening…";
 	switch (visualState) {
 		case "idle":

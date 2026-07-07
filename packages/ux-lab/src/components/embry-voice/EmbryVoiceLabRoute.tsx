@@ -15,6 +15,7 @@ type AudioArtifact = {
   label: string
   path: string
   url: string
+  role?: 'embry-output' | 'input-evidence'
 }
 
 type SanityRun = {
@@ -88,6 +89,7 @@ type ActiveSpeechSource = {
   turnId?: string
   audioElement: HTMLMediaElement
   source: 'direct' | 'replay' | 'live-turn' | 'visible'
+  artifactRole?: AudioArtifact['role']
   text?: string
   audioUrl?: string
   startedAtMs?: number
@@ -136,8 +138,8 @@ function artifactUrl(path: string): string {
   return `/chatterbox-artifacts${path.replace('/tmp/chatterbox-fork-agent-out', '')}`
 }
 
-function artifact(id: string, label: string, path: string): AudioArtifact {
-  return { id, label, path, url: artifactUrl(path) }
+function artifact(id: string, label: string, path: string, role: AudioArtifact['role'] = 'embry-output'): AudioArtifact {
+  return { id, label, path, url: artifactUrl(path), role }
 }
 
 function serverEpochToClientPerfMs(startedAtEpochMs?: number): number {
@@ -255,7 +257,7 @@ const sanityRuns: SanityRun[] = [
     doesNotProve: ['subjective voice acceptance', 'browser microphone ASR quality', 'all factory-floor conditions'],
     audioArtifacts: [
       artifact('known-horus-answer', 'Known Horus response', '/tmp/chatterbox-fork-agent-out/tau_voice_render_smoke/finished_response.wav'),
-      artifact('factory-stress-input', 'Horus with factory stress', '/tmp/chatterbox-fork-agent-out/rung7-horus-factory-stress-youtube-20260702T192914Z/horus-factory-embry-stress-8s.wav'),
+      artifact('factory-stress-input', 'Horus with factory stress', '/tmp/chatterbox-fork-agent-out/rung7-horus-factory-stress-youtube-20260702T192914Z/horus-factory-embry-stress-8s.wav', 'input-evidence'),
     ],
   },
   {
@@ -331,9 +333,9 @@ const sanityRuns: SanityRun[] = [
     proves: ['Memory routes two non-Embry speakers to a turn-taking clarification'],
     doesNotProve: ['word-level speaker separation'],
     audioArtifacts: [
-      artifact('male', 'Male voice', `${fullSuite}/S05-female-distractor/male.wav`),
-      artifact('female', 'Female distractor', `${fullSuite}/S05-female-distractor/female.wav`),
-      artifact('overlap', 'Overlapped input', `${fullSuite}/S05-female-distractor/overlap.wav`),
+      artifact('male', 'Male voice', `${fullSuite}/S05-female-distractor/male.wav`, 'input-evidence'),
+      artifact('female', 'Female distractor', `${fullSuite}/S05-female-distractor/female.wav`, 'input-evidence'),
+      artifact('overlap', 'Overlapped input', `${fullSuite}/S05-female-distractor/overlap.wav`, 'input-evidence'),
     ],
   },
   {
@@ -353,7 +355,7 @@ const sanityRuns: SanityRun[] = [
     proves: ['Horus can remain the resolved primary speaker through configured noisy capture'],
     doesNotProve: ['all microphones, placements, or volume levels'],
     audioArtifacts: [
-      artifact('captured-room-audio', 'Captured noisy audio', `${fullSuite}/S06-factory-noise/loopback-captured.wav`),
+      artifact('captured-room-audio', 'Captured noisy audio', `${fullSuite}/S06-factory-noise/loopback-captured.wav`, 'input-evidence'),
     ],
   },
   {
@@ -410,7 +412,7 @@ const voiceTurns: VoiceTurn[] = [
       { label: 'Tone', value: 'interrupt' },
     ],
     audioArtifacts: [
-      artifact('overlap-input', 'Overlapped input', `${fullSuite}/S05-female-distractor/overlap.wav`),
+      artifact('overlap-input', 'Overlapped input', `${fullSuite}/S05-female-distractor/overlap.wav`, 'input-evidence'),
     ],
     relatedRunIds: ['overlap-boundary', 'personality-audition'],
   },
@@ -777,14 +779,14 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const bindActiveSpeech = useCallback((source: ActiveSpeechSource) => {
     activeSpeechIdRef.current = source.id
     setActiveSpeech(source)
-    setOrbStatusOverride('speaking')
+    setOrbStatusOverride(source.artifactRole === 'input-evidence' ? 'listening' : 'speaking')
   }, [])
 
   const clearActiveSpeech = useCallback((speechId: string) => {
     if (activeSpeechIdRef.current !== speechId) return
     activeSpeechIdRef.current = ''
     setActiveSpeech(null)
-    setOrbStatusOverride((current) => (current === 'speaking' ? null : current))
+    setOrbStatusOverride((current) => (current === 'speaking' || current === 'listening' ? null : current))
   }, [])
 
   const stopBrowserListener = useCallback(() => {
@@ -1257,6 +1259,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           turnId: turn.id,
           audioElement: audio,
           source: 'replay',
+          artifactRole: artifact.role,
           text: turn.assistantText,
           audioUrl: audio.currentSrc || audio.src,
           startedAtMs: performance.now(),
