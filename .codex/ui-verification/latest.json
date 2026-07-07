@@ -1,23 +1,10 @@
 {
-  "verified_at": "2026-06-28T14:16:15.861156+00:00",
-  "cwd": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab",
+  "verified_at": "2026-07-07T22:05:40.594023+00:00",
+  "cwd": "/home/graham/workspace/experiments/pi-mono",
   "root": "/home/graham/workspace/experiments/pi-mono",
   "output_root": "/tmp/codex-ui-verification/pi-mono",
-  "url": "http://127.0.0.1:4302/#tau",
-  "name": "tau-memory-route-proof",
-  "screenshot": "/tmp/codex-ui-verification/pi-mono/tau-memory-route-proof/20260628T141606Z.png",
-  "scrolled_screenshot": "/tmp/codex-ui-verification/pi-mono/tau-memory-route-proof/20260628T141606Z.memory-route-panel.png",
-  "read_json": "/tmp/codex-ui-verification/pi-mono/tau-memory-route-proof/20260628T141606Z.read.json",
-  "visible_evidence": [
-    "Fresh Memory Route Proof",
-    "LIVE RECEIPT",
-    "MOCKED false",
-    "LIVE true",
-    "ROUTES 5",
-    "RESEARCH_BRAVE_DISABLED FAILED",
-    "fail-closed branch",
-    "Selector-selected ANSWER route for the natural-language answer probes."
-  ],
-  "marker_created_by": "codex",
-  "marker_scope": "repo-local latest pointer for Tau Memory route proof UI verification"
+  "url": "http://localhost:3002/?chatMode=triage#sparta-explorer/coverage",
+  "name": "sparta-embry-view-state-controller",
+  "screenshot": "/tmp/codex-ui-verification/pi-mono/sparta-embry-view-state-controller/20260707T220533Z.png",
+  "read_json": "/tmp/codex-ui-verification/pi-mono/sparta-embry-view-state-controller/20260707T220533Z.read.json"
 }
