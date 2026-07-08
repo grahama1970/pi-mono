@@ -639,10 +639,134 @@ function KioskTileCard({ tile, onSelect }: { tile: KioskTile; onSelect: () => vo
         <Icon size={56} strokeWidth={3} style={{ color: stripColor, flex: '0 0 auto' }} />
       </header>
       <div style={S.metricBlock}>
-        <div style={{ ...S.primaryMetric, color: C.text, fontSize: metricFontSize }}>{displayMetric}</div>
+        {tile.tab === 'Posture' ? (
+          <PostureTelemetryGraphic stripColor={stripColor} />
+        ) : tile.tab === 'Supply Chain' ? (
+          <SupplyChainTelemetryGraphic stripColor={stripColor} />
+        ) : tile.tab === 'Threat Matrix' ? (
+          <ThreatMatrixGraphic stripColor={stripColor} state={visualState} />
+        ) : (
+          <>
+            <div style={{ ...S.metricGraphicShell }}>
+              <div style={{ ...S.primaryMetric, color: C.text, fontSize: metricFontSize }}>{displayMetric}</div>
+            </div>
+          </>
+        )}
         <div style={{ ...S.metricTitle, color: isVoid ? '#6B7280' : labelColor, fontSize: titleFontSize }}>{tile.tab}</div>
       </div>
     </button>
+  )
+}
+
+function PostureTelemetryGraphic({ stripColor }: { stripColor: string }) {
+  return (
+    <div style={S.postureGraphic} aria-hidden="true">
+      <div style={S.postureLevel}>LVL 3</div>
+      <div style={S.postureBars}>
+        {[1, 0.78, 0.54, 0.16, 0.16].map((opacity, index) => (
+          <span
+            key={index}
+            style={{
+              ...S.postureBar,
+              background: index < 3 ? stripColor : '#1F2937',
+              opacity,
+              boxShadow: index === 0 ? `0 0 10px ${stripColor}66` : 'none',
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function SupplyChainTelemetryGraphic({ stripColor }: { stripColor: string }) {
+  return (
+    <div style={S.supplyGraphic} aria-hidden="true">
+      <svg viewBox="0 0 240 78" width="100%" height="78" role="presentation" focusable="false">
+        <line x1="30" y1="39" x2="210" y2="39" stroke="rgba(148, 163, 184, 0.24)" strokeWidth="3" strokeLinecap="round" />
+        {[30, 90, 150, 210].map((x, index) => {
+          const active = index === 2
+          return (
+            <g key={x}>
+              <circle
+                cx={x}
+                cy="39"
+                r={active ? 15 : 11}
+                fill={active ? stripColor : '#111827'}
+                stroke={active ? stripColor : '#4B5563'}
+                strokeWidth={active ? 4 : 3}
+                opacity={active ? 1 : 0.74}
+              />
+              {active ? <circle cx={x} cy="39" r="24" fill="none" stroke={stripColor} strokeWidth="2" opacity="0.18" /> : null}
+            </g>
+          )
+        })}
+      </svg>
+    </div>
+  )
+}
+
+function ThreatMatrixGraphic({ stripColor, state }: { stripColor: string; state: KioskState }) {
+  const stateCells = state === 'READY'
+    ? [
+        { x: 2, y: 1, fill: '#4ADE80', opacity: 0.86 },
+        { x: 3, y: 3, fill: '#4ADE80', opacity: 0.68 },
+      ]
+    : state === 'BLOCKED'
+      ? [
+          { x: 1, y: 1, fill: '#EF4444', opacity: 0.92 },
+          { x: 3, y: 2, fill: '#FACC15', opacity: 0.82 },
+          { x: 2, y: 4, fill: '#EF4444', opacity: 0.72 },
+        ]
+      : state === 'DEGRADED'
+        ? [
+            { x: 1, y: 2, fill: stripColor, opacity: 0.92 },
+            { x: 3, y: 1, fill: stripColor, opacity: 0.76 },
+            { x: 4, y: 3, fill: '#4ADE80', opacity: 0.52 },
+          ]
+        : [
+            { x: 2, y: 2, fill: '#6B7280', opacity: 0.54 },
+            { x: 4, y: 4, fill: '#6B7280', opacity: 0.42 },
+          ]
+  const cellSize = 16
+  const gap = 7
+  const originX = 10
+  const originY = 8
+
+  return (
+    <div style={S.threatMatrixGraphic} aria-hidden="true">
+      <svg viewBox="0 0 112 104" width="100%" height="100%" role="presentation" focusable="false">
+        <rect x="1" y="1" width="110" height="102" rx="8" fill="rgba(15,23,42,0.46)" stroke="rgba(148,163,184,0.18)" strokeWidth="2" />
+        {Array.from({ length: 16 }, (_, index) => {
+          const x = index % 4
+          const y = Math.floor(index / 4)
+          return (
+            <rect
+              key={`base-${index}`}
+              x={originX + x * (cellSize + gap)}
+              y={originY + y * (cellSize + gap)}
+              width={cellSize}
+              height={cellSize}
+              rx="3"
+              fill="rgba(148,163,184,0.12)"
+            />
+          )
+        })}
+        {stateCells.map((cell, index) => (
+          <rect
+            key={`state-${index}`}
+            x={originX + (cell.x - 1) * (cellSize + gap)}
+            y={originY + (cell.y - 1) * (cellSize + gap)}
+            width={cellSize}
+            height={cellSize}
+            rx="3"
+            fill={cell.fill}
+            opacity={cell.opacity}
+          />
+        ))}
+        <path d="M18 85 L41 62 L64 70 L87 39" fill="none" stroke={stripColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" opacity="0.42" />
+      </svg>
+    </div>
   )
 }
 
@@ -1476,9 +1600,16 @@ const S: Record<string, CSSProperties> = {
   tileTitleGroup: { display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 },
   tileTitle: { color: C.text, fontSize: 24, fontWeight: 900, lineHeight: 1.05, letterSpacing: '0.035em', textTransform: 'uppercase', minWidth: 0 },
   metricBlock: { alignSelf: 'stretch', minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: 0 },
+  metricGraphicShell: { position: 'relative', minWidth: 0, display: 'inline-flex', alignItems: 'center', alignSelf: 'flex-start' },
   metricWrap: { alignSelf: 'center', minWidth: 0, display: 'flex', alignItems: 'center', overflowWrap: 'anywhere' },
   primaryMetric: { color: C.text, fontSize: 68, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.035em', whiteSpace: 'nowrap' },
   metricTitle: { marginTop: 10, fontSize: 34, fontWeight: 950, lineHeight: 1, letterSpacing: '0.04em', textTransform: 'uppercase', overflowWrap: 'normal', wordBreak: 'normal' },
+  postureGraphic: { width: '100%', display: 'grid', gap: 14, marginBottom: 4 },
+  postureLevel: { color: '#FFFFFF', fontSize: 42, fontWeight: 950, lineHeight: 1, letterSpacing: '-0.035em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
+  postureBars: { display: 'flex', gap: 8, width: '100%', height: 13 },
+  postureBar: { flex: 1, borderRadius: 2 },
+  supplyGraphic: { position: 'relative', width: '100%', height: 78, marginBottom: 4 },
+  threatMatrixGraphic: { width: 152, height: 140, marginBottom: 4, opacity: 0.96 },
   primaryLabel: { marginTop: 0, color: C.secondary, fontSize: 20, fontWeight: 850, lineHeight: 1.05, textTransform: 'uppercase', letterSpacing: '0.025em' },
   secondaryLine: {
     alignSelf: 'stretch',
