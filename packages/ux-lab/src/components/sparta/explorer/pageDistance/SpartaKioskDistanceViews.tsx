@@ -584,7 +584,6 @@ function TelemetryPill({
           />
         ))}
       </div>
-      {moreNotificationCount > 0 ? <div style={S.billboardMore}>+{moreNotificationCount}</div> : null}
     </div>
   )
 }
@@ -920,22 +919,6 @@ const S: Record<string, CSSProperties> = {
     height: 7,
     borderRadius: 999,
     transition: 'width 220ms ease, background 220ms ease',
-  },
-  billboardMore: {
-    position: 'absolute',
-    right: -10,
-    bottom: -14,
-    minWidth: 36,
-    height: 22,
-    display: 'inline-grid',
-    placeItems: 'center',
-    borderRadius: 999,
-    border: '2px solid rgba(5, 5, 5, 0.42)',
-    background: 'rgba(250, 204, 21, 0.92)',
-    color: '#050505',
-    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-    fontSize: 11,
-    fontWeight: 900,
   },
   telemetryRoot: {
     position: 'fixed',
