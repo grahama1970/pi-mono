@@ -15,6 +15,7 @@ import { EvidenceWorkspace } from './EvidenceWorkspace'
 import { useReducedMotion } from 'motion/react'
 import { PagePurposeStrip } from './PagePurposeStrip'
 import { PageDistanceModeSwitcher, PageDistanceProvider } from './pageDistance/PageDistanceMode'
+import { SpartaKioskDistanceView } from './pageDistance/SpartaKioskDistanceViews'
 import { MatrixCurationProvider } from './matrixCurationContext'
 import { PAGE_PURPOSE_CONTRACTS, TAB_PURPOSE_CONTRACTS, deriveCoveragePagePurposeState, deriveSpartaChatPagePurposeState, type CoverageHealthSnapshot } from './pagePurposeContracts'
 
@@ -1260,11 +1261,18 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
             <MatrixCurationProvider value={matrixCurationContextValue}>
               <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
-                  {(() => {
-                    const pageContract = effectivePagePurposeContract ?? TAB_PURPOSE_CONTRACTS[activeTab]
-                    return pageContract ? <PagePurposeStrip contract={pageContract} /> : null
-                  })()}
-                  {activeView}
+                  <SpartaKioskDistanceView
+                    activeTab={activeTab}
+                    counts={collectionCounts}
+                    coverageHealth={coverageHealthSnapshot}
+                    onSelectTab={navigateToTab}
+                  >
+                    {(() => {
+                      const pageContract = effectivePagePurposeContract ?? TAB_PURPOSE_CONTRACTS[activeTab]
+                      return pageContract ? <PagePurposeStrip contract={pageContract} /> : null
+                    })()}
+                    {activeView}
+                  </SpartaKioskDistanceView>
                 </div>
               </div>
             </MatrixCurationProvider>
