@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react'
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import { AlertTriangle, Boxes, Check, Globe, HelpCircle, Layers, Mic, MoreHorizontal, Network, Square, Target, Workflow } from 'lucide-react'
 import { useRegisterAction } from '../../../../hooks/useRegisterAction'
 import type { CollectionCounts } from '../../../../hooks/useSpartaCollections'
@@ -539,79 +539,52 @@ function TelemetryPill({
   notifications: KioskTile[]
   moreNotificationCount: number
 }) {
+  const [activeIndex, setActiveIndex] = useState(0)
   const activeCount = notifications.filter((tile) => tile.state !== 'READY').length + moreNotificationCount
   const summaryTone = global === 'BLOCKED' ? 'BLOCKED' : global === 'DEGRADED' ? 'DEGRADED' : global === 'UNKNOWN' ? 'UNKNOWN' : 'READY'
-  const summaryText = global === 'READY'
-    ? 'ALL SYSTEMS READY'
-    : `${Math.max(1, activeCount)} SYSTEM${Math.max(1, activeCount) === 1 ? '' : 'S'} ${summaryTone}`
-  const summaryTitle = global === 'READY' ? 'Review ready' : `Review ${summaryTone.toLowerCase()}`
-  const toneColor = global === 'READY' ? '#34D399' : global === 'BLOCKED' ? '#FB7185' : global === 'DEGRADED' ? '#F2B84B' : '#94A3B8'
   const visibleNotifications = notifications.slice(0, 3)
+  const activeAlert = visibleNotifications[activeIndex % Math.max(1, visibleNotifications.length)] ?? notifications[0]
+  const alertStyle = activeAlert ? stateStyle[activeAlert.state] : stateStyle[global]
+  const AlertIcon = activeAlert?.state === 'READY' ? Check : AlertTriangle
+
+  useEffect(() => {
+    if (visibleNotifications.length <= 1) return
+    const interval = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % visibleNotifications.length)
+    }, 8000)
+    return () => window.clearInterval(interval)
+  }, [visibleNotifications.length])
 
   return (
-    <div data-qid="sparta:kiosk:telemetry-pill-root" style={S.telemetryRoot}>
-      <style>{`
-        @keyframes sparta-telemetry-reveal {
-          from { opacity: 0; transform: translateX(-50%) translateY(-6px) scale(0.96); }
-          to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-        }
-      `}</style>
-      <div
-        data-qid="sparta:kiosk:telemetry-pill"
-        title="SPARTA notifications"
-        style={S.telemetryPill}
-      >
-        <span style={{ ...S.telemetryPulse, background: toneColor, boxShadow: `0 0 18px ${toneColor}88` }} />
-        <span style={S.telemetryTextGroup}>
-          <span style={S.telemetryTitle}>{summaryTitle}</span>
-          <span style={S.telemetryText}>{summaryText}</span>
-        </span>
-        <MoreHorizontal size={18} strokeWidth={2.6} aria-hidden="true" />
+    <div data-qid="sparta:kiosk:telemetry-billboard" style={{ ...S.telemetryBillboard, borderColor: `${alertStyle.fg}66`, background: `${alertStyle.bg}88` }}>
+      <div style={S.billboardAlertIcon}>
+        <AlertIcon size={30} strokeWidth={2.8} color={alertStyle.fg} />
       </div>
-      <div data-qid="sparta:kiosk:telemetry-dropdown" style={S.telemetryDropdown}>
-        <div data-qid="sparta:kiosk:telemetry-stack" style={S.telemetryStack}>
-          {visibleNotifications.map((tile, index) => {
-            const ns = stateStyle[tile.state]
-            const NotificationIcon = tile.state === 'READY' ? Check : AlertTriangle
-            return (
-              <div
-                key={tile.tab}
-                data-qid={`sparta:kiosk:notification:${index + 1}`}
-                style={{
-                  ...S.telemetryCard,
-                  zIndex: 10 - index,
-                  transform: `translateY(${index * 12}px) scale(${1 - index * 0.04})`,
-                  opacity: 1 - index * 0.2,
-                }}
-              >
-                <div style={S.telemetryCardMeta}>
-                  <span style={S.telemetrySource}>
-                    <span style={{ ...S.telemetryIcon, color: ns.fg, background: `${ns.fg}18` }}>
-                      <NotificationIcon size={16} strokeWidth={2.8} />
-                    </span>
-                    {index === 0 ? 'CURRENT' : 'RECENT'} · {tile.tab}
-                  </span>
-                  <span>{index === 0 ? 'NOW' : 'RECENT'}</span>
-                </div>
-                <div data-qid={index === 0 ? 'sparta:kiosk:top-blocker' : undefined} style={S.telemetryCardTitle}>
-                  {global === 'READY' ? 'All monitored pages ready' : tile.secondaryLine}
-                </div>
-              </div>
-            )
-          })}
+      <div style={S.billboardCopy}>
+        <div style={{ ...S.billboardMeta, color: alertStyle.fg }}>
+          Current · {activeAlert?.tab ?? summaryTone}
         </div>
-        {moreNotificationCount > 0 ? (
-          <button
-            type="button"
-            data-qid="sparta:kiosk:notification:more"
-            data-qs-action="KIOSK_SHOW_OLDER_NOTIFICATIONS"
-            title={`${moreNotificationCount} older notifications`}
-            style={S.telemetryMoreButton}
-          >
-            {moreNotificationCount} Older Notifications
-          </button>
-        ) : null}
+        <div data-qid="sparta:kiosk:top-blocker" style={S.billboardText}>
+          {global === 'READY' ? 'All monitored pages ready' : activeAlert?.secondaryLine ?? `${Math.max(1, activeCount)} systems ${summaryTone.toLowerCase()}`}
+        </div>
       </div>
+      <div data-qid="sparta:kiosk:voice-affordance" style={S.voiceAffordance}>
+        <Mic size={22} strokeWidth={2.6} color="#94A3B8" />
+        <span>{`Say "Embry, ${activeAlert?.voiceCommand ?? 'what blocks readiness'}"`}</span>
+      </div>
+      <div data-qid="sparta:kiosk:billboard-dots" style={S.billboardDots} aria-label={`${visibleNotifications.length} active notifications`}>
+        {visibleNotifications.map((tile, index) => (
+          <span
+            key={tile.tab}
+            style={{
+              ...S.billboardDot,
+              width: index === activeIndex ? 18 : 7,
+              background: index === activeIndex ? alertStyle.fg : '#3F4652',
+            }}
+          />
+        ))}
+      </div>
+      {moreNotificationCount > 0 ? <div style={S.billboardMore}>+{moreNotificationCount}</div> : null}
     </div>
   )
 }
@@ -711,11 +684,20 @@ export function SpartaKioskDistanceView({
       <div data-qid="sparta:kiosk:view-state-controls" style={S.viewStateDock}>
         <PageDistanceModeSwitcher compact qidPrefix="sparta:kiosk:distance" />
       </div>
-      <div data-qid="sparta:kiosk:global-readiness" style={S.kioskTitleBar}>
-        <div style={S.kioskTitleKicker}>SPARTA EXPLORER</div>
-        <div style={S.kioskTitleText}>10ft readiness board</div>
-      </div>
-      <TelemetryPill global={global} notifications={notifications} moreNotificationCount={moreNotificationCount} />
+      <header data-qid="sparta:kiosk:global-readiness" style={S.kioskHeader}>
+        <div style={S.kioskHeaderBrand}>
+          <div style={S.kioskTitleKicker}>SPARTA EXPLORER</div>
+          <div style={S.kioskTitleText}>10ft readiness</div>
+        </div>
+        <TelemetryPill global={global} notifications={notifications} moreNotificationCount={moreNotificationCount} />
+        <div style={S.kioskHeaderStatus}>
+          <div style={{ ...S.kioskStatusPill, borderColor: stateStyle[global].fg, background: `${stateStyle[global].bg}88` }}>
+            <span style={{ ...S.kioskStatusDot, background: stateStyle[global].fg }} />
+            <span>{global === 'READY' ? 'Review ready' : `Review ${global.toLowerCase()}`}</span>
+          </div>
+          <div style={S.kioskStatusMeta}>{tiles.filter((tile) => tile.state !== 'READY').length} systems need attention</div>
+        </div>
+      </header>
       <div data-qid="sparta:kiosk:grid" style={S.grid}>
         {tiles.map((tile) => (
           <KioskTileCard
@@ -765,12 +747,24 @@ const S: Record<string, CSSProperties> = {
     justifyContent: 'center',
     pointerEvents: 'auto',
   },
-  kioskTitleBar: {
+  kioskHeader: {
     position: 'absolute',
-    top: 18,
+    top: 0,
     left: 28,
+    right: 376,
+    height: 100,
     zIndex: 1010,
-    minWidth: 260,
+    display: 'grid',
+    gridTemplateColumns: '210px minmax(0, 1fr) 210px',
+    alignItems: 'center',
+    gap: 24,
+    padding: '0 0',
+    borderBottom: '1px solid #1F2937',
+    background: C.surfaceRoot,
+    boxSizing: 'border-box',
+  },
+  kioskHeaderBrand: {
+    minWidth: 0,
     display: 'grid',
     gap: 5,
   },
@@ -784,11 +778,153 @@ const S: Record<string, CSSProperties> = {
   },
   kioskTitleText: {
     color: C.text,
-    fontSize: 22,
+    fontSize: 21,
     fontWeight: 850,
     lineHeight: 1,
     letterSpacing: '-0.01em',
     textTransform: 'uppercase',
+  },
+  kioskHeaderStatus: {
+    display: 'grid',
+    justifyItems: 'end',
+    gap: 6,
+    minWidth: 0,
+  },
+  kioskStatusPill: {
+    minHeight: 30,
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 9,
+    padding: '0 12px',
+    border: '1px solid transparent',
+    borderRadius: 999,
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: 950,
+    lineHeight: 1,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase',
+  },
+  kioskStatusDot: {
+    width: 9,
+    height: 9,
+    borderRadius: '50%',
+    flex: '0 0 auto',
+    animation: 'sparta-live-ping 1.8s ease-out infinite',
+  },
+  kioskStatusMeta: {
+    color: '#94A3B8',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    fontSize: 11,
+    fontWeight: 850,
+    lineHeight: 1,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    textAlign: 'right',
+    whiteSpace: 'nowrap',
+  },
+  telemetryBillboard: {
+    position: 'relative',
+    minWidth: 0,
+    maxWidth: 820,
+    width: '100%',
+    justifySelf: 'center',
+    minHeight: 82,
+    display: 'grid',
+    gridTemplateColumns: '44px minmax(0, 1fr)',
+    gridTemplateRows: 'minmax(0, 1fr) auto',
+    alignItems: 'center',
+    gap: '4px 16px',
+    padding: '8px 16px 9px',
+    border: '1px solid transparent',
+    borderRadius: 12,
+    color: '#FFFFFF',
+    boxShadow: '0 10px 28px rgba(0, 0, 0, 0.34)',
+    boxSizing: 'border-box',
+    transition: 'border-color 220ms ease, background 220ms ease',
+  },
+  billboardAlertIcon: {
+    gridRow: '1 / 3',
+    width: 44,
+    height: 44,
+    display: 'grid',
+    placeItems: 'center',
+    borderRadius: 10,
+    background: 'rgba(5, 5, 5, 0.48)',
+    boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.08)',
+  },
+  billboardCopy: {
+    minWidth: 0,
+    display: 'grid',
+    gap: 4,
+  },
+  billboardMeta: {
+    fontSize: 11,
+    fontWeight: 950,
+    lineHeight: 1,
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
+  },
+  billboardText: {
+    minWidth: 0,
+    color: '#FFFFFF',
+    fontSize: 26,
+    fontWeight: 950,
+    lineHeight: 1.02,
+    letterSpacing: '-0.015em',
+    textTransform: 'uppercase',
+    overflow: 'hidden',
+    display: '-webkit-box',
+    WebkitLineClamp: 1,
+    WebkitBoxOrient: 'vertical',
+  },
+  voiceAffordance: {
+    gridColumn: '2',
+    minHeight: 28,
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 10,
+    padding: '0 10px',
+    border: '1px solid #1F2937',
+    borderRadius: 8,
+    background: '#050505',
+    color: '#D7DEE8',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    fontSize: 15,
+    fontWeight: 850,
+    lineHeight: 1,
+    whiteSpace: 'nowrap',
+    justifySelf: 'start',
+  },
+  billboardDots: {
+    position: 'absolute',
+    left: '50%',
+    bottom: -14,
+    transform: 'translateX(-50%)',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 7,
+  },
+  billboardDot: {
+    height: 7,
+    borderRadius: 999,
+    transition: 'width 220ms ease, background 220ms ease',
+  },
+  billboardMore: {
+    position: 'absolute',
+    right: -10,
+    bottom: -14,
+    minWidth: 36,
+    height: 22,
+    display: 'inline-grid',
+    placeItems: 'center',
+    borderRadius: 999,
+    border: '1px solid #334155',
+    background: '#0B1118',
+    color: '#CBD5E1',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    fontSize: 11,
+    fontWeight: 900,
   },
   telemetryRoot: {
     position: 'fixed',
@@ -1132,13 +1268,13 @@ const S: Record<string, CSSProperties> = {
   grid: {
     position: 'absolute',
     left: 28,
-    top: 238,
+    top: 124,
     right: 376,
     bottom: 28,
     display: 'grid',
     gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
     gridTemplateRows: 'repeat(2, minmax(0, 1fr))',
-    gap: 28,
+    gap: 16,
   },
   tile: {
     position: 'relative',
