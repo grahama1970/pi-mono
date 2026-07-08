@@ -1053,8 +1053,6 @@ function Grid() {
     )
   }
 
-  const maxRows = Math.max(...tacticNames.map((t) => byTactic[t].length), 0)
-
   // Responsive grid layout:
   // - Desktop (>=1200px): 9 columns (full tactical spread)
   // - Tablet (768-1199px): auto-fit 3-4 columns with minmax
@@ -1066,37 +1064,19 @@ function Grid() {
       : `repeat(auto-fit, minmax(280px, 1fr))`
 
   return (
-    <div style={{ flex: 1, overflow: 'auto' }}>
-      <div style={{ display: 'grid', gridTemplateColumns, gap: isMobile ? FLUID.gridGap : 0 }}>
-        {/* Tactic headers */}
+    <div style={{ flex: 1, overflow: 'auto', background: '#050505' }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns,
+          gap: isMobile ? FLUID.gridGap : 2,
+          padding: isMobile ? 0 : '2px 10px 10px',
+          alignItems: 'start',
+        }}
+      >
         {tacticNames.map((tactic) => (
-          <div key={tactic} style={{
-            padding: '10px 12px', borderBottom: `1px solid ${EMBRY.border}`, borderRight: `1px solid ${EMBRY.border}`,
-            backgroundColor: EMBRY.bgDeep, position: 'sticky', top: 0, zIndex: 1,
-          }}>
-            <div style={{ ...label, color: 'rgba(255,255,255,0.8)', fontSize: 12, fontWeight: 800, letterSpacing: '0.04em' }}>{tactic}</div>
-            <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: 4 }}>{byTactic[tactic].length} techniques</div>
-          </div>
-        ))}
-
-        {/* Technique cells */}
-        {Array.from({ length: maxRows }, (_, row) =>
-          tacticNames.map((tactic) => {
-            const tech = byTactic[tactic][row]
-            if (!tech) {
-              return (
-                <div
-                  key={`${tactic}-empty-${row}`}
-                  style={{
-                    borderRight: `1px solid ${EMBRY.border}`,
-                    borderBottom: `1px solid ${EMBRY.border}`,
-                    background: `${EMBRY.bgDeep}40`,
-                    height: state.viewMode === 'bloom' ? 44 : 'auto',
-                  }}
-                />
-              )
-            }
-
+          <div key={tactic} style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
+            {byTactic[tactic].map((tech) => {
             // ── Visual Bloom Mode: Industrial-grade tactical heatmap ──
             if (state.viewMode === 'bloom') {
               const bloomStyle = getBloomStyle(tech)
@@ -1127,8 +1107,7 @@ function Grid() {
                     cursor: 'pointer',
                     transition: 'transform 0.15s, box-shadow 0.15s, filter 0.15s',
                     transform: isSelected ? 'scale(1.05)' : 'scale(1)',
-                    borderRight: `1px solid ${EMBRY.border}`,
-                    borderBottom: `1px solid ${EMBRY.border}`,
+                    borderRadius: 2,
                     ...bloomStyle,
                     // Override box-shadow for selection state
                     boxShadow: isSelected
@@ -1167,12 +1146,20 @@ function Grid() {
                 data-qs-action="SELECT_TECHNIQUE"
                 title={cellTooltip(tech)}
                 style={{
-                  padding: '8px 10px',
-                  borderRight: `1px solid ${EMBRY.border}`, borderBottom: `1px solid ${EMBRY.border}`,
-                  backgroundColor: isSelected ? `${EMBRY.accent}18` : isHovered ? `${color}12` : 'transparent',
-                  cursor: 'pointer', transition: 'background-color 0.15s',
-                  borderLeft: `3px solid ${color}`,
-                  minHeight: 44,
+                  padding: '10px 12px',
+                  backgroundColor: isSelected
+                    ? 'rgba(250, 204, 21, 0.10)'
+                    : isHovered
+                      ? 'rgba(255, 255, 255, 0.10)'
+                      : 'rgba(255, 255, 255, 0.05)',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.15s, color 0.15s',
+                  border: 0,
+                  borderLeft: isSelected ? `3px solid ${color}` : '3px solid transparent',
+                  borderRadius: 2,
+                  minHeight: 72,
+                  display: 'flex',
+                  flexDirection: 'column',
                 }}
                 onMouseEnter={() => setHovered(tech.id)}
                 onMouseLeave={() => setHovered(null)}
@@ -1185,10 +1172,34 @@ function Grid() {
                   {tech.evidenceVerdict === 'inconclusive' && <div style={glowDot(EMBRY.amber, 5)} title="INCONCLUSIVE" />}
                   {tech.evidenceVerdict === 'not_satisfied' && <div style={glowDot(EMBRY.red, 5)} title="NOT_SATISFIED" />}
                 </div>
-                <div style={{ fontSize: 11, color: EMBRY.dim, lineHeight: 1.3, marginBottom: 4 }}>{tech.name}</div>
-                <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: isHovered ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0.6)',
+                    lineHeight: 1.25,
+                    marginBottom: 8,
+                  }}
+                >
+                  {tech.name}
+                </div>
+                <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 'auto' }}>
                   {tech.frameworks.map((fw) => (
-                    <span key={fw} style={fwBadge(fw)}>{fw}</span>
+                    <span
+                      key={fw}
+                      style={{
+                        fontSize: 9,
+                        fontWeight: 800,
+                        letterSpacing: '0.12em',
+                        textTransform: 'uppercase',
+                        padding: '2px 6px',
+                        borderRadius: 3,
+                        color: 'rgba(255, 255, 255, 0.4)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
+                      }}
+                    >
+                      {fw}
+                    </span>
                   ))}
                   {tech.evidenceGrade && (
                     <span
@@ -1209,8 +1220,9 @@ function Grid() {
                 </div>
               </div>
             )
-          })
-        )}
+            })}
+          </div>
+        ))}
       </div>
 
       {/* TacticalHUD — NVIS 2026 glassmorphic tooltip */}
