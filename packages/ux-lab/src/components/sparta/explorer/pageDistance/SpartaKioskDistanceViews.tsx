@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
-import { AlertTriangle, Check, HelpCircle, Mic, ShieldAlert, Square, Terminal, Volume2 } from 'lucide-react'
+import { AlertTriangle, Boxes, Check, Globe, HelpCircle, Layers, Mic, Network, Square, Target, Workflow } from 'lucide-react'
 import { useRegisterAction } from '../../../../hooks/useRegisterAction'
 import type { CollectionCounts } from '../../../../hooks/useSpartaCollections'
 import type { TabName } from '../SpartaExplorer'
@@ -11,6 +11,7 @@ import {
   type PagePurposeState,
 } from '../pagePurposeContracts'
 import { PageDistanceModeSwitcher, usePageDistanceMode, type PageDistanceMode } from './PageDistanceMode'
+import { EmbryVoiceOrb, type EmbryVoiceStatus } from '../../../embry-voice/EmbryVoiceOrb'
 
 type KioskState = 'READY' | 'DEGRADED' | 'BLOCKED' | 'UNKNOWN'
 type VoiceState = 'READY' | 'LISTENING' | 'SPEAKING' | 'EVIDENCE MISSING'
@@ -70,11 +71,25 @@ const stateStyle: Record<KioskState, { bg: string; border: string; fg: string; i
   UNKNOWN: { bg: C.unknownBg, border: C.unknownBorder, fg: C.unknownFg, icon: <HelpCircle size={18} strokeWidth={2.6} /> },
 }
 
-const voiceStyle: Record<VoiceState, { bg: string; border: string; fg: string; icon: ReactNode }> = {
-  READY: { bg: C.readyBg, border: C.readyBorder, fg: C.readyFg, icon: <Terminal size={30} strokeWidth={2.5} /> },
-  LISTENING: { bg: C.listeningBg, border: C.listeningBorder, fg: C.listeningFg, icon: <Mic size={30} strokeWidth={2.5} /> },
-  SPEAKING: { bg: C.speakingBg, border: C.speakingBorder, fg: C.speakingFg, icon: <Volume2 size={30} strokeWidth={2.5} /> },
-  'EVIDENCE MISSING': { bg: C.missingBg, border: C.missingBorder, fg: C.missingFg, icon: <ShieldAlert size={30} strokeWidth={2.5} /> },
+const voiceStyle: Record<VoiceState, { bg: string; border: string; fg: string }> = {
+  READY: { bg: C.readyBg, border: C.readyBorder, fg: C.readyFg },
+  LISTENING: { bg: C.listeningBg, border: C.listeningBorder, fg: C.listeningFg },
+  SPEAKING: { bg: C.speakingBg, border: C.speakingBorder, fg: C.speakingFg },
+  'EVIDENCE MISSING': { bg: C.missingBg, border: C.missingBorder, fg: C.missingFg },
+}
+
+const sharedOrbStateByVoiceState: Record<VoiceState, EmbryVoiceStatus> = {
+  READY: 'idle',
+  LISTENING: 'listening',
+  SPEAKING: 'speaking',
+  'EVIDENCE MISSING': 'error',
+}
+
+const orbLabelByVoiceState: Record<VoiceState, string> = {
+  READY: 'READY',
+  LISTENING: 'LISTENING',
+  SPEAKING: 'EMBRY',
+  'EVIDENCE MISSING': 'ERROR',
 }
 
 function purposeToKioskState(state?: PagePurposeState): KioskState {
@@ -331,6 +346,8 @@ function EmbryVoiceMast({
 }) {
   const voiceState: VoiceState = voiceStateProp ?? (mode === '5ft' ? 'SPEAKING' : 'READY')
   const s = voiceStyle[voiceState]
+  const sharedOrbState = sharedOrbStateByVoiceState[voiceState]
+  const orbLabel = orbLabelByVoiceState[voiceState]
   const mastStyle: CSSProperties = mode === '5ft'
     ? {
         ...S.embryMast,
@@ -358,22 +375,32 @@ function EmbryVoiceMast({
 
   return (
     <aside data-qid="sparta:kiosk:embry-mast" style={mastStyle} aria-label="Embry voice control">
+      <style>{`
+        @keyframes sparta-live-ping {
+          0% { transform: scale(0.72); opacity: 0.78; }
+          78%, 100% { transform: scale(2.15); opacity: 0; }
+        }
+      `}</style>
       <div
         data-qid="embry:orb"
+        data-embry-orb-state={sharedOrbState}
         style={{
           ...S.orb,
           width: mode === '5ft' ? 104 : 224,
           height: mode === '5ft' ? 104 : 224,
-          borderColor: s.border,
-          background: `radial-gradient(circle at 50% 42%, ${s.bg}, ${C.surfacePanel} 68%)`,
-          color: s.fg,
-          filter: `drop-shadow(0 0 ${mode === '5ft' ? 18 : 24}px ${s.border}44)`,
         }}
       >
-        {s.icon}
+        <EmbryVoiceOrb
+          voiceStatus={sharedOrbState}
+          isStreaming={sharedOrbState === 'processing'}
+          tone={sharedOrbState === 'idle' ? undefined : 'good'}
+          size={mode === '5ft' ? 104 : 224}
+          surface="toolbar"
+          phaseSpeedMs={650}
+        />
       </div>
       <div data-qid="embry:voice-state" style={{ ...S.voiceState, color: s.fg, fontSize: mode === '5ft' ? 34 : S.voiceState.fontSize }}>
-        {voiceState}
+        {orbLabel}
       </div>
       <div data-qid="embry:heard-line" style={{ ...S.heardLine, fontSize: mode === '5ft' ? 18 : S.heardLine.fontSize }}>
         {mode === '5ft' ? `Heard: show ${activeTab}` : 'Say "Embry" then a command'}
@@ -392,6 +419,7 @@ function EmbryVoiceMast({
               }}
               style={S.voiceChip}
             >
+              <span style={S.voiceChipIcon}><Mic size={20} strokeWidth={3} /></span>
               {command.label}
             </button>
           ))}
@@ -408,7 +436,12 @@ function EmbryVoiceMast({
 
 function KioskTileCard({ tile, active, onSelect }: { tile: KioskTile; active: boolean; onSelect: () => void }) {
   const s = stateStyle[tile.state]
-  const wordMetric = /[A-Za-z]/.test(tile.primaryMetric) && tile.primaryMetric.length > 6
+  const Icon = iconForTile(tile.tab)
+  const isVoid = tile.state === 'UNKNOWN' || tile.primaryMetric === 'UNKNOWN'
+  const displayMetric = isVoid ? '--' : abbreviateKioskMetric(tile.primaryMetric)
+  const metricFontSize = kioskMetricFontSize(displayMetric)
+  const titleFontSize = kioskTitleFontSize(tile.tab)
+  const bottomText = `${tile.primaryLabel} - ${tile.secondaryLine}`
   return (
     <button
       type="button"
@@ -418,22 +451,83 @@ function KioskTileCard({ tile, active, onSelect }: { tile: KioskTile; active: bo
       onClick={onSelect}
       style={{
         ...S.tile,
-        borderColor: active ? s.border : `${s.border}99`,
-        boxShadow: active ? `inset 0 0 0 2px ${s.border}` : 'none',
+        borderLeftColor: s.border,
+        background: tile.state === 'BLOCKED' ? '#2B1518' : isVoid ? '#151A20' : C.surfaceCard,
+        opacity: isVoid ? 0.72 : 1,
+        boxShadow: active ? `inset 0 0 0 3px ${s.border}` : 'none',
       }}
     >
       <header style={S.tileHeader}>
-        <span style={S.tileTitle}>{tile.tab}</span>
-        <KioskStateChip state={tile.state} compact />
+        <Icon size={40} strokeWidth={3} style={{ color: isVoid ? C.muted : C.secondary, flex: '0 0 auto' }} />
+        <span
+          aria-label={tile.state}
+          title={tile.state}
+          style={{
+            ...S.statusDot,
+            background: s.fg,
+            boxShadow: tile.state === 'READY' || tile.state === 'UNKNOWN' ? 'none' : `0 0 18px ${s.fg}88`,
+          }}
+        />
       </header>
-      <div style={S.metricWrap}>
-        <div style={{ ...S.primaryMetric, fontSize: wordMetric ? 38 : S.primaryMetric.fontSize }}>{tile.primaryMetric}</div>
-        <div style={S.primaryLabel}>{tile.primaryLabel}</div>
+      <div style={S.metricBlock}>
+        <div style={{ ...S.primaryMetric, color: isVoid ? C.muted : C.text, fontSize: metricFontSize }}>{displayMetric}</div>
+        <div style={{ ...S.metricTitle, color: isVoid ? C.muted : tile.state === 'BLOCKED' ? '#FECACA' : C.secondary, fontSize: titleFontSize }}>{tile.tab}</div>
       </div>
-      <div style={{ ...S.secondaryLine, color: s.fg }}>{tile.secondaryLine}</div>
-      <div style={S.voiceAction}>{tile.nextAction}</div>
+      <div style={{ ...S.secondaryLine, color: isVoid ? C.muted : C.secondary }}>{bottomText}</div>
     </button>
   )
+}
+
+function abbreviateKioskMetric(value: string): string {
+  const numeric = Number(value.replace(/,/g, ''))
+  if (!Number.isFinite(numeric)) return value.length > 10 ? value.slice(0, 9).toUpperCase() : value
+  if (numeric >= 1_000_000) return `${Math.round(numeric / 100_000) / 10}M`
+  if (numeric >= 100_000) return `${Math.round(numeric / 1_000)}k`
+  if (numeric >= 10_000) return `${Math.round(numeric / 1_000)}k`
+  return value
+}
+
+function kioskMetricFontSize(value: string): number {
+  if (value === '--') return 64
+  if (value.includes('/')) return 58
+  if (/[A-Za-z]/.test(value) && value.length >= 8) return 38
+  if (/[A-Za-z]/.test(value) && value.length >= 6) return 52
+  if (value.length >= 6) return 62
+  return 68
+}
+
+function kioskTitleFontSize(tab: TabName): number {
+  if (tab === 'Supply Chain') return 29
+  if (tab === 'Threat Matrix') return 29
+  if (tab.length >= 8) return 31
+  return 34
+}
+
+function iconForTile(tab: TabName) {
+  if (tab === 'Coverage') return Target
+  if (tab === 'QRAs') return Layers
+  if (tab === 'Controls') return Square
+  if (tab === 'Sources') return Network
+  if (tab === 'URLs') return Globe
+  if (tab === 'Threat Matrix') return AlertTriangle
+  if (tab === 'Posture') return Check
+  if (tab === 'Supply Chain') return Boxes
+  return Workflow
+}
+
+function notificationPriority(state: KioskState): number {
+  if (state === 'BLOCKED') return 0
+  if (state === 'DEGRADED') return 1
+  if (state === 'UNKNOWN') return 2
+  return 3
+}
+
+function readinessNotifications(tiles: KioskTile[]): KioskTile[] {
+  const active = tiles.filter((tile) => tile.state !== 'READY')
+  if (active.length === 0) return tiles.slice(0, 1)
+  return [...active]
+    .sort((a, b) => notificationPriority(a.state) - notificationPriority(b.state))
+    .slice(0, 2)
 }
 
 export function SpartaKioskDistanceView({
@@ -454,6 +548,8 @@ export function SpartaKioskDistanceView({
   const global = globalState(tiles)
   const blocker = topBlocker(tiles)
   const activeTile = tiles.find((tile) => tile.tab === activeTab) ?? blocker
+  const notifications = readinessNotifications(tiles)
+  const moreNotificationCount = Math.max(0, tiles.filter((tile) => tile.state !== 'READY').length - notifications.length)
 
   useRegisterAction('sparta:kiosk:global-readiness', {
     app: 'sparta-explorer',
@@ -524,24 +620,62 @@ export function SpartaKioskDistanceView({
     )
   }
 
-  const g = stateStyle[global]
   return (
     <section data-qid="sparta:kiosk:root" data-page-distance-mode="10ft" data-page-distance-pinned={isPinned ? 'true' : 'false'} style={S.root} aria-label="SPARTA 10ft readiness board">
       <div data-qid="sparta:kiosk:view-state-controls" style={S.viewStateDock}>
         <PageDistanceModeSwitcher compact qidPrefix="sparta:kiosk:distance" />
       </div>
-      <div data-qid="sparta:kiosk:global-readiness" style={{ ...S.globalBanner, borderColor: g.border }}>
-        <div style={S.globalLeft}>
-          <div style={S.kicker}>SPARTA REVIEW READINESS / 10FT</div>
-          <div style={{ ...S.globalVerdict, color: g.fg }}>{global === 'READY' ? 'REVIEW READY' : `REVIEW ${global}`}</div>
-          <div data-qid="sparta:kiosk:top-blocker" style={S.blockerSentence}>
-            Blocker: {blocker.tab} - {blocker.secondaryLine}
+      <div
+        data-qid="sparta:kiosk:global-readiness"
+        style={S.globalBanner}
+      >
+        <div
+          style={{
+            ...S.annunciatorLeft,
+            background: global === 'READY' ? '#047857' : global === 'BLOCKED' ? '#B91C1C' : global === 'DEGRADED' ? '#B45309' : '#374151',
+          }}
+        >
+          <span data-qid="sparta:kiosk:live-led" aria-label="Live monitor feed" style={S.liveLed}>
+            <span style={S.liveLedPulse} />
+            <span style={S.liveLedCore} />
+          </span>
+          <div>
+            <div style={S.annunciatorKicker}>SPARTA REVIEW READINESS</div>
+            <div style={S.annunciatorVerdict}>{global === 'READY' ? 'REVIEW READY' : `REVIEW ${global}`}</div>
           </div>
         </div>
-        <div style={S.globalRight}>
-          <KioskStateChip state={global} />
-          <div data-qid="sparta:kiosk:freshness" style={S.freshness}>{sourceFreshness(blocker.sourceStatus, coverageHealth)}</div>
-          <div data-qid="sparta:kiosk:next-action" style={S.nextAction}>Say "Embry, what blocks readiness?"</div>
+        <div style={S.annunciatorStackZone}>
+          <div data-qid="sparta:kiosk:notification-stack" style={S.notificationStack}>
+            {notifications.map((tile, index) => {
+              const ns = stateStyle[tile.state]
+              return (
+                <div
+                  key={tile.tab}
+                  data-qid={`sparta:kiosk:notification:${index + 1}`}
+                  style={{
+                    ...S.notificationItem,
+                    borderLeftColor: ns.fg,
+                    background: index === 0 ? '#070B12' : 'transparent',
+                    opacity: index === 0 ? 1 : 0.76,
+                  }}
+                >
+                  <span style={{ ...S.notificationIndex, color: ns.fg }}>[{String(index + 1).padStart(2, '0')}]</span>
+                  <span data-qid={index === 0 ? 'sparta:kiosk:top-blocker' : undefined} style={S.notificationText}>
+                    {global === 'READY' ? 'All monitored pages ready' : `${tile.tab} - ${tile.secondaryLine}`}
+                  </span>
+                </div>
+              )
+            })}
+            {moreNotificationCount > 0 ? (
+              <div data-qid="sparta:kiosk:notification:more" style={S.notificationMore}>
+                +{moreNotificationCount} MORE IN QUEUE
+              </div>
+            ) : null}
+          </div>
+          <div style={S.annunciatorRight}>
+            <div style={S.annunciatorKicker}>LAST SYNC</div>
+            <div data-qid="sparta:kiosk:freshness" style={S.annunciatorFreshness}>{sourceFreshness(blocker.sourceStatus, coverageHealth).replace('Freshness: ', '')}</div>
+          </div>
         </div>
       </div>
       <div data-qid="sparta:kiosk:grid" style={S.grid}>
@@ -586,8 +720,7 @@ const S: Record<string, CSSProperties> = {
   viewStateDock: {
     position: 'absolute',
     top: 12,
-    left: '50%',
-    transform: 'translateX(-50%)',
+    right: 28,
     zIndex: 1200,
     display: 'flex',
     alignItems: 'center',
@@ -596,20 +729,107 @@ const S: Record<string, CSSProperties> = {
   },
   globalBanner: {
     position: 'absolute',
-    left: 28,
-    top: 24,
-    right: 376,
-    height: 152,
-    border: `2px solid ${C.border}`,
-    borderRadius: 8,
-    background: C.surfacePanel,
-    display: 'grid',
-    gridTemplateColumns: '1fr 360px',
-    gap: 18,
-    padding: '14px 20px',
+    left: 0,
+    top: 0,
+    right: 348,
+    height: 176,
+    border: '0',
+    borderRadius: 0,
+    display: 'flex',
+    alignItems: 'stretch',
+    padding: 0,
     boxSizing: 'border-box',
     overflow: 'hidden',
+    color: '#FFFFFF',
+    boxShadow: '0 8px 22px rgba(0, 0, 0, 0.26)',
   },
+  annunciatorLeft: {
+    width: 450,
+    flex: '0 0 450px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 24,
+    minWidth: 0,
+    padding: '24px 28px',
+    boxSizing: 'border-box',
+  },
+  annunciatorStackZone: {
+    flex: 1,
+    minWidth: 0,
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 22,
+    background: '#0B1118',
+    borderLeft: '8px solid rgba(0,0,0,0.42)',
+    padding: '16px 24px',
+    boxSizing: 'border-box',
+  },
+  notificationStack: { flex: 1, minWidth: 0, display: 'grid', alignContent: 'center', gap: 9 },
+  notificationItem: {
+    minHeight: 46,
+    display: 'flex',
+    alignItems: 'center',
+    gap: 14,
+    borderLeft: '5px solid transparent',
+    padding: '8px 14px',
+    boxSizing: 'border-box',
+  },
+  notificationIndex: {
+    flex: '0 0 auto',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    fontSize: 21,
+    fontWeight: 950,
+    lineHeight: 1,
+  },
+  notificationText: {
+    minWidth: 0,
+    color: '#FFFFFF',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    fontSize: 22,
+    fontWeight: 900,
+    lineHeight: 1.05,
+    letterSpacing: '-0.04em',
+    textTransform: 'uppercase',
+  },
+  notificationMore: {
+    color: '#94A3B8',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    fontSize: 18,
+    fontWeight: 900,
+    letterSpacing: '0.06em',
+    paddingLeft: 18,
+  },
+  annunciatorRight: {
+    width: 174,
+    flex: '0 0 174px',
+    display: 'grid',
+    justifyItems: 'end',
+    alignContent: 'center',
+    gap: 8,
+    minWidth: 0,
+    borderLeft: '1px solid rgba(148,163,184,0.22)',
+    paddingLeft: 18,
+  },
+  annunciatorKicker: { color: 'rgba(255,255,255,0.78)', fontSize: 14, fontWeight: 900, letterSpacing: '0.18em', textTransform: 'uppercase', lineHeight: 1 },
+  annunciatorVerdict: { marginTop: 7, color: '#FFFFFF', fontSize: 40, fontWeight: 950, lineHeight: 0.92, letterSpacing: '-0.055em', textTransform: 'uppercase', whiteSpace: 'nowrap' },
+  annunciatorTicker: {
+    marginTop: 8,
+    color: '#FFFFFF',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    fontSize: 23,
+    fontWeight: 900,
+    lineHeight: 1,
+    letterSpacing: '-0.025em',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+  annunciatorFreshness: { color: '#FFFFFF', fontSize: 24, fontWeight: 850, lineHeight: 1.05, textAlign: 'right' },
+  liveLed: { position: 'relative', width: 26, height: 26, display: 'inline-flex', flex: '0 0 auto' },
+  liveLedPulse: { position: 'absolute', inset: 0, borderRadius: '50%', background: '#FFFFFF', opacity: 0.72, animation: 'sparta-live-ping 1.6s ease-out infinite' },
+  liveLedCore: { position: 'relative', width: 26, height: 26, borderRadius: '50%', background: '#FFFFFF', boxShadow: '0 0 18px rgba(255,255,255,0.9)' },
   globalLeft: { minWidth: 0 },
   globalRight: { display: 'grid', alignContent: 'center', justifyItems: 'end', gap: 12 },
   kicker: {
@@ -649,29 +869,44 @@ const S: Record<string, CSSProperties> = {
     display: 'grid',
     gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
     gridTemplateRows: 'repeat(2, minmax(0, 1fr))',
-    gap: 16,
+    gap: 28,
   },
   tile: {
+    position: 'relative',
     minWidth: 0,
     minHeight: 0,
     display: 'grid',
-    gridTemplateRows: 'auto 1fr auto auto',
-    gap: 8,
-    padding: 14,
-    border: `2px solid ${C.border}`,
-    borderRadius: 8,
+    gridTemplateRows: 'auto 1fr auto',
+    gap: 10,
+    padding: '24px 24px 20px 26px',
+    border: '0',
+    borderLeft: '12px solid transparent',
+    borderRadius: '0 8px 8px 0',
     background: C.surfaceCard,
     color: C.text,
     textAlign: 'left',
     cursor: 'pointer',
     overflow: 'hidden',
   },
-  tileHeader: { display: 'grid', gridTemplateColumns: '1fr', alignItems: 'start', justifyItems: 'start', gap: 6, minWidth: 0 },
-  tileTitle: { color: C.text, fontSize: 28, fontWeight: 850, lineHeight: 1.05, minWidth: 0 },
-  metricWrap: { alignSelf: 'center', minWidth: 0, overflowWrap: 'anywhere' },
-  primaryMetric: { color: C.text, fontSize: 48, fontWeight: 900, lineHeight: 0.98, letterSpacing: '0' },
-  primaryLabel: { marginTop: 6, color: C.secondary, fontSize: 20, fontWeight: 780, lineHeight: 1.05, textTransform: 'uppercase' },
-  secondaryLine: { fontSize: 20, fontWeight: 820, lineHeight: 1.12, overflowWrap: 'anywhere' },
+  tileHeader: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14, minWidth: 0 },
+  tileTitleGroup: { display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 },
+  tileTitle: { color: C.text, fontSize: 24, fontWeight: 900, lineHeight: 1.05, letterSpacing: '0.035em', textTransform: 'uppercase', minWidth: 0 },
+  statusDot: { width: 30, height: 30, borderRadius: '50%', flex: '0 0 auto' },
+  metricBlock: { alignSelf: 'center', minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' },
+  metricWrap: { alignSelf: 'center', minWidth: 0, display: 'flex', alignItems: 'center', overflowWrap: 'anywhere' },
+  primaryMetric: { color: C.text, fontSize: 68, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.035em', whiteSpace: 'nowrap' },
+  metricTitle: { marginTop: 10, fontSize: 34, fontWeight: 950, lineHeight: 1, letterSpacing: '0.04em', textTransform: 'uppercase', overflowWrap: 'normal', wordBreak: 'normal' },
+  primaryLabel: { marginTop: 0, color: C.secondary, fontSize: 20, fontWeight: 850, lineHeight: 1.05, textTransform: 'uppercase', letterSpacing: '0.025em' },
+  secondaryLine: {
+    paddingTop: 12,
+    borderTop: '1px solid rgba(148, 163, 184, 0.18)',
+    fontSize: 18,
+    fontWeight: 800,
+    lineHeight: 1.12,
+    letterSpacing: '0.02em',
+    textTransform: 'uppercase',
+    overflowWrap: 'anywhere',
+  },
   voiceAction: { color: C.secondary, fontSize: 18, fontWeight: 780, lineHeight: 1.08, overflowWrap: 'anywhere' },
   embryMast: {
     position: 'absolute',
@@ -679,9 +914,10 @@ const S: Record<string, CSSProperties> = {
     right: 28,
     bottom: 28,
     width: 320,
-    border: `2px solid ${C.border}`,
-    borderRadius: 8,
-    background: C.surfacePanel,
+    border: '0',
+    borderLeft: `8px solid #1F2937`,
+    borderRadius: 0,
+    background: '#0B1118',
     display: 'grid',
     gridTemplateRows: 'auto auto auto 1fr auto',
     justifyItems: 'center',
@@ -691,26 +927,40 @@ const S: Record<string, CSSProperties> = {
     overflow: 'hidden',
   },
   orb: {
-    borderRadius: '50%',
-    border: '3px solid currentColor',
     display: 'grid',
     placeItems: 'center',
     boxSizing: 'border-box',
+    overflow: 'visible',
   },
   voiceState: { fontSize: 42, fontWeight: 900, lineHeight: 0.95, letterSpacing: '0.02em', textAlign: 'center' },
   heardLine: { color: C.secondary, fontSize: 22, fontWeight: 740, lineHeight: 1.12, textAlign: 'center' },
   voiceChipGrid: { width: '100%', display: 'grid', gap: 10, alignContent: 'start' },
   voiceChip: {
-    minHeight: 50,
+    minHeight: 48,
     width: '100%',
-    borderRadius: 8,
-    border: `2px solid ${C.border}`,
-    background: C.surfaceCard,
-    color: C.text,
-    fontSize: 23,
+    borderRadius: 0,
+    border: '0',
+    background: 'transparent',
+    color: C.secondary,
+    fontSize: 20,
     fontWeight: 820,
-    lineHeight: 1,
+    lineHeight: 1.08,
     cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 14,
+    textAlign: 'left',
+    padding: '6px 0',
+  },
+  voiceChipIcon: {
+    width: 34,
+    height: 34,
+    borderRadius: '50%',
+    display: 'inline-grid',
+    placeItems: 'center',
+    flex: '0 0 auto',
+    background: '#1F2937',
+    color: '#6B7280',
   },
   selectedTarget: { width: '100%', color: C.secondary, fontSize: 20, fontWeight: 740, lineHeight: 1.15, textAlign: 'center' },
   triageHeader: {
