@@ -680,6 +680,18 @@ function PostureTelemetryGraphic({ stripColor }: { stripColor: string }) {
         <div style={{ ...S.postureState, color: stripColor }}>CONTROLLED</div>
       </div>
       <div style={S.bottomBaseLabel}>POSTURE</div>
+      <div style={S.postureReadinessBar}>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <span
+            key={`posture-readiness-${index}`}
+            style={{
+              ...S.postureReadinessSegment,
+              background: index < 3 ? stripColor : '#1F2937',
+              boxShadow: index < 3 ? `0 0 10px ${stripColor}55` : 'none',
+            }}
+          />
+        ))}
+      </div>
     </div>
   )
 }
@@ -723,12 +735,10 @@ function SourcesStandbyGraphic({ stripColor }: { stripColor: string }) {
 function ThreatMatrixGraphic({ stripColor, state }: { stripColor: string; state: KioskState }) {
   const unmappedCount = state === 'READY' ? '0/16' : state === 'UNKNOWN' ? '--/16' : '3/16'
   const [activeCount, totalCount = '16'] = unmappedCount.split('/')
-  const modifier = state === 'READY' ? 'Covered · Matrix' : state === 'UNKNOWN' ? 'Unknown · Matrix' : 'Unmapped · IDxAccess'
 
   return (
     <div style={S.threatMatrixGraphic} aria-hidden="true">
       <div style={S.threatMatrixGrid} />
-      <div style={{ ...S.threatMatrixModifier, color: stripColor }}>{modifier}</div>
       <div style={S.bottomHeroShelf}>
         <div style={S.threatMatrixMetric}>
           {activeCount}
@@ -1587,7 +1597,7 @@ const S: Record<string, CSSProperties> = {
     transform: 'scaleX(0.72)',
     transformOrigin: 'left center',
   },
-  bottomCardCenter: { position: 'relative', width: '100%', height: 122, minHeight: 0 },
+  bottomCardCenter: { position: 'relative', width: '100%', height: 142, minHeight: 0 },
   bottomHeroShelf: { position: 'absolute', top: 0, left: 0, right: 0, height: 66, display: 'flex', alignItems: 'flex-end', minWidth: 0 },
   bottomBaseLabel: {
     position: 'absolute',
@@ -1622,6 +1632,8 @@ const S: Record<string, CSSProperties> = {
   sourcesStandbyText: { position: 'relative', zIndex: 1, color: 'rgba(255,255,255,0.24)', fontSize: 31, fontWeight: 950, lineHeight: 0.94, letterSpacing: '0.01em', textTransform: 'uppercase' },
   sourcesStandbyLabel: { position: 'relative', zIndex: 1, marginTop: 9, color: 'rgba(148,163,184,0.48)', fontSize: 25, fontWeight: 950, lineHeight: 1, letterSpacing: '0.06em', textTransform: 'uppercase' },
   postureState: { fontSize: 32, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.045em', textTransform: 'uppercase' },
+  postureReadinessBar: { position: 'absolute', top: 114, left: 0, right: 0, display: 'grid', gridTemplateColumns: 'repeat(5, minmax(0, 1fr))', gap: 5, height: 10 },
+  postureReadinessSegment: { display: 'block', minWidth: 0, height: 10, borderRadius: 2 },
   supplyWeakLink: { display: 'flex', alignItems: 'center', gap: 5, height: 18, marginTop: 14 },
   supplyWeakNodeDim: { width: 14, height: 14, borderRadius: 999, background: '#374151', display: 'block' },
   supplyWeakNodeHot: { position: 'relative', width: 14, height: 14, borderRadius: 999, display: 'block' },
@@ -1630,7 +1642,7 @@ const S: Record<string, CSSProperties> = {
   supplyHeroLockup: { gap: 12 },
   supplyState: { fontSize: 32, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.04em', textTransform: 'uppercase' },
   supplyRiskCount: { color: '#FFFFFF', fontSize: 36, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
-  threatMatrixGraphic: { position: 'relative', width: '100%', height: 122, minHeight: 0, marginBottom: 0, overflow: 'hidden' },
+  threatMatrixGraphic: { position: 'relative', width: '100%', height: 142, minHeight: 0, marginBottom: 0, overflow: 'hidden' },
   threatMatrixGrid: {
     position: 'absolute',
     inset: 0,
@@ -1639,7 +1651,6 @@ const S: Record<string, CSSProperties> = {
     backgroundSize: '24px 24px',
     pointerEvents: 'none',
   },
-  threatMatrixModifier: { position: 'absolute', zIndex: 1, top: 0, left: 0, fontSize: 13, fontWeight: 950, lineHeight: 1, letterSpacing: '0.14em', textTransform: 'uppercase' },
   threatMatrixMetric: { position: 'relative', zIndex: 1, color: '#FFFFFF', fontSize: 68, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
   threatMatrixDenominator: { color: 'rgba(255,255,255,0.42)', fontSize: 56, letterSpacing: '-0.06em' },
   primaryLabel: { marginTop: 0, color: C.secondary, fontSize: 20, fontWeight: 850, lineHeight: 1.05, textTransform: 'uppercase', letterSpacing: '0.025em' },
