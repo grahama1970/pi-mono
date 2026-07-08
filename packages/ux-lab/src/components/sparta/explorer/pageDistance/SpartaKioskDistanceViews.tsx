@@ -441,7 +441,6 @@ function KioskTileCard({ tile, active, onSelect }: { tile: KioskTile; active: bo
   const displayMetric = isVoid ? '--' : abbreviateKioskMetric(tile.primaryMetric)
   const metricFontSize = kioskMetricFontSize(displayMetric)
   const titleFontSize = kioskTitleFontSize(tile.tab)
-  const bottomText = `${tile.primaryLabel} - ${tile.secondaryLine}`
   return (
     <button
       type="button"
@@ -459,21 +458,11 @@ function KioskTileCard({ tile, active, onSelect }: { tile: KioskTile; active: bo
     >
       <header style={S.tileHeader}>
         <Icon size={40} strokeWidth={3} style={{ color: isVoid ? C.muted : C.secondary, flex: '0 0 auto' }} />
-        <span
-          aria-label={tile.state}
-          title={tile.state}
-          style={{
-            ...S.statusDot,
-            background: s.fg,
-            boxShadow: tile.state === 'READY' || tile.state === 'UNKNOWN' ? 'none' : `0 0 18px ${s.fg}88`,
-          }}
-        />
       </header>
       <div style={S.metricBlock}>
         <div style={{ ...S.primaryMetric, color: isVoid ? C.muted : C.text, fontSize: metricFontSize }}>{displayMetric}</div>
         <div style={{ ...S.metricTitle, color: isVoid ? C.muted : tile.state === 'BLOCKED' ? '#FECACA' : C.secondary, fontSize: titleFontSize }}>{tile.tab}</div>
       </div>
-      <div style={{ ...S.secondaryLine, color: isVoid ? C.muted : C.secondary }}>{bottomText}</div>
     </button>
   )
 }
@@ -1296,9 +1285,9 @@ const S: Record<string, CSSProperties> = {
     minWidth: 0,
     minHeight: 0,
     display: 'grid',
-    gridTemplateRows: '64px minmax(0, 1fr) 86px',
+    gridTemplateRows: '64px minmax(0, 1fr)',
     gap: 0,
-    padding: '24px 24px 20px 26px',
+    padding: '24px 24px 24px 26px',
     border: '0',
     borderLeft: '12px solid transparent',
     borderRadius: '0 8px 8px 0',
@@ -1308,11 +1297,10 @@ const S: Record<string, CSSProperties> = {
     cursor: 'pointer',
     overflow: 'hidden',
   },
-  tileHeader: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14, minWidth: 0 },
+  tileHeader: { display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start', gap: 14, minWidth: 0 },
   tileTitleGroup: { display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 },
   tileTitle: { color: C.text, fontSize: 24, fontWeight: 900, lineHeight: 1.05, letterSpacing: '0.035em', textTransform: 'uppercase', minWidth: 0 },
-  statusDot: { width: 30, height: 30, borderRadius: '50%', flex: '0 0 auto' },
-  metricBlock: { alignSelf: 'stretch', minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: 8 },
+  metricBlock: { alignSelf: 'stretch', minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: 0 },
   metricWrap: { alignSelf: 'center', minWidth: 0, display: 'flex', alignItems: 'center', overflowWrap: 'anywhere' },
   primaryMetric: { color: C.text, fontSize: 68, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.035em', whiteSpace: 'nowrap' },
   metricTitle: { marginTop: 10, fontSize: 34, fontWeight: 950, lineHeight: 1, letterSpacing: '0.04em', textTransform: 'uppercase', overflowWrap: 'normal', wordBreak: 'normal' },
