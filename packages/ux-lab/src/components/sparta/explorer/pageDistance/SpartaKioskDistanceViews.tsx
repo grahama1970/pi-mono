@@ -632,7 +632,7 @@ export function SpartaKioskDistanceView({
         <div
           style={{
             ...S.annunciatorLeft,
-            background: global === 'READY' ? '#047857' : global === 'BLOCKED' ? '#B91C1C' : global === 'DEGRADED' ? '#B45309' : '#374151',
+            borderLeftColor: global === 'READY' ? '#34D399' : global === 'BLOCKED' ? '#FB7185' : global === 'DEGRADED' ? '#F2B84B' : '#94A3B8',
           }}
         >
           <span data-qid="sparta:kiosk:live-led" aria-label="Live monitor feed" style={S.liveLed}>
@@ -640,29 +640,36 @@ export function SpartaKioskDistanceView({
             <span style={S.liveLedCore} />
           </span>
           <div>
-            <div style={S.annunciatorKicker}>SPARTA REVIEW READINESS</div>
-            <div style={S.annunciatorVerdict}>{global === 'READY' ? 'REVIEW READY' : `REVIEW ${global}`}</div>
+            <div style={S.annunciatorKicker}>SPARTA NOTIFICATIONS</div>
+            <div style={S.annunciatorVerdict}>{global === 'READY' ? 'Review ready' : `Review ${global.toLowerCase()}`}</div>
+            <div style={S.annunciatorSubcopy}>Current and recent operational alerts</div>
           </div>
         </div>
         <div style={S.annunciatorStackZone}>
           <div data-qid="sparta:kiosk:notification-stack" style={S.notificationStack}>
             {notifications.map((tile, index) => {
               const ns = stateStyle[tile.state]
+              const NotificationIcon = tile.state === 'READY' ? Check : AlertTriangle
               return (
                 <div
                   key={tile.tab}
                   data-qid={`sparta:kiosk:notification:${index + 1}`}
                   style={{
                     ...S.notificationItem,
-                    borderLeftColor: ns.fg,
-                    background: index === 0 ? '#070B12' : 'transparent',
-                    opacity: index === 0 ? 1 : 0.76,
+                    borderColor: index === 0 ? `${ns.fg}88` : 'rgba(148, 163, 184, 0.22)',
+                    background: index === 0 ? 'rgba(15, 23, 42, 0.92)' : 'rgba(15, 23, 42, 0.58)',
                   }}
                 >
-                  <span style={{ ...S.notificationIndex, color: ns.fg }}>[{String(index + 1).padStart(2, '0')}]</span>
-                  <span data-qid={index === 0 ? 'sparta:kiosk:top-blocker' : undefined} style={S.notificationText}>
-                    {global === 'READY' ? 'All monitored pages ready' : `${tile.tab} - ${tile.secondaryLine}`}
+                  <span style={{ ...S.notificationIcon, background: `${ns.fg}22`, color: ns.fg }}>
+                    <NotificationIcon size={index === 0 ? 24 : 20} strokeWidth={2.8} />
                   </span>
+                  <span style={S.notificationCopy}>
+                    <span style={S.notificationMeta}>{index === 0 ? 'Current' : 'Recent'} · {tile.tab}</span>
+                    <span data-qid={index === 0 ? 'sparta:kiosk:top-blocker' : undefined} style={S.notificationText}>
+                      {global === 'READY' ? 'All monitored pages ready' : tile.secondaryLine}
+                    </span>
+                  </span>
+                  <span style={S.notificationTime}>{index === 0 ? 'now' : 'recent'}</span>
                 </div>
               )
             })}
@@ -671,10 +678,6 @@ export function SpartaKioskDistanceView({
                 +{moreNotificationCount} MORE IN QUEUE
               </div>
             ) : null}
-          </div>
-          <div style={S.annunciatorRight}>
-            <div style={S.annunciatorKicker}>LAST SYNC</div>
-            <div data-qid="sparta:kiosk:freshness" style={S.annunciatorFreshness}>{sourceFreshness(blocker.sourceStatus, coverageHealth).replace('Freshness: ', '')}</div>
           </div>
         </div>
       </div>
@@ -737,21 +740,26 @@ const S: Record<string, CSSProperties> = {
     borderRadius: 0,
     display: 'flex',
     alignItems: 'stretch',
-    padding: 0,
+    padding: 12,
     boxSizing: 'border-box',
     overflow: 'hidden',
     color: '#FFFFFF',
-    boxShadow: '0 8px 22px rgba(0, 0, 0, 0.26)',
+    background: '#0B1118',
+    boxShadow: '0 8px 26px rgba(0, 0, 0, 0.30)',
   },
   annunciatorLeft: {
-    width: 450,
-    flex: '0 0 450px',
+    width: 300,
+    flex: '0 0 300px',
     display: 'flex',
     alignItems: 'center',
-    gap: 24,
+    gap: 18,
     minWidth: 0,
-    padding: '24px 28px',
+    padding: '18px 20px',
     boxSizing: 'border-box',
+    borderLeft: '8px solid transparent',
+    borderRadius: 6,
+    background: '#111821',
+    boxShadow: 'inset 0 0 0 1px rgba(148, 163, 184, 0.18)',
   },
   annunciatorStackZone: {
     flex: 1,
@@ -760,28 +768,45 @@ const S: Record<string, CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 22,
-    background: '#0B1118',
-    borderLeft: '8px solid rgba(0,0,0,0.42)',
-    padding: '16px 24px',
+    gap: 14,
+    background: 'transparent',
+    borderLeft: '0',
+    padding: '0 0 0 14px',
     boxSizing: 'border-box',
   },
-  notificationStack: { flex: 1, minWidth: 0, display: 'grid', alignContent: 'center', gap: 9 },
+  notificationStack: { flex: 1, minWidth: 0, display: 'grid', alignContent: 'center', gap: 10 },
   notificationItem: {
-    minHeight: 46,
+    minHeight: 58,
     display: 'flex',
     alignItems: 'center',
-    gap: 14,
-    borderLeft: '5px solid transparent',
-    padding: '8px 14px',
+    gap: 12,
+    border: '1px solid rgba(148, 163, 184, 0.22)',
+    borderRadius: 6,
+    padding: '9px 12px',
     boxSizing: 'border-box',
+    boxShadow: 'none',
   },
-  notificationIndex: {
+  notificationIcon: {
+    width: 42,
+    height: 42,
+    borderRadius: 4,
+    display: 'inline-grid',
+    placeItems: 'center',
     flex: '0 0 auto',
-    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-    fontSize: 21,
-    fontWeight: 950,
+    boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.10)',
+  },
+  notificationCopy: {
+    minWidth: 0,
+    display: 'grid',
+    gap: 3,
+  },
+  notificationMeta: {
+    color: '#94A3B8',
+    fontSize: 13,
+    fontWeight: 850,
     lineHeight: 1,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
   },
   notificationText: {
     minWidth: 0,
@@ -790,7 +815,16 @@ const S: Record<string, CSSProperties> = {
     fontSize: 22,
     fontWeight: 900,
     lineHeight: 1.05,
-    letterSpacing: '-0.04em',
+    letterSpacing: '-0.035em',
+    textTransform: 'uppercase',
+  },
+  notificationTime: {
+    flex: '0 0 auto',
+    alignSelf: 'start',
+    color: '#94A3B8',
+    fontSize: 14,
+    fontWeight: 850,
+    lineHeight: 1,
     textTransform: 'uppercase',
   },
   notificationMore: {
@@ -799,21 +833,33 @@ const S: Record<string, CSSProperties> = {
     fontSize: 18,
     fontWeight: 900,
     letterSpacing: '0.06em',
-    paddingLeft: 18,
+    paddingLeft: 58,
+  },
+  notificationFreshness: {
+    color: '#64748B',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    fontSize: 12,
+    fontWeight: 800,
+    letterSpacing: '0.06em',
+    paddingLeft: 58,
+    textTransform: 'uppercase',
   },
   annunciatorRight: {
-    width: 174,
-    flex: '0 0 174px',
+    width: 168,
+    flex: '0 0 168px',
     display: 'grid',
     justifyItems: 'end',
     alignContent: 'center',
     gap: 8,
     minWidth: 0,
-    borderLeft: '1px solid rgba(148,163,184,0.22)',
-    paddingLeft: 18,
+    borderRadius: 6,
+    background: '#111821',
+    padding: '12px 14px',
+    boxShadow: 'inset 0 0 0 1px rgba(148, 163, 184, 0.18)',
   },
-  annunciatorKicker: { color: 'rgba(255,255,255,0.78)', fontSize: 14, fontWeight: 900, letterSpacing: '0.18em', textTransform: 'uppercase', lineHeight: 1 },
-  annunciatorVerdict: { marginTop: 7, color: '#FFFFFF', fontSize: 40, fontWeight: 950, lineHeight: 0.92, letterSpacing: '-0.055em', textTransform: 'uppercase', whiteSpace: 'nowrap' },
+  annunciatorKicker: { color: '#94A3B8', fontSize: 12, fontWeight: 900, letterSpacing: '0.14em', textTransform: 'uppercase', lineHeight: 1 },
+  annunciatorVerdict: { marginTop: 7, color: '#FFFFFF', fontSize: 31, fontWeight: 950, lineHeight: 0.96, letterSpacing: '-0.035em', textTransform: 'uppercase' },
+  annunciatorSubcopy: { marginTop: 8, color: '#CBD5E1', fontSize: 15, fontWeight: 760, lineHeight: 1.12 },
   annunciatorTicker: {
     marginTop: 8,
     color: '#FFFFFF',
@@ -876,8 +922,8 @@ const S: Record<string, CSSProperties> = {
     minWidth: 0,
     minHeight: 0,
     display: 'grid',
-    gridTemplateRows: 'auto 1fr auto',
-    gap: 10,
+    gridTemplateRows: '64px minmax(0, 1fr) 86px',
+    gap: 0,
     padding: '24px 24px 20px 26px',
     border: '0',
     borderLeft: '12px solid transparent',
@@ -892,12 +938,13 @@ const S: Record<string, CSSProperties> = {
   tileTitleGroup: { display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 },
   tileTitle: { color: C.text, fontSize: 24, fontWeight: 900, lineHeight: 1.05, letterSpacing: '0.035em', textTransform: 'uppercase', minWidth: 0 },
   statusDot: { width: 30, height: 30, borderRadius: '50%', flex: '0 0 auto' },
-  metricBlock: { alignSelf: 'center', minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' },
+  metricBlock: { alignSelf: 'stretch', minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: 8 },
   metricWrap: { alignSelf: 'center', minWidth: 0, display: 'flex', alignItems: 'center', overflowWrap: 'anywhere' },
   primaryMetric: { color: C.text, fontSize: 68, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.035em', whiteSpace: 'nowrap' },
   metricTitle: { marginTop: 10, fontSize: 34, fontWeight: 950, lineHeight: 1, letterSpacing: '0.04em', textTransform: 'uppercase', overflowWrap: 'normal', wordBreak: 'normal' },
   primaryLabel: { marginTop: 0, color: C.secondary, fontSize: 20, fontWeight: 850, lineHeight: 1.05, textTransform: 'uppercase', letterSpacing: '0.025em' },
   secondaryLine: {
+    alignSelf: 'stretch',
     paddingTop: 12,
     borderTop: '1px solid rgba(148, 163, 184, 0.18)',
     fontSize: 18,
