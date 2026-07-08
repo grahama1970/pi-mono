@@ -104,6 +104,13 @@ const voiceStyle: Record<VoiceState, { bg: string; border: string; fg: string }>
   'EVIDENCE MISSING': { bg: C.missingBg, border: C.missingBorder, fg: C.missingFg },
 }
 
+const voiceSubtitleStyle: Record<VoiceState, { label: string; color: string; shadow: string; animation?: string }> = {
+  READY: { label: 'READY', color: 'rgba(191, 219, 254, 0.40)', shadow: 'none' },
+  LISTENING: { label: 'LISTENING...', color: '#FFFFFF', shadow: '0 0 15px rgba(255, 255, 255, 0.36)', animation: 'sparta-subtitle-pulse 2.8s ease-in-out infinite' },
+  SPEAKING: { label: 'EXECUTING', color: '#4ADE80', shadow: '0 0 15px rgba(74, 222, 128, 0.20)' },
+  'EVIDENCE MISSING': { label: 'ERROR', color: '#FB7185', shadow: '0 0 15px rgba(251, 113, 133, 0.28)', animation: 'sparta-subtitle-pulse 1.2s ease-in-out infinite' },
+}
+
 const sharedOrbStateByVoiceState: Record<VoiceState, EmbryVoiceStatus> = {
   READY: 'idle',
   LISTENING: 'listening',
@@ -470,6 +477,7 @@ function EmbryVoiceMast({
   const s = voiceStyle[voiceState]
   const sharedOrbState = sharedOrbStateByVoiceState[voiceState]
   const orbLabel = orbLabelByVoiceState[voiceState]
+  const subtitleTone = voiceSubtitleStyle[voiceState]
   const [promptIndex, setPromptIndex] = useState(0)
   const mastStyle: CSSProperties = mode === '5ft'
     ? {
@@ -517,6 +525,10 @@ function EmbryVoiceMast({
           12% { opacity: 0.56; }
           100% { transform: scaleX(1); opacity: 0.56; }
         }
+        @keyframes sparta-subtitle-pulse {
+          0%, 100% { opacity: 0.66; }
+          50% { opacity: 1; }
+        }
       `}</style>
       <div
         aria-hidden="true"
@@ -543,6 +555,13 @@ function EmbryVoiceMast({
       {mode === '5ft' ? (
         <div data-qid="embry:voice-state" style={{ ...S.voiceState, color: s.fg, fontSize: 34 }}>
           {orbLabel}
+        </div>
+      ) : null}
+      {mode !== '5ft' ? (
+        <div data-qid="embry:voice-subtitle" style={S.voiceSubtitleShell}>
+          <span style={{ ...S.voiceSubtitleText, color: subtitleTone.color, textShadow: subtitleTone.shadow, animation: subtitleTone.animation }}>
+            {subtitleTone.label}
+          </span>
         </div>
       ) : null}
       {mode === '5ft' ? (
@@ -1530,6 +1549,25 @@ const S: Record<string, CSSProperties> = {
     textTransform: 'uppercase',
     textAlign: 'center',
   },
+  voiceSubtitleShell: {
+    position: 'relative',
+    zIndex: 1,
+    height: 40,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12,
+    marginBottom: 10,
+  },
+  voiceSubtitleText: {
+    fontSize: 24,
+    fontWeight: 420,
+    lineHeight: 1,
+    letterSpacing: '0.3em',
+    textTransform: 'uppercase',
+    transition: 'color 300ms ease, text-shadow 300ms ease, opacity 300ms ease',
+    whiteSpace: 'nowrap',
+  },
   voiceTeleprompter: {
     width: '100%',
     minHeight: 320,
@@ -1537,7 +1575,7 @@ const S: Record<string, CSSProperties> = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 48,
+    marginTop: 26,
     textAlign: 'center',
   },
   voiceTeleprompterAffordance: {
