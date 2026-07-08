@@ -239,6 +239,7 @@ export function PageDistanceProvider({
     }
 
     const handlePointerActivity = () => {
+      setModeFromEmbry('lean-in', 'pointer')
       armIdleTimer()
     }
 
@@ -258,6 +259,7 @@ export function PageDistanceProvider({
 
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('pointerdown', handlePointerActivity)
+    window.addEventListener('pointermove', handlePointerActivity)
     window.addEventListener('sparta:embry-voice-state', handleVoiceState)
     window.addEventListener('sparta:embry-idle', handleIdleNow)
     armIdleTimer()
@@ -266,6 +268,7 @@ export function PageDistanceProvider({
       if (idleTimer !== undefined) window.clearTimeout(idleTimer)
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('pointerdown', handlePointerActivity)
+      window.removeEventListener('pointermove', handlePointerActivity)
       window.removeEventListener('sparta:embry-voice-state', handleVoiceState)
       window.removeEventListener('sparta:embry-idle', handleIdleNow)
     }
