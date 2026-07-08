@@ -663,24 +663,24 @@ function KioskTileCard({ tile, onSelect }: { tile: KioskTile; onSelect: () => vo
 function PostureTelemetryGraphic({ stripColor }: { stripColor: string }) {
   return (
     <div style={S.postureGraphic} aria-hidden="true">
-      <div style={S.postureState}>CONTROLLED</div>
-      <div style={S.postureLabel}>POSTURE</div>
-      <div style={S.postureBars}>
-        {[1, 0.78, 0.54, 0.16, 0.16].map((opacity, index) => (
-          <span
-            key={index}
-            style={{
-              ...S.postureBar,
-              background: index < 3 ? stripColor : '#1F2937',
-              opacity,
-              boxShadow: index === 0 ? `0 0 10px ${stripColor}66` : 'none',
-            }}
-          />
-        ))}
+      <div style={S.postureHero}>
+        <div style={{ ...S.postureState, color: stripColor }}>CONTROLLED</div>
+        <div style={S.postureLabel}>POSTURE</div>
       </div>
-      <div style={S.postureReadiness}>3/5 <span style={S.postureReadinessLabel}>READINESS</span></div>
-      <div style={S.postureGaps}>2 GAPS</div>
-      <div style={S.postureImpact}>ITAR / CUI</div>
+      <div style={S.postureTelemetryRow}>
+        <div style={S.postureTelemetryItem}>
+          <div style={S.postureTelemetryValue}>
+            3<span style={S.postureTelemetryMuted}>/5</span>
+          </div>
+          <div style={S.postureTelemetryLabel}>READINESS</div>
+        </div>
+        <div style={{ ...S.postureTelemetryItem, textAlign: 'right' }}>
+          <div style={S.postureTelemetryValue}>
+            2 <span style={S.postureTelemetryMuted}>GAPS</span>
+          </div>
+          <div style={S.postureTelemetryLabel}>ITAR / CUI</div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -1563,15 +1563,15 @@ const S: Record<string, CSSProperties> = {
   metricWrap: { alignSelf: 'center', minWidth: 0, display: 'flex', alignItems: 'center', overflowWrap: 'anywhere' },
   primaryMetric: { color: C.text, fontSize: 68, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.035em', whiteSpace: 'nowrap' },
   metricTitle: { marginTop: 10, fontSize: 34, fontWeight: 950, lineHeight: 1, letterSpacing: '0.04em', textTransform: 'uppercase', overflowWrap: 'normal', wordBreak: 'normal' },
-  postureGraphic: { width: '100%', display: 'grid', gap: 7, marginBottom: 4 },
-  postureState: { color: '#FACC15', fontSize: 26, fontWeight: 950, lineHeight: 0.92, letterSpacing: '0', textTransform: 'uppercase' },
-  postureLabel: { color: '#AAB4C0', fontSize: 29, fontWeight: 950, lineHeight: 0.92, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 8 },
-  postureBars: { display: 'flex', gap: 6, width: '100%', height: 11, marginBottom: 2 },
-  postureBar: { flex: 1, borderRadius: 2 },
-  postureReadiness: { color: '#FFFFFF', fontSize: 31, fontWeight: 950, lineHeight: 1, letterSpacing: '-0.04em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', marginTop: 2 },
-  postureReadinessLabel: { color: '#AAB4C0', display: 'block', fontSize: 15, fontWeight: 900, letterSpacing: '0.12em', marginTop: 2 },
-  postureGaps: { color: '#FFFFFF', fontSize: 25, fontWeight: 950, lineHeight: 1, letterSpacing: '0.025em', textTransform: 'uppercase', marginTop: 8 },
-  postureImpact: { color: '#FACC15', fontSize: 17, fontWeight: 900, lineHeight: 1, letterSpacing: '0.12em', textTransform: 'uppercase' },
+  postureGraphic: { width: '100%', minHeight: 174, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginBottom: 4 },
+  postureHero: { display: 'flex', flexDirection: 'column', gap: 7, marginTop: 2 },
+  postureState: { fontSize: 32, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.045em', textTransform: 'uppercase' },
+  postureLabel: { color: 'rgba(255,255,255,0.42)', fontSize: 22, fontWeight: 900, lineHeight: 1, letterSpacing: '0.18em', textTransform: 'uppercase' },
+  postureTelemetryRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', width: '100%', borderTop: '1px solid rgba(148,163,184,0.18)', paddingTop: 12, marginTop: 18 },
+  postureTelemetryItem: { display: 'flex', flexDirection: 'column', gap: 4 },
+  postureTelemetryValue: { color: 'rgba(255,255,255,0.84)', fontSize: 24, fontWeight: 900, lineHeight: 1, letterSpacing: '-0.02em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
+  postureTelemetryMuted: { color: 'rgba(255,255,255,0.42)', fontSize: 19, letterSpacing: '-0.02em' },
+  postureTelemetryLabel: { color: '#6B7280', fontSize: 10, fontWeight: 950, lineHeight: 1, letterSpacing: '0.18em', textTransform: 'uppercase' },
   supplyGraphic: { position: 'relative', width: '100%', height: 78, marginBottom: 4 },
   threatMatrixGraphic: { position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', minHeight: 118, marginBottom: 4, overflow: 'hidden' },
   threatMatrixGrid: {
