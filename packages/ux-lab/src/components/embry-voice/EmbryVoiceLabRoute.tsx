@@ -136,7 +136,7 @@ type StressRouteFamily = {
   questions: string[]
 }
 
-const fullSuite = '/tmp/chatterbox-fork-agent-out/voice-chat-e2e/voice-chat-e2e-20260703T214538Z-audible-all-v2'
+const fullSuite = '/tmp/chatterbox-fork-agent-out/voice-chat-e2e/fresh-all-audible-20260707T155951Z'
 const surfaceClass = 'bg-[#121214] text-[#e4e4e7] antialiased'
 const panelClass = 'border border-[#2d2d31] bg-[#18181b]'
 const panelSoftClass = 'border border-[#2d2d31] bg-[#17171a]'
@@ -407,7 +407,7 @@ const sanityRuns: SanityRun[] = [
   {
     id: 'qra-disabled',
     label: 'QRA cache disabled',
-    receiptPath: `${fullSuite}/S10-qra-disabled/qra-disabled.json`,
+    receiptPath: `${fullSuite}/S10-qra-disabled/tau-qra-disabled.json`,
     componentPath: '/embry-chatterbox-voice/qra-cache-disabled',
     ok: true,
     mocked: false,
@@ -895,7 +895,7 @@ const voiceTurns: VoiceTurn[] = [
     speaker: 'horus_lupercal',
     tone: 'neutral_warm',
     memoryAction: 'QRA_CACHE_DISABLED',
-    receiptPath: `${fullSuite}/S10-qra-disabled/qra-disabled.json`,
+    receiptPath: `${fullSuite}/S10-qra-disabled/tau-qra-disabled.json`,
     componentPath: '/memory/qra/cache-disabled',
     telemetry: [
       { label: 'Cache', value: 'disabled' },
