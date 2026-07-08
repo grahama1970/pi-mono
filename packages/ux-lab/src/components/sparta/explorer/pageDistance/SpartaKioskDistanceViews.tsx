@@ -435,12 +435,19 @@ function EmbryVoiceMast({
 }
 
 function KioskTileCard({ tile, active, onSelect }: { tile: KioskTile; active: boolean; onSelect: () => void }) {
-  const s = stateStyle[tile.state]
   const Icon = iconForTile(tile.tab)
   const isVoid = tile.state === 'UNKNOWN' || tile.primaryMetric === 'UNKNOWN'
   const displayMetric = isVoid ? '--' : abbreviateKioskMetric(tile.primaryMetric)
   const metricFontSize = kioskMetricFontSize(displayMetric)
   const titleFontSize = kioskTitleFontSize(tile.tab)
+  const stripColor = tile.state === 'BLOCKED'
+    ? '#EF4444'
+    : tile.state === 'DEGRADED'
+      ? '#FACC15'
+      : tile.state === 'READY'
+        ? '#1F2937'
+        : '#6B7280'
+  const labelColor = tile.state === 'READY' ? '#4ADE80' : '#AAB4C0'
   return (
     <button
       type="button"
@@ -450,18 +457,18 @@ function KioskTileCard({ tile, active, onSelect }: { tile: KioskTile; active: bo
       onClick={onSelect}
       style={{
         ...S.tile,
-        borderLeftColor: s.border,
-        background: tile.state === 'BLOCKED' ? '#2B1518' : isVoid ? '#151A20' : C.surfaceCard,
+        borderLeftColor: stripColor,
+        background: '#050505',
         opacity: isVoid ? 0.72 : 1,
-        boxShadow: active ? `inset 0 0 0 3px ${s.border}` : 'none',
+        boxShadow: active ? `inset 0 0 0 3px ${stripColor}` : 'none',
       }}
     >
       <header style={S.tileHeader}>
-        <Icon size={40} strokeWidth={3} style={{ color: isVoid ? C.muted : C.secondary, flex: '0 0 auto' }} />
+        <Icon size={56} strokeWidth={3} style={{ color: stripColor, flex: '0 0 auto' }} />
       </header>
       <div style={S.metricBlock}>
-        <div style={{ ...S.primaryMetric, color: isVoid ? C.muted : C.text, fontSize: metricFontSize }}>{displayMetric}</div>
-        <div style={{ ...S.metricTitle, color: isVoid ? C.muted : tile.state === 'BLOCKED' ? '#FECACA' : C.secondary, fontSize: titleFontSize }}>{tile.tab}</div>
+        <div style={{ ...S.primaryMetric, color: C.text, fontSize: metricFontSize }}>{displayMetric}</div>
+        <div style={{ ...S.metricTitle, color: isVoid ? '#6B7280' : labelColor, fontSize: titleFontSize }}>{tile.tab}</div>
       </div>
     </button>
   )
