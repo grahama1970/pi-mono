@@ -707,70 +707,18 @@ function SupplyChainTelemetryGraphic({ stripColor }: { stripColor: string }) {
 }
 
 function ThreatMatrixGraphic({ stripColor, state }: { stripColor: string; state: KioskState }) {
-  const stateCells = state === 'READY'
-    ? [
-        { x: 2, y: 1, fill: '#4ADE80', opacity: 0.86 },
-        { x: 3, y: 3, fill: '#4ADE80', opacity: 0.68 },
-      ]
-    : state === 'BLOCKED'
-      ? [
-          { x: 1, y: 1, fill: '#EF4444', opacity: 0.92 },
-          { x: 3, y: 2, fill: '#FACC15', opacity: 0.82 },
-          { x: 2, y: 4, fill: '#EF4444', opacity: 0.72 },
-        ]
-      : state === 'DEGRADED'
-        ? [
-            { x: 1, y: 2, fill: stripColor, opacity: 0.92 },
-            { x: 3, y: 1, fill: stripColor, opacity: 0.76 },
-            { x: 4, y: 3, fill: '#4ADE80', opacity: 0.52 },
-          ]
-        : [
-            { x: 2, y: 2, fill: '#6B7280', opacity: 0.54 },
-            { x: 4, y: 4, fill: '#6B7280', opacity: 0.42 },
-          ]
-  const cellSize = 16
-  const gap = 7
-  const originX = 10
-  const originY = 8
   const unmappedCount = state === 'READY' ? '0/16' : state === 'UNKNOWN' ? '--/16' : '3/16'
-  const coordinate = state === 'READY' ? 'MATRIX COVERED' : state === 'UNKNOWN' ? 'MAPPING UNKNOWN' : 'IDENTITY × ACCESS'
+  const [activeCount, totalCount = '16'] = unmappedCount.split('/')
+  const modifier = state === 'READY' ? 'Covered · Matrix' : state === 'UNKNOWN' ? 'Unknown · Matrix' : 'Unmapped · IDxAccess'
 
   return (
     <div style={S.threatMatrixGraphic} aria-hidden="true">
-      <svg viewBox="0 0 112 104" width="78" height="66" role="presentation" focusable="false">
-        <rect x="1" y="1" width="110" height="102" rx="8" fill="rgba(15,23,42,0.34)" stroke="rgba(148,163,184,0.14)" strokeWidth="2" />
-        {Array.from({ length: 16 }, (_, index) => {
-          const x = index % 4
-          const y = Math.floor(index / 4)
-          return (
-            <rect
-              key={`base-${index}`}
-              x={originX + x * (cellSize + gap)}
-              y={originY + y * (cellSize + gap)}
-              width={cellSize}
-              height={cellSize}
-              rx="3"
-              fill="rgba(148,163,184,0.12)"
-            />
-          )
-        })}
-        {stateCells.map((cell, index) => (
-          <rect
-            key={`state-${index}`}
-            x={originX + (cell.x - 1) * (cellSize + gap)}
-            y={originY + (cell.y - 1) * (cellSize + gap)}
-            width={cellSize}
-            height={cellSize}
-            rx="3"
-            fill={cell.fill}
-            opacity={cell.opacity}
-          />
-        ))}
-      </svg>
-      <div style={S.threatMatrixMetric}>{unmappedCount}</div>
-      <div style={S.threatMatrixState}>UNMAPPED</div>
-      <div style={S.threatMatrixCoordinate}>{coordinate}</div>
-      <div style={S.threatMatrixRisk}>TOP RISK</div>
+      <div style={S.threatMatrixGrid} />
+      <div style={{ ...S.threatMatrixModifier, color: stripColor }}>{modifier}</div>
+      <div style={S.threatMatrixMetric}>
+        {activeCount}
+        <span style={S.threatMatrixDenominator}>/{totalCount}</span>
+      </div>
     </div>
   )
 }
@@ -1614,11 +1562,18 @@ const S: Record<string, CSSProperties> = {
   postureBars: { display: 'flex', gap: 8, width: '100%', height: 13 },
   postureBar: { flex: 1, borderRadius: 2 },
   supplyGraphic: { position: 'relative', width: '100%', height: 78, marginBottom: 4 },
-  threatMatrixGraphic: { width: '100%', display: 'grid', gap: 4, marginBottom: 4, opacity: 0.98 },
-  threatMatrixMetric: { color: '#FFFFFF', fontSize: 48, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.04em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
-  threatMatrixState: { color: '#FFFFFF', fontSize: 24, fontWeight: 950, lineHeight: 1, letterSpacing: '0.04em', textTransform: 'uppercase' },
-  threatMatrixCoordinate: { color: '#D7DEE8', fontSize: 16, fontWeight: 900, lineHeight: 1.05, letterSpacing: '0.055em', textTransform: 'uppercase', marginTop: 8 },
-  threatMatrixRisk: { color: '#AAB4C0', fontSize: 12, fontWeight: 900, lineHeight: 1, letterSpacing: '0.16em', textTransform: 'uppercase' },
+  threatMatrixGraphic: { position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', minHeight: 118, marginBottom: 4, overflow: 'hidden' },
+  threatMatrixGrid: {
+    position: 'absolute',
+    inset: 0,
+    opacity: 0.07,
+    backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)',
+    backgroundSize: '24px 24px',
+    pointerEvents: 'none',
+  },
+  threatMatrixModifier: { position: 'relative', zIndex: 1, fontSize: 13, fontWeight: 950, lineHeight: 1, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 },
+  threatMatrixMetric: { position: 'relative', zIndex: 1, color: '#FFFFFF', fontSize: 68, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
+  threatMatrixDenominator: { color: 'rgba(255,255,255,0.42)', fontSize: 56, letterSpacing: '-0.06em' },
   primaryLabel: { marginTop: 0, color: C.secondary, fontSize: 20, fontWeight: 850, lineHeight: 1.05, textTransform: 'uppercase', letterSpacing: '0.025em' },
   secondaryLine: {
     alignSelf: 'stretch',
