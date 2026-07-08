@@ -546,6 +546,8 @@ function TelemetryPill({
   const activeAlert = visibleNotifications[activeIndex % Math.max(1, visibleNotifications.length)] ?? notifications[0]
   const alertStyle = activeAlert ? stateStyle[activeAlert.state] : stateStyle[global]
   const AlertIcon = activeAlert?.state === 'READY' ? Check : AlertTriangle
+  const signalFill = global === 'READY' ? '#22C55E' : '#FACC15'
+  const signalText = '#050505'
   const queueTotal = Math.max(1, activeCount)
   const queueIndex = Math.min(queueTotal, (activeIndex % Math.max(1, visibleNotifications.length)) + 1)
 
@@ -558,21 +560,21 @@ function TelemetryPill({
   }, [visibleNotifications.length])
 
   return (
-    <div data-qid="sparta:kiosk:telemetry-billboard" style={{ ...S.telemetryBillboard, borderColor: `${alertStyle.fg}66`, background: `${alertStyle.bg}88` }}>
+    <div data-qid="sparta:kiosk:telemetry-billboard" style={{ ...S.telemetryBillboard, borderColor: signalFill, background: signalFill, color: signalText }}>
       <div style={S.billboardAlertIcon}>
-        <AlertIcon size={30} strokeWidth={2.8} color={alertStyle.fg} />
+        <AlertIcon size={36} strokeWidth={3.2} color={signalText} />
       </div>
       <div style={S.billboardCopy}>
-        <div style={{ ...S.billboardMeta, color: alertStyle.fg }}>
+        <div style={{ ...S.billboardMeta, color: signalText }}>
           Current · {activeAlert?.tab ?? summaryTone}
         </div>
-        <div data-qid="sparta:kiosk:top-blocker" style={S.billboardText}>
+        <div data-qid="sparta:kiosk:top-blocker" style={{ ...S.billboardText, color: signalText }}>
           {global === 'READY' ? 'All monitored pages ready' : activeAlert?.secondaryLine ?? `${Math.max(1, activeCount)} systems ${summaryTone.toLowerCase()}`}
         </div>
       </div>
       <div data-qid="sparta:kiosk:notification-queue" style={S.billboardQueue}>
-        <span style={S.billboardQueueLabel}>Queue</span>
-        <span style={{ ...S.billboardQueueCount, color: alertStyle.fg }}>{queueIndex}/{queueTotal}</span>
+        <span style={{ ...S.billboardQueueLabel, color: signalText }}>Queue</span>
+        <span style={{ ...S.billboardQueueCount, color: signalText }}>{queueIndex}/{queueTotal}</span>
       </div>
       <div data-qid="sparta:kiosk:billboard-dots" style={S.billboardDots} aria-label={`${visibleNotifications.length} active notifications`}>
         {visibleNotifications.map((tile, index) => (
@@ -581,7 +583,7 @@ function TelemetryPill({
             style={{
               ...S.billboardDot,
               width: index === activeIndex ? 18 : 7,
-              background: index === activeIndex ? alertStyle.fg : '#3F4652',
+              background: index === activeIndex ? signalText : 'rgba(5, 5, 5, 0.34)',
             }}
           />
         ))}
@@ -860,8 +862,8 @@ const S: Record<string, CSSProperties> = {
     display: 'grid',
     placeItems: 'center',
     borderRadius: 10,
-    background: 'rgba(5, 5, 5, 0.48)',
-    boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.08)',
+    background: 'rgba(5, 5, 5, 0.08)',
+    boxShadow: 'inset 0 0 0 3px rgba(5, 5, 5, 0.72)',
   },
   billboardCopy: {
     minWidth: 0,
@@ -869,7 +871,7 @@ const S: Record<string, CSSProperties> = {
     gap: 4,
   },
   billboardMeta: {
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: 950,
     lineHeight: 1,
     letterSpacing: '0.14em',
@@ -877,7 +879,6 @@ const S: Record<string, CSSProperties> = {
   },
   billboardText: {
     minWidth: 0,
-    color: '#FFFFFF',
     fontSize: 44,
     fontWeight: 950,
     lineHeight: 0.95,
@@ -897,7 +898,6 @@ const S: Record<string, CSSProperties> = {
     minWidth: 0,
   },
   billboardQueueLabel: {
-    color: '#94A3B8',
     fontSize: 13,
     fontWeight: 900,
     lineHeight: 1,
@@ -934,9 +934,9 @@ const S: Record<string, CSSProperties> = {
     display: 'inline-grid',
     placeItems: 'center',
     borderRadius: 999,
-    border: '1px solid #334155',
-    background: '#0B1118',
-    color: '#CBD5E1',
+    border: '2px solid rgba(5, 5, 5, 0.42)',
+    background: 'rgba(250, 204, 21, 0.92)',
+    color: '#050505',
     fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
     fontSize: 11,
     fontWeight: 900,
