@@ -1,5 +1,5 @@
 import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
-import { AlertTriangle, Boxes, Check, Globe, HelpCircle, Layers, Mic, Network, Square, Target, Workflow } from 'lucide-react'
+import { AlertTriangle, Boxes, Check, Globe, HelpCircle, Layers, Network, Square, Target, Workflow } from 'lucide-react'
 import { useRegisterAction } from '../../../../hooks/useRegisterAction'
 import type { CollectionCounts } from '../../../../hooks/useSpartaCollections'
 import type { TabName } from '../SpartaExplorer'
@@ -541,7 +541,6 @@ function EmbryVoiceMast({
               }}
               style={S.voiceChip}
             >
-              <span style={S.voiceChipIcon}><Mic size={20} strokeWidth={3} /></span>
               {command.label}
             </button>
           ))}
@@ -720,6 +719,7 @@ export function SpartaKioskDistanceView({
   onSelectTab: (tab: TabName) => void
 }) {
   const { mode, setMode, isPinned } = usePageDistanceMode()
+  const [ghostOverlayActive, setGhostOverlayActive] = useState(false)
   const tiles = buildTiles(counts, coverageHealth)
   const global = globalState(tiles)
   const blocker = topBlocker(tiles)
@@ -798,7 +798,16 @@ export function SpartaKioskDistanceView({
 
   return (
     <section data-qid="sparta:kiosk:root" data-page-distance-mode="10ft" data-page-distance-pinned={isPinned ? 'true' : 'false'} style={S.root} aria-label="SPARTA 10ft readiness board">
-      <div data-qid="sparta:kiosk:view-state-controls" style={S.kioskViewStateDock}>
+      <div
+        data-qid="sparta:kiosk:view-state-controls"
+        aria-label="Developer view-state controls"
+        title="Developer view-state controls"
+        onMouseEnter={() => setGhostOverlayActive(true)}
+        onMouseLeave={() => setGhostOverlayActive(false)}
+        onFocus={() => setGhostOverlayActive(true)}
+        onBlur={() => setGhostOverlayActive(false)}
+        style={{ ...S.kioskViewStateDock, opacity: ghostOverlayActive ? 1 : 0.1 }}
+      >
         <PageDistanceModeSwitcher compact qidPrefix="sparta:kiosk:distance" />
       </div>
       <header data-qid="sparta:kiosk:global-readiness" style={S.kioskHeader}>
@@ -860,15 +869,15 @@ const S: Record<string, CSSProperties> = {
     pointerEvents: 'auto',
   },
   kioskViewStateDock: {
-    position: 'absolute',
-    left: 'calc(100vw - 188px)',
-    bottom: 42,
-    transform: 'translateX(-50%)',
-    zIndex: 1200,
+    position: 'fixed',
+    top: 8,
+    right: 8,
+    zIndex: 1300,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     pointerEvents: 'auto',
+    transition: 'opacity 180ms ease',
   },
   kioskHeader: {
     position: 'absolute',
@@ -1462,9 +1471,9 @@ const S: Record<string, CSSProperties> = {
     justifyContent: 'center',
     padding: '0 12px',
     border: '2px solid #1F2937',
-    borderRadius: 2,
-    background: '#0A0A0C',
-    color: '#4ADE80',
+    borderRadius: 999,
+    background: '#111827',
+    color: '#60A5FA',
     fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
     fontSize: 14,
     fontWeight: 900,
@@ -1475,32 +1484,22 @@ const S: Record<string, CSSProperties> = {
   },
   voiceChipGrid: { width: '100%', display: 'grid', gap: 10, alignContent: 'start' },
   voiceChip: {
-    minHeight: 54,
+    minHeight: 58,
     width: '100%',
-    borderRadius: 0,
-    border: '0',
-    borderLeft: '8px solid #374151',
-    background: '#050505',
+    borderRadius: 16,
+    border: '1px solid rgba(55, 65, 81, 0.55)',
+    borderLeft: '6px solid rgba(59, 130, 246, 0.68)',
+    background: '#1A1A20',
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 900,
     lineHeight: 1.08,
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
-    gap: 12,
     textAlign: 'left',
-    padding: '8px 10px 8px 14px',
-  },
-  voiceChipIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 0,
-    display: 'inline-grid',
-    placeItems: 'center',
-    flex: '0 0 auto',
-    background: 'transparent',
-    color: '#4ADE80',
+    padding: '12px 16px 12px 24px',
+    boxShadow: '0 8px 18px rgba(0, 0, 0, 0.22)',
   },
   selectedTarget: { width: '100%', color: C.secondary, fontSize: 20, fontWeight: 740, lineHeight: 1.15, textAlign: 'center' },
   triageHeader: {
