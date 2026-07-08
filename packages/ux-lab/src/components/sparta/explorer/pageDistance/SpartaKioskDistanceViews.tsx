@@ -29,6 +29,32 @@ type KioskTile = {
   sourceStatus: 'authoritative' | 'missing' | 'stale'
 }
 
+type MonitorHealthCheck = { ok?: boolean; dimension?: string; message?: string }
+type MonitorCoverageHealthSnapshot = CoverageHealthSnapshot & {
+  monitor?: CoverageHealthSnapshot['monitor'] & {
+    checks?: MonitorHealthCheck[]
+    remaining?: CoverageHealthSnapshot['monitor'] extends { remaining?: infer R }
+      ? R & {
+          exact_remaining_calls_total?: number
+          implemented_backlog_total_if_legacy_sparta_native_counts_as_done?: number
+          implemented_backlog_total_if_v2_sparta_native_required?: number
+        }
+      : {
+          exact_remaining_calls_total?: number
+          implemented_backlog_total_if_legacy_sparta_native_counts_as_done?: number
+          implemented_backlog_total_if_v2_sparta_native_required?: number
+        }
+  }
+  qraTrust?: {
+    status?: string
+    label?: string
+    expert_blessed?: boolean
+    use_policy?: string
+    next_action?: string
+    counts?: { legacy?: number; canonical?: number; relationship?: number; total?: number }
+  }
+}
+
 const PAGES: TabName[] = ['Coverage', 'QRAs', 'Controls', 'Sources', 'URLs', 'Threat Matrix', 'Posture', 'Supply Chain']
 
 const C = {
@@ -130,6 +156,79 @@ function inventoryGapTotal(health: CoverageHealthSnapshot | null | undefined): n
   return Object.values(inventory).reduce((sum, lane) => sum + Number(lane?.missing ?? 0), 0)
 }
 
+function asMonitorSnapshot(health: CoverageHealthSnapshot | null | undefined): MonitorCoverageHealthSnapshot | null | undefined {
+  return health as MonitorCoverageHealthSnapshot | null | undefined
+}
+
+function monitorCheck(health: CoverageHealthSnapshot | null | undefined, dimension: string): MonitorHealthCheck | undefined {
+  return asMonitorSnapshot(health)?.monitor?.checks?.find((check) => check.dimension === dimension)
+}
+
+function monitorExactRemainingCalls(health: CoverageHealthSnapshot | null | undefined): number | null {
+  const direct = asMonitorSnapshot(health)?.monitor?.remaining?.exact_remaining_calls_total
+  if (Number.isFinite(Number(direct))) return Number(direct)
+  const check = monitorCheck(health, 'create_qras_remaining_calls')
+  if (!check?.ok) return null
+  const match = check.message?.match(/(\d+)\s+implemented calls remain/i)
+  return match ? Number(match[1]) : 0
+}
+
+function deriveQraReviewState(health: CoverageHealthSnapshot | null | undefined, hasCorpus: boolean): { state: KioskState; reason: string; line: string } {
+  if (!hasCorpus) return { state: 'UNKNOWN', reason: 'QRA corpus count missing from monitor-sparta snapshot.', line: 'count unknown - fail closed' }
+  if (!health) return { state: 'UNKNOWN', reason: 'monitor-sparta snapshot unavailable for QRA readiness.', line: 'monitor snapshot missing' }
+  if (health.stale) return { state: 'DEGRADED', reason: 'monitor-sparta snapshot is stale for QRA readiness.', line: 'snapshot stale' }
+  const qraChecks = [
+    'corpus_completeness',
+    'qra_evidence_coverage',
+    'qra_reasoning_coverage',
+    'create_qras_remaining_calls',
+    'qra_question_surface_quality',
+    'qra_stub_grounding',
+  ]
+  const failed = qraChecks
+    .map((dimension) => ({ dimension, check: monitorCheck(health, dimension) }))
+    .filter(({ check }) => check?.ok !== true)
+  const remaining = monitorExactRemainingCalls(health)
+  if (failed.length === 0 && remaining === 0) {
+    return {
+      state: 'READY',
+      reason: `monitor-sparta QRA lanes pass; trust=${asMonitorSnapshot(health)?.qraTrust?.label ?? asMonitorSnapshot(health)?.qraTrust?.status ?? 'ready for review'}.`,
+      line: 'ready for human review',
+    }
+  }
+  return {
+    state: 'DEGRADED',
+    reason: failed[0]?.check?.message ?? failed[0]?.dimension ?? 'QRA monitor-sparta readiness gates are incomplete.',
+    line: remaining != null && remaining > 0 ? `${remaining.toLocaleString()} calls remain` : 'review gates incomplete',
+  }
+}
+
+function deriveControlsReviewState(health: CoverageHealthSnapshot | null | undefined, hasControls: boolean): { state: KioskState; reason: string; line: string } {
+  if (!hasControls) return { state: 'UNKNOWN', reason: 'Controls count missing from monitor-sparta snapshot.', line: 'count unknown - fail closed' }
+  if (!health) return { state: 'UNKNOWN', reason: 'monitor-sparta snapshot unavailable for Controls readiness.', line: 'monitor snapshot missing' }
+  if (health.stale) return { state: 'DEGRADED', reason: 'monitor-sparta snapshot is stale for Controls readiness.', line: 'snapshot stale' }
+  const controlChecks = [
+    'source_control_parity',
+    'source_control_field_parity',
+    'control_description_coverage',
+    'taxonomy_backfill',
+    'description_completeness',
+    'embedding_gaps',
+  ]
+  const failed = controlChecks
+    .map((dimension) => ({ dimension, check: monitorCheck(health, dimension) }))
+    .filter(({ check }) => check?.ok !== true)
+  const gaps = qualityGapTotal(health)
+  if (failed.length === 0 && gaps === 0) {
+    return { state: 'READY', reason: 'monitor-sparta Controls lanes pass.', line: 'ready for human review' }
+  }
+  return {
+    state: 'DEGRADED',
+    reason: failed[0]?.check?.message ?? `${gaps.toLocaleString()} control-quality gap(s) remain.`,
+    line: gaps > 0 ? `${gaps.toLocaleString()} quality gaps` : 'quality gates incomplete',
+  }
+}
+
 function getContract(tab: TabName, coverageHealth: CoverageHealthSnapshot | null | undefined): PagePurposeContract | undefined {
   const base = TAB_PURPOSE_CONTRACTS[tab]
   if (!base) return undefined
@@ -168,14 +267,15 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
   if (tab === 'QRAs') {
     const corpus = counts.qrasTotal || counts.qras
     const hasCorpus = hasKnownCount(corpus)
+    const readiness = deriveQraReviewState(coverageHealth, hasCorpus)
     return {
       tab,
       qid: 'sparta:kiosk:tile:qras',
-      state: hasCorpus ? state : 'UNKNOWN',
-      stateReason,
+      state: readiness.state,
+      stateReason: readiness.reason,
       primaryMetric: formatCount(corpus),
       primaryLabel: 'corpus',
-      secondaryLine: hasCorpus ? 'review queue needs action' : 'count unknown - fail closed',
+      secondaryLine: readiness.line,
       nextAction: 'Open QRA review queue',
       voiceCommand: 'Open QRA review queue',
       sourceStatus: hasCorpus ? sourceStatus : 'missing',
@@ -184,14 +284,15 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
 
   if (tab === 'Controls') {
     const hasControls = hasKnownCount(counts.controls)
+    const readiness = deriveControlsReviewState(coverageHealth, hasControls)
     return {
       tab,
       qid: 'sparta:kiosk:tile:controls',
-      state: hasControls ? state : 'UNKNOWN',
-      stateReason,
+      state: readiness.state,
+      stateReason: readiness.reason,
       primaryMetric: formatCount(counts.controls),
       primaryLabel: 'controls',
-      secondaryLine: hasControls ? 'mapping gaps' : 'count unknown - fail closed',
+      secondaryLine: readiness.line,
       nextAction: 'Open control mappings',
       voiceCommand: 'Show Controls',
       sourceStatus: hasControls ? sourceStatus : 'missing',
