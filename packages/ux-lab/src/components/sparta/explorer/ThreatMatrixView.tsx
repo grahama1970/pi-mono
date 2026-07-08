@@ -11,8 +11,22 @@ import { useState, useEffect, useCallback } from 'react'
 import { ThreatMatrix } from '../shared/ThreatMatrix'
 import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState, ThreatMatrixActions, ThreatMatrixMeta, DatalakeOption, TraceabilityChunk, EvidenceCase } from '../shared/ThreatMatrix'
 import { API_ORIGIN, MEMORY_API_ROOT } from '../../../lib/apiBase'
+import { PageDistanceRoot, usePageDistanceMode } from './pageDistance/PageDistanceMode'
+import { deriveCoveragePagePurposeState, type CoverageHealthSnapshot } from './pagePurposeContracts'
+import { ThreatMatrixDistanceShell } from './pageDistance/ThreatMatrixDistanceViews'
+import { useMatrixCuration } from './matrixCurationContext'
 
 const DAEMON = MEMORY_API_ROOT
+const COVERAGE_HEALTH_CACHE_KEY = 'sparta.coverageHealth.lastPayload'
+
+function readCoverageHealthCache(): CoverageHealthSnapshot | null {
+  try {
+    const raw = localStorage.getItem(COVERAGE_HEALTH_CACHE_KEY)
+    return raw ? (JSON.parse(raw) as CoverageHealthSnapshot) : null
+  } catch {
+    return null
+  }
+}
 
 const SPARTA_TACTICS: ThreatTactic[] = [
   { id: 'ST0001', name: 'Reconnaissance', prefix: 'REC' },
@@ -75,14 +89,16 @@ export function ThreatMatrixView() {
   const [activeDatalake, setActiveDatalake] = useState<string>('')
   const [evidenceMap, setEvidenceMap] = useState<Map<string, { verdict: string; grade: string; count: number }>>(new Map())
   const [viewMode, setViewMode] = useState<ThreatMatrixState['viewMode']>('standard')
+  const coverageHealth = readCoverageHealthCache()
+  const coveragePurpose = deriveCoveragePagePurposeState(coverageHealth)
+  const analysisPipelineDegraded = coveragePurpose.state !== 'pass' || coverageHealth?.stale === true
   const [condensedView, setCondensedView] = useState(false)
-  const [curationMode, setCurationMode] = useState(false)
+  const { curationMode, openCurationItems, setOpenCurationItems } = useMatrixCuration()
   const [curationNote, setCurationNote] = useState('')
   const [proposalId, setProposalId] = useState('')
   const [proposalName, setProposalName] = useState('')
   const [proposalTactic, setProposalTactic] = useState(SPARTA_TACTICS[0]?.name ?? 'Reconnaissance')
   const [saveStatus, setSaveStatus] = useState<string | null>(null)
-  const [openCurationItems, setOpenCurationItems] = useState(0)
 
   // Curation actions for Brandon
   const saveMatrixAmendment = useCallback(async () => {
@@ -349,57 +365,51 @@ export function ThreatMatrixView() {
   const meta: ThreatMatrixMeta = {
     totalControls: rawTechniques.length,
     source: 'explorer',
+    analysisPipelineDegraded,
+    boundEvidenceCaseId: null,
     datalakes: AVAILABLE_DATALAKES,
     activeDatalake: activeDatalake || undefined,
   }
 
+  const { mode: pageDistanceMode } = usePageDistanceMode()
+
   // Compose the shared compound component
   return (
+    <PageDistanceRoot qid="threat-matrix-mode-root">
+    <ThreatMatrixDistanceShell
+      mode={pageDistanceMode}
+      techniques={techniques}
+      loading={loading}
+      onSelectTechnique={(tech) => { void selectTechnique(tech) }}
+    >
     <ThreatMatrix.Provider state={state} actions={actions} meta={meta}>
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto', position: 'relative' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
         {error && (
           <div style={{ padding: '12px 16px', backgroundColor: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', borderBottom: '1px solid rgba(239, 68, 68, 0.3)' }}>
             Error loading techniques: {error}
           </div>
         )}
 
-        <div
+        {curationMode ? <div
           data-qid="threat-matrix:layout:brandon-curation"
           style={{
-            padding: '10px 16px',
-            borderBottom: '1px solid rgba(255,255,255,0.08)',
-            background: 'linear-gradient(180deg, rgba(0, 209, 255, 0.08), rgba(0, 0, 0, 0))',
+            padding: '6px 12px',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            background: 'transparent',
             display: 'grid',
-            gap: 8,
+            gap: 6,
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-            <button
-              data-qid="threat-matrix:button:curation-toggle"
-              data-qs-action="TOGGLE_MATRIX_CURATION_MODE"
-              title="Toggle Brandon matrix curation mode"
-              onClick={() => setCurationMode(v => !v)}
-              style={{
-                minHeight: 44,
-                padding: '8px 12px',
-                borderRadius: 8,
-                border: curationMode ? '1px solid rgba(0, 209, 255, 0.55)' : '1px solid rgba(255,255,255,0.16)',
-                background: curationMode ? 'rgba(0, 209, 255, 0.16)' : 'rgba(255,255,255,0.04)',
-                color: curationMode ? '#00d1ff' : '#a3b3bf',
-                fontSize: 11,
-                fontWeight: 800,
-                cursor: 'pointer',
-              }}
-            >
-              {curationMode ? 'Curation Mode: ON' : 'Curation Mode: OFF'}
-            </button>
             <div style={{ fontSize: 11, color: '#9fb0bd' }}>
-              Open matrix curation items: <strong style={{ color: '#ffffff' }}>{openCurationItems}</strong>
+              Matrix curation {curationMode ? 'enabled' : 'disabled'} — toggle from Ask Embry header.
+            </div>
+            <div style={{ fontSize: 11, color: '#9fb0bd' }}>
+              Open items: <strong style={{ color: '#ffffff' }}>{openCurationItems}</strong>
             </div>
             {saveStatus && <div style={{ fontSize: 11, color: '#00d1ff' }}>{saveStatus}</div>}
           </div>
 
-          {curationMode && (
             <div style={{ display: 'grid', gap: 8 }}>
               <div style={{ fontSize: 11, color: '#c9d5de' }}>
                 Brandon workflow: select a technique, capture requirement conflict/cascade notes, and save amendments for adjudication.
@@ -460,16 +470,41 @@ export function ThreatMatrixView() {
                 </button>
               </div>
             </div>
-          )}
-        </div>
+        </div> : null}
 
         <ThreatMatrix.Header />
-        <ThreatMatrix.TacticStrip />
-        <div style={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
-          <ThreatMatrix.Grid />
+        <div
+          data-qid="threat-matrix:layout:squeeze"
+          style={{
+            flex: 1,
+            minHeight: 0,
+            display: 'flex',
+            width: '100%',
+            overflow: 'hidden',
+            background: '#050505',
+          }}
+        >
+          <div
+            data-qid="threat-matrix:layout:squeeze-matrix"
+            style={{
+              flex: '1 1 auto',
+              minWidth: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'hidden',
+              transition: 'flex-basis 0.3s ease, width 0.3s ease',
+            }}
+          >
+            <ThreatMatrix.TacticStrip />
+            <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+              <ThreatMatrix.Grid />
+            </div>
+          </div>
+          <ThreatMatrix.Detail />
         </div>
-        <ThreatMatrix.Detail />
       </div>
     </ThreatMatrix.Provider>
+    </ThreatMatrixDistanceShell>
+    </PageDistanceRoot>
   )
 }

@@ -1312,6 +1312,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
       {/* Shared status bar */}
       <StatusBar
         projectId="sparta-explorer"
+        variant="subtle"
         connected={daemonHealth.ok}
         connectionLabel="daemon connected"
         items={[

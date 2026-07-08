@@ -1167,9 +1167,9 @@ function Grid() {
             }
 
             // ── Standard Mode: full detail cards ──
-            const color = COVERAGE_COLORS[tech.coverage]
             const isHovered = hovered === tech.id
             const isSelected = state.selectedDetail?.technique.id === tech.id
+            const activeColor = '#FACC15'
             return (
               <div
                 key={tech.id}
@@ -1179,16 +1179,16 @@ function Grid() {
                 style={{
                   padding: '10px 12px',
                   backgroundColor: isSelected
-                    ? 'rgba(250, 204, 21, 0.10)'
+                    ? 'rgba(255, 255, 255, 0.10)'
                     : isHovered
-                      ? 'rgba(255, 255, 255, 0.10)'
+                      ? 'rgba(255, 255, 255, 0.15)'
                       : '#121214',
                   cursor: 'pointer',
-                  transition: 'background-color 0.15s, color 0.15s',
+                  transition: 'background-color 0.15s, color 0.15s, border-color 0.15s',
                   borderTop: 0,
                   borderRight: 0,
                   borderBottom: 0,
-                  borderLeft: isSelected ? `3px solid ${color}` : '3px solid transparent',
+                  borderLeft: isSelected ? `3px solid ${activeColor}` : '3px solid transparent',
                   borderRadius: 2,
                   boxShadow: 'none',
                   minHeight: 72,
@@ -1200,7 +1200,7 @@ function Grid() {
                 onClick={() => actions.selectTechnique(tech)}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
-                  <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.white, fontFamily: 'monospace' }}>{tech.id}</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: isSelected ? activeColor : EMBRY.white, fontFamily: 'monospace' }}>{tech.id}</span>
                   {/* Evidence case verdict indicator */}
                   {tech.evidenceVerdict === 'satisfied' && <div style={glowDot(EMBRY.green, 5)} title="SATISFIED" />}
                   {tech.evidenceVerdict === 'inconclusive' && <div style={glowDot(EMBRY.amber, 5)} title="INCONCLUSIVE" />}
@@ -1209,7 +1209,7 @@ function Grid() {
                 <div
                   style={{
                     fontSize: 12,
-                    color: isHovered ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0.6)',
+                    color: isSelected ? EMBRY.white : isHovered ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.6)',
                     lineHeight: 1.25,
                     marginBottom: 8,
                   }}
@@ -1314,16 +1314,30 @@ function Detail() {
 
   return (
     <div style={{
-      position: 'absolute', top: 0, right: 0, bottom: 0,
-      width: 420, backgroundColor: EMBRY.bgPanel,
-      borderLeft: `1px solid ${EMBRY.border}`, display: 'flex', flexDirection: 'column',
-      zIndex: 10, boxShadow: '-4px 0 20px rgba(0,0,0,0.4)',
+      width: 450,
+      flex: '0 0 450px',
+      height: '100%',
+      backgroundColor: '#0a0a0c',
+      borderLeft: '1px solid rgba(255, 255, 255, 0.05)',
+      display: 'flex',
+      flexDirection: 'column',
+      zIndex: 10,
+      boxShadow: '-4px 0 20px rgba(0,0,0,0.4)',
+      animation: 'threatMatrixPaneIn 0.2s ease-out',
     }}>
+      <style>
+        {`
+          @keyframes threatMatrixPaneIn {
+            from { opacity: 0; transform: translateX(32px); }
+            to { opacity: 1; transform: translateX(0); }
+          }
+        `}
+      </style>
       {/* Header - sticky, does not scroll */}
       <div style={{
-        padding: '16px 20px', borderBottom: `1px solid ${EMBRY.border}`,
+        padding: '16px 20px', borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-        flexShrink: 0, backgroundColor: EMBRY.bgPanel,
+        flexShrink: 0, backgroundColor: '#0a0a0c',
       }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
