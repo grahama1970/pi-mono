@@ -636,7 +636,11 @@ function KioskTileCard({ tile, onSelect }: { tile: KioskTile; onSelect: () => vo
       }}
     >
       <header style={S.tileHeader}>
-        <Icon size={56} strokeWidth={3} style={{ color: stripColor, flex: '0 0 auto' }} />
+        {tile.tab === 'Supply Chain' ? (
+          <SupplyWeakLinkSignal stripColor={stripColor} />
+        ) : (
+          <Icon size={56} strokeWidth={3} style={{ color: stripColor, flex: '0 0 auto' }} />
+        )}
       </header>
       <div style={S.metricBlock}>
         {tile.tab === 'Posture' ? (
@@ -694,7 +698,11 @@ function SupplyChainTelemetryGraphic({ stripColor }: { stripColor: string }) {
       </div>
       <div style={S.supplyRiskBlock}>
         <div style={S.supplyRiskCount}>4</div>
-        <div style={{ ...S.supplyRiskLabel, color: stripColor }}>AT RISK</div>
+        <div style={S.supplyRiskLabel}>
+          AT-RISK
+          <br />
+          SUPPLIERS
+        </div>
       </div>
       <div style={S.supplyTelemetryRow}>
         <div style={S.supplyTelemetryItem}>
@@ -706,6 +714,20 @@ function SupplyChainTelemetryGraphic({ stripColor }: { stripColor: string }) {
           <div style={S.supplyTelemetryLabel}>CRITICAL PART</div>
         </div>
       </div>
+    </div>
+  )
+}
+
+function SupplyWeakLinkSignal({ stripColor }: { stripColor: string }) {
+  return (
+    <div style={S.supplyWeakLink} aria-hidden="true">
+      <span style={S.supplyWeakNodeDim} />
+      <span style={S.supplyWeakLine} />
+      <span style={{ ...S.supplyWeakNodeHot, background: stripColor, boxShadow: `0 0 12px ${stripColor}99` }}>
+        <span style={{ ...S.supplyWeakPulse, background: stripColor }} />
+      </span>
+      <span style={S.supplyWeakLine} />
+      <span style={S.supplyWeakNodeDim} />
     </div>
   )
 }
@@ -1561,23 +1583,28 @@ const S: Record<string, CSSProperties> = {
   metricWrap: { alignSelf: 'center', minWidth: 0, display: 'flex', alignItems: 'center', overflowWrap: 'anywhere' },
   primaryMetric: { color: C.text, fontSize: 68, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.035em', whiteSpace: 'nowrap' },
   metricTitle: { marginTop: 10, fontSize: 34, fontWeight: 950, lineHeight: 1, letterSpacing: '0.04em', textTransform: 'uppercase', overflowWrap: 'normal', wordBreak: 'normal' },
-  postureGraphic: { width: '100%', minHeight: 174, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginBottom: 4 },
+  postureGraphic: { width: '100%', minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', marginBottom: 4 },
   postureHero: { display: 'flex', flexDirection: 'column', gap: 7, marginTop: 2 },
   postureState: { fontSize: 32, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.045em', textTransform: 'uppercase' },
   postureLabel: { color: 'rgba(255,255,255,0.42)', fontSize: 22, fontWeight: 900, lineHeight: 1, letterSpacing: '0.18em', textTransform: 'uppercase' },
-  postureTelemetryRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', width: '100%', borderTop: '1px solid rgba(148,163,184,0.18)', paddingTop: 12, marginTop: 18 },
+  postureTelemetryRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', width: '100%', borderTop: '1px solid rgba(148,163,184,0.18)', paddingTop: 10, marginTop: 14 },
   postureTelemetryItem: { display: 'flex', flexDirection: 'column', gap: 4 },
   postureTelemetryValue: { color: 'rgba(255,255,255,0.84)', fontSize: 24, fontWeight: 900, lineHeight: 1, letterSpacing: '-0.02em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
   postureTelemetryMuted: { color: 'rgba(255,255,255,0.42)', fontSize: 19, letterSpacing: '-0.02em' },
   postureTelemetryLabel: { color: '#6B7280', fontSize: 10, fontWeight: 950, lineHeight: 1, letterSpacing: '0.18em', textTransform: 'uppercase' },
-  supplyGraphic: { width: '100%', minHeight: 174, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginBottom: 4 },
-  supplyHero: { display: 'flex', flexDirection: 'column', gap: 7, marginTop: 2 },
-  supplyState: { fontSize: 40, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.035em', textTransform: 'uppercase' },
-  supplyLabel: { color: 'rgba(255,255,255,0.42)', fontSize: 22, fontWeight: 900, lineHeight: 1, letterSpacing: '0.14em', textTransform: 'uppercase' },
-  supplyRiskBlock: { display: 'flex', flexDirection: 'column', gap: 2, marginTop: 12 },
-  supplyRiskCount: { color: '#FFFFFF', fontSize: 68, fontWeight: 950, lineHeight: 0.82, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
-  supplyRiskLabel: { fontSize: 18, fontWeight: 950, lineHeight: 1, letterSpacing: '0.12em', textTransform: 'uppercase' },
-  supplyTelemetryRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', width: '100%', borderTop: '1px solid rgba(148,163,184,0.18)', paddingTop: 12, marginTop: 14 },
+  supplyGraphic: { width: '100%', minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', marginBottom: 4 },
+  supplyWeakLink: { display: 'flex', alignItems: 'center', gap: 5, height: 18, marginTop: 14 },
+  supplyWeakNodeDim: { width: 14, height: 14, borderRadius: 999, background: '#374151', display: 'block' },
+  supplyWeakNodeHot: { position: 'relative', width: 14, height: 14, borderRadius: 999, display: 'block' },
+  supplyWeakPulse: { position: 'absolute', inset: 0, borderRadius: 999, opacity: 0.2, animation: 'sparta-subtitle-pulse 1.6s ease-in-out infinite' },
+  supplyWeakLine: { width: 34, height: 3, background: '#1F2937', display: 'block' },
+  supplyHero: { display: 'flex', flexDirection: 'column', gap: 7, marginTop: 0 },
+  supplyState: { fontSize: 32, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.04em', textTransform: 'uppercase' },
+  supplyLabel: { color: 'rgba(255,255,255,0.42)', fontSize: 18, fontWeight: 900, lineHeight: 1, letterSpacing: '0.15em', textTransform: 'uppercase' },
+  supplyRiskBlock: { display: 'flex', alignItems: 'baseline', gap: 12, marginTop: 10 },
+  supplyRiskCount: { color: '#FFFFFF', fontSize: 50, fontWeight: 950, lineHeight: 0.84, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
+  supplyRiskLabel: { color: 'rgba(255,255,255,0.58)', fontSize: 12, fontWeight: 950, lineHeight: 1.05, letterSpacing: '0.12em', textTransform: 'uppercase' },
+  supplyTelemetryRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', width: '100%', borderTop: '1px solid rgba(148,163,184,0.18)', paddingTop: 10, marginTop: 12 },
   supplyTelemetryItem: { display: 'flex', flexDirection: 'column', gap: 4 },
   supplyTelemetryValue: { color: 'rgba(255,255,255,0.84)', fontSize: 24, fontWeight: 900, lineHeight: 1, letterSpacing: '-0.02em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
   supplyTelemetryLabel: { color: '#6B7280', fontSize: 10, fontWeight: 950, lineHeight: 1, letterSpacing: '0.16em', textTransform: 'uppercase' },
