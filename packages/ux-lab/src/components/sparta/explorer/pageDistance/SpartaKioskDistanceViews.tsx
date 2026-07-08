@@ -98,7 +98,12 @@ function sourceFreshness(sourceStatus: KioskTile['sourceStatus'], coverageHealth
   if (sourceStatus === 'missing') return 'Freshness: UNKNOWN - fail closed'
   if (sourceStatus === 'stale') return 'Freshness: STALE - fail closed'
   const generated = coverageHealth?.generated_at ?? coverageHealth?.monitorClosure?.generated_at ?? coverageHealth?.supervisor?.heartbeat_at
-  return generated ? `Freshness: monitor-sparta ${generated}` : 'Freshness: UNKNOWN - fail closed'
+  if (!generated) return 'Freshness: UNKNOWN - fail closed'
+  const date = new Date(generated)
+  const compact = Number.isNaN(date.getTime())
+    ? generated
+    : date.toISOString().replace(/:\d{2}\.\d{3}Z$/, 'Z').replace('T', ' ')
+  return `Freshness: monitor-sparta ${compact}`
 }
 
 function qualityGapTotal(health: CoverageHealthSnapshot | null | undefined): number {
