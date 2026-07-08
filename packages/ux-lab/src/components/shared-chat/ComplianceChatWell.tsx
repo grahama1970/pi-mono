@@ -63,6 +63,7 @@ import {
   thinkingTraceDisclosureParts,
 } from './thinkingTraceHelpers'
 import { entitySpansFromStructuredContext } from './entityContextSpans'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 export interface StarterChip {
   label: string
@@ -236,7 +237,16 @@ function extractEntitySpansFromMessage(message: ChatMessage, meta: UnknownRecord
   ])
 }
 
+function firstMetadataString(...values: unknown[]): string | undefined {
+  for (const value of values) {
+    if (typeof value === 'string' && value.trim()) return value
+    if (typeof value === 'number' && Number.isFinite(value)) return String(value)
+  }
+  return undefined
+}
+
 function ContentTypeBadge({ type }: { type: string }) {
+  if (type === 'evidence') return null
   const badge = CONTENT_TYPE_BADGES[type]
   if (!badge) return null
 
@@ -370,6 +380,11 @@ export function ComplianceChatWell({
   voiceLabel = 'Voice input',
   onVoiceToggle,
 }: ComplianceChatWellProps): JSX.Element {
+  useRegisterAction(`${qid}:input`, { app: surface, action: 'SHARED_CHAT_EDIT_DRAFT', label: 'Edit chat draft', description: 'Edit the shared chat composer draft' })
+  useRegisterAction(`${qid}:attach`, { app: surface, action: 'SHARED_CHAT_OPEN_ATTACH_MENU', label: 'Open attach menu', description: 'Open shared chat attachment options' })
+  useRegisterAction(`${qid}:voice`, { app: surface, action: 'SHARED_CHAT_TOGGLE_VOICE', label: 'Toggle voice input', description: 'Toggle shared chat voice input' })
+  useRegisterAction(`${qid}:send`, { app: surface, action: 'SHARED_CHAT_SEND', label: 'Send chat message', description: 'Send the shared chat composer draft' })
+
   const [draft, setDraft] = useState('')
   const [hoveredMessage, setHoveredMessage] = useState<string | null>(null)
   const [showAttachMenu, setShowAttachMenu] = useState(false)
@@ -661,8 +676,11 @@ export function ComplianceChatWell({
           >
             {/* Textarea — flat, no nesting */}
             <textarea
+              className="forensic-chat-composer-input"
               ref={textareaRef}
               data-qid={`${qid}:input`}
+              data-qs-action="SHARED_CHAT_EDIT_DRAFT"
+              title="Shared chat prompt"
               value={draft}
               onChange={(event) => setDraft(event.currentTarget.value)}
               onKeyDown={(event) => {
@@ -677,7 +695,7 @@ export function ComplianceChatWell({
               style={{
                 width: '100%',
                 resize: 'none',
-                minHeight: 24,
+                minHeight: 44,
                 maxHeight: 120,
                 background: 'transparent',
                 border: 'none',
@@ -702,10 +720,12 @@ export function ComplianceChatWell({
               <div style={{ position: 'relative' }} ref={attachMenuRef}>
                 <button
                   type="button"
+                  data-qid={`${qid}:attach`}
+                  data-qs-action="SHARED_CHAT_OPEN_ATTACH_MENU"
                   onClick={() => setShowAttachMenu(!showAttachMenu)}
                   style={{
-                    width: 32,
-                    height: 32,
+                    width: 44,
+                    height: 44,
                     borderRadius: 10,
                     border: 0,
                     background: 'transparent',
@@ -767,8 +787,8 @@ export function ComplianceChatWell({
                   onClick={() => onVoiceToggle?.(!voiceEnabled)}
                   disabled={disabled || composerDisabled || isStreaming}
                   style={{
-                    minWidth: voiceEnabled ? 76 : 36,
-                    height: 32,
+                    minWidth: voiceEnabled ? 76 : 44,
+                    height: 44,
                     borderRadius: 999,
                     border: voiceEnabled ? '1px solid rgba(3,218,198,0.34)' : '1px solid transparent',
                     background: voiceEnabled ? 'rgba(3,218,198,0.12)' : 'transparent',
@@ -791,12 +811,13 @@ export function ComplianceChatWell({
                 <button
                   type="button"
                   data-qid={`${qid}:send`}
+                  data-qs-action="SHARED_CHAT_SEND"
                   disabled={disabled || composerDisabled || isStreaming || !draft.trim()}
                   title="Send"
                   onClick={(event) => { void submit(event) }}
                   style={{
-                    width: 36,
-                    height: 36,
+                    width: 44,
+                    height: 44,
                     borderRadius: 12,
                     border: 0,
                     background: draft.trim() && !isStreaming ? '#24252d' : 'transparent',
@@ -956,10 +977,10 @@ function EmptyState({
         borderRadius: 999,
         background: 'rgba(255,255,255,0.035)',
         boxShadow: 'none',
-        filter: 'drop-shadow(0 0 8px rgba(3, 218, 198, 0.34))',
+        filter: 'drop-shadow(0 0 5px rgba(3, 218, 198, 0.14))',
         marginBottom: 16
       }}>
-        <Sparkles size={20} strokeWidth={1.7} aria-hidden="true" color="#a3a3a3" />
+        <Terminal size={20} strokeWidth={1.7} aria-hidden="true" color="#a3a3a3" />
       </div>
       <h2 style={{ margin: 0, fontSize: 18, fontWeight: 600, color: '#e2e8f0', letterSpacing: '-0.02em' }}>
         {title}
@@ -1099,7 +1120,6 @@ function DashboardMessageBubble({
 	    row.some((cell) => typeof cell === 'string' && (cell.includes('DIFF') || cell.includes('HIGH') || cell.includes('CRITICAL')))
 	  )
 		  const timestamp = new Date(message.createdAt ?? message.timestamp ?? 0).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  const ProvenanceIcon = isUser ? User : Cpu
   const provenanceLabel = isUser
     ? 'Human input'
     : branch === 'watch'
@@ -1112,7 +1132,7 @@ function DashboardMessageBubble({
   const codeBlocks = message.content ? extractCodeBlocks(message.content) : []
   const textContent = message.content ? removeCodeBlocks(message.content) : ''
   const completedThinkingTrace = !isUser && steps.length > 0 ? (
-    <div className="chat-message-thinking-trace">
+    <div className="chat-message-thinking-trace" style={{ flex: '1 1 auto', minWidth: 0 }}>
       <ThinkingTrace
         steps={steps}
         title={branch === 'embry-voice' ? 'Memory reasoning trace' : disclosure.title}
@@ -1121,16 +1141,28 @@ function DashboardMessageBubble({
         leadingIcon={leadingIconForBranch(branch, disclosure.disclosureVariant)}
         placement="header"
         displayMode="full"
-        defaultOpen={branch === 'embry-voice' || branch === 'compliance'}
+        defaultOpen={false}
         dataQid="shared-chat:message:thinking-trace"
       />
     </div>
   ) : null
+  const messageTurnId = firstMetadataString(
+    message.id,
+    meta.turnId,
+    meta.turn_id,
+    meta.turnID,
+    meta.turnAuthority && isRecord(meta.turnAuthority) ? meta.turnAuthority.turnId : undefined,
+  )
+  const responsePlanId = firstMetadataString(meta.responsePlanId, meta.response_plan_id)
+  const chatRenderReceiptId = firstMetadataString(meta.chatRenderReceiptId, meta.chat_render_receipt_id)
 
   return (
     <article
       data-qid={`shared-chat:message:${message.role}`}
       data-branch={branch ?? message.role}
+      data-turn-id={messageTurnId}
+      data-response-plan-id={responsePlanId}
+      data-chat-render-receipt-id={chatRenderReceiptId}
       data-entity-span-count={entitySpans.length}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
@@ -1154,7 +1186,7 @@ function DashboardMessageBubble({
 	            border: '1px solid rgba(255,255,255,0.065)',
 	            borderLeft: '2px solid rgba(255,255,255,0.92)',
 	            borderRight: '1px solid rgba(255,255,255,0.08)',
-	            borderRadius: '18px 18px 6px 18px',
+	            borderRadius: '28px 28px 8px 28px',
 	            padding: '11px 14px 8px',
 	            boxShadow: '0 1px 0 rgba(255,255,255,0.025) inset',
 	          }}>
@@ -1184,42 +1216,32 @@ function DashboardMessageBubble({
 	          background: 'rgba(255,255,255,0.04)',
 	          border: '1px solid rgba(255,255,255,0.075)',
 	          borderRadius: 12,
-	          padding: 14,
+	          padding: '10px 12px 12px',
 	          margin: '2px 0',
           borderLeft: `2px solid ${roleColor}`,
         }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: 10,
-            gap: 10,
-          }}>
-            <div style={{
+          <div
+            className="chat-bubble-header"
+            data-qid="shared-chat:message:forensic-header"
+            style={{
               display: 'flex',
               alignItems: 'center',
               gap: 8,
-              minWidth: 0,
-            }}>
-              <div style={{
-                width: 22,
-                height: 22,
-                borderRadius: 6,
-                background: 'rgba(3,218,198,0.12)',
-                border: '1px solid rgba(3,218,198,0.24)',
-                color: '#03dac6',
-                display: 'grid',
-                placeItems: 'center',
-                flexShrink: 0,
-              }}>
-                <ProvenanceIcon size={12} strokeWidth={1.8} aria-hidden="true" />
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#b7c8d4', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              width: '100%',
+              minHeight: 24,
+              marginBottom: 8,
+              fontFamily: 'var(--font-mono, monospace)',
+              fontSize: 11,
+              color: '#9aa6b7',
+            }}
+          >
+            {completedThinkingTrace ?? (
+              <span style={{ color: '#b7c8d4', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {provenanceLabel}
               </span>
-              {contentType && <ContentTypeBadge type={contentType} />}
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 'auto' }}>
+            )}
+            {contentType && <ContentTypeBadge type={contentType} />}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 'auto', flexShrink: 0 }}>
               <span style={{ color: '#7f8798', fontSize: 10, fontVariantNumeric: 'tabular-nums' }}>{timestamp}</span>
               {isHovered && (
                 <span style={{ display: 'flex', gap: 2 }}>
@@ -1251,7 +1273,7 @@ function DashboardMessageBubble({
           </div>
 
           {/* Sources / Context pill */}
-          {!isUser && (
+          {!isUser && recallItems && Array.isArray(recallItems) && recallItems.length > 0 && (
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -1259,7 +1281,6 @@ function DashboardMessageBubble({
               marginBottom: 10,
               flexWrap: 'wrap',
             }}>
-              {recallItems && Array.isArray(recallItems) && recallItems.length > 0 && (
                 <span style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1274,32 +1295,13 @@ function DashboardMessageBubble({
                   <BarChart3 size={10} />
                   {recallItems.length} sources
                 </span>
-              )}
-              {evidenceCaseData && (
-                <span style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 4,
-                  padding: '2px 8px',
-                  borderRadius: 4,
-                  background: '#22232a',
-                  color: '#a5a8b3',
-                  fontSize: 10,
-                  fontWeight: 500,
-                }}>
-                  <Shield size={10} />
-                  Evidence case
-                </span>
-              )}
             </div>
           )}
-
-          {completedThinkingTrace}
 
           {/* Content */}
           <div>
           {/* Tool action line */}
-          {!isUser && message.skillUsed && <ToolAction label={`Ran /${message.skillUsed}`} qid={`chat:skill:${message.skillUsed}`} />}
+          {!isUser && message.skillUsed && !evidenceCaseData && <ToolAction label={`Ran /${message.skillUsed}`} qid={`chat:skill:${message.skillUsed}`} />}
 
           {/* Evidence Case */}
 	          {!isUser && evidenceCaseData && <InlineEvidenceCase data={evidenceCaseData as EvidenceCaseData} />}
@@ -1382,7 +1384,7 @@ function DashboardMessageBubble({
           )}
 
           {!isUser && audioArtifacts.length > 0 && (
-            <VoiceAudioArtifacts artifacts={audioArtifacts} mediaUrl={mediaUrl ?? defaultMediaUrl} />
+            <VoiceAudioArtifacts artifacts={audioArtifacts} mediaUrl={mediaUrl ?? defaultMediaUrl} parentTurnId={messageTurnId} />
           )}
 
           {/* Code blocks */}
@@ -1440,7 +1442,7 @@ function DashboardMessageBubble({
           {/* Footer */}
 	          {!isUser && (
 	            <>
-	              <MessageFooter message={message} />
+	              {!evidenceCaseData && <MessageFooter message={message} />}
 	              <div
 	                data-qid="shared-chat:message-response-actions"
 	                style={{
@@ -1460,11 +1462,7 @@ function DashboardMessageBubble({
 	                <button type="button" title="Regenerate" style={actionButtonStyle}>
 	                  <RotateCcw size={14} />
 	                </button>
-	                {onCopy && (
-	                  <button type="button" onClick={onCopy} title="Copy" style={actionButtonStyle}>
-	                    <Copy size={14} />
-	                  </button>
-	                )}
+	                <CopyButton content={message.content} />
 	                <button type="button" title="More actions" style={actionButtonStyle}>
 	                  <MoreVertical size={14} />
 	                </button>
@@ -1507,6 +1505,7 @@ type VoiceAudioArtifact = {
   label: string
   url: string
   path?: string
+  turnId?: string
 }
 
 function normalizeAudioArtifacts(value: unknown): VoiceAudioArtifact[] {
@@ -1521,6 +1520,7 @@ function normalizeAudioArtifacts(value: unknown): VoiceAudioArtifact[] {
       label: String(label),
       url: rawUrl,
       path: typeof item.path === 'string' ? item.path : undefined,
+      turnId: firstMetadataString(item.turnId, item.turn_id, item.parentTurnId, item.parent_turn_id),
     }]
   })
 }
@@ -1528,9 +1528,11 @@ function normalizeAudioArtifacts(value: unknown): VoiceAudioArtifact[] {
 function VoiceAudioArtifacts({
   artifacts,
   mediaUrl,
+  parentTurnId,
 }: {
   artifacts: VoiceAudioArtifact[]
   mediaUrl: (path: string) => string
+  parentTurnId?: string
 }): JSX.Element {
   return (
     <div data-qid="shared-chat:voice-audio-artifacts" style={{ display: 'grid', gap: 8, marginTop: 10 }}>
@@ -1552,7 +1554,15 @@ function VoiceAudioArtifacts({
               <PlayCircle size={13} />
               <span>{artifact.label}</span>
             </div>
-            <audio data-embry-session-audio="true" controls preload="metadata" src={src} style={{ width: '100%', height: 30 }} />
+            <audio
+              data-qid={`shared-chat:voice-audio:${artifact.id}`}
+              data-turn-id={artifact.turnId ?? parentTurnId}
+              data-embry-session-audio="true"
+              controls
+              preload="metadata"
+              src={src}
+              style={{ width: '100%', height: 30 }}
+            />
           </div>
         )
       })}

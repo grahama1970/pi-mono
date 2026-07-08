@@ -33,6 +33,7 @@ function spanFromExtractEntityNode(value: unknown): EvidenceCaseSpan | null {
     || kind === 'supplemental_control'
     || framework === 'SPARTA'
     || metadata.framework === 'SPARTA'
+    || value.grounded_to_framework === true
   if (!isDisplayEntity) return null
   const grounded =
     metadata.grounded === true
