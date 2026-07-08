@@ -22,6 +22,17 @@
               },
               "assert_selector": "[data-qid='embry-voice:ten-foot:orb']",
               "assert_visible": "[data-qid='embry-voice:ten-foot:summary']"
+            },
+            {
+              "action": "screenshot",
+              "description": "Embry Voice 10ft separates current readiness from retained failed receipts",
+              "assert_attribute": {
+                "selector": "[data-qid='embry-voice:ten-foot:summary']",
+                "attribute": "data-current-failed-gates",
+                "value": "0"
+              },
+              "assert_selector": "[data-qid='embry-voice:ten-foot:summary'][data-retained-failed-gates='4'][data-plant-state='degraded']",
+              "assert_visible": "[data-qid='embry-voice:ten-foot:status-band']"
             }
           ]
         },

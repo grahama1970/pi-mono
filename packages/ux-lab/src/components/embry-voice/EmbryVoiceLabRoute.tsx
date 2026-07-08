@@ -10,6 +10,7 @@ import type { ChatMessage, StreamingStep } from '../shared-chat/memory-turn'
 import type { EmbryTurnAuthority, EmbryVoiceAudioAuthority } from '@agent-skills/ux-lab-ui/memory-turn/EmbryVoiceAuthority'
 import type { EmbryVoiceEnvelope } from '../../hooks/useEmbryPlaybackAudioLevel'
 import { useRegisterAction } from '../../hooks/useRegisterAction'
+import { classifyVoiceRun, summarizeVoiceReadiness, type VoiceReadinessSummary } from './embryVoiceReadiness'
 
 type AudioArtifact = {
   id: string
@@ -1763,7 +1764,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const browserListenerRef = useRef<BrowserListenerSession | null>(null)
   const selectedRun = sanityRuns.find((run) => run.id === selectedRunId)
   const selectedTurn = voiceTurns.find((turn) => turn.id === selectedTurnId) ?? voiceTurns[0]
-  const gateSummary = useMemo(() => summarizeGates(sanityRuns), [])
+  const readinessSummary = useMemo(() => summarizeVoiceReadiness(sanityRuns), [])
   const liveVoiceStatus = deriveEmbryVoiceStatus({ voiceEnabled, replayPhase: replayState.phase })
   const effectiveVoiceStatus = orbStatusOverride ?? liveVoiceStatus
   const totalAudio = useMemo(() => voiceTurns.reduce((count, turn) => count + turn.audioArtifacts.length, 0), [])
@@ -2687,7 +2688,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         tone={selectedTurn.tone}
         activeSpeech={activeSpeech}
         phaseSpeedMs={orbPhaseSpeedMs}
-        gateSummary={gateSummary}
+        readinessSummary={readinessSummary}
         totalTurns={voiceTurns.length}
         totalAudio={totalAudio}
         knownSpeakers={totalKnownSpeakers}
@@ -2812,7 +2813,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
             turns={voiceTurns}
             selectedTurn={selectedTurn}
             selectedRun={selectedRun}
-            gateSummary={gateSummary}
+            readinessSummary={readinessSummary}
             selectedRunId={selectedRunId}
             replayState={replayState}
             onSelectTurn={focusTurn}
@@ -2831,7 +2832,7 @@ function EmbryVoiceTenFootView({
   tone,
   activeSpeech,
   phaseSpeedMs,
-  gateSummary,
+  readinessSummary,
   totalTurns,
   totalAudio,
   knownSpeakers,
@@ -2850,7 +2851,7 @@ function EmbryVoiceTenFootView({
   tone?: string
   activeSpeech: ActiveSpeechSource | null
   phaseSpeedMs: number
-  gateSummary: { passed: number; pending: number; failed: number }
+  readinessSummary: VoiceReadinessSummary
   totalTurns: number
   totalAudio: number
   knownSpeakers: number
@@ -2915,19 +2916,30 @@ function EmbryVoiceTenFootView({
             </div>
           </section>
 
-          <section data-qid="embry-voice:ten-foot:summary" className="grid min-h-0 content-center gap-5">
+          <section
+            data-qid="embry-voice:ten-foot:summary"
+            data-current-state={readinessSummary.currentState}
+            data-current-failed-gates={readinessSummary.current.failed}
+            data-retained-failed-gates={readinessSummary.retained.failedGates}
+            data-plant-state={readinessSummary.plantState}
+            className="grid min-h-0 content-center gap-5"
+          >
             <div className="grid grid-cols-2 gap-3">
-              <TenFootMetric label="passed gates" value={gateSummary.passed} tone="good" />
-              <TenFootMetric label="pending gates" value={gateSummary.pending} tone={gateSummary.pending ? 'warn' : undefined} />
+              <TenFootMetric label="current passed gates" value={readinessSummary.current.passed} tone="good" />
+              <TenFootMetric label="current failed gates" value={readinessSummary.current.failed} tone={readinessSummary.current.failed ? 'bad' : 'good'} />
               <TenFootMetric label="voice turns" value={totalTurns} />
               <TenFootMetric label="audio artifacts" value={totalAudio} />
               <TenFootMetric label="known speakers" value={knownSpeakers} />
-              <TenFootMetric label="failed gates" value={gateSummary.failed} tone={gateSummary.failed ? 'bad' : 'good'} />
+              <TenFootMetric label="retained failed gates" value={readinessSummary.retained.failedGates} tone={readinessSummary.retained.failedGates ? 'warn' : 'good'} />
             </div>
 
             <div data-qid="embry-voice:ten-foot:status-band" className="border border-[#2d2d31] bg-[#17171a] p-5">
               <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500">Current state</div>
               <div className="mt-3 flex flex-wrap gap-2">
+                <StatusPill label={`browser/lab ${readinessSummary.currentState}`} tone={readinessSummary.currentState === 'ready' ? 'good' : readinessSummary.currentState === 'blocked' ? 'bad' : 'warn'} />
+                <StatusPill label={`plant ${readinessSummary.plantState}`} tone={readinessSummary.plantState === 'ready' ? 'good' : readinessSummary.plantState === 'blocked' ? 'bad' : 'warn'} />
+                <StatusPill label={`${readinessSummary.device.failedGates} device qual gates`} tone={readinessSummary.device.failedGates ? 'warn' : 'good'} />
+                <StatusPill label={`${readinessSummary.requirements.pendingGates} pending req gates`} tone={readinessSummary.requirements.pendingGates ? 'warn' : undefined} />
                 <StatusPill label={`replay ${replayState.phase}`} tone={replayState.playing ? 'good' : replayState.phase === 'interrupted' ? 'warn' : undefined} />
                 <StatusPill label={voiceEnabled ? 'listener enabled' : 'listener idle'} tone={voiceEnabled ? 'good' : undefined} />
                 {listenerTelemetry.packetsSent !== undefined && <StatusPill label={`pcm ${listenerTelemetry.packetsSent}`} />}
@@ -3272,7 +3284,7 @@ function StateController({
   turns,
   selectedTurn,
   selectedRun,
-  gateSummary,
+  readinessSummary,
   selectedRunId,
   replayState,
   onSelectTurn,
@@ -3282,7 +3294,7 @@ function StateController({
   turns: VoiceTurn[]
   selectedTurn?: VoiceTurn
   selectedRun?: SanityRun
-  gateSummary: { passed: number; pending: number; failed: number }
+  readinessSummary: VoiceReadinessSummary
   selectedRunId: string
   replayState: ReplayState
   onSelectTurn: (turnId: string, runId?: string) => void
@@ -3291,7 +3303,7 @@ function StateController({
 }): JSX.Element {
   return (
     <Panel title="State Controller" icon={<FlaskConical className="w-4 h-4" />}>
-      <GateDashboard summary={gateSummary} />
+      <GateDashboard summary={readinessSummary} />
       <div className={`mb-3 p-3 ${panelSoftClass}`}>
         <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-500">Receipt Navigation</div>
         <div className="mt-2 grid gap-2">
@@ -3384,18 +3396,32 @@ function Panel({ title, icon, children }: { title: string; icon: JSX.Element; ch
   )
 }
 
-function GateDashboard({ summary }: { summary: { passed: number; pending: number; failed: number } }): JSX.Element {
+function GateDashboard({ summary }: { summary: VoiceReadinessSummary }): JSX.Element {
   return (
-    <div data-qid="embry-voice:gate-dashboard" className="mb-3 grid grid-cols-3 gap-2">
-      <Metric label="passed_gates" value={summary.passed} tone="good" />
-      <Metric label="pending_gates" value={summary.pending} />
-      <Metric label="failed_gates" value={summary.failed} tone={summary.failed ? 'bad' : 'good'} />
+    <div
+      data-qid="embry-voice:gate-dashboard"
+      data-current-state={summary.currentState}
+      data-current-failed-gates={summary.current.failed}
+      data-retained-failed-gates={summary.retained.failedGates}
+      data-plant-state={summary.plantState}
+      className="mb-3 grid grid-cols-2 gap-2"
+    >
+      <Metric label="current_passed" value={summary.current.passed} tone="good" />
+      <Metric label="current_failed" value={summary.current.failed} tone={summary.current.failed ? 'bad' : 'good'} />
+      <Metric label="retained_failed" value={summary.retained.failedGates} tone={summary.retained.failedGates ? 'warn' : 'good'} />
+      <Metric label="pending_reqs" value={summary.requirements.pendingGates} tone={summary.requirements.pendingGates ? 'warn' : undefined} />
     </div>
   )
 }
 
-function Metric({ label, value, tone }: { label: string; value: number; tone?: 'good' | 'bad' }): JSX.Element {
-  const text = tone === 'good' ? 'text-emerald-200' : tone === 'bad' ? 'text-red-200' : 'text-zinc-200'
+function Metric({ label, value, tone }: { label: string; value: number; tone?: 'good' | 'bad' | 'warn' }): JSX.Element {
+  const text = tone === 'good'
+    ? 'text-emerald-200'
+    : tone === 'bad'
+      ? 'text-red-200'
+      : tone === 'warn'
+        ? 'text-orange-200'
+        : 'text-zinc-200'
   return (
     <div className="border border-[#2d2d31] bg-[#17171a] p-2">
       <div className={`font-mono text-lg font-bold ${text}`}>{value}</div>
@@ -3418,8 +3444,15 @@ function RegistryGroup({ title, runs, selectedRunId, onInspect }: { title: strin
 
 function SanityCard({ run, selected, onInspect }: { run: SanityRun; selected: boolean; onInspect: () => void }): JSX.Element {
   const reducedMotion = useReducedMotion()
+  const classification = classifyVoiceRun(run)
   return (
-    <article data-qid="embry-voice:sanity-card" className={`border bg-[#17171a] p-3 ${selected ? 'border-cyan-400/50' : 'border-[#2d2d31]'}`}>
+    <article
+      data-qid="embry-voice:sanity-card"
+      data-run-id={run.id}
+      data-readiness-class={classification.classification}
+      data-current-profile-applies={classification.currentProfileApplies ? 'true' : 'false'}
+      className={`border bg-[#17171a] p-3 ${selected ? 'border-cyan-400/50' : 'border-[#2d2d31]'}`}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <button type="button" onClick={onInspect} className="flex min-w-0 items-center gap-2 text-left text-sm font-bold text-[#e4e4e7] hover:text-cyan-100">
@@ -3432,6 +3465,7 @@ function SanityCard({ run, selected, onInspect }: { run: SanityRun; selected: bo
         <Radio className={`mt-0.5 h-4 w-4 shrink-0 text-zinc-500 ${run.active && !reducedMotion ? 'animate-pulse' : ''}`} />
       </div>
       <div className="mt-2 flex flex-wrap gap-1.5">
+        <StatusPill label={classification.classification} tone={classification.currentProfileApplies ? 'good' : classification.classification === 'requirements' ? 'warn' : undefined} />
         <StatusPill label={run.live ? 'live' : 'not live'} tone={run.live ? 'good' : 'bad'} />
         <StatusPill label={run.mocked ? 'mocked' : 'not mocked'} tone={run.mocked ? 'bad' : 'good'} />
         {run.facts.map((fact) => <StatusPill key={fact} label={fact} />)}
@@ -3446,8 +3480,11 @@ function SanityCard({ run, selected, onInspect }: { run: SanityRun; selected: bo
             className="overflow-hidden"
           >
             <GateList gates={run.gates} />
+            <div className="mt-2 font-mono text-[11px] text-zinc-300">classification={classification.label}</div>
+            {classification.supersededBy && <div className="mt-1 font-mono text-[11px] text-zinc-400">superseded_by={classification.supersededBy}</div>}
             <div className={`mt-2 font-mono text-[11px] ${run.failedGates.length ? 'text-red-200' : 'text-emerald-200'}`}>failed_gates={run.failedGates.length ? run.failedGates.join(',') : '[]'}</div>
             <div className="mt-2 space-y-1 text-[11px] leading-relaxed text-zinc-400">
+              <div>impact: {classification.impact}</div>
               <div>proves: {run.proves.join('; ')}</div>
               <div>does_not_prove: {run.doesNotProve.join('; ')}</div>
             </div>
@@ -3481,16 +3518,6 @@ function StatusPill({ label, tone }: { label: string; tone?: 'good' | 'bad' | 'w
         ? 'border-orange-300/35 text-orange-200'
       : 'border-white/10 text-slate-300'
   return <span className={`inline-flex min-h-6 items-center border bg-[#1f1f23] px-2 font-mono text-[10px] uppercase tracking-[0.08em] ${toneClass}`}>{label}</span>
-}
-
-function summarizeGates(runs: SanityRun[]): { passed: number; pending: number; failed: number } {
-  return runs.reduce(
-    (summary, run) => {
-      for (const gate of run.gates) summary[gate.status] += 1
-      return summary
-    },
-    { passed: 0, pending: 0, failed: 0 },
-  )
 }
 
 export default EmbryVoiceLabRoute
