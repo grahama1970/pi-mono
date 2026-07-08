@@ -8,6 +8,15 @@ const stateTone = {
   pass: { color: EMBRY.green, icon: CheckCircle2, text: 'pass' },
 } as const
 
+const telemetryLabel = {
+  ...label,
+  color: 'rgba(255,255,255,0.6)',
+  fontSize: 10,
+  fontWeight: 800,
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase' as const,
+}
+
 export function PagePurposeStrip({ contract }: { contract: PagePurposeContract }) {
   const tone = stateTone[contract.state] ?? stateTone.fail
   const Icon = tone.icon
@@ -40,12 +49,12 @@ export function PagePurposeStrip({ contract }: { contract: PagePurposeContract }
         <div style={{ color: EMBRY.dim, fontSize: 11, lineHeight: 1.35, marginTop: 2 }}>Owner: {contract.owner}</div>
       </div>
       <div style={{ minWidth: 0 }}>
-        <div style={{ ...label, color: '#00d1ff' }}>Primary object</div>
+        <div style={telemetryLabel}>Primary object</div>
         <div style={{ color: EMBRY.white, fontSize: 12, lineHeight: 1.35, marginTop: 3 }}>{contract.primaryObject}</div>
         <div style={{ color: EMBRY.dim, fontSize: 11, lineHeight: 1.35, marginTop: 5 }}>{contract.purpose}</div>
       </div>
       <div style={{ minWidth: 0 }}>
-        <div style={{ ...label, color: '#00d1ff' }}>Fail-closed controls</div>
+        <div style={telemetryLabel}>Fail-closed controls</div>
         <div style={{ color: EMBRY.white, fontSize: 11, lineHeight: 1.4, marginTop: 3 }}>
           {contract.dashboardTheaterControls.join(' | ')}
         </div>
@@ -54,7 +63,7 @@ export function PagePurposeStrip({ contract }: { contract: PagePurposeContract }
         </div>
       </div>
       <div style={{ minWidth: 0 }}>
-        <div style={{ ...label, color: tone.color }}>State evidence</div>
+        <div style={telemetryLabel}>State evidence</div>
         <div style={{ color: EMBRY.white, fontSize: 11, lineHeight: 1.4, marginTop: 3 }}>{contract.stateReason}</div>
         <div style={{ color: EMBRY.dim, fontSize: 11, lineHeight: 1.4, marginTop: 5 }}>
           Next: {contract.nextStateAction}

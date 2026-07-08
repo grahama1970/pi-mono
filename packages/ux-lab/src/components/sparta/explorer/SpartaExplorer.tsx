@@ -1128,9 +1128,11 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
           {/* Embry AI Assistant — Trigger on left aligns with drawer opening left */}
           <button
             data-qid="sparta:button:embry-assistant"
-            data-qs-action="OPEN_CHAT"
-            onClick={() => setChatOpen(true)}
-            title="Ask Embry (⌘J)"
+            data-qs-action={chatOpen ? 'CLOSE_CHAT' : 'OPEN_CHAT'}
+            aria-expanded={chatOpen}
+            aria-controls="sparta-chat-slideover"
+            onClick={toggleChat}
+            title={chatOpen ? 'Close Embry chat (⌘J)' : 'Ask Embry (⌘J)'}
             style={{
               ...S.embryBtn,
               backgroundColor: chatOpen ? 'rgba(0, 209, 255, 0.08)' : 'transparent',
@@ -1213,6 +1215,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
         {/* Chat Panel — mounted only when open so hidden controls are not left in DOM */}
         {chatOpen && (
           <div
+            id="sparta-chat-slideover"
             style={{
               ...S.chatPanel,
               width: 420,
@@ -1221,6 +1224,23 @@ export function SpartaExplorer({ views = {}, loadingTabs = {}, initialTab }: Spa
               transition: reducedMotion ? 'none' : S.chatPanel.transition,
             }}
           >
+            <div style={S.chatHeader}>
+              <div style={S.chatHeaderTitle}>
+                <Terminal size={14} strokeWidth={1.8} aria-hidden="true" />
+                <span>Embry Chat</span>
+              </div>
+              <button
+                type="button"
+                data-qid="sparta:button:chat-close"
+                data-qs-action="CLOSE_CHAT"
+                aria-label="Close Embry chat"
+                title="Close chat"
+                onClick={() => setChatOpen(false)}
+                style={S.chatCloseBtn}
+              >
+                <X size={18} strokeWidth={1.8} aria-hidden="true" />
+              </button>
+            </div>
             <div style={{ flex: 1, overflow: 'hidden' }}>
               <SharedChatShell
                 surface="sparta-explorer"
@@ -1519,10 +1539,20 @@ const S = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '12px 16px',
+    padding: '8px 10px 8px 14px',
     borderBottom: `1px solid ${EMBRY.border}`,
     backgroundColor: '#0a0b0d',
     flexShrink: 0,
+  } as React.CSSProperties,
+  chatHeaderTitle: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+    color: EMBRY.text,
+    fontSize: 12,
+    fontWeight: 850,
+    letterSpacing: '0.16em',
+    textTransform: 'uppercase',
   } as React.CSSProperties,
   chatCloseBtn: {
     display: 'flex',

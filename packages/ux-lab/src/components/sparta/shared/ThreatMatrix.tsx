@@ -128,6 +128,10 @@ export interface ThreatMatrixMeta {
   datalakes?: DatalakeOption[]
   /** Currently selected datalake */
   activeDatalake?: string
+  /** When true, coverage bars are indeterminate and a degraded banner is shown */
+  analysisPipelineDegraded?: boolean
+  /** Active evidence case id for matrix binding status */
+  boundEvidenceCaseId?: string | null
 }
 
 interface ThreatMatrixContextValue {
@@ -414,6 +418,26 @@ function Header() {
         tacticCount={state.tactics.length}
         activeDatalake={meta.activeDatalake}
       />
+
+      {meta.analysisPipelineDegraded ? (
+        <div
+          data-qid="threat-matrix:banner:degraded"
+          style={{
+            padding: '8px 16px',
+            borderTop: '1px solid rgba(250, 204, 21, 0.2)',
+            borderBottom: '1px solid rgba(250, 204, 21, 0.2)',
+            background: 'rgba(250, 204, 21, 0.1)',
+            color: '#FACC15',
+            fontSize: 11,
+            fontWeight: 800,
+            letterSpacing: '0.04em',
+            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+          }}
+        >
+          Coverage analysis unavailable — pipeline degraded. Zero-percent bars are indeterminate, not verified absence of coverage.
+          {meta.boundEvidenceCaseId ? ` Active evidence case ${meta.boundEvidenceCaseId} is not matrix-bound yet.` : ''}
+        </div>
+      ) : null}
 
       {/* Controls row */}
       <div style={{
@@ -916,7 +940,22 @@ function Grid() {
   }
 
   if (state.loading) {
-    return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, color: EMBRY.dim }}>Loading techniques...</div>
+    return (
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute',
+          width: 160,
+          height: 160,
+          borderRadius: 999,
+          border: '2px dashed rgba(255,255,255,0.14)',
+          opacity: 0.55,
+          animation: 'sparta-subtitle-pulse 3.6s ease-in-out infinite',
+        }} />
+        <div style={{ position: 'relative', color: 'rgba(255,255,255,0.2)', fontSize: 14, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+          AWAITING PIPELINE TELEMETRY
+        </div>
+      </div>
+    )
   }
 
   // ── Graph View: ProvenanceGraph showing technique → countermeasure → evidence chains ──
@@ -1035,8 +1074,8 @@ function Grid() {
             padding: '10px 12px', borderBottom: `1px solid ${EMBRY.border}`, borderRight: `1px solid ${EMBRY.border}`,
             backgroundColor: EMBRY.bgDeep, position: 'sticky', top: 0, zIndex: 1,
           }}>
-            <div style={{ ...label, color: EMBRY.white, fontSize: 9 }}>{tactic}</div>
-            <div style={{ fontSize: 10, color: EMBRY.dim, marginTop: 2 }}>{byTactic[tactic].length} techniques</div>
+            <div style={{ ...label, color: 'rgba(255,255,255,0.8)', fontSize: 12, fontWeight: 800, letterSpacing: '0.04em' }}>{tactic}</div>
+            <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: 4 }}>{byTactic[tactic].length} techniques</div>
           </div>
         ))}
 
