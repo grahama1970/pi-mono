@@ -105,7 +105,7 @@ const voiceStyle: Record<VoiceState, { bg: string; border: string; fg: string }>
 }
 
 const voiceSubtitleStyle: Record<VoiceState, { label: string; color: string; shadow: string; animation?: string }> = {
-  READY: { label: 'READY', color: 'rgba(191, 219, 254, 0.40)', shadow: 'none' },
+  READY: { label: 'READY', color: 'rgba(191, 219, 254, 0.32)', shadow: 'none' },
   LISTENING: { label: 'LISTENING...', color: '#FFFFFF', shadow: '0 0 15px rgba(255, 255, 255, 0.36)', animation: 'sparta-subtitle-pulse 2.8s ease-in-out infinite' },
   SPEAKING: { label: 'EXECUTING', color: '#4ADE80', shadow: '0 0 15px rgba(74, 222, 128, 0.20)' },
   'EVIDENCE MISSING': { label: 'ERROR', color: '#FB7185', shadow: '0 0 15px rgba(251, 113, 133, 0.28)', animation: 'sparta-subtitle-pulse 1.2s ease-in-out infinite' },
@@ -1561,7 +1561,7 @@ const S: Record<string, CSSProperties> = {
   },
   voiceSubtitleText: {
     fontSize: 24,
-    fontWeight: 420,
+    fontWeight: 300,
     lineHeight: 1,
     letterSpacing: '0.3em',
     textTransform: 'uppercase',
