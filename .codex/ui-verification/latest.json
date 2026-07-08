@@ -1,10 +1,10 @@
 {
-  "verified_at": "2026-07-08T14:55:07.965006+00:00",
+  "verified_at": "2026-07-08T15:04:30.069619+00:00",
   "cwd": "/home/graham/workspace/experiments/pi-mono",
   "root": "/home/graham/workspace/experiments/pi-mono",
   "output_root": "/tmp/codex-ui-verification/pi-mono",
   "url": "http://localhost:3002/#sparta-explorer/qras",
-  "name": "sparta-10ft-telemetry-pill-z-stack-default",
-  "screenshot": "/tmp/codex-ui-verification/pi-mono/sparta-10ft-telemetry-pill-z-stack-default/20260708T145500Z.png",
-  "read_json": "/tmp/codex-ui-verification/pi-mono/sparta-10ft-telemetry-pill-z-stack-default/20260708T145500Z.read.json"
+  "name": "sparta-10ft-persistent-notification-menu",
+  "screenshot": "/tmp/codex-ui-verification/pi-mono/sparta-10ft-persistent-notification-menu/20260708T150422Z.png",
+  "read_json": "/tmp/codex-ui-verification/pi-mono/sparta-10ft-persistent-notification-menu/20260708T150422Z.read.json"
 }

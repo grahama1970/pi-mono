@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { AlertTriangle, Boxes, Check, Globe, HelpCircle, Layers, Mic, MoreHorizontal, Network, Square, Target, Workflow } from 'lucide-react'
 import { useRegisterAction } from '../../../../hooks/useRegisterAction'
 import type { CollectionCounts } from '../../../../hooks/useSpartaCollections'
@@ -539,92 +539,79 @@ function TelemetryPill({
   notifications: KioskTile[]
   moreNotificationCount: number
 }) {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const rootRef = useRef<HTMLDivElement | null>(null)
   const activeCount = notifications.filter((tile) => tile.state !== 'READY').length + moreNotificationCount
   const summaryTone = global === 'BLOCKED' ? 'BLOCKED' : global === 'DEGRADED' ? 'DEGRADED' : global === 'UNKNOWN' ? 'UNKNOWN' : 'READY'
   const summaryText = global === 'READY'
     ? 'ALL SYSTEMS READY'
     : `${Math.max(1, activeCount)} SYSTEM${Math.max(1, activeCount) === 1 ? '' : 'S'} ${summaryTone}`
+  const summaryTitle = global === 'READY' ? 'Review ready' : `Review ${summaryTone.toLowerCase()}`
   const toneColor = global === 'READY' ? '#34D399' : global === 'BLOCKED' ? '#FB7185' : global === 'DEGRADED' ? '#F2B84B' : '#94A3B8'
   const visibleNotifications = notifications.slice(0, 3)
 
-  useEffect(() => {
-    if (!isExpanded) return
-    const handlePointerDown = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) setIsExpanded(false)
-    }
-    window.addEventListener('pointerdown', handlePointerDown)
-    return () => window.removeEventListener('pointerdown', handlePointerDown)
-  }, [isExpanded])
-
   return (
-    <div ref={rootRef} data-qid="sparta:kiosk:telemetry-pill-root" style={S.telemetryRoot}>
+    <div data-qid="sparta:kiosk:telemetry-pill-root" style={S.telemetryRoot}>
       <style>{`
         @keyframes sparta-telemetry-reveal {
           from { opacity: 0; transform: translateX(-50%) translateY(-6px) scale(0.96); }
           to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
         }
       `}</style>
-      <button
-        type="button"
+      <div
         data-qid="sparta:kiosk:telemetry-pill"
-        data-qs-action="KIOSK_TOGGLE_TELEMETRY"
-        title={isExpanded ? 'Hide SPARTA notifications' : 'Show SPARTA notifications'}
-        aria-expanded={isExpanded}
-        onClick={() => setIsExpanded((value) => !value)}
+        title="SPARTA notifications"
         style={S.telemetryPill}
       >
         <span style={{ ...S.telemetryPulse, background: toneColor, boxShadow: `0 0 18px ${toneColor}88` }} />
-        <span style={S.telemetryText}>{summaryText}</span>
+        <span style={S.telemetryTextGroup}>
+          <span style={S.telemetryTitle}>{summaryTitle}</span>
+          <span style={S.telemetryText}>{summaryText}</span>
+        </span>
         <MoreHorizontal size={18} strokeWidth={2.6} aria-hidden="true" />
-      </button>
-      {isExpanded ? (
-        <div data-qid="sparta:kiosk:telemetry-dropdown" style={S.telemetryDropdown}>
-          <div data-qid="sparta:kiosk:telemetry-stack" style={S.telemetryStack}>
-            {visibleNotifications.map((tile, index) => {
-              const ns = stateStyle[tile.state]
-              const NotificationIcon = tile.state === 'READY' ? Check : AlertTriangle
-              return (
-                <div
-                  key={tile.tab}
-                  data-qid={`sparta:kiosk:notification:${index + 1}`}
-                  style={{
-                    ...S.telemetryCard,
-                    zIndex: 10 - index,
-                    transform: `translateY(${index * 12}px) scale(${1 - index * 0.04})`,
-                    opacity: 1 - index * 0.2,
-                  }}
-                >
-                  <div style={S.telemetryCardMeta}>
-                    <span style={S.telemetrySource}>
-                      <span style={{ ...S.telemetryIcon, color: ns.fg, background: `${ns.fg}18` }}>
-                        <NotificationIcon size={16} strokeWidth={2.8} />
-                      </span>
-                      {index === 0 ? 'CURRENT' : 'RECENT'} · {tile.tab}
+      </div>
+      <div data-qid="sparta:kiosk:telemetry-dropdown" style={S.telemetryDropdown}>
+        <div data-qid="sparta:kiosk:telemetry-stack" style={S.telemetryStack}>
+          {visibleNotifications.map((tile, index) => {
+            const ns = stateStyle[tile.state]
+            const NotificationIcon = tile.state === 'READY' ? Check : AlertTriangle
+            return (
+              <div
+                key={tile.tab}
+                data-qid={`sparta:kiosk:notification:${index + 1}`}
+                style={{
+                  ...S.telemetryCard,
+                  zIndex: 10 - index,
+                  transform: `translateY(${index * 12}px) scale(${1 - index * 0.04})`,
+                  opacity: 1 - index * 0.2,
+                }}
+              >
+                <div style={S.telemetryCardMeta}>
+                  <span style={S.telemetrySource}>
+                    <span style={{ ...S.telemetryIcon, color: ns.fg, background: `${ns.fg}18` }}>
+                      <NotificationIcon size={16} strokeWidth={2.8} />
                     </span>
-                    <span>{index === 0 ? 'NOW' : 'RECENT'}</span>
-                  </div>
-                  <div data-qid={index === 0 ? 'sparta:kiosk:top-blocker' : undefined} style={S.telemetryCardTitle}>
-                    {global === 'READY' ? 'All monitored pages ready' : tile.secondaryLine}
-                  </div>
+                    {index === 0 ? 'CURRENT' : 'RECENT'} · {tile.tab}
+                  </span>
+                  <span>{index === 0 ? 'NOW' : 'RECENT'}</span>
                 </div>
-              )
-            })}
-          </div>
-          {moreNotificationCount > 0 ? (
-            <button
-              type="button"
-              data-qid="sparta:kiosk:notification:more"
-              data-qs-action="KIOSK_SHOW_OLDER_NOTIFICATIONS"
-              title={`${moreNotificationCount} older notifications`}
-              style={S.telemetryMoreButton}
-            >
-              {moreNotificationCount} Older Notifications
-            </button>
-          ) : null}
+                <div data-qid={index === 0 ? 'sparta:kiosk:top-blocker' : undefined} style={S.telemetryCardTitle}>
+                  {global === 'READY' ? 'All monitored pages ready' : tile.secondaryLine}
+                </div>
+              </div>
+            )
+          })}
         </div>
-      ) : null}
+        {moreNotificationCount > 0 ? (
+          <button
+            type="button"
+            data-qid="sparta:kiosk:notification:more"
+            data-qs-action="KIOSK_SHOW_OLDER_NOTIFICATIONS"
+            title={`${moreNotificationCount} older notifications`}
+            style={S.telemetryMoreButton}
+          >
+            {moreNotificationCount} Older Notifications
+          </button>
+        ) : null}
+      </div>
     </div>
   )
 }
@@ -805,7 +792,7 @@ const S: Record<string, CSSProperties> = {
   },
   telemetryRoot: {
     position: 'fixed',
-    top: 14,
+    top: 12,
     left: '50%',
     transform: 'translateX(-50%)',
     zIndex: 1250,
@@ -814,39 +801,51 @@ const S: Record<string, CSSProperties> = {
     pointerEvents: 'auto',
   },
   telemetryPill: {
-    minHeight: 40,
+    minHeight: 58,
     display: 'inline-flex',
     alignItems: 'center',
     gap: 12,
-    padding: '0 20px',
-    borderRadius: 999,
+    padding: '0 26px',
+    borderRadius: 22,
     border: '1px solid rgba(255, 255, 255, 0.10)',
     background: 'rgba(28, 28, 30, 0.90)',
     color: '#D4D4D8',
     boxShadow: '0 8px 28px rgba(0, 0, 0, 0.46)',
     backdropFilter: 'blur(12px)',
     WebkitBackdropFilter: 'blur(12px)',
-    cursor: 'pointer',
+    cursor: 'default',
     transition: 'background 180ms ease, transform 220ms cubic-bezier(0.23, 1, 0.32, 1)',
   },
   telemetryPulse: {
-    width: 9,
-    height: 9,
+    width: 14,
+    height: 14,
     borderRadius: '50%',
     flex: '0 0 auto',
     animation: 'sparta-live-ping 1.8s ease-out infinite',
   },
   telemetryText: {
     fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: 900,
     letterSpacing: '0.12em',
     lineHeight: 1,
     textTransform: 'uppercase',
   },
+  telemetryTextGroup: {
+    display: 'grid',
+    gap: 4,
+  },
+  telemetryTitle: {
+    color: '#FFFFFF',
+    fontSize: 24,
+    fontWeight: 950,
+    lineHeight: 0.9,
+    letterSpacing: '-0.03em',
+    textTransform: 'uppercase',
+  },
   telemetryDropdown: {
     position: 'absolute',
-    top: 50,
+    top: 74,
     left: '50%',
     transform: 'translateX(-50%)',
     width: 410,
@@ -1133,7 +1132,7 @@ const S: Record<string, CSSProperties> = {
   grid: {
     position: 'absolute',
     left: 28,
-    top: 112,
+    top: 238,
     right: 376,
     bottom: 28,
     display: 'grid',
