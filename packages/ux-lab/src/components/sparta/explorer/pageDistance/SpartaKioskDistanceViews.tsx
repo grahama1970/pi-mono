@@ -726,7 +726,7 @@ function ThreatMatrixGraphic({ stripColor, state }: { stripColor: string; state:
 
   return (
     <div style={S.threatMatrixGraphic} aria-hidden="true">
-      <div style={{ ...S.threatMatrixModuleTag, color: stripColor }}>THREAT MATRIX · ID×ACCESS</div>
+      <div style={S.threatMatrixGrid} />
       <div style={S.bottomHeroShelf}>
         <div style={S.threatMatrixMetric}>
           {activeCount}
@@ -734,6 +734,7 @@ function ThreatMatrixGraphic({ stripColor, state }: { stripColor: string; state:
         </div>
       </div>
       <div style={S.bottomBaseLabel}>UNMAPPED</div>
+      <div style={{ ...S.threatMatrixCoordinate, color: stripColor }}>THREAT MATRIX · ID×ACCESS</div>
     </div>
   )
 }
@@ -1629,9 +1630,17 @@ const S: Record<string, CSSProperties> = {
   supplyState: { fontSize: 32, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.04em', textTransform: 'uppercase' },
   supplyRiskCount: { color: '#FFFFFF', fontSize: 36, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
   threatMatrixGraphic: { position: 'relative', width: '100%', height: 122, minHeight: 0, marginBottom: 0, overflow: 'hidden' },
-  threatMatrixModuleTag: { position: 'absolute', zIndex: 1, top: 0, left: 0, fontSize: 10, fontWeight: 800, lineHeight: 1, letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap', opacity: 0.84 },
+  threatMatrixGrid: {
+    position: 'absolute',
+    inset: 0,
+    opacity: 0.07,
+    backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)',
+    backgroundSize: '24px 24px',
+    pointerEvents: 'none',
+  },
   threatMatrixMetric: { position: 'relative', zIndex: 1, color: '#FFFFFF', fontSize: 68, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
   threatMatrixDenominator: { color: 'rgba(255,255,255,0.6)', fontSize: 56, letterSpacing: '-0.06em' },
+  threatMatrixCoordinate: { position: 'absolute', zIndex: 1, right: 0, bottom: 4, fontSize: 11, fontWeight: 800, lineHeight: 1, letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap', opacity: 0.84 },
   primaryLabel: { marginTop: 0, color: C.secondary, fontSize: 20, fontWeight: 850, lineHeight: 1.05, textTransform: 'uppercase', letterSpacing: '0.025em' },
   secondaryLine: {
     alignSelf: 'stretch',
