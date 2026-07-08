@@ -90,7 +90,7 @@ export function ThreatMatrixView() {
   const [evidenceMap, setEvidenceMap] = useState<Map<string, { verdict: string; grade: string; count: number }>>(new Map())
   const [graphRelationships, setGraphRelationships] = useState<ThreatRelationship[]>([])
   const [graphHoveredTactic, setGraphHoveredTactic] = useState<string | null>(null)
-  const [graphLockedTactic, setGraphLockedTactic] = useState<string | null>(null)
+  const [graphLockedTactic, setGraphLockedTactic] = useState<string | null>('Reconnaissance')
   const [viewMode, setViewMode] = useState<ThreatMatrixState['viewMode']>('standard')
   const coverageHealth = readCoverageHealthCache()
   const coveragePurpose = deriveCoveragePagePurposeState(coverageHealth)

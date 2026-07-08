@@ -682,7 +682,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
   const reducedMotion = useMemo(() => (
     typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
   ), [])
-  const activeTactic = lockedTactic ?? hoveredTactic
+  const activeTactic = hoveredTactic ?? lockedTactic
 
   useRegisterAction('threat-matrix:graph:tactic-magnet', {
     app: 'sparta-explorer',
@@ -1177,20 +1177,21 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
               data-graph-tactic-active={isActive ? 'true' : 'false'}
               data-graph-tactic-locked={isLocked ? 'true' : 'false'}
               onPointerEnter={() => setHoveredTactic?.(tactic.name)}
-              onPointerLeave={() => { if (!isLocked) setHoveredTactic?.(null) }}
+              onPointerLeave={() => setHoveredTactic?.(null)}
               onFocus={() => setHoveredTactic?.(tactic.name)}
-              onBlur={() => { if (!isLocked) setHoveredTactic?.(null) }}
+              onBlur={() => setHoveredTactic?.(null)}
               onClick={() => {
-                const nextLocked = isLocked ? null : tactic.name
-                setLockedTactic?.(nextLocked)
-                setHoveredTactic?.(nextLocked)
+                setLockedTactic?.(tactic.name)
+                setHoveredTactic?.(tactic.name)
               }}
               title={`${tactic.name}: ${stats.total} techniques, ${stats.memoryEdges} memory edges`}
               style={{
                 minHeight: 52,
                 borderRadius: 2,
-                border: isActive ? '1px solid rgba(250,204,21,0.66)' : '1px solid rgba(255,255,255,0.08)',
+                borderTop: isActive ? '1px solid rgba(250,204,21,0.66)' : '1px solid rgba(255,255,255,0.08)',
+                borderRight: isActive ? '1px solid rgba(250,204,21,0.66)' : '1px solid rgba(255,255,255,0.08)',
                 borderBottom: isLocked ? '3px solid #FACC15' : isActive ? '2px solid rgba(250,204,21,0.66)' : '1px solid rgba(255,255,255,0.08)',
+                borderLeft: isActive ? '1px solid rgba(250,204,21,0.66)' : '1px solid rgba(255,255,255,0.08)',
                 background: isActive ? 'rgba(250,204,21,0.11)' : 'rgba(5,5,5,0.72)',
                 color: isActive ? '#FACC15' : 'rgba(255,255,255,0.56)',
                 padding: '7px 6px 6px',
