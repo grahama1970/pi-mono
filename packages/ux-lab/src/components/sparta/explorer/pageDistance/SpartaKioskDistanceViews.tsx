@@ -334,7 +334,6 @@ function KioskStateChip({ state, qid, compact = false }: { state: KioskState; qi
 function EmbryVoiceMast({
   mode,
   activeTab,
-  selectedTarget,
   voiceState: voiceStateProp,
   onSelectPage,
 }: {
@@ -386,23 +385,23 @@ function EmbryVoiceMast({
         data-embry-orb-state={sharedOrbState}
         style={{
           ...S.orb,
-          width: mode === '5ft' ? 104 : 224,
-          height: mode === '5ft' ? 104 : 224,
+          width: mode === '5ft' ? 104 : 168,
+          height: mode === '5ft' ? 104 : 168,
         }}
       >
         <EmbryVoiceOrb
           voiceStatus={sharedOrbState}
           isStreaming={sharedOrbState === 'processing'}
           tone={sharedOrbState === 'idle' ? undefined : 'good'}
-          size={mode === '5ft' ? 104 : 224}
+          size={mode === '5ft' ? 104 : 168}
           surface="toolbar"
           phaseSpeedMs={650}
         />
       </div>
-      <div data-qid="embry:voice-state" style={{ ...S.voiceState, color: s.fg, fontSize: mode === '5ft' ? 34 : S.voiceState.fontSize }}>
+      <div data-qid="embry:voice-state" style={{ ...S.voiceState, color: mode === '5ft' ? s.fg : '#FFFFFF', fontSize: mode === '5ft' ? 34 : S.voiceState.fontSize }}>
         {orbLabel}
       </div>
-      <div data-qid="embry:heard-line" style={{ ...S.heardLine, fontSize: mode === '5ft' ? 18 : S.heardLine.fontSize }}>
+      <div data-qid="embry:heard-line" style={mode === '5ft' ? { ...S.heardLine, fontSize: 18 } : S.voicePrompt}>
         {mode === '5ft' ? `Heard: show ${activeTab}` : 'Say "Embry" then a command'}
       </div>
       {mode !== '5ft' ? (
@@ -423,11 +422,6 @@ function EmbryVoiceMast({
               {command.label}
             </button>
           ))}
-        </div>
-      ) : null}
-      {mode !== '5ft' ? (
-        <div data-qid="embry:selected-target" style={S.selectedTarget}>
-          Target: {selectedTarget ?? activeTab}
         </div>
       ) : null}
     </aside>
@@ -689,13 +683,6 @@ export function SpartaKioskDistanceView({
             <div style={S.kioskTitleText}>10ft readiness</div>
             <div style={S.kioskTitleKicker}>SPARTA EXPLORER</div>
           </div>
-          <div style={S.kioskHeaderStatus}>
-            <div style={{ ...S.kioskStatusPill, borderColor: stateStyle[global].fg, background: `${stateStyle[global].bg}88` }}>
-              <span style={{ ...S.kioskStatusDot, background: stateStyle[global].fg }} />
-              <span>{global === 'READY' ? 'Review ready' : `Review ${global.toLowerCase()}`}</span>
-            </div>
-            <div style={S.kioskStatusMeta}>{tiles.filter((tile) => tile.state !== 'READY').length} systems need attention</div>
-          </div>
         </div>
         <TelemetryPill global={global} notifications={notifications} moreNotificationCount={moreNotificationCount} />
       </header>
@@ -740,8 +727,9 @@ const S: Record<string, CSSProperties> = {
   },
   viewStateDock: {
     position: 'absolute',
-    top: 12,
-    right: 28,
+    top: 27,
+    right: 376,
+    transform: 'translateY(-50%)',
     zIndex: 1200,
     display: 'flex',
     alignItems: 'center',
@@ -1309,19 +1297,19 @@ const S: Record<string, CSSProperties> = {
   voiceAction: { color: C.secondary, fontSize: 18, fontWeight: 780, lineHeight: 1.08, overflowWrap: 'anywhere' },
   embryMast: {
     position: 'absolute',
-    top: 24,
+    top: 92,
     right: 28,
     bottom: 28,
     width: 320,
     border: '0',
-    borderLeft: `8px solid #1F2937`,
+    borderLeft: `4px solid #1F2937`,
     borderRadius: 0,
-    background: '#0B1118',
+    background: '#000000',
     display: 'grid',
-    gridTemplateRows: 'auto auto auto 1fr auto',
+    gridTemplateRows: 'auto auto auto 1fr',
     justifyItems: 'center',
-    gap: 14,
-    padding: '18px 16px',
+    gap: 12,
+    padding: '20px 20px 22px',
     boxSizing: 'border-box',
     overflow: 'hidden',
   },
@@ -1331,35 +1319,54 @@ const S: Record<string, CSSProperties> = {
     boxSizing: 'border-box',
     overflow: 'visible',
   },
-  voiceState: { fontSize: 42, fontWeight: 900, lineHeight: 0.95, letterSpacing: '0.02em', textAlign: 'center' },
+  voiceState: { fontSize: 52, fontWeight: 950, lineHeight: 0.9, letterSpacing: '0.14em', textAlign: 'center', color: '#FFFFFF' },
   heardLine: { color: C.secondary, fontSize: 22, fontWeight: 740, lineHeight: 1.12, textAlign: 'center' },
+  voicePrompt: {
+    minHeight: 38,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '0 12px',
+    border: '2px solid #1F2937',
+    borderRadius: 2,
+    background: '#0A0A0C',
+    color: '#4ADE80',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    fontSize: 14,
+    fontWeight: 900,
+    lineHeight: 1,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    textAlign: 'center',
+  },
   voiceChipGrid: { width: '100%', display: 'grid', gap: 10, alignContent: 'start' },
   voiceChip: {
-    minHeight: 48,
+    minHeight: 54,
     width: '100%',
     borderRadius: 0,
     border: '0',
-    background: 'transparent',
-    color: C.secondary,
-    fontSize: 20,
-    fontWeight: 820,
+    borderLeft: '8px solid #374151',
+    background: '#050505',
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 900,
     lineHeight: 1.08,
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
-    gap: 14,
+    gap: 12,
     textAlign: 'left',
-    padding: '6px 0',
+    padding: '8px 10px 8px 14px',
   },
   voiceChipIcon: {
-    width: 34,
-    height: 34,
-    borderRadius: '50%',
+    width: 32,
+    height: 32,
+    borderRadius: 0,
     display: 'inline-grid',
     placeItems: 'center',
     flex: '0 0 auto',
-    background: '#1F2937',
-    color: '#6B7280',
+    background: 'transparent',
+    color: '#4ADE80',
   },
   selectedTarget: { width: '100%', color: C.secondary, fontSize: 20, fontWeight: 740, lineHeight: 1.15, textAlign: 'center' },
   triageHeader: {
