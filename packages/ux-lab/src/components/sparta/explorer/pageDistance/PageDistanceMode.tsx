@@ -25,6 +25,7 @@ const LEGACY_STORAGE: Partial<Record<PageDistanceSlug, string>> = {
 
 const STORAGE_PREFIX = 'sparta.pageDistance.'
 const GLOBAL_STORAGE_KEY = `${STORAGE_PREFIX}global`
+const PINNED_STORAGE_KEY = `${STORAGE_PREFIX}pinned`
 export const EMBRY_IDLE_TO_10FT_MS = 270_000
 export const EMBRY_VIEW_STATE_EVENT = 'sparta:embry-view-state'
 
@@ -89,6 +90,16 @@ export function persistPageDistanceMode(slug: PageDistanceSlug, mode: PageDistan
   if (legacy) window.sessionStorage.setItem(legacy, mode)
 }
 
+export function readPageDistancePinned(): boolean {
+  if (typeof window === 'undefined') return false
+  return window.localStorage.getItem(PINNED_STORAGE_KEY) === 'true'
+}
+
+export function persistPageDistancePinned(pinned: boolean): void {
+  if (typeof window === 'undefined') return
+  window.localStorage.setItem(PINNED_STORAGE_KEY, pinned ? 'true' : 'false')
+}
+
 export function inferPageDistanceFromViewport(): PageDistanceMode {
   if (typeof window === 'undefined') return '10ft'
   const w = window.innerWidth
@@ -139,6 +150,8 @@ type PageDistanceContextValue = {
   slug: PageDistanceSlug
   mode: PageDistanceMode
   setMode: (mode: PageDistanceMode) => void
+  isPinned: boolean
+  setPinned: (pinned: boolean) => void
   supportsPageDistance: boolean
 }
 
@@ -148,9 +161,19 @@ function dispatchPageDistanceChange(slug: PageDistanceSlug, mode: PageDistanceMo
   window.dispatchEvent(new CustomEvent('sparta:page-distance-changed', { detail: { slug, mode } }))
 }
 
+function dispatchPageDistancePinChange(pinned: boolean): void {
+  if (typeof window === 'undefined') return
+  window.dispatchEvent(new CustomEvent('sparta:page-distance-pin-changed', { detail: { pinned } }))
+}
+
 function dispatchEmbryViewState(mode: PageDistanceMode, source: string): void {
   if (typeof window === 'undefined') return
   window.dispatchEvent(new CustomEvent(EMBRY_VIEW_STATE_EVENT, { detail: { mode, source } }))
+}
+
+function isPageDistanceControlEvent(evt: Event): boolean {
+  const target = evt.target
+  return target instanceof Element && Boolean(target.closest('[data-page-distance-control="true"]'))
 }
 
 export function setPageDistanceModeForTab(activeTab: TabName, mode: PageDistanceMode): void {
@@ -193,6 +216,7 @@ export function PageDistanceProvider({
     const urlMode = readUrlPageMode()
     return urlMode ?? readStoredPageDistanceMode(slug, defaultMode)
   })
+  const [isPinned, setPinnedState] = useState<boolean>(() => readPageDistancePinned())
 
   useEffect(() => {
     persistPageDistanceMode(slug, mode)
@@ -215,30 +239,40 @@ export function PageDistanceProvider({
     syncPageDistanceModeUrl(next)
   }, [slug])
 
+  const setPinned = useCallback((next: boolean) => {
+    setPinnedState(next)
+    persistPageDistancePinned(next)
+    dispatchPageDistancePinChange(next)
+  }, [])
+
   const setModeFromEmbry = useCallback((next: PageDistanceMode, source: string) => {
+    if (isPinned) return
     setCurrentMode(next)
     persistPageDistanceMode(slug, next)
     dispatchPageDistanceChange(slug, next)
     syncPageDistanceModeUrl(next)
     dispatchEmbryViewState(next, source)
-  }, [slug])
+  }, [isPinned, slug])
 
   useEffect(() => {
     let idleTimer: ReturnType<typeof window.setTimeout> | undefined
 
     const armIdleTimer = () => {
       if (idleTimer !== undefined) window.clearTimeout(idleTimer)
+      if (isPinned) return
       idleTimer = window.setTimeout(() => {
         setModeFromEmbry('10ft', 'idle-timeout')
       }, EMBRY_IDLE_TO_10FT_MS)
     }
 
-    const handleKeyDown = () => {
+    const handleKeyDown = (evt: KeyboardEvent) => {
+      if (isPageDistanceControlEvent(evt)) return
       setModeFromEmbry('lean-in', 'keyboard')
       armIdleTimer()
     }
 
-    const handlePointerActivity = () => {
+    const handlePointerActivity = (evt: PointerEvent) => {
+      if (isPageDistanceControlEvent(evt)) return
       setModeFromEmbry('lean-in', 'pointer')
       armIdleTimer()
     }
@@ -272,15 +306,17 @@ export function PageDistanceProvider({
       window.removeEventListener('sparta:embry-voice-state', handleVoiceState)
       window.removeEventListener('sparta:embry-idle', handleIdleNow)
     }
-  }, [setModeFromEmbry])
+  }, [isPinned, setModeFromEmbry])
 
   const value = useMemo(() => ({
     activeTab,
     slug,
     mode,
     setMode,
+    isPinned,
+    setPinned,
     supportsPageDistance,
-  }), [activeTab, slug, mode, setMode, supportsPageDistance])
+  }), [activeTab, slug, mode, setMode, isPinned, setPinned, supportsPageDistance])
 
   return (
     <PageDistanceContext.Provider value={value}>
@@ -313,8 +349,19 @@ const CHAT_DISTANCE_QID: Record<PageDistanceMode, string> = {
   'lean-in': 'sparta:chat:distance:drilldown',
 }
 
-export function PageDistanceModeSwitcher({ compact = false }: { compact?: boolean }) {
-  const { slug, mode, setMode, supportsPageDistance } = usePageDistanceMode()
+function distanceQid(prefix: string, mode: PageDistanceMode): string {
+  if (prefix === 'sparta:chat:distance') return CHAT_DISTANCE_QID[mode]
+  return `${prefix}:${MODE_TO_URL_SLUG[mode]}`
+}
+
+export function PageDistanceModeSwitcher({
+  compact = false,
+  qidPrefix = 'sparta:chat:distance',
+}: {
+  compact?: boolean
+  qidPrefix?: string
+}) {
+  const { slug, mode, setMode, isPinned, setPinned, supportsPageDistance } = usePageDistanceMode()
 
   useRegisterAction(CHAT_DISTANCE_QID['10ft'], {
     app: 'sparta-explorer',
@@ -341,12 +388,17 @@ export function PageDistanceModeSwitcher({ compact = false }: { compact?: boolea
     id: optionMode,
     label,
     hint,
-    qid: CHAT_DISTANCE_QID[optionMode],
+    qid: distanceQid(qidPrefix, optionMode),
     qsAction: `PAGE_DISTANCE_${optionMode === 'lean-in' ? 'LEAN_IN' : optionMode.toUpperCase()}`,
   }))
 
   return (
-    <nav data-qid="sparta:chat:distance-switcher" aria-label="Page distance mode">
+    <nav
+      data-qid="sparta:chat:distance-switcher"
+      data-page-distance-control="true"
+      aria-label="Page distance mode"
+      style={{ position: 'relative', zIndex: 90, display: 'inline-flex', alignItems: 'center' }}
+    >
       <ModeSelector
         data-qid="explorer-page-mode-selector"
         ariaLabel="Page distance mode"
@@ -357,6 +409,31 @@ export function PageDistanceModeSwitcher({ compact = false }: { compact?: boolea
           if (next === '10ft' || next === '5ft' || next === 'lean-in') setMode(next)
         }}
       />
+      <button
+        type="button"
+        data-qid={`${qidPrefix}:pin`}
+        data-qs-action={isPinned ? 'PAGE_DISTANCE_UNPIN' : 'PAGE_DISTANCE_PIN'}
+        data-page-distance-pinned={isPinned ? 'true' : 'false'}
+        aria-pressed={isPinned}
+        title={isPinned ? 'Unpin view state automation' : 'Pin view state for design review'}
+        onClick={() => setPinned(!isPinned)}
+        style={{
+          minHeight: compact ? 36 : 44,
+          marginLeft: 8,
+          border: `1px solid ${isPinned ? 'rgba(0, 255, 65, 0.65)' : 'rgba(148, 163, 184, 0.35)'}`,
+          borderRadius: 8,
+          padding: compact ? '7px 10px' : '9px 12px',
+          background: isPinned ? 'rgba(0, 255, 65, 0.12)' : 'rgba(15, 23, 42, 0.85)',
+          color: isPinned ? '#eafff0' : '#a8b3c7',
+          fontSize: compact ? 10 : 11,
+          fontWeight: 800,
+          letterSpacing: 0.9,
+          textTransform: 'uppercase',
+          cursor: 'pointer',
+        }}
+      >
+        {isPinned ? 'Pinned' : 'Pin'}
+      </button>
     </nav>
   )
 }
@@ -370,9 +447,9 @@ export function PageDistanceRoot({
   qid: string
   className?: string
 }) {
-  const { slug, mode } = usePageDistanceMode()
+  const { slug, mode, isPinned } = usePageDistanceMode()
   return (
-    <div className={className} data-qid={qid} data-page-distance-mode={mode} data-page-slug={slug} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
+    <div className={className} data-qid={qid} data-page-distance-mode={mode} data-page-distance-pinned={isPinned ? 'true' : 'false'} data-page-slug={slug} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
       {children}
     </div>
   )

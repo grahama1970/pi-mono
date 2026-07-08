@@ -10,7 +10,7 @@ import {
   type PagePurposeContract,
   type PagePurposeState,
 } from '../pagePurposeContracts'
-import { usePageDistanceMode, type PageDistanceMode } from './PageDistanceMode'
+import { PageDistanceModeSwitcher, usePageDistanceMode, type PageDistanceMode } from './PageDistanceMode'
 
 type KioskState = 'READY' | 'DEGRADED' | 'BLOCKED' | 'UNKNOWN'
 type VoiceState = 'READY' | 'LISTENING' | 'SPEAKING' | 'EVIDENCE MISSING'
@@ -449,7 +449,7 @@ export function SpartaKioskDistanceView({
   children: ReactNode
   onSelectTab: (tab: TabName) => void
 }) {
-  const { mode, setMode } = usePageDistanceMode()
+  const { mode, setMode, isPinned } = usePageDistanceMode()
   const tiles = buildTiles(counts, coverageHealth)
   const global = globalState(tiles)
   const blocker = topBlocker(tiles)
@@ -471,7 +471,10 @@ export function SpartaKioskDistanceView({
 
   if (mode === '5ft') {
     return (
-      <section data-qid="sparta:triage:root" data-page-distance-mode="5ft" style={S.root} aria-label="SPARTA 5ft voice triage">
+      <section data-qid="sparta:triage:root" data-page-distance-mode="5ft" data-page-distance-pinned={isPinned ? 'true' : 'false'} style={S.root} aria-label="SPARTA 5ft voice triage">
+        <div data-qid="sparta:triage:view-state-controls" style={S.viewStateDock}>
+          <PageDistanceModeSwitcher compact qidPrefix="sparta:triage:distance" />
+        </div>
         <header data-qid="sparta:triage:selected-page" style={S.triageHeader}>
           <div>
             <div style={S.kicker}>SPARTA TRIAGE / 5FT</div>
@@ -523,7 +526,10 @@ export function SpartaKioskDistanceView({
 
   const g = stateStyle[global]
   return (
-    <section data-qid="sparta:kiosk:root" data-page-distance-mode="10ft" style={S.root} aria-label="SPARTA 10ft readiness board">
+    <section data-qid="sparta:kiosk:root" data-page-distance-mode="10ft" data-page-distance-pinned={isPinned ? 'true' : 'false'} style={S.root} aria-label="SPARTA 10ft readiness board">
+      <div data-qid="sparta:kiosk:view-state-controls" style={S.viewStateDock}>
+        <PageDistanceModeSwitcher compact qidPrefix="sparta:kiosk:distance" />
+      </div>
       <div data-qid="sparta:kiosk:global-readiness" style={{ ...S.globalBanner, borderColor: g.border }}>
         <div style={S.globalLeft}>
           <div style={S.kicker}>SPARTA REVIEW READINESS / 10FT</div>
@@ -576,6 +582,17 @@ const S: Record<string, CSSProperties> = {
     color: C.text,
     fontFamily: fontStack,
     fontVariantNumeric: 'tabular-nums',
+  },
+  viewStateDock: {
+    position: 'absolute',
+    top: 12,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: 1200,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    pointerEvents: 'auto',
   },
   globalBanner: {
     position: 'absolute',
