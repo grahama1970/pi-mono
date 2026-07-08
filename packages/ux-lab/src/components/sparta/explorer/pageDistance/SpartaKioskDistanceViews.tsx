@@ -680,18 +680,6 @@ function PostureTelemetryGraphic({ stripColor }: { stripColor: string }) {
         <div style={{ ...S.postureState, color: stripColor }}>CONTROLLED</div>
       </div>
       <div style={S.bottomBaseLabel}>POSTURE</div>
-      <div style={S.postureReadinessBar}>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <span
-            key={`posture-readiness-${index}`}
-            style={{
-              ...S.postureReadinessSegment,
-              background: index < 3 ? stripColor : '#1F2937',
-              boxShadow: index < 3 ? `0 0 10px ${stripColor}55` : 'none',
-            }}
-          />
-        ))}
-      </div>
     </div>
   )
 }
@@ -699,13 +687,11 @@ function PostureTelemetryGraphic({ stripColor }: { stripColor: string }) {
 function SupplyChainTelemetryGraphic({ stripColor }: { stripColor: string }) {
   return (
     <div style={S.bottomCardCenter} aria-hidden="true">
-      <div style={S.bottomHeroShelf}>
+      <div style={{ ...S.bottomHeroShelf, ...S.supplyHeroLockup }}>
         <div style={{ ...S.supplyState, color: stripColor }}>WATCH</div>
+        <div style={S.supplyRiskCount}>4</div>
       </div>
-      <div style={S.supplyMetricLine}>
-        <span style={S.supplyRiskCount}>4</span>
-        <span style={S.supplyMetricLabel}>AT-RISK SUPPLIERS</span>
-      </div>
+      <div style={S.bottomBaseLabel}>AT-RISK SUPPLIERS</div>
     </div>
   )
 }
@@ -740,7 +726,7 @@ function ThreatMatrixGraphic({ stripColor, state }: { stripColor: string; state:
 
   return (
     <div style={S.threatMatrixGraphic} aria-hidden="true">
-      <div style={S.threatMatrixGrid} />
+      <div style={{ ...S.threatMatrixModuleTag, color: stripColor }}>THREAT MATRIX · ID×ACCESS</div>
       <div style={S.bottomHeroShelf}>
         <div style={S.threatMatrixMetric}>
           {activeCount}
@@ -748,7 +734,6 @@ function ThreatMatrixGraphic({ stripColor, state }: { stripColor: string; state:
         </div>
       </div>
       <div style={S.bottomBaseLabel}>UNMAPPED</div>
-      <div style={{ ...S.threatMatrixCoordinate, color: stripColor }}>THREAT MATRIX · ID×ACCESS</div>
     </div>
   )
 }
@@ -1589,18 +1574,18 @@ const S: Record<string, CSSProperties> = {
   metricTitle: {
     marginTop: 10,
     display: 'inline-block',
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 800,
     lineHeight: 1,
-    letterSpacing: '0.08em',
+    letterSpacing: '0.05em',
     textTransform: 'uppercase',
     whiteSpace: 'nowrap',
     overflowWrap: 'normal',
     wordBreak: 'normal',
-    transform: 'scaleX(0.78)',
+    transform: 'scaleX(0.72)',
     transformOrigin: 'left center',
   },
-  bottomCardCenter: { position: 'relative', width: '100%', height: 142, minHeight: 0 },
+  bottomCardCenter: { position: 'relative', width: '100%', height: 122, minHeight: 0 },
   bottomHeroShelf: { position: 'absolute', top: 0, left: 0, right: 0, height: 66, display: 'flex', alignItems: 'flex-end', minWidth: 0 },
   bottomBaseLabel: {
     position: 'absolute',
@@ -1609,15 +1594,15 @@ const S: Record<string, CSSProperties> = {
     right: 0,
     color: 'rgba(255,255,255,0.6)',
     display: 'inline-block',
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 800,
     lineHeight: 0.96,
-    letterSpacing: '0.08em',
+    letterSpacing: '0.05em',
     textTransform: 'uppercase',
     whiteSpace: 'nowrap',
     overflowWrap: 'normal',
     wordBreak: 'normal',
-    transform: 'scaleX(0.78)',
+    transform: 'scaleX(0.72)',
     transformOrigin: 'left center',
   },
   sourcesStandbyGraphic: { position: 'relative', width: '100%', minHeight: 124, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', overflow: 'hidden' },
@@ -1635,29 +1620,18 @@ const S: Record<string, CSSProperties> = {
   sourcesStandbyText: { position: 'relative', zIndex: 1, color: 'rgba(255,255,255,0.24)', fontSize: 31, fontWeight: 950, lineHeight: 0.94, letterSpacing: '0.01em', textTransform: 'uppercase' },
   sourcesStandbyLabel: { position: 'relative', zIndex: 1, marginTop: 9, color: 'rgba(148,163,184,0.48)', fontSize: 25, fontWeight: 950, lineHeight: 1, letterSpacing: '0.06em', textTransform: 'uppercase' },
   postureState: { fontSize: 32, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.045em', textTransform: 'uppercase' },
-  postureReadinessBar: { position: 'absolute', top: 114, left: 0, right: 0, display: 'grid', gridTemplateColumns: 'repeat(5, minmax(0, 1fr))', gap: 5, height: 10 },
-  postureReadinessSegment: { display: 'block', minWidth: 0, height: 10, borderRadius: 2 },
   supplyWeakLink: { display: 'flex', alignItems: 'center', gap: 5, height: 18, marginTop: 14 },
   supplyWeakNodeDim: { width: 14, height: 14, borderRadius: 999, background: '#374151', display: 'block' },
   supplyWeakNodeHot: { position: 'relative', width: 14, height: 14, borderRadius: 999, display: 'block' },
   supplyWeakPulse: { position: 'absolute', inset: 0, borderRadius: 999, opacity: 0.2, animation: 'sparta-subtitle-pulse 1.6s ease-in-out infinite' },
   supplyWeakLine: { width: 34, height: 3, background: '#1F2937', display: 'block' },
+  supplyHeroLockup: { gap: 12 },
   supplyState: { fontSize: 32, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.04em', textTransform: 'uppercase' },
-  supplyMetricLine: { position: 'absolute', top: 76, left: 0, right: 0, display: 'flex', alignItems: 'baseline', gap: 9, minWidth: 0, whiteSpace: 'nowrap' },
-  supplyRiskCount: { color: '#FFFFFF', fontSize: 34, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
-  supplyMetricLabel: { color: 'rgba(255,255,255,0.6)', display: 'inline-block', fontSize: 21, fontWeight: 800, lineHeight: 1, letterSpacing: '0.06em', textTransform: 'uppercase', transform: 'scaleX(0.78)', transformOrigin: 'left center' },
-  threatMatrixGraphic: { position: 'relative', width: '100%', height: 142, minHeight: 0, marginBottom: 0, overflow: 'hidden' },
-  threatMatrixGrid: {
-    position: 'absolute',
-    inset: 0,
-    opacity: 0.07,
-    backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)',
-    backgroundSize: '24px 24px',
-    pointerEvents: 'none',
-  },
+  supplyRiskCount: { color: '#FFFFFF', fontSize: 36, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
+  threatMatrixGraphic: { position: 'relative', width: '100%', height: 122, minHeight: 0, marginBottom: 0, overflow: 'hidden' },
+  threatMatrixModuleTag: { position: 'absolute', zIndex: 1, top: 0, left: 0, fontSize: 10, fontWeight: 800, lineHeight: 1, letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap', opacity: 0.84 },
   threatMatrixMetric: { position: 'relative', zIndex: 1, color: '#FFFFFF', fontSize: 68, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
   threatMatrixDenominator: { color: 'rgba(255,255,255,0.6)', fontSize: 56, letterSpacing: '-0.06em' },
-  threatMatrixCoordinate: { position: 'absolute', zIndex: 1, right: 0, bottom: 4, fontSize: 11, fontWeight: 800, lineHeight: 1, letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap', opacity: 0.84 },
   primaryLabel: { marginTop: 0, color: C.secondary, fontSize: 20, fontWeight: 850, lineHeight: 1.05, textTransform: 'uppercase', letterSpacing: '0.025em' },
   secondaryLine: {
     alignSelf: 'stretch',
