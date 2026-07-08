@@ -652,7 +652,7 @@ function KioskTileCard({ tile, onSelect }: { tile: KioskTile; onSelect: () => vo
             </div>
           </>
         )}
-        {tile.tab === 'Posture' ? null : (
+        {tile.tab === 'Posture' || tile.tab === 'Supply Chain' ? null : (
           <div style={{ ...S.metricTitle, color: isVoid ? '#6B7280' : labelColor, fontSize: titleFontSize }}>{tile.tab}</div>
         )}
       </div>
@@ -688,26 +688,24 @@ function PostureTelemetryGraphic({ stripColor }: { stripColor: string }) {
 function SupplyChainTelemetryGraphic({ stripColor }: { stripColor: string }) {
   return (
     <div style={S.supplyGraphic} aria-hidden="true">
-      <svg viewBox="0 0 240 78" width="100%" height="78" role="presentation" focusable="false">
-        <line x1="30" y1="39" x2="210" y2="39" stroke="rgba(148, 163, 184, 0.24)" strokeWidth="3" strokeLinecap="round" />
-        {[30, 90, 150, 210].map((x, index) => {
-          const active = index === 2
-          return (
-            <g key={x}>
-              <circle
-                cx={x}
-                cy="39"
-                r={active ? 15 : 11}
-                fill={active ? stripColor : '#111827'}
-                stroke={active ? stripColor : '#4B5563'}
-                strokeWidth={active ? 4 : 3}
-                opacity={active ? 1 : 0.74}
-              />
-              {active ? <circle cx={x} cy="39" r="24" fill="none" stroke={stripColor} strokeWidth="2" opacity="0.18" /> : null}
-            </g>
-          )
-        })}
-      </svg>
+      <div style={S.supplyHero}>
+        <div style={{ ...S.supplyState, color: stripColor }}>WATCH</div>
+        <div style={S.supplyLabel}>SUPPLY CHAIN</div>
+      </div>
+      <div style={S.supplyRiskBlock}>
+        <div style={S.supplyRiskCount}>4</div>
+        <div style={{ ...S.supplyRiskLabel, color: stripColor }}>AT RISK</div>
+      </div>
+      <div style={S.supplyTelemetryRow}>
+        <div style={S.supplyTelemetryItem}>
+          <div style={S.supplyTelemetryValue}>2</div>
+          <div style={S.supplyTelemetryLabel}>ITAR / CUI</div>
+        </div>
+        <div style={{ ...S.supplyTelemetryItem, textAlign: 'right' }}>
+          <div style={S.supplyTelemetryValue}>1</div>
+          <div style={S.supplyTelemetryLabel}>CRITICAL PART</div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -1572,7 +1570,17 @@ const S: Record<string, CSSProperties> = {
   postureTelemetryValue: { color: 'rgba(255,255,255,0.84)', fontSize: 24, fontWeight: 900, lineHeight: 1, letterSpacing: '-0.02em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
   postureTelemetryMuted: { color: 'rgba(255,255,255,0.42)', fontSize: 19, letterSpacing: '-0.02em' },
   postureTelemetryLabel: { color: '#6B7280', fontSize: 10, fontWeight: 950, lineHeight: 1, letterSpacing: '0.18em', textTransform: 'uppercase' },
-  supplyGraphic: { position: 'relative', width: '100%', height: 78, marginBottom: 4 },
+  supplyGraphic: { width: '100%', minHeight: 174, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginBottom: 4 },
+  supplyHero: { display: 'flex', flexDirection: 'column', gap: 7, marginTop: 2 },
+  supplyState: { fontSize: 40, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.035em', textTransform: 'uppercase' },
+  supplyLabel: { color: 'rgba(255,255,255,0.42)', fontSize: 22, fontWeight: 900, lineHeight: 1, letterSpacing: '0.14em', textTransform: 'uppercase' },
+  supplyRiskBlock: { display: 'flex', flexDirection: 'column', gap: 2, marginTop: 12 },
+  supplyRiskCount: { color: '#FFFFFF', fontSize: 68, fontWeight: 950, lineHeight: 0.82, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
+  supplyRiskLabel: { fontSize: 18, fontWeight: 950, lineHeight: 1, letterSpacing: '0.12em', textTransform: 'uppercase' },
+  supplyTelemetryRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', width: '100%', borderTop: '1px solid rgba(148,163,184,0.18)', paddingTop: 12, marginTop: 14 },
+  supplyTelemetryItem: { display: 'flex', flexDirection: 'column', gap: 4 },
+  supplyTelemetryValue: { color: 'rgba(255,255,255,0.84)', fontSize: 24, fontWeight: 900, lineHeight: 1, letterSpacing: '-0.02em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
+  supplyTelemetryLabel: { color: '#6B7280', fontSize: 10, fontWeight: 950, lineHeight: 1, letterSpacing: '0.16em', textTransform: 'uppercase' },
   threatMatrixGraphic: { position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', minHeight: 118, marginBottom: 4, overflow: 'hidden' },
   threatMatrixGrid: {
     position: 'absolute',
