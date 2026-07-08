@@ -1,5 +1,5 @@
 import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
-import { AlertTriangle, Boxes, Check, Globe, HelpCircle, Layers, Mic, MoreHorizontal, Network, Square, Target, Workflow } from 'lucide-react'
+import { AlertTriangle, Boxes, Check, Globe, HelpCircle, Layers, Mic, Network, Square, Target, Workflow } from 'lucide-react'
 import { useRegisterAction } from '../../../../hooks/useRegisterAction'
 import type { CollectionCounts } from '../../../../hooks/useSpartaCollections'
 import type { TabName } from '../SpartaExplorer'
@@ -546,6 +546,8 @@ function TelemetryPill({
   const activeAlert = visibleNotifications[activeIndex % Math.max(1, visibleNotifications.length)] ?? notifications[0]
   const alertStyle = activeAlert ? stateStyle[activeAlert.state] : stateStyle[global]
   const AlertIcon = activeAlert?.state === 'READY' ? Check : AlertTriangle
+  const queueTotal = Math.max(1, activeCount)
+  const queueIndex = Math.min(queueTotal, (activeIndex % Math.max(1, visibleNotifications.length)) + 1)
 
   useEffect(() => {
     if (visibleNotifications.length <= 1) return
@@ -568,9 +570,9 @@ function TelemetryPill({
           {global === 'READY' ? 'All monitored pages ready' : activeAlert?.secondaryLine ?? `${Math.max(1, activeCount)} systems ${summaryTone.toLowerCase()}`}
         </div>
       </div>
-      <div data-qid="sparta:kiosk:voice-affordance" style={S.voiceAffordance}>
-        <Mic size={22} strokeWidth={2.6} color="#94A3B8" />
-        <span>{`Say "Embry, ${activeAlert?.voiceCommand ?? 'what blocks readiness'}"`}</span>
+      <div data-qid="sparta:kiosk:notification-queue" style={S.billboardQueue}>
+        <span style={S.billboardQueueLabel}>Queue</span>
+        <span style={{ ...S.billboardQueueCount, color: alertStyle.fg }}>{queueIndex}/{queueTotal}</span>
       </div>
       <div data-qid="sparta:kiosk:billboard-dots" style={S.billboardDots} aria-label={`${visibleNotifications.length} active notifications`}>
         {visibleNotifications.map((tile, index) => (
@@ -685,18 +687,20 @@ export function SpartaKioskDistanceView({
         <PageDistanceModeSwitcher compact qidPrefix="sparta:kiosk:distance" />
       </div>
       <header data-qid="sparta:kiosk:global-readiness" style={S.kioskHeader}>
-        <div style={S.kioskHeaderBrand}>
-          <div style={S.kioskTitleKicker}>SPARTA EXPLORER</div>
-          <div style={S.kioskTitleText}>10ft readiness</div>
+        <div style={S.kioskMetaRow}>
+          <div style={S.kioskHeaderBrand}>
+            <div style={S.kioskTitleText}>10ft readiness</div>
+            <div style={S.kioskTitleKicker}>SPARTA EXPLORER</div>
+          </div>
+          <div style={S.kioskHeaderStatus}>
+            <div style={{ ...S.kioskStatusPill, borderColor: stateStyle[global].fg, background: `${stateStyle[global].bg}88` }}>
+              <span style={{ ...S.kioskStatusDot, background: stateStyle[global].fg }} />
+              <span>{global === 'READY' ? 'Review ready' : `Review ${global.toLowerCase()}`}</span>
+            </div>
+            <div style={S.kioskStatusMeta}>{tiles.filter((tile) => tile.state !== 'READY').length} systems need attention</div>
+          </div>
         </div>
         <TelemetryPill global={global} notifications={notifications} moreNotificationCount={moreNotificationCount} />
-        <div style={S.kioskHeaderStatus}>
-          <div style={{ ...S.kioskStatusPill, borderColor: stateStyle[global].fg, background: `${stateStyle[global].bg}88` }}>
-            <span style={{ ...S.kioskStatusDot, background: stateStyle[global].fg }} />
-            <span>{global === 'READY' ? 'Review ready' : `Review ${global.toLowerCase()}`}</span>
-          </div>
-          <div style={S.kioskStatusMeta}>{tiles.filter((tile) => tile.state !== 'READY').length} systems need attention</div>
-        </div>
       </header>
       <div data-qid="sparta:kiosk:grid" style={S.grid}>
         {tiles.map((tile) => (
@@ -752,21 +756,30 @@ const S: Record<string, CSSProperties> = {
     top: 0,
     left: 28,
     right: 376,
-    height: 100,
+    height: 168,
     zIndex: 1010,
     display: 'grid',
-    gridTemplateColumns: '210px minmax(0, 1fr) 210px',
-    alignItems: 'center',
-    gap: 24,
+    gridTemplateRows: '54px 104px',
+    alignItems: 'stretch',
+    gap: 10,
     padding: '0 0',
-    borderBottom: '1px solid #1F2937',
     background: C.surfaceRoot,
+    boxSizing: 'border-box',
+  },
+  kioskMetaRow: {
+    minWidth: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 24,
+    borderBottom: '1px solid rgba(31, 41, 55, 0.72)',
     boxSizing: 'border-box',
   },
   kioskHeaderBrand: {
     minWidth: 0,
-    display: 'grid',
-    gap: 5,
+    display: 'flex',
+    alignItems: 'baseline',
+    gap: 16,
   },
   kioskTitleKicker: {
     color: '#8FB7DA',
@@ -826,27 +839,24 @@ const S: Record<string, CSSProperties> = {
   telemetryBillboard: {
     position: 'relative',
     minWidth: 0,
-    maxWidth: 820,
     width: '100%',
     justifySelf: 'center',
-    minHeight: 82,
+    minHeight: 100,
     display: 'grid',
-    gridTemplateColumns: '44px minmax(0, 1fr)',
-    gridTemplateRows: 'minmax(0, 1fr) auto',
+    gridTemplateColumns: '64px minmax(0, 1fr) 112px',
     alignItems: 'center',
-    gap: '4px 16px',
-    padding: '8px 16px 9px',
-    border: '1px solid transparent',
+    gap: 22,
+    padding: '14px 26px',
+    border: '2px solid transparent',
     borderRadius: 12,
     color: '#FFFFFF',
-    boxShadow: '0 10px 28px rgba(0, 0, 0, 0.34)',
+    boxShadow: '0 12px 30px rgba(0, 0, 0, 0.38)',
     boxSizing: 'border-box',
     transition: 'border-color 220ms ease, background 220ms ease',
   },
   billboardAlertIcon: {
-    gridRow: '1 / 3',
-    width: 44,
-    height: 44,
+    width: 58,
+    height: 58,
     display: 'grid',
     placeItems: 'center',
     borderRadius: 10,
@@ -868,9 +878,9 @@ const S: Record<string, CSSProperties> = {
   billboardText: {
     minWidth: 0,
     color: '#FFFFFF',
-    fontSize: 26,
+    fontSize: 44,
     fontWeight: 950,
-    lineHeight: 1.02,
+    lineHeight: 0.95,
     letterSpacing: '-0.015em',
     textTransform: 'uppercase',
     overflow: 'hidden',
@@ -878,23 +888,28 @@ const S: Record<string, CSSProperties> = {
     WebkitLineClamp: 1,
     WebkitBoxOrient: 'vertical',
   },
-  voiceAffordance: {
-    gridColumn: '2',
-    minHeight: 28,
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 10,
-    padding: '0 10px',
-    border: '1px solid #1F2937',
-    borderRadius: 8,
-    background: '#050505',
-    color: '#D7DEE8',
-    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-    fontSize: 15,
-    fontWeight: 850,
+  billboardQueue: {
+    gridColumn: '3',
+    display: 'grid',
+    justifyItems: 'end',
+    alignContent: 'center',
+    gap: 6,
+    minWidth: 0,
+  },
+  billboardQueueLabel: {
+    color: '#94A3B8',
+    fontSize: 13,
+    fontWeight: 900,
     lineHeight: 1,
-    whiteSpace: 'nowrap',
-    justifySelf: 'start',
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
+  },
+  billboardQueueCount: {
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    fontSize: 35,
+    fontWeight: 950,
+    lineHeight: 0.9,
+    letterSpacing: '-0.04em',
   },
   billboardDots: {
     position: 'absolute',
@@ -1268,7 +1283,7 @@ const S: Record<string, CSSProperties> = {
   grid: {
     position: 'absolute',
     left: 28,
-    top: 124,
+    top: 188,
     right: 376,
     bottom: 28,
     display: 'grid',
