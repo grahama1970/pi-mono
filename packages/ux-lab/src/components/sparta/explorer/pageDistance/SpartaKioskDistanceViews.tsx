@@ -732,10 +732,12 @@ function ThreatMatrixGraphic({ stripColor, state }: { stripColor: string; state:
   const gap = 7
   const originX = 10
   const originY = 8
+  const unmappedCount = state === 'READY' ? '0/16' : state === 'UNKNOWN' ? '--/16' : '3/16'
+  const coordinate = state === 'READY' ? 'MATRIX COVERED' : state === 'UNKNOWN' ? 'MAPPING UNKNOWN' : 'IDENTITY x ACCESS'
 
   return (
     <div style={S.threatMatrixGraphic} aria-hidden="true">
-      <svg viewBox="0 0 112 104" width="100%" height="100%" role="presentation" focusable="false">
+      <svg viewBox="0 0 112 104" width="86" height="80" role="presentation" focusable="false">
         <rect x="1" y="1" width="110" height="102" rx="8" fill="rgba(15,23,42,0.46)" stroke="rgba(148,163,184,0.18)" strokeWidth="2" />
         {Array.from({ length: 16 }, (_, index) => {
           const x = index % 4
@@ -766,6 +768,9 @@ function ThreatMatrixGraphic({ stripColor, state }: { stripColor: string; state:
         ))}
         <path d="M18 85 L41 62 L64 70 L87 39" fill="none" stroke={stripColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" opacity="0.42" />
       </svg>
+      <div style={S.threatMatrixMetric}>{unmappedCount}</div>
+      <div style={S.threatMatrixState}>UNMAPPED</div>
+      <div style={S.threatMatrixCoordinate}>{coordinate}</div>
     </div>
   )
 }
@@ -1609,7 +1614,10 @@ const S: Record<string, CSSProperties> = {
   postureBars: { display: 'flex', gap: 8, width: '100%', height: 13 },
   postureBar: { flex: 1, borderRadius: 2 },
   supplyGraphic: { position: 'relative', width: '100%', height: 78, marginBottom: 4 },
-  threatMatrixGraphic: { width: 152, height: 140, marginBottom: 4, opacity: 0.96 },
+  threatMatrixGraphic: { width: '100%', display: 'grid', gap: 4, marginBottom: 4, opacity: 0.96 },
+  threatMatrixMetric: { color: '#FFFFFF', fontSize: 42, fontWeight: 950, lineHeight: 0.92, letterSpacing: '-0.035em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
+  threatMatrixState: { color: '#FFFFFF', fontSize: 25, fontWeight: 950, lineHeight: 1, letterSpacing: '0.05em', textTransform: 'uppercase' },
+  threatMatrixCoordinate: { color: '#AAB4C0', fontSize: 13, fontWeight: 900, lineHeight: 1.05, letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: 5 },
   primaryLabel: { marginTop: 0, color: C.secondary, fontSize: 20, fontWeight: 850, lineHeight: 1.05, textTransform: 'uppercase', letterSpacing: '0.025em' },
   secondaryLine: {
     alignSelf: 'stretch',
