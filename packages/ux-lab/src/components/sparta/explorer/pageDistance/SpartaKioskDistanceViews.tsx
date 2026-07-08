@@ -229,6 +229,22 @@ function deriveControlsReviewState(health: CoverageHealthSnapshot | null | undef
   }
 }
 
+function deriveUrlReviewState(health: CoverageHealthSnapshot | null | undefined, hasUrls: boolean): { state: KioskState; reason: string; line: string } {
+  if (!hasUrls) return { state: 'UNKNOWN', reason: 'URL count missing from monitor-sparta snapshot.', line: 'count unknown - fail closed' }
+  if (!health) return { state: 'UNKNOWN', reason: 'monitor-sparta snapshot unavailable for URL readiness.', line: 'monitor snapshot missing' }
+  if (health.stale) return { state: 'DEGRADED', reason: 'monitor-sparta snapshot is stale for URL readiness.', line: 'snapshot stale' }
+  const missingUrls = Number(health.corpusInventory?.urls?.missing ?? 0)
+  const identityCheck = monitorCheck(health, 'url_content_identity')
+  if (missingUrls === 0 && identityCheck?.ok === true) {
+    return { state: 'READY', reason: identityCheck.message ?? 'monitor-sparta URL lanes pass.', line: 'ready for human review' }
+  }
+  return {
+    state: 'DEGRADED',
+    reason: missingUrls > 0 ? `${missingUrls.toLocaleString()} URL inventory gap(s) remain.` : identityCheck?.message ?? 'URL monitor-sparta readiness gates are incomplete.',
+    line: missingUrls > 0 ? `${missingUrls.toLocaleString()} URL gaps` : 'identity gates incomplete',
+  }
+}
+
 function getContract(tab: TabName, coverageHealth: CoverageHealthSnapshot | null | undefined): PagePurposeContract | undefined {
   const base = TAB_PURPOSE_CONTRACTS[tab]
   if (!base) return undefined
@@ -317,14 +333,15 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
 
   if (tab === 'URLs') {
     const hasUrls = hasKnownCount(counts.urls)
+    const readiness = deriveUrlReviewState(coverageHealth, hasUrls)
     return {
       tab,
       qid: 'sparta:kiosk:tile:urls',
-      state: hasUrls ? state : 'UNKNOWN',
-      stateReason,
+      state: readiness.state,
+      stateReason: readiness.reason,
       primaryMetric: formatCount(counts.urls),
       primaryLabel: 'urls',
-      secondaryLine: hasUrls ? 'stale / quarantine' : 'count unknown - fail closed',
+      secondaryLine: readiness.line,
       nextAction: 'Open URL quarantine',
       voiceCommand: 'Show URLs',
       sourceStatus: hasUrls ? sourceStatus : 'missing',
@@ -781,7 +798,7 @@ export function SpartaKioskDistanceView({
 
   return (
     <section data-qid="sparta:kiosk:root" data-page-distance-mode="10ft" data-page-distance-pinned={isPinned ? 'true' : 'false'} style={S.root} aria-label="SPARTA 10ft readiness board">
-      <div data-qid="sparta:kiosk:view-state-controls" style={S.viewStateDock}>
+      <div data-qid="sparta:kiosk:view-state-controls" style={S.kioskViewStateDock}>
         <PageDistanceModeSwitcher compact qidPrefix="sparta:kiosk:distance" />
       </div>
       <header data-qid="sparta:kiosk:global-readiness" style={S.kioskHeader}>
@@ -836,6 +853,17 @@ const S: Record<string, CSSProperties> = {
     top: 27,
     right: 376,
     transform: 'translateY(-50%)',
+    zIndex: 1200,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    pointerEvents: 'auto',
+  },
+  kioskViewStateDock: {
+    position: 'absolute',
+    left: 'calc(100vw - 188px)',
+    bottom: 42,
+    transform: 'translateX(-50%)',
     zIndex: 1200,
     display: 'flex',
     alignItems: 'center',
@@ -1403,7 +1431,7 @@ const S: Record<string, CSSProperties> = {
   voiceAction: { color: C.secondary, fontSize: 18, fontWeight: 780, lineHeight: 1.08, overflowWrap: 'anywhere' },
   embryMast: {
     position: 'absolute',
-    top: 92,
+    top: 64,
     right: 28,
     bottom: 28,
     width: 320,
