@@ -82,6 +82,7 @@ const CHATTERBOX_AGENT_URL = process.env.CHATTERBOX_AGENT_URL ?? 'http://127.0.0
 const CHATTERBOX_HOST_OUT_DIR = process.env.CHATTERBOX_HOST_OUT_DIR ?? '/tmp/chatterbox-fork-agent-out'
 const CHATTERBOX_HOST_REF_DIR = process.env.CHATTERBOX_HOST_REF_DIR ?? '/home/graham/workspace/experiments/chatterbox/persona_dream_voice_refs'
 const CHATTERBOX_CONTAINER_REF_DIR = process.env.CHATTERBOX_CONTAINER_REF_DIR ?? '/work/persona_dream_voice_refs'
+const BRAVE_SEARCH_API_KEY = process.env.BRAVE_SEARCH_API_KEY || process.env.BRAVE_API_KEY || ''
 const SCILLM_PROXY_KEY = process.env.SCILLM_API_KEY ?? process.env.SCILLM_MASTER_KEY ?? 'sk-dev-proxy-123'
 const SCILLM_PROJECT_ROOT = process.env.SCILLM_PROJECT_ROOT ?? '/home/graham/workspace/experiments/scillm'
 const TAU_PROJECT_ROOT = process.env.TAU_PROJECT_ROOT ?? '/home/graham/workspace/experiments/tau'
@@ -10987,6 +10988,157 @@ function memoryActionFrom(value: unknown): string {
   return firstString(record.action, record.intent, record.route, record.decision).toUpperCase()
 }
 
+function memoryToolNamesFrom(value: unknown): string[] {
+  if (!value || typeof value !== 'object') return []
+  const record = value as Record<string, unknown>
+  const rawCalls = Array.isArray(record.tool_calls) ? record.tool_calls
+    : Array.isArray(record.toolCalls) ? record.toolCalls
+      : []
+  const callNames = rawCalls
+    .map((call) => {
+      if (typeof call === 'string') return call
+      if (!call || typeof call !== 'object') return ''
+      const item = call as Record<string, unknown>
+      return firstString(item.name, item.skill, item.tool, item.id)
+    })
+    .filter(Boolean)
+  const recommended = [
+    ...(Array.isArray(record.recommended_skills) ? record.recommended_skills : []),
+    ...(Array.isArray(record.recommendedSkills) ? record.recommendedSkills : []),
+    ...(Array.isArray(record.skill_chain) ? record.skill_chain : []),
+    ...(Array.isArray(record.skillChain) ? record.skillChain : []),
+  ].filter((item): item is string => typeof item === 'string' && item.trim())
+  return [...new Set([...callNames, ...recommended].map((item) => item.trim()))]
+}
+
+function shouldRunBraveSearch(intentResult: unknown): boolean {
+  const action = memoryActionFrom(intentResult)
+  const tools = memoryToolNamesFrom(intentResult).map((tool) => tool.toLowerCase())
+  return action === 'RESEARCH' && tools.includes('brave-search')
+}
+
+type BraveSearchReceipt = {
+  mocked: false
+  live: true
+  called: boolean
+  query: string
+  status: 'not_required' | 'ok' | 'error'
+  error: string | null
+  result_count: number
+  results: { title: string; url: string; snippet: string }[]
+}
+
+function braveSearchWeb(query: string, count = 5, timeoutMs = 15000): Promise<BraveSearchReceipt> {
+  return new Promise((resolve) => {
+    if (!BRAVE_SEARCH_API_KEY) {
+      resolve({
+        mocked: false,
+        live: true,
+        called: true,
+        query,
+        status: 'error',
+        error: 'brave_search_api_key_not_configured',
+        result_count: 0,
+        results: [],
+      })
+      return
+    }
+    const url = new URL('https://api.search.brave.com/res/v1/web/search')
+    url.searchParams.set('q', query)
+    url.searchParams.set('count', String(Math.max(1, Math.min(10, count))))
+    const req = httpsRequest(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'X-Subscription-Token': BRAVE_SEARCH_API_KEY,
+      },
+    }, (proxyRes) => {
+      const chunks: Buffer[] = []
+      proxyRes.on('data', (chunk: Buffer) => chunks.push(chunk))
+      proxyRes.on('end', () => {
+        const body = Buffer.concat(chunks).toString('utf-8')
+        if ((proxyRes.statusCode ?? 500) >= 400) {
+          resolve({
+            mocked: false,
+            live: true,
+            called: true,
+            query,
+            status: 'error',
+            error: `brave_search_http_${proxyRes.statusCode}: ${body.slice(0, 500)}`,
+            result_count: 0,
+            results: [],
+          })
+          return
+        }
+        try {
+          const parsed = JSON.parse(body)
+          const results = (Array.isArray(parsed?.web?.results) ? parsed.web.results : [])
+            .slice(0, count)
+            .map((item: Record<string, unknown>) => ({
+              title: firstString(item.title),
+              url: firstString(item.url),
+              snippet: firstString(item.description),
+            }))
+          resolve({
+            mocked: false,
+            live: true,
+            called: true,
+            query,
+            status: 'ok',
+            error: null,
+            result_count: results.length,
+            results,
+          })
+        } catch (err) {
+          resolve({
+            mocked: false,
+            live: true,
+            called: true,
+            query,
+            status: 'error',
+            error: `brave_search_parse_failed: ${err instanceof Error ? err.message : String(err)}`,
+            result_count: 0,
+            results: [],
+          })
+        }
+      })
+    })
+    req.on('error', (err) => {
+      resolve({
+        mocked: false,
+        live: true,
+        called: true,
+        query,
+        status: 'error',
+        error: `brave_search_failed: ${err.message}`,
+        result_count: 0,
+        results: [],
+      })
+    })
+    req.setTimeout(timeoutMs, () => {
+      req.destroy()
+      resolve({
+        mocked: false,
+        live: true,
+        called: true,
+        query,
+        status: 'error',
+        error: 'brave_search_timeout',
+        result_count: 0,
+        results: [],
+      })
+    })
+    req.end()
+  })
+}
+
+function answerTextFromBraveSearch(search: BraveSearchReceipt | null): string {
+  if (!search || search.status !== 'ok' || search.results.length === 0) return ''
+  const top = search.results[0]
+  const source = top.url ? ` Source: ${top.url}` : ''
+  return stripSpeechControls(`I searched current web results. ${top.title}. ${top.snippet}${source}`)
+}
+
 function liveTurnStep(id: string, label: string, status: string, detail: string, icon: string) {
   return { id, label, status, detail, icon, branch: 'embry-voice', disclosureVariant: 'thinking' }
 }
@@ -11082,6 +11234,15 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       memoryErrors.push(`answer: ${err instanceof Error ? err.message : String(err)}`)
     }
 
+    const intentAction = memoryActionFrom(intentResult)
+    let braveSearchResult: BraveSearchReceipt | null = null
+    if (shouldRunBraveSearch(intentResult)) {
+      braveSearchResult = await braveSearchWeb(text, 5, 15000)
+      if (braveSearchResult.status !== 'ok') {
+        memoryErrors.push(`brave-search: ${braveSearchResult.error || 'unknown error'}`)
+      }
+    }
+
     if (!answerTextFromMemory(answerResult)) {
       try {
         recallResult = await proxyPost('/recall', {
@@ -11096,15 +11257,15 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       }
     }
 
-    const intentAction = memoryActionFrom(intentResult)
     const answerAction = memoryActionFrom(answerResult)
     const memoryAnswer = answerTextFromMemory(answerResult)
     const recallAnswer = answerTextFromMemory(recallResult)
+    const researchAnswer = answerTextFromBraveSearch(braveSearchResult)
     const shouldClarify = ['CLARIFY', 'IDENTITY_CLARIFICATION'].includes(intentAction) || ['CLARIFY', 'IDENTITY_CLARIFICATION'].includes(answerAction)
     const cleanAnswerText = stripSpeechControls(
       shouldClarify
         ? (memoryAnswer || recallAnswer || "I don't know who I'm speaking with yet. Who is this?")
-        : (memoryAnswer || recallAnswer || "I heard you. I need a grounded memory result before I can answer that confidently."),
+        : (memoryAnswer || researchAnswer || recallAnswer || "I heard you. I need a grounded memory result before I can answer that confidently."),
     )
     const answerText = cleanAnswerText || "I heard you. I need a grounded memory result before I can answer that confidently."
     const voicePolicy = buildEmbryVoicePolicy({
@@ -11207,8 +11368,9 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
     const reasoningSteps = [
       liveTurnStep('extracting-entities', 'Extract entities', entityResult ? 'completed' : 'failed', entityResult ? `${entityCount} structured entity span(s) from memory.extract-entities` : (memoryErrors.find((error) => error.startsWith('extract-entities:')) || 'memory.extract-entities did not return'), 'search'),
       liveTurnStep('finalizing-intent', 'Memory intent', intentResult ? 'completed' : 'failed', intentResult ? `memory.intent action ${intentAction || 'UNKNOWN'}` : (memoryErrors.find((error) => error.startsWith('intent:')) || 'memory.intent did not return'), 'memory'),
+      liveTurnStep('brave-search', 'Brave search', braveSearchResult ? (braveSearchResult.status === 'ok' ? 'completed' : 'failed') : 'skipped', braveSearchResult ? (braveSearchResult.status === 'ok' ? `brave-search returned ${braveSearchResult.result_count} current web result(s)` : (braveSearchResult.error || 'brave-search failed')) : 'memory.intent did not request brave-search', 'search'),
       liveTurnStep('looking-in-memory', 'Memory recall', recallStepStatus, answerResult ? 'memory.answer returned a response candidate' : recallResult ? 'memory.recall returned a fallback candidate' : 'No grounded memory answer returned; Embry used the fail-closed fallback phrase for this spoken turn', 'search'),
-      liveTurnStep('answering', 'Tau response', answerText ? 'completed' : 'failed', memoryCandidateReturned ? (shouldClarify ? 'Tau/memory selected a clarification route' : 'Tau/memory produced Embry response text') : 'Tau preserved the memory-first boundary and emitted a fallback response because no grounded memory answer was available', 'check'),
+      liveTurnStep('answering', 'Tau response', answerText ? 'completed' : 'failed', braveSearchResult?.status === 'ok' ? 'Tau used memory.intent RESEARCH evidence from brave-search' : memoryCandidateReturned ? (shouldClarify ? 'Tau/memory selected a clarification route' : 'Tau/memory produced Embry response text') : 'Tau preserved the memory-first boundary and emitted a fallback response because no grounded memory answer was available', 'check'),
       liveTurnStep('embry-chatterbox-render', 'Chatterbox voice', audioPath ? 'completed' : voiceEnabled ? 'failed' : 'skipped', audioPath ? `Rendered ${audioPath}` : voiceEnabled ? (chatterboxError || 'Chatterbox did not render audio') : 'Voice disabled for this turn', 'mic'),
     ]
     const receiptDir = resolve(CHATTERBOX_HOST_OUT_DIR, 'ux-lab-embry-live')
@@ -11248,7 +11410,11 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
         intent: intentResult,
         answer: answerResult,
         recall: recallResult,
+        research: braveSearchResult,
         errors: memoryErrors,
+      },
+      research: {
+        brave_search: braveSearchResult,
       },
       reasoning_steps: reasoningSteps,
       entity_context: entityResult,
@@ -11274,7 +11440,7 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
         receiptPath,
         audioAuthority,
         audioArtifacts: audioAuthority ? [audioAuthority] : [],
-        memoryTrace: { entity_context: entityResult, intent: intentResult, answer: answerResult, recall: recallResult },
+        memoryTrace: { entity_context: entityResult, intent: intentResult, answer: answerResult, recall: recallResult, research: braveSearchResult },
         tauTrace: { boundary: 'memory.intent', action: intentAction || answerAction || '' },
         voicePolicy,
         pauseStrategy: voicePolicy.pauseStrategy,
@@ -11346,7 +11512,7 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
         receiptPath,
         audioAuthority,
         audioArtifacts: audioAuthority ? [audioAuthority] : [],
-        memoryTrace: { entity_context: entityResult, intent: intentResult, answer: answerResult, recall: recallResult },
+        memoryTrace: { entity_context: entityResult, intent: intentResult, answer: answerResult, recall: recallResult, research: braveSearchResult },
         tauTrace: { boundary: 'memory.intent', action: intentAction || answerAction || '' },
         voicePolicy,
         pauseStrategy: voicePolicy.pauseStrategy,
@@ -11358,11 +11524,15 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       entityContext: entityResult,
       entities: allEntities,
       recallItems,
+      research: {
+        brave_search: braveSearchResult,
+      },
       memory: {
         entity_context: entityResult,
         intent: intentResult,
         answer: answerResult,
         recall: recallResult,
+        research: braveSearchResult,
         errors: memoryErrors,
         action: intentAction || answerAction || '',
       },
@@ -19143,7 +19313,7 @@ function tauChatEvidenceContent(evidenceCase: JsonRecord, action: 'answer' | 'de
   const questions = Array.isArray(responsePolicy.clarifying_questions)
     ? responsePolicy.clarifying_questions.map((question) => tauChatString(question)).filter(Boolean).join('\n')
     : ''
-  if (action === 'answer') return userMessage || answer || 'SPARTA evidence policy returned an answer without renderable text.'
+  if (action === 'answer') return answer || userMessage || 'SPARTA evidence policy returned an answer without renderable text.'
   if (action === 'deflect') return userMessage || 'I cannot provide an authoritative answer from the selected SPARTA evidence route.'
   return userMessage || questions || 'I need one more detail before I can ground this in SPARTA evidence.'
 }
@@ -19449,8 +19619,11 @@ app.post('/api/tau/chat/turn', async (req, res) => {
       const evidenceCase = await buildSpartaEvidenceCaseRunPayload(question, controlId, selectedProfile, requestContext)
       const responsePolicy = tauChatRecord(evidenceCase.response_policy)
       const scopedQra = tauChatScopedQraContext(requestContext)
-      const scopedQraContent = tauChatSelectedQraAnswer(question, scopedQra, controlId)
       const policyResponseAction = tauChatResponseAction(responsePolicy.response_action ?? evidenceCase.response_action)
+      const evidenceAnswer = tauChatString(evidenceCase.answer)
+      const scopedQraContent = evidenceAnswer && policyResponseAction === 'answer'
+        ? null
+        : tauChatSelectedQraAnswer(question, scopedQra, controlId)
       const responseAction = scopedQraContent ? 'answer' : policyResponseAction
       if (scopedQraContent) {
         evidenceCase.response_policy = {
