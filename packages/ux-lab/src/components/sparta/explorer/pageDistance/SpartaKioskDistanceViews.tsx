@@ -167,77 +167,82 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
 
   if (tab === 'QRAs') {
     const corpus = counts.qrasTotal || counts.qras
+    const hasCorpus = hasKnownCount(corpus)
     return {
       tab,
       qid: 'sparta:kiosk:tile:qras',
-      state,
+      state: hasCorpus ? state : 'UNKNOWN',
       stateReason,
       primaryMetric: formatCount(corpus),
       primaryLabel: 'corpus',
-      secondaryLine: hasKnownCount(corpus) ? 'review queue needs action' : 'count unknown - fail closed',
+      secondaryLine: hasCorpus ? 'review queue needs action' : 'count unknown - fail closed',
       nextAction: 'Open QRA review queue',
       voiceCommand: 'Open QRA review queue',
-      sourceStatus,
+      sourceStatus: hasCorpus ? sourceStatus : 'missing',
     }
   }
 
   if (tab === 'Controls') {
+    const hasControls = hasKnownCount(counts.controls)
     return {
       tab,
       qid: 'sparta:kiosk:tile:controls',
-      state,
+      state: hasControls ? state : 'UNKNOWN',
       stateReason,
       primaryMetric: formatCount(counts.controls),
       primaryLabel: 'controls',
-      secondaryLine: 'mapping gaps',
+      secondaryLine: hasControls ? 'mapping gaps' : 'count unknown - fail closed',
       nextAction: 'Open control mappings',
       voiceCommand: 'Show Controls',
-      sourceStatus,
+      sourceStatus: hasControls ? sourceStatus : 'missing',
     }
   }
 
   if (tab === 'Sources') {
+    const hasSources = hasKnownCount(counts.knowledge)
     return {
       tab,
       qid: 'sparta:kiosk:tile:sources',
-      state,
+      state: hasSources ? state : 'UNKNOWN',
       stateReason,
-      primaryMetric: hasKnownCount(counts.knowledge) ? formatCount(counts.knowledge) : 'UNKNOWN',
-      primaryLabel: hasKnownCount(counts.knowledge) ? 'source chunks' : 'sources',
-      secondaryLine: hasKnownCount(counts.knowledge) ? 'lineage blockers' : 'source count unknown',
+      primaryMetric: hasSources ? formatCount(counts.knowledge) : 'UNKNOWN',
+      primaryLabel: hasSources ? 'source chunks' : 'sources',
+      secondaryLine: hasSources ? 'lineage blockers' : 'source count unknown',
       nextAction: 'Open source lineage',
       voiceCommand: 'Show Sources',
-      sourceStatus: hasKnownCount(counts.knowledge) ? sourceStatus : 'missing',
+      sourceStatus: hasSources ? sourceStatus : 'missing',
     }
   }
 
   if (tab === 'URLs') {
+    const hasUrls = hasKnownCount(counts.urls)
     return {
       tab,
       qid: 'sparta:kiosk:tile:urls',
-      state,
+      state: hasUrls ? state : 'UNKNOWN',
       stateReason,
       primaryMetric: formatCount(counts.urls),
       primaryLabel: 'urls',
-      secondaryLine: 'stale / quarantine',
+      secondaryLine: hasUrls ? 'stale / quarantine' : 'count unknown - fail closed',
       nextAction: 'Open URL quarantine',
       voiceCommand: 'Show URLs',
-      sourceStatus,
+      sourceStatus: hasUrls ? sourceStatus : 'missing',
     }
   }
 
   if (tab === 'Threat Matrix') {
+    const hasRelationships = hasKnownCount(counts.relationships)
     return {
       tab,
       qid: 'sparta:kiosk:tile:threat-matrix',
-      state,
+      state: hasRelationships ? state : 'UNKNOWN',
       stateReason,
-      primaryMetric: hasKnownCount(counts.relationships) ? formatCount(counts.relationships) : 'UNKNOWN',
+      primaryMetric: hasRelationships ? formatCount(counts.relationships) : 'UNKNOWN',
       primaryLabel: 'relationships',
-      secondaryLine: 'top unmapped risk',
+      secondaryLine: hasRelationships ? 'top unmapped risk' : 'count unknown - fail closed',
       nextAction: 'Open threat mapping',
       voiceCommand: 'Show Threats',
-      sourceStatus: hasKnownCount(counts.relationships) ? sourceStatus : 'missing',
+      sourceStatus: hasRelationships ? sourceStatus : 'missing',
     }
   }
 
@@ -431,23 +436,25 @@ function EmbryVoiceMast({
 function KioskTileCard({ tile, onSelect }: { tile: KioskTile; onSelect: () => void }) {
   const Icon = iconForTile(tile.tab)
   const isVoid = tile.state === 'UNKNOWN' || tile.primaryMetric === 'UNKNOWN'
+  const visualState = tile.state
   const displayMetric = isVoid ? '--' : abbreviateKioskMetric(tile.primaryMetric)
   const metricFontSize = kioskMetricFontSize(displayMetric)
   const titleFontSize = kioskTitleFontSize(tile.tab)
-  const stripColor = tile.state === 'BLOCKED'
+  const stripColor = visualState === 'BLOCKED'
     ? '#EF4444'
-    : tile.state === 'DEGRADED'
+    : visualState === 'DEGRADED'
       ? '#FACC15'
-      : tile.state === 'READY'
-        ? '#1F2937'
+      : visualState === 'READY'
+        ? '#4ADE80'
         : '#6B7280'
-  const labelColor = tile.state === 'READY' ? '#4ADE80' : '#AAB4C0'
+  const labelColor = visualState === 'READY' ? '#4ADE80' : '#AAB4C0'
   return (
     <button
       type="button"
       data-qid={tile.qid}
+      data-visual-state={visualState.toLowerCase()}
       data-qs-action="KIOSK_SELECT_TILE"
-      title={`${tile.tab}: ${tile.state}. ${tile.secondaryLine}`}
+      title={`${tile.tab}: ${visualState}. ${tile.secondaryLine}`}
       onClick={onSelect}
       style={{
         ...S.tile,
