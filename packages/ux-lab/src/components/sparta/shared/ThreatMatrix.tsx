@@ -1064,7 +1064,38 @@ function Grid() {
       : `repeat(auto-fit, minmax(280px, 1fr))`
 
   return (
-    <div style={{ flex: 1, overflow: 'auto', background: '#050505' }}>
+    <div
+      className="sparta-threat-matrix-scroll"
+      style={{
+        flex: 1,
+        overflow: 'auto',
+        background: '#050505',
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'rgba(255, 255, 255, 0.2) transparent',
+      }}
+    >
+      <style>
+        {`
+          .sparta-threat-matrix-scroll {
+            scrollbar-width: thin !important;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent !important;
+          }
+          .sparta-threat-matrix-scroll::-webkit-scrollbar {
+            width: 6px !important;
+            height: 6px !important;
+          }
+          .sparta-threat-matrix-scroll::-webkit-scrollbar-track {
+            background: transparent !important;
+          }
+          .sparta-threat-matrix-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.18) !important;
+            border-radius: 999px !important;
+          }
+          .sparta-threat-matrix-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.28) !important;
+          }
+        `}
+      </style>
       <div
         style={{
           display: 'grid',
@@ -1151,12 +1182,15 @@ function Grid() {
                     ? 'rgba(250, 204, 21, 0.10)'
                     : isHovered
                       ? 'rgba(255, 255, 255, 0.10)'
-                      : 'rgba(255, 255, 255, 0.05)',
+                      : '#121214',
                   cursor: 'pointer',
                   transition: 'background-color 0.15s, color 0.15s',
-                  border: 0,
+                  borderTop: 0,
+                  borderRight: 0,
+                  borderBottom: 0,
                   borderLeft: isSelected ? `3px solid ${color}` : '3px solid transparent',
                   borderRadius: 2,
+                  boxShadow: 'none',
                   minHeight: 72,
                   display: 'flex',
                   flexDirection: 'column',
