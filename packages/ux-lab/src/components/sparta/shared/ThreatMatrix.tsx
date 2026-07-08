@@ -17,7 +17,7 @@
  */
 import { createContext, use, useState, useMemo, useCallback, useRef, useEffect, type ReactNode } from 'react'
 import { Flame, Grid3X3, Network, GitBranch, AlertTriangle, FileWarning, Shield, Download } from 'lucide-react'
-import { forceSimulation, forceLink, forceManyBody, forceCenter, forceCollide, forceX, forceY } from 'd3-force'
+import { forceSimulation, forceLink, forceManyBody, forceCollide, forceX, forceY } from 'd3-force'
 import type { SimulationNodeDatum, SimulationLinkDatum } from 'd3-force'
 import { EMBRY, label, heading, glowDot, fwBadge, FLUID } from '../common/EmbryStyle'
 import { PostureHUD } from './PostureHUD'
@@ -25,8 +25,6 @@ import { TacticAccordion } from './TacticAccordion'
 import { TechniqueDrawer } from './TechniqueDrawer'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
-import { ProvenanceGraph } from '../provenance-graph'
-import type { ProvenanceNode, ProvenanceEdge, TemporalEvidenceState } from '../provenance-graph/types'
 
 // ── Context Interface ────────────────────────────────────────────────────────
 
@@ -47,6 +45,16 @@ export interface ThreatTechnique {
   frameworks: string[]
   mind?: string[]
   nrs_score?: number
+}
+
+export interface ThreatRelationship {
+  source_control_id?: string
+  target_control_id?: string
+  source_framework?: string
+  target_framework?: string
+  relationship_type?: string
+  edge_type?: string
+  combined_score?: number
 }
 
 export interface ThreatTactic {
@@ -103,6 +111,10 @@ export interface ThreatMatrixState {
   viewMode?: ViewMode
   /** Condensed view: cells show ID + dot only (9-col survives on laptops) */
   condensedView?: boolean
+  /** Memory-persisted SPARTA relationship/crosswalk edges, created by evidence-case/crosswalk pipelines. */
+  graphRelationships?: ThreatRelationship[]
+  graphHoveredTactic?: string | null
+  graphLockedTactic?: string | null
 }
 
 export interface ThreatMatrixActions {
@@ -112,6 +124,8 @@ export interface ThreatMatrixActions {
   selectDatalake?: (datalake: string) => void
   setViewMode?: (mode: ViewMode) => void
   toggleCondensedView?: () => void
+  setGraphHoveredTactic?: (tactic: string | null) => void
+  setGraphLockedTactic?: (tactic: string | null) => void
 }
 
 export interface DatalakeOption {
@@ -571,6 +585,8 @@ function TacticStrip() {
     return s
   }, [state.tactics, state.techniques])
 
+  if (state.viewMode === 'graph') return null
+
   return (
     <div style={{ display: 'flex', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
       {state.tactics.map((tactic) => {
@@ -626,128 +642,84 @@ function cellTooltip(tech: ThreatTechnique): string {
 
 interface GraphNode extends SimulationNodeDatum {
   id: string
-  data: ThreatTechnique
+  kind: 'technique' | 'tactic' | 'framework' | 'category' | 'evidence' | 'control'
+  label: string
+  data?: ThreatTechnique
+  lane?: string
+  laneIndex?: number
 }
 
 interface GraphLink extends SimulationLinkDatum<GraphNode> {
   source: string | GraphNode
   target: string | GraphNode
+  kind: TacticalGraphLink['kind']
 }
 
-const VERDICT_COLORS: Record<string, string> = {
-  satisfied: EMBRY.green,
-  inconclusive: EMBRY.amber,
-  not_satisfied: EMBRY.red,
-  none: EMBRY.dim,
+interface TacticalGraphLink {
+  id: string
+  source: string
+  target: string
+  kind: 'tactic-technique' | 'crosswalk-framework' | 'control-category' | 'evidence-state' | 'memory-crosswalk'
 }
 
-/** Transform TechniqueDetail into ProvenanceGraph nodes/edges for compliance visualization */
-function buildProvenanceFromTechnique(detail: TechniqueDetail): { nodes: ProvenanceNode[]; edges: ProvenanceEdge[] } {
-  const now = Date.now()
-  const defaultTemporal: TemporalEvidenceState = {
-    observed_at: now,
-    valid_from: now,
-    valid_to: now + 365 * 24 * 60 * 60 * 1000,
-    assessed_at: now,
-    source_event_id: 'threat-matrix-view',
-    is_active: true,
-  }
-
-  const nodes: ProvenanceNode[] = []
-  const edges: ProvenanceEdge[] = []
-
-  // Root node: the technique itself
-  const techNode: ProvenanceNode = {
-    id: detail.technique.id,
-    label: detail.technique.name,
-    nodeClass: 'framework_artifact',
-    framework: 'SPARTA',
-    temporal: defaultTemporal,
-    cascade_state: 'healthy',
-  }
-  nodes.push(techNode)
-
-  // Countermeasure nodes (CM-xxxx → controls)
-  for (const cm of detail.countermeasures ?? []) {
-    const cmNode: ProvenanceNode = {
-      id: cm.control_id,
-      label: cm.name || cm.control_id,
-      nodeClass: 'control',
-      framework: 'SPARTA',
-      family: cm.control_id.split('-')[0],
-      temporal: defaultTemporal,
-      cascade_state: 'healthy',
-    }
-    nodes.push(cmNode)
-
-    // Edge: technique → countermeasure (maps_to)
-    edges.push({
-      id: `${detail.technique.id}->${cm.control_id}`,
-      source: detail.technique.id,
-      target: cm.control_id,
-      type: 'maps_to',
-      weight: 1.0,
-      exclusivity: 0.5,
-    })
-  }
-
-  // Evidence case nodes (if any)
-  for (const [i, ec] of (detail.evidenceCases ?? []).entries()) {
-    const ecId = `ec-${detail.technique.id}-${i}`
-    const verdictToState = (v: string): 'healthy' | 'degraded' | 'hard_break' =>
-      v === 'satisfied' ? 'healthy' : v === 'inconclusive' ? 'degraded' : 'hard_break'
-
-    const ecNode: ProvenanceNode = {
-      id: ecId,
-      label: `Evidence: ${ec.grade} (${ec.gates_passed}/${ec.gates_total})`,
-      nodeClass: 'evidence_artifact',
-      temporal: defaultTemporal,
-      cascade_state: verdictToState(ec.verdict),
-    }
-    nodes.push(ecNode)
-
-    // Connect evidence to related controls
-    for (const ctrlId of ec.control_ids ?? []) {
-      if (nodes.some(n => n.id === ctrlId)) {
-        edges.push({
-          id: `${ecId}->${ctrlId}`,
-          source: ecId,
-          target: ctrlId,
-          type: 'satisfies',
-          weight: ec.gates_passed / Math.max(ec.gates_total, 1),
-          exclusivity: 0.8,
-        })
-      }
-    }
-  }
-
-  // Control-to-control relationships
-  for (const rel of detail.relationships ?? []) {
-    if (nodes.some(n => n.id === rel.source_control_id) && nodes.some(n => n.id === rel.target_control_id)) {
-      edges.push({
-        id: `${rel.source_control_id}->${rel.target_control_id}`,
-        source: rel.source_control_id,
-        target: rel.target_control_id,
-        type: 'depends_on',
-        weight: rel.combined_score ?? 0.5,
-        exclusivity: 0.3,
-      })
-    }
-  }
-
-  return { nodes, edges }
-}
-
-function TechniqueGraph({ techniques, tactics, onSelect }: {
+function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic = null, lockedTactic = null, setHoveredTactic, setLockedTactic, onSelect }: {
   techniques: ThreatTechnique[]
   tactics: ThreatTactic[]
+  relationships?: ThreatRelationship[]
+  hoveredTactic?: string | null
+  lockedTactic?: string | null
+  setHoveredTactic?: (tactic: string | null) => void
+  setLockedTactic?: (tactic: string | null) => void
   onSelect: (tech: ThreatTechnique) => void
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const svgRef = useRef<SVGSVGElement>(null)
   const [positions, setPositions] = useState<Map<string, { x: number; y: number }>>(new Map())
   const [hovered, setHovered] = useState<string | null>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
+  const [viewport, setViewport] = useState({ x: 0, y: 0, k: 1 })
+  const [forcePulse, setForcePulse] = useState(0)
+  const panRef = useRef<{ pointerId: number; startX: number; startY: number; originX: number; originY: number } | null>(null)
+  const reducedMotion = useMemo(() => (
+    typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  ), [])
+  const activeTactic = lockedTactic ?? hoveredTactic
+
+  useRegisterAction('threat-matrix:graph:tactic-magnet', {
+    app: 'sparta-explorer',
+    action: 'GRAPH_TACTIC_MAGNET_SELECT',
+    label: 'Select threat graph tactic magnet',
+    description: 'Hover or click a tactic gravity well to isolate SPARTA graph nodes in that lane',
+  })
+  useRegisterAction('threat-matrix:graph:node-technique', {
+    app: 'sparta-explorer',
+    action: 'SELECT_TECHNIQUE_GRAPH_NODE',
+    label: 'Select graph technique node',
+    description: 'Open the evidence pane for a SPARTA technique node from the graph',
+  })
+  useRegisterAction('threat-matrix:graph:control-zoom-in', {
+    app: 'sparta-explorer',
+    action: 'GRAPH_ZOOM_IN',
+    label: 'Zoom in threat graph',
+    description: 'Increase the SPARTA threat graph viewport scale',
+  })
+  useRegisterAction('threat-matrix:graph:control-zoom-out', {
+    app: 'sparta-explorer',
+    action: 'GRAPH_ZOOM_OUT',
+    label: 'Zoom out threat graph',
+    description: 'Decrease the SPARTA threat graph viewport scale',
+  })
+  useRegisterAction('threat-matrix:graph:control-reset', {
+    app: 'sparta-explorer',
+    action: 'GRAPH_RESET_VIEW',
+    label: 'Reset threat graph view',
+    description: 'Reset SPARTA threat graph pan and zoom',
+  })
+  useRegisterAction('threat-matrix:graph:control-force-push', {
+    app: 'sparta-explorer',
+    action: 'GRAPH_FORCE_PUSH',
+    label: 'Force push threat graph',
+    description: 'Reheat the SPARTA threat graph layout without changing the source data',
+  })
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -759,163 +731,580 @@ function TechniqueGraph({ techniques, tactics, onSelect }: {
     return () => obs.disconnect()
   }, [])
 
+  const graphData = useMemo(() => {
+    const nodes = new Map<string, GraphNode>()
+    const links: TacticalGraphLink[] = []
+
+    const addNode = (node: GraphNode) => {
+      if (!nodes.has(node.id)) nodes.set(node.id, node)
+    }
+
+    const addLink = (source: string, target: string, kind: TacticalGraphLink['kind']) => {
+      const id = `${kind}:${source}->${target}`
+      if (!nodes.has(source) || !nodes.has(target) || links.some((link) => link.id === id)) return
+      links.push({ id, source, target, kind })
+    }
+
+    for (const [index, tactic] of tactics.entries()) {
+      addNode({
+        id: `tactic:${tactic.name}`,
+        kind: 'tactic',
+        label: tactic.prefix || tactic.name,
+        lane: tactic.name,
+        laneIndex: index,
+      })
+    }
+
+    for (const tech of techniques) {
+      const tacticIndex = tactics.findIndex((tactic) => tactic.name === tech.tactic)
+      const techniqueId = `technique:${tech.id}`
+      addNode({
+        id: techniqueId,
+        kind: 'technique',
+        label: tech.id,
+        data: tech,
+        lane: tech.tactic,
+        laneIndex: tacticIndex >= 0 ? tacticIndex : 0,
+      })
+
+      const tacticId = `tactic:${tech.tactic}`
+      if (nodes.has(tacticId)) addLink(tacticId, techniqueId, 'tactic-technique')
+
+      for (const framework of tech.frameworks.slice(0, 4)) {
+        const frameworkId = `framework:${framework}`
+        addNode({ id: frameworkId, kind: 'framework', label: framework, laneIndex: tacticIndex >= 0 ? tacticIndex : 0 })
+        addLink(frameworkId, techniqueId, 'crosswalk-framework')
+      }
+
+      for (const category of (tech.mind ?? []).slice(0, 3)) {
+        const categoryId = `category:${category}`
+        addNode({ id: categoryId, kind: 'category', label: category, laneIndex: tacticIndex >= 0 ? tacticIndex : 0 })
+        addLink(categoryId, techniqueId, 'control-category')
+      }
+
+      if (tech.evidenceCaseCount > 0 || tech.evidenceVerdict !== 'none') {
+        const evidenceLabel = tech.evidenceVerdict === 'none' ? 'no evidence case' : tech.evidenceVerdict.replace('_', ' ')
+        const evidenceId = `evidence:${tech.evidenceVerdict}`
+        addNode({ id: evidenceId, kind: 'evidence', label: evidenceLabel, laneIndex: tacticIndex >= 0 ? tacticIndex : 0 })
+        addLink(evidenceId, techniqueId, 'evidence-state')
+      }
+    }
+
+    const techniqueIdByControlId = new Map(techniques.map((tech) => [tech.id, `technique:${tech.id}`]))
+    for (const rel of relationships) {
+      const sourceId = rel.source_control_id
+      const targetId = rel.target_control_id
+      if (!sourceId || !targetId) continue
+
+      const sourceTechniqueNode = techniqueIdByControlId.get(sourceId)
+      const targetTechniqueNode = techniqueIdByControlId.get(targetId)
+      if (!sourceTechniqueNode && !targetTechniqueNode) continue
+
+      const sourceGraphId = sourceTechniqueNode ?? `control:${sourceId}`
+      const targetGraphId = targetTechniqueNode ?? `control:${targetId}`
+      const anchorTechnique = techniques.find((tech) => tech.id === sourceId || tech.id === targetId)
+      if (!anchorTechnique) continue
+
+      if (!sourceTechniqueNode) {
+        const sourceFramework = rel.source_framework ? `${rel.source_framework} ` : ''
+        addNode({
+          id: sourceGraphId,
+          kind: 'control',
+          label: `${sourceFramework}${sourceId}`,
+          lane: anchorTechnique.tactic,
+          laneIndex: tactics.findIndex((tactic) => tactic.name === anchorTechnique.tactic),
+        })
+      }
+      if (!targetTechniqueNode) {
+        const targetFramework = rel.target_framework ? `${rel.target_framework} ` : ''
+        addNode({
+          id: targetGraphId,
+          kind: 'control',
+          label: `${targetFramework}${targetId}`,
+          lane: anchorTechnique.tactic,
+          laneIndex: tactics.findIndex((tactic) => tactic.name === anchorTechnique.tactic),
+        })
+      }
+      addLink(sourceGraphId, targetGraphId, 'memory-crosswalk')
+    }
+
+    return { nodes: Array.from(nodes.values()), links }
+  }, [techniques, tactics, relationships])
+
+  const tacticStats = useMemo(() => {
+    const stats = new Map<string, { total: number; memoryEdges: number }>()
+    for (const tactic of tactics) stats.set(tactic.name, { total: 0, memoryEdges: 0 })
+    const tacticByTechniqueId = new Map(techniques.map((tech) => [tech.id, tech.tactic]))
+    for (const tech of techniques) {
+      const bucket = stats.get(tech.tactic)
+      if (bucket) bucket.total += 1
+    }
+    for (const rel of relationships) {
+      const sourceTactic = rel.source_control_id ? tacticByTechniqueId.get(rel.source_control_id) : null
+      const targetTactic = rel.target_control_id ? tacticByTechniqueId.get(rel.target_control_id) : null
+      const tacticName = sourceTactic ?? targetTactic
+      if (!tacticName) continue
+      const bucket = stats.get(tacticName)
+      if (bucket) bucket.memoryEdges += 1
+    }
+    return stats
+  }, [tactics, techniques, relationships])
+
+  const nodeTactic = useCallback((node: GraphNode): string | null => {
+    if (node.kind === 'tactic') return node.lane ?? node.label
+    if (node.data?.tactic) return node.data.tactic
+    return node.lane ?? null
+  }, [])
+
   useEffect(() => {
     if (techniques.length === 0 || dimensions.width < 100) return
 
-    const tacticIndex = new Map(tactics.map((t, i) => [t.name, i]))
-    const tacticCount = tactics.length || 1
-    const laneWidth = dimensions.width / tacticCount
+    const centerY = dimensions.height / 2
+    const laneCount = Math.max(tactics.length, 1)
+    const lanePadding = Math.min(72, Math.max(36, dimensions.width * 0.035))
+    const laneWidth = Math.max((dimensions.width - lanePadding * 2) / laneCount, 1)
+    const laneX = (node: GraphNode) => {
+      const index = Math.max(0, Math.min(laneCount - 1, node.laneIndex ?? 0))
+      return lanePadding + laneWidth * index + laneWidth / 2
+    }
+    const targetX = (node: GraphNode) => {
+      const tacticName = nodeTactic(node)
+      const baseLaneX = laneX(node)
+      if (activeTactic && tacticName === activeTactic) return baseLaneX
+      if (node.kind === 'framework') return Math.max(lanePadding, baseLaneX - laneWidth * 0.2)
+      if (node.kind === 'control') return Math.max(lanePadding, baseLaneX - laneWidth * 0.12)
+      if (node.kind === 'category') return Math.min(dimensions.width - lanePadding, baseLaneX + laneWidth * 0.12)
+      if (node.kind === 'evidence') return Math.min(dimensions.width - lanePadding, baseLaneX + laneWidth * 0.2)
+      return baseLaneX
+    }
+    const targetY = (node: GraphNode) => {
+      const tacticName = nodeTactic(node)
+      const verticalSpread = Math.min(dimensions.height * 0.42, 360)
+      if (activeTactic && tacticName === activeTactic) {
+        if (node.kind === 'tactic') return Math.max(78, centerY - verticalSpread * 0.74)
+        if (node.kind === 'technique') return centerY + ((((node.id.length + forcePulse) % 7) - 3) * 30)
+        if (node.kind === 'control' || node.kind === 'category') return centerY - verticalSpread * 0.35
+        return centerY + verticalSpread * 0.35
+      }
+      if (node.kind === 'tactic') return Math.max(78, centerY - verticalSpread * 0.72)
+      if (node.kind === 'framework' || node.kind === 'evidence') return centerY + verticalSpread * 0.55
+      if (node.kind === 'category' || node.kind === 'control') return centerY - verticalSpread * 0.28
+      return centerY + ((((node.id.length + (node.laneIndex ?? 0)) % 9) - 4) * 22)
+    }
 
-    const nodes: GraphNode[] = techniques.map((tech) => ({
-      id: tech.id,
-      data: tech,
-      x: (tacticIndex.get(tech.tactic) ?? 0) * laneWidth + laneWidth / 2,
-      y: dimensions.height / 2,
+    const nodes: GraphNode[] = graphData.nodes.map((node) => ({
+      ...node,
+      x: targetX(node) + Math.sin((node.id.length + forcePulse) * 1.7) * 28,
+      y: targetY(node) + Math.cos((node.id.length + forcePulse) * 1.3) * 24,
     }))
 
-    const links: GraphLink[] = []
-    const byTactic: Record<string, ThreatTechnique[]> = {}
-    for (const tech of techniques) {
-      if (!byTactic[tech.tactic]) byTactic[tech.tactic] = []
-      byTactic[tech.tactic].push(tech)
-    }
-    for (const techs of Object.values(byTactic)) {
-      for (let i = 0; i < techs.length - 1; i++) {
-        links.push({ source: techs[i].id, target: techs[i + 1].id })
-      }
-    }
+    const links: GraphLink[] = graphData.links.map((link) => ({ source: link.source, target: link.target, kind: link.kind }))
 
     const simulation = forceSimulation<GraphNode>(nodes)
-      .force('link', forceLink<GraphNode, GraphLink>(links).id((d) => d.id).distance(40).strength(0.3))
-      .force('charge', forceManyBody().strength(-80))
-      .force('collide', forceCollide(20))
-      .force('x', forceX<GraphNode>((d) => {
-        const idx = tacticIndex.get(d.data.tactic) ?? 0
-        return idx * laneWidth + laneWidth / 2
-      }).strength(0.8))
-      .force('y', forceY(dimensions.height / 2).strength(0.05))
+      .force('link', forceLink<GraphNode, GraphLink>(links)
+        .id((d) => d.id)
+        .distance((link) => link.kind === 'memory-crosswalk' ? 110 : link.kind === 'tactic-technique' ? 84 : 120)
+        .strength((link) => link.kind === 'memory-crosswalk' ? 0.08 : link.kind === 'tactic-technique' ? 0.12 : 0.06))
+      .force('charge', forceManyBody<GraphNode>().strength((node) => node.kind === 'technique' ? -180 : -240))
+      .force('collide', forceCollide<GraphNode>((node) => node.kind === 'technique' ? 20 : node.kind === 'control' ? 24 : 26).iterations(3))
+      .force('x', forceX<GraphNode>((node) => targetX(node)).strength(activeTactic ? 0.9 : 0.82))
+      .force('y', forceY<GraphNode>((node) => targetY(node)).strength(activeTactic ? 0.2 : 0.11))
+      .velocityDecay(0.7)
 
-    simulation.on('tick', () => {
-      const newPos = new Map<string, { x: number; y: number }>()
-      for (const node of nodes) {
-        newPos.set(node.id, {
-          x: Math.max(20, Math.min(dimensions.width - 20, node.x ?? 0)),
-          y: Math.max(20, Math.min(dimensions.height - 20, node.y ?? 0)),
-        })
-      }
-      setPositions(newPos)
+    simulation.stop()
+    simulation.tick(reducedMotion ? 1 : 180 + (forcePulse % 3) * 40)
 
-      // Draw edges on canvas
-      const canvas = canvasRef.current
-      if (canvas) {
-        const ctx = canvas.getContext('2d')
-        if (ctx) {
-          ctx.clearRect(0, 0, dimensions.width, dimensions.height)
-          ctx.strokeStyle = EMBRY.border
-          ctx.globalAlpha = 0.4
-          ctx.lineWidth = 1
-          ctx.beginPath()
-
-          for (const tech of techniques) {
-            const pos = newPos.get(tech.id)
-            if (!pos) continue
-            const byTactic = techniques.filter((t) => t.tactic === tech.tactic)
-            const idx = byTactic.findIndex((t) => t.id === tech.id)
-            if (idx < byTactic.length - 1) {
-              const nextPos = newPos.get(byTactic[idx + 1].id)
-              if (nextPos) {
-                ctx.moveTo(pos.x, pos.y)
-                ctx.lineTo(nextPos.x, nextPos.y)
-              }
-            }
-          }
-          ctx.stroke()
-        }
-      }
-    })
+    const padding = 80
+    const nextPositions = new Map<string, { x: number; y: number }>()
+    for (const node of nodes) {
+      const laneStrength = node.kind === 'technique'
+        ? 0.08
+        : node.kind === 'tactic'
+          ? 0
+          : 0.22
+      const laneXPosition = targetX(node) + ((node.x ?? targetX(node)) - targetX(node)) * laneStrength
+      nextPositions.set(node.id, {
+        x: Math.max(padding, Math.min(dimensions.width - padding, laneXPosition)),
+        y: Math.max(padding, Math.min(dimensions.height - padding, node.y ?? dimensions.height / 2)),
+      })
+    }
+    setPositions(nextPositions)
 
     return () => { simulation.stop() }
-  }, [techniques, tactics, dimensions])
+  }, [techniques.length, tactics, dimensions, graphData, reducedMotion, forcePulse, hoveredTactic, lockedTactic, nodeTactic])
 
-  const nodeMap = useMemo(() => new Map(techniques.map((t) => [t.id, t])), [techniques])
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const adjacentNodeIds = useMemo(() => {
+    if (!hovered) return new Set<string>()
+    const ids = new Set<string>([hovered])
+    for (const link of graphData.links) {
+      if (link.source === hovered) ids.add(link.target)
+      if (link.target === hovered) ids.add(link.source)
+    }
+    return ids
+  }, [graphData.links, hovered])
+
+  const techniqueByGraphId = useMemo(() => new Map(
+    graphData.nodes
+      .filter((node): node is GraphNode & { data: ThreatTechnique } => node.kind === 'technique' && Boolean(node.data))
+      .map((node) => [node.id, node.data])
+  ), [graphData.nodes])
+
+  const nodeById = useMemo(() => new Map(graphData.nodes.map((node) => [node.id, node])), [graphData.nodes])
+
+  const linkTouchesActiveTactic = useCallback((link: TacticalGraphLink): boolean => {
+    if (!activeTactic) return false
+    const source = nodeById.get(link.source)
+    const target = nodeById.get(link.target)
+    return (source ? nodeTactic(source) === activeTactic : false) || (target ? nodeTactic(target) === activeTactic : false)
+  }, [activeTactic, nodeById, nodeTactic])
+
+  const nodeMatchesActiveTactic = useCallback((node: GraphNode): boolean => {
+    if (!activeTactic) return false
+    return nodeTactic(node) === activeTactic
+  }, [activeTactic, nodeTactic])
+
+  const linkStyle = (kind: TacticalGraphLink['kind'], hot: boolean) => {
+    if (hot) return { stroke: 'rgba(250, 204, 21, 0.62)', width: 1.5 }
+    if (kind === 'control-category') return { stroke: 'rgba(250, 204, 21, 0.16)', width: 1 }
+    if (kind === 'memory-crosswalk') return { stroke: 'rgba(250, 204, 21, 0.22)', width: 1.2 }
+    if (kind === 'evidence-state') return { stroke: 'rgba(255, 255, 255, 0.12)', width: 1 }
+    if (kind === 'crosswalk-framework') return { stroke: 'rgba(255, 255, 255, 0.07)', width: 1 }
+    return { stroke: 'rgba(255, 255, 255, 0.05)', width: 1 }
+  }
+
+  const nodeStroke = (node: GraphNode, active: boolean) => {
+    if (active) return '#FACC15'
+    if (node.kind === 'technique') return 'rgba(148, 163, 184, 0.42)'
+    if (node.kind === 'category') return 'rgba(250, 204, 21, 0.4)'
+    if (node.kind === 'control') return 'rgba(250, 204, 21, 0.28)'
+    if (node.kind === 'evidence') return 'rgba(255, 255, 255, 0.22)'
+    return 'rgba(255, 255, 255, 0.14)'
+  }
+
+  const updateZoom = (nextK: number, origin: { x: number; y: number }) => {
+    setViewport((current) => {
+      const k = Math.max(0.45, Math.min(3.2, nextK))
+      const ratio = k / current.k
+      return {
+        k,
+        x: origin.x - (origin.x - current.x) * ratio,
+        y: origin.y - (origin.y - current.y) * ratio,
+      }
+    })
+  }
 
   return (
-    <div ref={containerRef} style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-      <canvas
-        ref={canvasRef}
-        width={dimensions.width}
-        height={dimensions.height}
-        style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
-      />
-      <svg ref={svgRef} width={dimensions.width} height={dimensions.height} style={{ position: 'absolute', inset: 0 }}>
-        {/* Tactic lane backgrounds (labels are in TacticStrip, not duplicated here) */}
-        {tactics.map((tactic, i) => {
-          const laneWidth = dimensions.width / tactics.length
-          return (
-            <rect
-              key={tactic.id}
-              x={i * laneWidth}
-              y={0}
-              width={laneWidth}
-              height={dimensions.height}
-              fill={i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent'}
-            />
-          )
-        })}
-
-        {/* Edges are now drawn on Canvas */}
-
-        {/* Nodes */}
-        {techniques.map((tech) => {
-          const pos = positions.get(tech.id)
-          if (!pos) return null
-          const color = VERDICT_COLORS[tech.evidenceVerdict] ?? EMBRY.dim
-          const isHovered = hovered === tech.id
-          const radius = isHovered ? 10 : 7
-          return (
-            <g data-qid="shared-threatmatrix:auto:859" data-qs-action="SHARED_THREATMATRIX_AUTO_859"
-              key={tech.id}
-              transform={`translate(${pos.x}, ${pos.y})`}
-              style={{ cursor: 'pointer' }}
-              onMouseEnter={() => setHovered(tech.id)}
-              onMouseLeave={() => setHovered(null)}
-              onClick={() => onSelect(tech)}
-            >
-              <circle
-                r={radius}
-                fill={color}
-                opacity={isHovered ? 1 : 0.8}
-                stroke={isHovered ? EMBRY.white : 'none'}
-                strokeWidth={2}
+    <div
+      ref={containerRef}
+      data-qid="threat-matrix:graph:tactical-node-graph"
+      style={{ flex: 1, position: 'relative', overflow: 'hidden', background: '#050505' }}
+    >
+      <svg
+        role="img"
+        aria-label={`SPARTA tactical threat relationship graph with ${techniques.length} techniques`}
+        viewBox={`0 0 ${Math.max(dimensions.width, 1)} ${Math.max(dimensions.height, 1)}`}
+        preserveAspectRatio="xMidYMid meet"
+        onWheel={(event) => {
+          event.preventDefault()
+          const bounds = event.currentTarget.getBoundingClientRect()
+          const origin = { x: event.clientX - bounds.left, y: event.clientY - bounds.top }
+          updateZoom(viewport.k * (event.deltaY < 0 ? 1.12 : 0.88), origin)
+        }}
+        onPointerDown={(event) => {
+          if ((event.target as Element).closest('[data-graph-node-kind]')) return
+          event.currentTarget.setPointerCapture(event.pointerId)
+          panRef.current = {
+            pointerId: event.pointerId,
+            startX: event.clientX,
+            startY: event.clientY,
+            originX: viewport.x,
+            originY: viewport.y,
+          }
+        }}
+        onPointerMove={(event) => {
+          const pan = panRef.current
+          if (!pan || pan.pointerId !== event.pointerId) return
+          setViewport((current) => ({
+            ...current,
+            x: pan.originX + event.clientX - pan.startX,
+            y: pan.originY + event.clientY - pan.startY,
+          }))
+        }}
+        onPointerUp={(event) => {
+          if (panRef.current?.pointerId === event.pointerId) panRef.current = null
+        }}
+        onDoubleClick={() => setViewport({ x: 0, y: 0, k: 1 })}
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', touchAction: 'none', cursor: panRef.current ? 'grabbing' : 'grab' }}
+      >
+        <g transform={`translate(${viewport.x} ${viewport.y}) scale(${viewport.k})`}>
+        <g aria-hidden="true">
+          {graphData.links.map((link) => {
+            const source = positions.get(link.source)
+            const target = positions.get(link.target)
+            if (!source || !target) return null
+            const isHot = hovered && (link.source === hovered || link.target === hovered)
+            const isTacticHot = linkTouchesActiveTactic(link)
+            const style = linkStyle(link.kind, Boolean(isHot))
+            return (
+              <line
+                key={link.id}
+                data-graph-edge-kind={link.kind}
+                x1={source.x}
+                y1={source.y}
+                x2={target.x}
+                y2={target.y}
+                stroke={isTacticHot && !hovered ? 'rgba(250,204,21,0.34)' : style.stroke}
+                strokeWidth={isTacticHot && !hovered ? Math.max(style.width, 1.2) : style.width}
+                opacity={hovered ? (isHot ? 1 : 0.08) : activeTactic ? (isTacticHot ? 0.95 : 0.08) : 1}
               />
-              {isHovered && (
+            )
+          })}
+        </g>
+
+        {graphData.nodes.map((node) => {
+          const pos = positions.get(node.id)
+          if (!pos) return null
+          const isHovered = hovered === node.id
+          const related = adjacentNodeIds.has(node.id)
+          const dimmed = hovered && !related
+          const isTechnique = node.kind === 'technique'
+          const tech = techniqueByGraphId.get(node.id)
+          const stroke = nodeStroke(node, isHovered)
+          const isHub = node.kind !== 'technique'
+          const tacticMatch = nodeMatchesActiveTactic(node)
+          const tacticDimmed = activeTactic && !tacticMatch && !(hovered && related)
+          const showLabel = (
+            node.kind === 'tactic' ||
+            node.kind === 'framework' ||
+            node.kind === 'category' ||
+            isHovered ||
+            (hovered && related) ||
+            tacticMatch
+          )
+          const safeQid = node.id.replace(/[^a-zA-Z0-9_-]/g, '-')
+          return (
+            <g
+              key={node.id}
+              data-qid={`threat-matrix:graph:node-${safeQid}`}
+              data-graph-node-id={node.id}
+              data-graph-node-kind={node.kind}
+              data-qs-action={isTechnique ? 'SELECT_TECHNIQUE_GRAPH_NODE' : 'INSPECT_RELATIONSHIP_HUB'}
+              transform={`translate(${pos.x}, ${pos.y})`}
+              style={{
+                cursor: isTechnique ? 'pointer' : 'default',
+                opacity: dimmed || tacticDimmed ? 0.12 : 1,
+                transition: 'opacity 0.15s ease',
+              }}
+              onPointerEnter={() => setHovered(node.id)}
+              onPointerLeave={() => setHovered(null)}
+              onFocus={() => setHovered(node.id)}
+              onBlur={() => setHovered(null)}
+              onClick={() => { if (tech) onSelect(tech) }}
+              tabIndex={isTechnique ? 0 : -1}
+              role={isTechnique ? 'button' : 'img'}
+              aria-label={tech ? `${tech.id}: ${tech.name}. ${tech.coverage} coverage.` : `${node.kind}: ${node.label}`}
+              onKeyDown={(event) => {
+                if (tech && (event.key === 'Enter' || event.key === ' ')) {
+                  event.preventDefault()
+                  onSelect(tech)
+                }
+              }}
+            >
+              <title>{tech ? `${tech.id}: ${tech.name}` : `${node.kind}: ${node.label}`}</title>
+              {isHub ? (
+                <circle
+                  r={node.kind === 'tactic' ? 10 : 7}
+                  fill="#09090b"
+                  stroke={stroke}
+                  strokeWidth={isHovered ? 2 : 1}
+                />
+              ) : (
+                <rect
+                  x={-6}
+                  y={-6}
+                  width={12}
+                  height={12}
+                  rx={2}
+                  fill="#121214"
+                  stroke={stroke}
+                  strokeWidth={isHovered ? 2 : 1}
+                  style={{ filter: isHovered ? 'drop-shadow(0 0 6px rgba(250,204,21,0.35))' : 'none' }}
+                />
+              )}
+              {showLabel && (
                 <text
-                  y={-14}
-                  fill={EMBRY.white}
-                  fontSize={9}
-                  textAnchor="middle"
-                  style={{ fontFamily: 'monospace', pointerEvents: 'none' }}
+                  x={isHub ? 12 : 12}
+                  y={3}
+                  fill={isHovered ? '#FACC15' : isHub ? 'rgba(255,255,255,0.42)' : 'rgba(255,255,255,0.74)'}
+                  fontSize={isHub ? 8 : 9}
+                  fontWeight={700}
+                  letterSpacing="0.1em"
+                  style={{ pointerEvents: 'none', textTransform: 'uppercase' }}
                 >
-                  {tech.id}
+                  {node.label}
                 </text>
               )}
             </g>
           )
         })}
+        </g>
       </svg>
+
+      <div
+        data-qid="threat-matrix:graph:tactic-magnets"
+        style={{
+          position: 'absolute',
+          top: 16,
+          left: 16,
+          right: 16,
+          display: 'grid',
+          gridTemplateColumns: `repeat(${Math.max(tactics.length, 1)}, minmax(0, 1fr))`,
+          gap: 4,
+          pointerEvents: 'auto',
+        }}
+      >
+        {tactics.map((tactic) => {
+          const isActive = activeTactic === tactic.name
+          const isLocked = lockedTactic === tactic.name
+          const stats = tacticStats.get(tactic.name) ?? { total: 0, memoryEdges: 0 }
+          return (
+            <button
+              key={tactic.id}
+              type="button"
+              data-qid={`threat-matrix:graph:tactic-magnet-${tactic.prefix}`}
+              data-qs-action="GRAPH_TACTIC_MAGNET_SELECT"
+              data-graph-tactic={tactic.name}
+              data-graph-tactic-active={isActive ? 'true' : 'false'}
+              data-graph-tactic-locked={isLocked ? 'true' : 'false'}
+              onPointerEnter={() => setHoveredTactic?.(tactic.name)}
+              onPointerLeave={() => { if (!isLocked) setHoveredTactic?.(null) }}
+              onFocus={() => setHoveredTactic?.(tactic.name)}
+              onBlur={() => { if (!isLocked) setHoveredTactic?.(null) }}
+              onClick={() => {
+                const nextLocked = isLocked ? null : tactic.name
+                setLockedTactic?.(nextLocked)
+                setHoveredTactic?.(nextLocked)
+              }}
+              title={`${tactic.name}: ${stats.total} techniques, ${stats.memoryEdges} memory edges`}
+              style={{
+                minHeight: 52,
+                borderRadius: 2,
+                border: isActive ? '1px solid rgba(250,204,21,0.66)' : '1px solid rgba(255,255,255,0.08)',
+                borderBottom: isLocked ? '3px solid #FACC15' : isActive ? '2px solid rgba(250,204,21,0.66)' : '1px solid rgba(255,255,255,0.08)',
+                background: isActive ? 'rgba(250,204,21,0.11)' : 'rgba(5,5,5,0.72)',
+                color: isActive ? '#FACC15' : 'rgba(255,255,255,0.56)',
+                padding: '7px 6px 6px',
+                textAlign: 'left',
+                cursor: 'pointer',
+                boxShadow: isLocked ? '0 0 18px rgba(250,204,21,0.16)' : 'none',
+              }}
+            >
+              <span style={{ display: 'block', fontSize: 11, fontWeight: 900, letterSpacing: '0.1em', textTransform: 'uppercase', lineHeight: 1 }}>
+                {tactic.prefix}
+              </span>
+              <span style={{ display: 'block', marginTop: 4, fontSize: 8, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {stats.total} tech · {stats.memoryEdges} edge
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
+      <ul style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clipPath: 'inset(50%)' }}>
+        {graphData.nodes.map((node) => (
+          <li key={node.id}>
+            {node.kind}: {node.label}
+            {node.data ? `; ${node.data.name}; coverage ${node.data.coverage}; verdict ${node.data.evidenceVerdict}` : ''}
+          </li>
+        ))}
+      </ul>
+
+      <div style={{
+        position: 'absolute',
+        left: 16,
+        bottom: 16,
+        color: 'rgba(255, 255, 255, 0.42)',
+        fontSize: 10,
+        fontWeight: 800,
+        letterSpacing: '0.12em',
+        textTransform: 'uppercase',
+        background: 'rgba(5, 5, 5, 0.72)',
+        border: '1px solid rgba(255, 255, 255, 0.06)',
+        padding: '6px 10px',
+      }}>
+        Drag pans · Wheel zooms · Click locks evidence
+      </div>
+
+      <div
+        data-qid="threat-matrix:graph:controls"
+        style={{
+          position: 'absolute',
+          left: 16,
+          bottom: 52,
+          display: 'flex',
+          gap: 6,
+          padding: 6,
+          background: 'rgba(5,5,5,0.72)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: 2,
+        }}
+      >
+        {[
+          { text: '+', qid: 'threat-matrix:graph:control-zoom-in', action: 'GRAPH_ZOOM_IN', onClick: () => updateZoom(viewport.k * 1.18, { x: dimensions.width / 2, y: dimensions.height / 2 }), title: 'Zoom in threat graph' },
+          { text: '-', qid: 'threat-matrix:graph:control-zoom-out', action: 'GRAPH_ZOOM_OUT', onClick: () => updateZoom(viewport.k * 0.82, { x: dimensions.width / 2, y: dimensions.height / 2 }), title: 'Zoom out threat graph' },
+          { text: '0', qid: 'threat-matrix:graph:control-reset', action: 'GRAPH_RESET_VIEW', onClick: () => setViewport({ x: 0, y: 0, k: 1 }), title: 'Reset graph view' },
+          { text: 'PUSH', qid: 'threat-matrix:graph:control-force-push', action: 'GRAPH_FORCE_PUSH', onClick: () => { setViewport({ x: 0, y: 0, k: 1 }); setForcePulse((value) => value + 1) }, title: 'Force push graph layout' },
+        ].map(({ text, qid, action, onClick, title }) => (
+          <button
+            key={qid}
+            type="button"
+            data-qid={qid}
+            data-qs-action={action}
+            onClick={onClick}
+            title={title}
+            style={{
+              minWidth: text === 'PUSH' ? 46 : 28,
+              height: 28,
+              borderRadius: 2,
+              border: '1px solid rgba(250,204,21,0.28)',
+              background: 'rgba(250,204,21,0.06)',
+              color: 'rgba(250,204,21,0.86)',
+              fontSize: 10,
+              fontWeight: 900,
+              letterSpacing: '0.08em',
+              cursor: 'pointer',
+            }}
+          >
+            {text}
+          </button>
+        ))}
+      </div>
 
       {/* Legend */}
       <div style={{
-        position: 'absolute', bottom: 12, right: 12,
+        position: 'absolute', bottom: 16, right: 16,
         display: 'flex', gap: 12, padding: '6px 10px',
-        background: 'rgba(0,0,0,0.6)', borderRadius: 6,
+        background: 'rgba(5,5,5,0.72)', borderRadius: 2,
+        border: '1px solid rgba(255,255,255,0.06)',
         fontSize: 9, fontFamily: 'monospace',
       }}>
-        {Object.entries(VERDICT_COLORS).map(([verdict, color]) => (
-          <div key={verdict} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{ width: 8, height: 8, borderRadius: 4, background: color }} />
-            <span style={{ color: EMBRY.dim, textTransform: 'capitalize' }}>{verdict.replace('_', ' ')}</span>
+        {[
+          ['rgba(148,163,184,0.42)', 'technique'],
+          ['rgba(250,204,21,0.28)', 'memory edge'],
+          ['rgba(250,204,21,0.16)', 'control category'],
+          ['rgba(250,204,21,0.62)', 'active path'],
+        ].map(([color, labelText]) => (
+          <div key={labelText} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <span
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: 2,
+                background: labelText === 'active path' ? 'transparent' : '#121214',
+                border: `1px solid ${color}`,
+              }}
+            />
+            <span style={{ color: 'rgba(255,255,255,0.42)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{labelText}</span>
           </div>
         ))}
       </div>
@@ -958,72 +1347,21 @@ function Grid() {
     )
   }
 
-  // ── Graph View: ProvenanceGraph showing technique → countermeasure → evidence chains ──
+  // ── Graph View: tactical relationship graph. Technique clicks use the host
+  // squeeze pane for detail; this view does not invent a separate overlay.
   if (state.viewMode === 'graph') {
-    // Require a technique to be selected to show provenance chain
-    if (!state.selectedDetail) {
-      return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, gap: 16, color: EMBRY.dim }}>
-          <Network size={48} strokeWidth={1} />
-          <div style={{ fontSize: 14, textAlign: 'center', maxWidth: 400 }}>
-            Select a technique from the Grid or Bloom view to see its<br />
-            <span style={{ color: EMBRY.accent }}>evidence chain</span>: countermeasures, controls, and evidence cases
-          </div>
-          <button
-            onClick={() => actions.setViewMode?.('standard')}
-            style={{
-              ...fwBadge('SPARTA'),
-              padding: '10px 20px',
-              cursor: 'pointer',
-              border: 'none',
-              borderRadius: 6,
-              minHeight: 44,
-              minWidth: 44,
-            }}
-            data-qid="threat-matrix:button:switch-to-grid"
-            data-qs-action="SWITCH_TO_GRID_VIEW"
-            title="Switch to grid view to select a technique"
-          >
-            Switch to Grid View
-          </button>
-        </div>
-      )
-    }
-
-    // Build provenance graph from selected technique detail
-    const { nodes, edges } = buildProvenanceFromTechnique(state.selectedDetail)
-
     return (
-      <div style={{ flex: 1, position: 'relative' }}>
-        <ProvenanceGraph
-          nodes={nodes}
-          edges={edges}
-          onNodeSelect={(node) => {
-            if (node?.nodeClass === 'control') {
-              // Could navigate to control details
-            }
-          }}
+      <div style={{ flex: 1, minHeight: 520, height: '100%', position: 'relative', display: 'flex' }}>
+        <TechniqueGraph
+          techniques={state.techniques}
+          tactics={state.tactics}
+          relationships={state.graphRelationships}
+          hoveredTactic={state.graphHoveredTactic}
+          lockedTactic={state.graphLockedTactic}
+          setHoveredTactic={actions.setGraphHoveredTactic}
+          setLockedTactic={actions.setGraphLockedTactic}
+          onSelect={actions.selectTechnique}
         />
-        {/* Technique info overlay */}
-        <div style={{
-          position: 'absolute',
-          top: 12,
-          right: 12,
-          background: 'rgba(0,0,0,0.8)',
-          padding: '12px 16px',
-          borderRadius: 8,
-          maxWidth: 300,
-        }}>
-          <div style={{ ...label, color: EMBRY.accent, marginBottom: 4 }}>
-            {state.selectedDetail.technique.id}
-          </div>
-          <div style={{ fontSize: 12, color: EMBRY.white }}>
-            {state.selectedDetail.technique.name}
-          </div>
-          <div style={{ fontSize: 10, color: EMBRY.dim, marginTop: 8 }}>
-            {state.selectedDetail.countermeasures?.length ?? 0} countermeasures · {state.selectedDetail.evidenceCases?.length ?? 0} evidence cases
-          </div>
-        </div>
       </div>
     )
   }

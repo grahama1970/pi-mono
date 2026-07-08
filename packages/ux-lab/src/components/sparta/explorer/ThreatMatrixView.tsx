@@ -9,7 +9,7 @@
  */
 import { useState, useEffect, useCallback } from 'react'
 import { ThreatMatrix } from '../shared/ThreatMatrix'
-import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState, ThreatMatrixActions, ThreatMatrixMeta, DatalakeOption, TraceabilityChunk, EvidenceCase } from '../shared/ThreatMatrix'
+import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState, ThreatMatrixActions, ThreatMatrixMeta, DatalakeOption, TraceabilityChunk, EvidenceCase, ThreatRelationship } from '../shared/ThreatMatrix'
 import { API_ORIGIN, MEMORY_API_ROOT } from '../../../lib/apiBase'
 import { PageDistanceRoot, usePageDistanceMode } from './pageDistance/PageDistanceMode'
 import { deriveCoveragePagePurposeState, type CoverageHealthSnapshot } from './pagePurposeContracts'
@@ -88,6 +88,9 @@ export function ThreatMatrixView() {
   const [loadingDetail, setLoadingDetail] = useState(false)
   const [activeDatalake, setActiveDatalake] = useState<string>('')
   const [evidenceMap, setEvidenceMap] = useState<Map<string, { verdict: string; grade: string; count: number }>>(new Map())
+  const [graphRelationships, setGraphRelationships] = useState<ThreatRelationship[]>([])
+  const [graphHoveredTactic, setGraphHoveredTactic] = useState<string | null>(null)
+  const [graphLockedTactic, setGraphLockedTactic] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<ThreatMatrixState['viewMode']>('standard')
   const coverageHealth = readCoverageHealthCache()
   const coveragePurpose = deriveCoveragePagePurposeState(coverageHealth)
@@ -211,6 +214,53 @@ export function ThreatMatrixView() {
         setRawTechniques([])
         setLoading(false)
       })
+  }, [])
+
+  // Load a bounded relationship slice from memory. These are the authoritative
+  // crosswalk/control edges created by the evidence-case and SPARTA pipelines.
+  useEffect(() => {
+    const relationshipFields = [
+      'source_control_id',
+      'target_control_id',
+      'source_framework',
+      'target_framework',
+      'relationship_type',
+      'edge_type',
+      'combined_score',
+    ]
+    Promise.all([
+      post('/list', {
+        collection: 'sparta_relationships',
+        limit: 500,
+        filters: { target_framework: 'SPARTA' },
+        return_fields: relationshipFields,
+      }),
+      post('/list', {
+        collection: 'sparta_relationships',
+        limit: 500,
+        filters: { target_framework: 'sparta' },
+        return_fields: relationshipFields,
+      }),
+      post('/list', {
+        collection: 'sparta_relationships',
+        limit: 500,
+        filters: { source_framework: 'SPARTA' },
+        return_fields: relationshipFields,
+      }),
+    ]).then((results) => {
+      const seen = new Set<string>()
+      const relationships: ThreatRelationship[] = []
+      for (const res of results) {
+        for (const rel of ((res.documents ?? []) as ThreatRelationship[])) {
+          if (!rel.source_control_id || !rel.target_control_id) continue
+          const key = `${rel.source_control_id}->${rel.target_control_id}`
+          if (seen.has(key)) continue
+          seen.add(key)
+          relationships.push(rel)
+        }
+      }
+      setGraphRelationships(relationships)
+    }).catch(() => setGraphRelationships([]))
   }, [])
 
   // Load evidence verdicts from dedicated evidence_cases collection
@@ -349,6 +399,9 @@ export function ThreatMatrixView() {
     loadingDetail,
     viewMode,
     condensedView,
+    graphRelationships,
+    graphHoveredTactic,
+    graphLockedTactic,
   }
 
   const selectDatalake = useCallback((dl: string) => setActiveDatalake(dl), [])
@@ -360,6 +413,8 @@ export function ThreatMatrixView() {
     selectDatalake,
     setViewMode,
     toggleCondensedView: () => setCondensedView((v) => !v),
+    setGraphHoveredTactic,
+    setGraphLockedTactic,
   }
 
   const meta: ThreatMatrixMeta = {
