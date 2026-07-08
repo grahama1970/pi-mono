@@ -1563,7 +1563,7 @@ const S: Record<string, CSSProperties> = {
   tileHeader: { display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start', gap: 14, minWidth: 0 },
   tileTitleGroup: { display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 },
   tileTitle: { color: C.text, fontSize: 24, fontWeight: 900, lineHeight: 1.05, letterSpacing: '0.035em', textTransform: 'uppercase', minWidth: 0 },
-  metricBlock: { alignSelf: 'stretch', minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: 0 },
+  metricBlock: { alignSelf: 'stretch', minWidth: 0, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: 0 },
   metricGraphicShell: { position: 'relative', minWidth: 0, display: 'inline-flex', alignItems: 'center', alignSelf: 'flex-start' },
   metricWrap: { alignSelf: 'center', minWidth: 0, display: 'flex', alignItems: 'center', overflowWrap: 'anywhere' },
   primaryMetric: { color: C.text, fontSize: 68, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.035em', whiteSpace: 'nowrap' },
