@@ -662,6 +662,18 @@ interface TacticalGraphLink {
   kind: 'tactic-technique' | 'crosswalk-framework' | 'control-category' | 'evidence-state' | 'memory-crosswalk'
 }
 
+const TACTIC_ZONE_COLORS: Record<string, string> = {
+  REC: 'rgba(56, 189, 248, 0.03)',
+  RD: 'rgba(251, 146, 60, 0.03)',
+  IA: 'rgba(167, 139, 250, 0.03)',
+  EX: 'rgba(248, 113, 113, 0.03)',
+  PER: 'rgba(74, 222, 128, 0.03)',
+  DE: 'rgba(148, 163, 184, 0.03)',
+  LM: 'rgba(250, 204, 21, 0.02)',
+  EXF: 'rgba(45, 212, 191, 0.03)',
+  IMP: 'rgba(232, 121, 249, 0.03)',
+}
+
 function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic = null, lockedTactic = null, setHoveredTactic, setLockedTactic, onSelect }: {
   techniques: ThreatTechnique[]
   tactics: ThreatTactic[]
@@ -1036,6 +1048,34 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
         onDoubleClick={() => setViewport({ x: 0, y: 0, k: 1 })}
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', touchAction: 'none', cursor: panRef.current ? 'grabbing' : 'grab' }}
       >
+        <g aria-hidden="true" data-graph-zone-layer="tactic-wash">
+          {tactics.map((tactic, index) => {
+            const columnWidth = dimensions.width / Math.max(tactics.length, 1)
+            const x = index * columnWidth
+            return (
+              <g key={tactic.id}>
+                <rect
+                  data-graph-zone={tactic.prefix}
+                  x={x}
+                  y={0}
+                  width={columnWidth}
+                  height={dimensions.height}
+                  fill={TACTIC_ZONE_COLORS[tactic.prefix] ?? 'rgba(255,255,255,0.02)'}
+                />
+                {index > 0 && (
+                  <line
+                    x1={x}
+                    y1={0}
+                    x2={x}
+                    y2={dimensions.height}
+                    stroke="rgba(255,255,255,0.025)"
+                    strokeWidth={1}
+                  />
+                )}
+              </g>
+            )
+          })}
+        </g>
         <g transform={`translate(${viewport.x} ${viewport.y}) scale(${viewport.k})`}>
         <g aria-hidden="true">
           {graphData.links.map((link) => {
