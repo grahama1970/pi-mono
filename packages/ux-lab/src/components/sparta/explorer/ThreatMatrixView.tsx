@@ -28,6 +28,12 @@ function readCoverageHealthCache(): CoverageHealthSnapshot | null {
   }
 }
 
+function readInitialThreatMatrixViewMode(): ThreatMatrixState['viewMode'] {
+  if (typeof window === 'undefined') return 'standard'
+  const mode = new URLSearchParams(window.location.search).get('matrixView')
+  return mode === 'graph' || mode === 'bloom' || mode === 'edges' || mode === 'standard' ? mode : 'standard'
+}
+
 const SPARTA_TACTICS: ThreatTactic[] = [
   { id: 'ST0001', name: 'Reconnaissance', prefix: 'REC' },
   { id: 'ST0002', name: 'Resource Development', prefix: 'RD' },
@@ -91,7 +97,7 @@ export function ThreatMatrixView() {
   const [graphRelationships, setGraphRelationships] = useState<ThreatRelationship[]>([])
   const [graphHoveredTactic, setGraphHoveredTactic] = useState<string | null>(null)
   const [graphLockedTactic, setGraphLockedTactic] = useState<string | null>('Reconnaissance')
-  const [viewMode, setViewMode] = useState<ThreatMatrixState['viewMode']>('standard')
+  const [viewMode, setViewMode] = useState<ThreatMatrixState['viewMode']>(() => readInitialThreatMatrixViewMode())
   const coverageHealth = readCoverageHealthCache()
   const coveragePurpose = deriveCoveragePagePurposeState(coverageHealth)
   const analysisPipelineDegraded = coveragePurpose.state !== 'pass' || coverageHealth?.stale === true

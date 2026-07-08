@@ -647,6 +647,8 @@ interface GraphNode extends SimulationNodeDatum {
   data?: ThreatTechnique
   lane?: string
   laneIndex?: number
+  laneOrdinal?: number
+  laneTotal?: number
 }
 
 interface GraphLink extends SimulationLinkDatum<GraphNode> {
@@ -663,15 +665,15 @@ interface TacticalGraphLink {
 }
 
 const TACTIC_ZONE_COLORS: Record<string, string> = {
-  REC: 'rgba(56, 189, 248, 0.03)',
-  RD: 'rgba(251, 146, 60, 0.03)',
-  IA: 'rgba(167, 139, 250, 0.03)',
-  EX: 'rgba(248, 113, 113, 0.03)',
-  PER: 'rgba(74, 222, 128, 0.03)',
-  DE: 'rgba(148, 163, 184, 0.03)',
-  LM: 'rgba(250, 204, 21, 0.02)',
-  EXF: 'rgba(45, 212, 191, 0.03)',
-  IMP: 'rgba(232, 121, 249, 0.03)',
+  REC: 'rgba(56, 189, 248, 0.02)',
+  RD: 'rgba(251, 146, 60, 0.02)',
+  IA: 'rgba(167, 139, 250, 0.02)',
+  EX: 'rgba(248, 113, 113, 0.02)',
+  PER: 'rgba(74, 222, 128, 0.02)',
+  DE: 'rgba(148, 163, 184, 0.02)',
+  LM: 'rgba(250, 204, 21, 0.015)',
+  EXF: 'rgba(45, 212, 191, 0.02)',
+  IMP: 'rgba(232, 121, 249, 0.02)',
 }
 
 function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic = null, lockedTactic = null, setHoveredTactic, setLockedTactic, onSelect }: {
@@ -767,9 +769,17 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
       })
     }
 
+    const tacticTechniqueTotals = new Map<string, number>()
+    const tacticTechniqueOrdinals = new Map<string, number>()
+    for (const tech of techniques) {
+      tacticTechniqueTotals.set(tech.tactic, (tacticTechniqueTotals.get(tech.tactic) ?? 0) + 1)
+    }
+
     for (const tech of techniques) {
       const tacticIndex = tactics.findIndex((tactic) => tactic.name === tech.tactic)
       const techniqueId = `technique:${tech.id}`
+      const laneOrdinal = tacticTechniqueOrdinals.get(tech.tactic) ?? 0
+      tacticTechniqueOrdinals.set(tech.tactic, laneOrdinal + 1)
       addNode({
         id: techniqueId,
         kind: 'technique',
@@ -777,6 +787,8 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
         data: tech,
         lane: tech.tactic,
         laneIndex: tacticIndex >= 0 ? tacticIndex : 0,
+        laneOrdinal,
+        laneTotal: tacticTechniqueTotals.get(tech.tactic) ?? 1,
       })
 
       const tacticId = `tactic:${tech.tactic}`
@@ -875,6 +887,9 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     const laneCount = Math.max(tactics.length, 1)
     const lanePadding = Math.min(72, Math.max(36, dimensions.width * 0.035))
     const laneWidth = Math.max((dimensions.width - lanePadding * 2) / laneCount, 1)
+    const graphTop = Math.min(120, Math.max(86, dimensions.height * 0.14))
+    const graphBottom = Math.max(graphTop + 180, dimensions.height - 96)
+    const graphHeight = Math.max(graphBottom - graphTop, 1)
     const laneX = (node: GraphNode) => {
       const index = Math.max(0, Math.min(laneCount - 1, node.laneIndex ?? 0))
       return lanePadding + laneWidth * index + laneWidth / 2
@@ -891,17 +906,25 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     }
     const targetY = (node: GraphNode) => {
       const tacticName = nodeTactic(node)
-      const verticalSpread = Math.min(dimensions.height * 0.42, 360)
       if (activeTactic && tacticName === activeTactic) {
-        if (node.kind === 'tactic') return Math.max(78, centerY - verticalSpread * 0.74)
-        if (node.kind === 'technique') return centerY + ((((node.id.length + forcePulse) % 7) - 3) * 30)
-        if (node.kind === 'control' || node.kind === 'category') return centerY - verticalSpread * 0.35
-        return centerY + verticalSpread * 0.35
+        if (node.kind === 'tactic') return graphTop
+        if (node.kind === 'technique') {
+          const total = Math.max(node.laneTotal ?? 1, 1)
+          const ordinal = Math.max(node.laneOrdinal ?? 0, 0)
+          return graphTop + graphHeight * ((ordinal + 1) / (total + 1))
+        }
+        if (node.kind === 'control' || node.kind === 'category') return graphTop + graphHeight * 0.3
+        return graphTop + graphHeight * 0.7
       }
-      if (node.kind === 'tactic') return Math.max(78, centerY - verticalSpread * 0.72)
-      if (node.kind === 'framework' || node.kind === 'evidence') return centerY + verticalSpread * 0.55
-      if (node.kind === 'category' || node.kind === 'control') return centerY - verticalSpread * 0.28
-      return centerY + ((((node.id.length + (node.laneIndex ?? 0)) % 9) - 4) * 22)
+      if (node.kind === 'tactic') return graphTop
+      if (node.kind === 'framework' || node.kind === 'evidence') return graphTop + graphHeight * 0.74
+      if (node.kind === 'category' || node.kind === 'control') return graphTop + graphHeight * 0.28
+      if (node.kind === 'technique') {
+        const total = Math.max(node.laneTotal ?? 1, 1)
+        const ordinal = Math.max(node.laneOrdinal ?? 0, 0)
+        return graphTop + graphHeight * ((ordinal + 1) / (total + 1))
+      }
+      return centerY
     }
 
     const nodes: GraphNode[] = graphData.nodes.map((node) => ({
@@ -915,22 +938,22 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     const simulation = forceSimulation<GraphNode>(nodes)
       .force('link', forceLink<GraphNode, GraphLink>(links)
         .id((d) => d.id)
-        .distance((link) => link.kind === 'memory-crosswalk' ? 110 : link.kind === 'tactic-technique' ? 84 : 120)
-        .strength((link) => link.kind === 'memory-crosswalk' ? 0.08 : link.kind === 'tactic-technique' ? 0.12 : 0.06))
-      .force('charge', forceManyBody<GraphNode>().strength((node) => node.kind === 'technique' ? -180 : -240))
-      .force('collide', forceCollide<GraphNode>((node) => node.kind === 'technique' ? 20 : node.kind === 'control' ? 24 : 26).iterations(3))
-      .force('x', forceX<GraphNode>((node) => targetX(node)).strength(activeTactic ? 0.9 : 0.82))
-      .force('y', forceY<GraphNode>((node) => targetY(node)).strength(activeTactic ? 0.2 : 0.11))
+        .distance((link) => link.kind === 'memory-crosswalk' ? 100 : link.kind === 'tactic-technique' ? 72 : 108)
+        .strength((link) => link.kind === 'memory-crosswalk' ? 0.06 : link.kind === 'tactic-technique' ? 0.1 : 0.05))
+      .force('charge', forceManyBody<GraphNode>().strength((node) => node.kind === 'technique' ? -170 : -230))
+      .force('collide', forceCollide<GraphNode>((node) => node.kind === 'technique' ? 20 : node.kind === 'control' ? 23 : 25).iterations(3))
+      .force('x', forceX<GraphNode>((node) => targetX(node)).strength(activeTactic ? 0.85 : 0.82))
+      .force('y', forceY<GraphNode>((node) => targetY(node)).strength(activeTactic ? 0.32 : 0.24))
       .velocityDecay(0.7)
 
     simulation.stop()
     simulation.tick(reducedMotion ? 1 : 180 + (forcePulse % 3) * 40)
 
-    const padding = 80
+    const padding = 48
     const nextPositions = new Map<string, { x: number; y: number }>()
     for (const node of nodes) {
       const laneStrength = node.kind === 'technique'
-        ? 0.08
+        ? 0.12
         : node.kind === 'tactic'
           ? 0
           : 0.22
@@ -977,20 +1000,25 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
 
   const linkStyle = (kind: TacticalGraphLink['kind'], hot: boolean) => {
     if (hot) return { stroke: 'rgba(250, 204, 21, 0.62)', width: 1.5 }
-    if (kind === 'control-category') return { stroke: 'rgba(250, 204, 21, 0.16)', width: 1 }
-    if (kind === 'memory-crosswalk') return { stroke: 'rgba(250, 204, 21, 0.22)', width: 1.2 }
-    if (kind === 'evidence-state') return { stroke: 'rgba(255, 255, 255, 0.12)', width: 1 }
-    if (kind === 'crosswalk-framework') return { stroke: 'rgba(255, 255, 255, 0.07)', width: 1 }
-    return { stroke: 'rgba(255, 255, 255, 0.05)', width: 1 }
+    if (kind === 'control-category') return { stroke: 'rgba(255,255,255,0.035)', width: 1 }
+    if (kind === 'memory-crosswalk') return { stroke: 'rgba(255,255,255,0.045)', width: 1 }
+    if (kind === 'evidence-state') return { stroke: 'rgba(255,255,255,0.035)', width: 1 }
+    if (kind === 'crosswalk-framework') return { stroke: 'rgba(255,255,255,0.03)', width: 1 }
+    return { stroke: 'rgba(255,255,255,0.03)', width: 1 }
   }
 
   const nodeStroke = (node: GraphNode, active: boolean) => {
     if (active) return '#FACC15'
-    if (node.kind === 'technique') return 'rgba(148, 163, 184, 0.42)'
-    if (node.kind === 'category') return 'rgba(250, 204, 21, 0.4)'
-    if (node.kind === 'control') return 'rgba(250, 204, 21, 0.28)'
-    if (node.kind === 'evidence') return 'rgba(255, 255, 255, 0.22)'
-    return 'rgba(255, 255, 255, 0.14)'
+    if (node.kind === 'technique') {
+      if (node.data?.evidenceVerdict === 'satisfied') return '#22C55E'
+      if (node.data?.evidenceVerdict === 'inconclusive') return 'rgba(250,204,21,0.72)'
+      if (node.data?.evidenceVerdict === 'not_satisfied') return '#EF4444'
+      return 'rgba(148, 163, 184, 0.42)'
+    }
+    if (node.kind === 'category') return 'rgba(255,255,255,0.18)'
+    if (node.kind === 'control') return 'rgba(255,255,255,0.16)'
+    if (node.kind === 'evidence') return 'rgba(255,255,255,0.14)'
+    return 'rgba(255,255,255,0.12)'
   }
 
   const updateZoom = (nextK: number, origin: { x: number; y: number }) => {
@@ -1095,7 +1123,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
                 y2={target.y}
                 stroke={isTacticHot && !hovered ? 'rgba(250,204,21,0.34)' : style.stroke}
                 strokeWidth={isTacticHot && !hovered ? Math.max(style.width, 1.2) : style.width}
-                opacity={hovered ? (isHot ? 1 : 0.08) : activeTactic ? (isTacticHot ? 0.95 : 0.08) : 1}
+                opacity={hovered ? (isHot ? 0.8 : 0.02) : activeTactic ? (isTacticHot ? 0.4 : 0.05) : 1}
               />
             )
           })}
@@ -1132,7 +1160,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
               transform={`translate(${pos.x}, ${pos.y})`}
               style={{
                 cursor: isTechnique ? 'pointer' : 'default',
-                opacity: dimmed || tacticDimmed ? 0.12 : 1,
+                opacity: dimmed ? 0.1 : tacticDimmed ? 0.15 : 1,
                 transition: 'opacity 0.15s ease',
               }}
               onPointerEnter={() => setHovered(node.id)}
@@ -1168,7 +1196,13 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
                   fill="#121214"
                   stroke={stroke}
                   strokeWidth={isHovered ? 2 : 1}
-                  style={{ filter: isHovered ? 'drop-shadow(0 0 6px rgba(250,204,21,0.35))' : 'none' }}
+                  style={{
+                    filter: isHovered
+                      ? 'drop-shadow(0 0 6px rgba(250,204,21,0.35))'
+                      : tacticMatch && node.data?.evidenceVerdict !== 'none'
+                        ? 'drop-shadow(0 0 5px rgba(250,204,21,0.18))'
+                        : 'none',
+                  }}
                 />
               )}
               {showLabel && (
