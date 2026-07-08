@@ -1,0 +1,70 @@
+{
+  "fresh_audible_suite": "/tmp/chatterbox-fork-agent-out/voice-chat-e2e/fresh-all-audible-20260707T155951Z/index.json",
+  "fresh_audible_suite_summary": {
+    "ok": true,
+    "mocked": false,
+    "live": true,
+    "failed_gates": [],
+    "passed": [
+      "S01_S02_S08_S09_S12",
+      "S08",
+      "S10",
+      "S03-unknown-speaker",
+      "S04-ambiguous-speaker",
+      "S05",
+      "S06",
+      "S13"
+    ],
+    "scenario_count": 8
+  },
+  "route_reference_probe": {
+    "referenced_paths": 34,
+    "missing_count_after_patch": 0,
+    "ok_json_count": 14,
+    "failed_json_count": 4,
+    "failed_json": [
+      {
+        "path": "/tmp/chatterbox-fork-agent-out/voice-chat-e2e/voice-chat-e2e-20260703T223350Z-browser-asr-ec-ns-agc/continuous-voice-loop.json",
+        "failed_gates": [
+          "realtimestt_listener_ok",
+          "listener_transcript_present"
+        ],
+        "meaning": "old browser ASR EC/NS/AGC run failed; newer webcam browser-quality run passes"
+      },
+      {
+        "path": "/tmp/chatterbox-fork-agent-out/voice-chat-e2e/browser-asr-matrix-20260703T223244Z/browser-asr-matrix.json",
+        "failed_gates": [
+          "jabra_ns_agc:whisper_transcript",
+          "jabra_raw:whisper_transcript",
+          "default_ns_agc:browser_ok",
+          "default_ns_agc:whisper_transcript"
+        ],
+        "meaning": "device/source failure matrix, intentionally documents bad browser audio devices"
+      },
+      {
+        "path": "/tmp/chatterbox-fork-agent-out/voice-chat-e2e/voice-chat-e2e-20260703T222756Z-factory-src68/index.json",
+        "failed_gates": [
+          "factory_noise_matrix_ok"
+        ],
+        "meaning": "factory source 68 negative/noisy capture path failed"
+      },
+      {
+        "path": "/tmp/chatterbox-fork-agent-out/voice-chat-e2e/voice-chat-e2e-20260703T212038Z-factory-acoustic/index.json",
+        "failed_gates": [
+          "factory_noise_matrix_ok"
+        ],
+        "meaning": "older factory acoustic negative/noisy capture path failed"
+      }
+    ]
+  },
+  "tests": {
+    "chatterbox_full_pytest": "PYTHONPATH=src python -m pytest -q tests -> 121 passed, 3 warnings",
+    "embry_os_voice_daemon": ".venv/bin/python -m pytest -q services/tests/test_voice_daemon.py -> 16 passed (mostly mocked service tests)",
+    "embry_voice_test_interactions": "./run.sh run --manifest packages/ux-lab/test-manifests/embry-voice-10ft.json -> 3 PASS / 0 FAIL",
+    "cdp_marker": "/tmp/codex-ui-verification/pi-mono/embry-voice-integration-probe-r3/20260708T023256Z.png"
+  },
+  "commits": {
+    "pi_mono_safety_branch": "origin/persona/tim-blazytko-1774553751276-sparta-kiosk-views @ 0f689d9ba Retarget Embry Voice receipts",
+    "chatterbox_main": "6c9ad39 Default optional loopback capture args"
+  }
+}

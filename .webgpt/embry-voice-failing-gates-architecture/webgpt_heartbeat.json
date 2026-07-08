@@ -1,0 +1,13 @@
+{
+  "schema": "surf.webgpt_heartbeat.v1",
+  "updated_at": "2026-07-08T11:00:46Z",
+  "submitted_at": "2026-07-08T10:56:21Z",
+  "last_browser_observation_at": "2026-07-08T11:00:46Z",
+  "phase": "completed",
+  "page_state": "response_detected",
+  "last_artifact_written": ".webgpt/embry-voice-failing-gates-architecture/response.raw.md",
+  "next_expected_artifact": ".webgpt/embry-voice-failing-gates-architecture/response.meta.json",
+  "timeout_remaining_seconds": 0,
+  "sentinel": "<<<WEBGPT_DONE:20260708T105618Z:4c892a13>>>",
+  "prepared_prompt_is_transport_proof": false
+}

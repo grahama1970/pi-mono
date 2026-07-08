@@ -1,0 +1,173 @@
+name: "Embry Voice Readiness: Current Path vs Historical and Device Evidence"
+components:
+  - id: embry_voice_route
+    label: "#embry-voice route"
+    tech: "UX Lab route; currently visible but needs split readiness model"
+    latency: "browser"
+    color: purple
+    files:
+      - packages/ux-lab/src/components/embry-voice/EmbryVoiceLabRoute.tsx
+
+  - id: receipt_probe
+    label: "Receipt reference probe"
+    tech: "34 referenced paths; 0 missing; 4 failed receipts require classification"
+    latency: "local proof"
+    color: amber
+    files:
+      - .webgpt/embry-voice-failing-gates-architecture/receipt-summary.json
+
+  - id: fresh_audible_suite
+    label: "Fresh audible suite"
+    tech: "live=true; mocked=false; failed_gates=[]; 8 scenarios"
+    latency: "2026-07-07"
+    color: green
+
+  - id: current_readiness
+    label: "Current voice readiness"
+    tech: "Only active current-profile receipts; should show 0 current failed gates"
+    latency: "fail closed on stale/missing"
+    color: green
+
+  - id: historical_ledger
+    label: "Historical regression ledger"
+    tech: "Superseded/retained failures stay visible but do not count as current failures"
+    latency: "retained evidence"
+    color: amber
+
+  - id: continuous_voice_loop
+    label: "continuous-voice-loop.json"
+    tech: "Historical browser ASR failure: listener and transcript gates failed"
+    latency: "superseded if newer webcam path is active"
+    color: amber
+
+  - id: device_matrix
+    label: "Device qualification matrix"
+    tech: "Per-device pass/fail; failed devices block only when selected active profile"
+    latency: "needs active profile"
+    color: amber
+
+  - id: browser_asr_matrix
+    label: "browser-asr-matrix.json"
+    tech: "Jabra/default NS/AGC browser paths failed"
+    latency: "scoped blocker"
+    color: red
+
+  - id: factory_acoustic
+    label: "Factory acoustic qualification"
+    tech: "Factory-noise failures are plant-floor blockers if required acceptance gates"
+    latency: "needs human scope"
+    color: amber
+
+  - id: factory_source_68
+    label: "factory source 68 receipt"
+    tech: "factory_noise_matrix_ok failed"
+    latency: "scoped blocker"
+    color: red
+
+  - id: older_factory_receipt
+    label: "older factory acoustic receipt"
+    tech: "Older factory_noise_matrix_ok failure; classify as historical or acoustic"
+    latency: "needs scope"
+    color: amber
+
+  - id: chatterbox_core
+    label: "Chatterbox core tests"
+    tech: "PYTHONPATH=src python -m pytest -q tests -> 121 passed, 3 warnings"
+    latency: "core proof only"
+    color: green
+
+  - id: loopback_harness
+    label: "Loopback harness"
+    tech: "Optional capture args repaired; fail-closed path no longer crashes"
+    latency: "commit 6c9ad39"
+    color: green
+
+  - id: voice_daemon_tests
+    label: "Embry OS voice daemon tests"
+    tech: ".venv/bin/python -m pytest -q services/tests/test_voice_daemon.py -> 16 passed"
+    latency: "mostly mocked"
+    color: amber
+
+  - id: qid_action_router
+    label: "Voice intent to QID action router"
+    tech: "Needs live deterministic action routing proof for SPARTA page commands"
+    latency: "contract required"
+    color: amber
+
+  - id: sparta_distance_controller
+    label: "SPARTA distance controller"
+    tech: "Idle -> 10ft; spoken -> 5ft; key/pointer -> lean-in"
+    latency: "automation pending"
+    color: red
+    files:
+      - packages/ux-lab/src/components/sparta-explorer/SpartaKioskDistanceView.tsx
+
+  - id: sparta_10ft
+    label: "10ft all-pages board"
+    tech: "Embry orb plus all-page readiness; kiosk chrome hidden; above fold"
+    latency: "needs voice transition proof"
+    color: amber
+
+  - id: sparta_5ft
+    label: "5ft voice triage"
+    tech: "Transcript-first selected page triage; above fold"
+    latency: "needs transcript lifecycle proof"
+    color: amber
+
+  - id: streamdeck_fallback
+    label: "Stream Deck fallback"
+    tech: "Must share QID/action targets with voice for noisy/gloved plant use"
+    latency: "proof needed"
+    color: amber
+
+  - id: human_scope_gate
+    label: "Human scope gate"
+    tech: "Confirm active suite, device profile, factory-noise scope, freshness TTL"
+    latency: "required before hiding failures"
+    color: amber
+
+connections:
+  - from: receipt_probe
+    to: current_readiness
+  - from: fresh_audible_suite
+    to: current_readiness
+  - from: chatterbox_core
+    to: current_readiness
+  - from: loopback_harness
+    to: current_readiness
+  - from: receipt_probe
+    to: historical_ledger
+  - from: continuous_voice_loop
+    to: historical_ledger
+  - from: receipt_probe
+    to: device_matrix
+  - from: browser_asr_matrix
+    to: device_matrix
+  - from: receipt_probe
+    to: factory_acoustic
+  - from: factory_source_68
+    to: factory_acoustic
+  - from: older_factory_receipt
+    to: factory_acoustic
+  - from: current_readiness
+    to: embry_voice_route
+  - from: historical_ledger
+    to: embry_voice_route
+  - from: device_matrix
+    to: embry_voice_route
+  - from: factory_acoustic
+    to: embry_voice_route
+  - from: voice_daemon_tests
+    to: qid_action_router
+  - from: qid_action_router
+    to: sparta_distance_controller
+  - from: embry_voice_route
+    to: qid_action_router
+  - from: sparta_distance_controller
+    to: sparta_10ft
+  - from: sparta_distance_controller
+    to: sparta_5ft
+  - from: sparta_distance_controller
+    to: streamdeck_fallback
+  - from: human_scope_gate
+    to: receipt_probe

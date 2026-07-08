@@ -1,10 +1,10 @@
 {
-  "verified_at": "2026-07-08T02:33:04.041603+00:00",
+  "verified_at": "2026-07-08T11:04:22.781607+00:00",
   "cwd": "/home/graham/workspace/experiments/pi-mono",
   "root": "/home/graham/workspace/experiments/pi-mono",
   "output_root": "/tmp/codex-ui-verification/pi-mono",
-  "url": "http://localhost:3002/#embry-voice",
-  "name": "embry-voice-integration-probe-r3",
-  "screenshot": "/tmp/codex-ui-verification/pi-mono/embry-voice-integration-probe-r3/20260708T023256Z.png",
-  "read_json": "/tmp/codex-ui-verification/pi-mono/embry-voice-integration-probe-r3/20260708T023256Z.read.json"
+  "url": "http://localhost:3002/#architecture",
+  "name": "embry-voice-failing-gates-architecture",
+  "screenshot": "/tmp/codex-ui-verification/pi-mono/embry-voice-failing-gates-architecture/20260708T110415Z.png",
+  "read_json": "/tmp/codex-ui-verification/pi-mono/embry-voice-failing-gates-architecture/20260708T110415Z.read.json"
 }
