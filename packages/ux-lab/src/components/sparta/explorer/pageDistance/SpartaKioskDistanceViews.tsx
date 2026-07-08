@@ -673,20 +673,6 @@ function PostureTelemetryGraphic({ stripColor }: { stripColor: string }) {
         <div style={{ ...S.postureState, color: stripColor }}>CONTROLLED</div>
         <div style={S.postureLabel}>POSTURE</div>
       </div>
-      <div style={S.postureTelemetryRow}>
-        <div style={S.postureTelemetryItem}>
-          <div style={S.postureTelemetryValue}>
-            3<span style={S.postureTelemetryMuted}>/5</span>
-          </div>
-          <div style={S.postureTelemetryLabel}>READINESS</div>
-        </div>
-        <div style={{ ...S.postureTelemetryItem, textAlign: 'right' }}>
-          <div style={S.postureTelemetryValue}>
-            2 <span style={S.postureTelemetryMuted}>GAPS</span>
-          </div>
-          <div style={S.postureTelemetryLabel}>ITAR / CUI</div>
-        </div>
-      </div>
     </div>
   )
 }
@@ -701,16 +687,6 @@ function SupplyChainTelemetryGraphic({ stripColor }: { stripColor: string }) {
         </div>
         <div style={S.supplyRiskLabel}>
           AT-RISK SUPPLIERS
-        </div>
-      </div>
-      <div style={S.supplyTelemetryRow}>
-        <div style={S.supplyTelemetryItem}>
-          <div style={S.supplyTelemetryValue}>2</div>
-          <div style={S.supplyTelemetryLabel}>ITAR / CUI</div>
-        </div>
-        <div style={{ ...S.supplyTelemetryItem, textAlign: 'right' }}>
-          <div style={S.supplyTelemetryValue}>1</div>
-          <div style={S.supplyTelemetryLabel}>CRITICAL PART</div>
         </div>
       </div>
     </div>
@@ -1606,30 +1582,21 @@ const S: Record<string, CSSProperties> = {
   },
   sourcesStandbyText: { position: 'relative', zIndex: 1, color: 'rgba(255,255,255,0.24)', fontSize: 31, fontWeight: 950, lineHeight: 0.94, letterSpacing: '0.01em', textTransform: 'uppercase' },
   sourcesStandbyLabel: { position: 'relative', zIndex: 1, marginTop: 9, color: 'rgba(148,163,184,0.48)', fontSize: 25, fontWeight: 950, lineHeight: 1, letterSpacing: '0.06em', textTransform: 'uppercase' },
-  postureGraphic: { width: '100%', height: '100%', minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', marginBottom: 0 },
-  postureHero: { flex: '1 1 auto', minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 7, marginTop: 0, paddingBottom: 4 },
+  postureGraphic: { width: '100%', height: '100%', minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', marginBottom: 0 },
+  postureHero: { minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 7, marginTop: 0 },
   postureState: { fontSize: 32, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.045em', textTransform: 'uppercase' },
   postureLabel: { color: 'rgba(255,255,255,0.42)', fontSize: 22, fontWeight: 900, lineHeight: 1, letterSpacing: '0.18em', textTransform: 'uppercase' },
-  postureTelemetryRow: { height: 56, flex: '0 0 56px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', width: '100%', borderTop: '1px solid rgba(148,163,184,0.18)', paddingTop: 10, marginTop: 0, boxSizing: 'border-box' },
-  postureTelemetryItem: { display: 'flex', flexDirection: 'column', gap: 4 },
-  postureTelemetryValue: { color: 'rgba(255,255,255,0.84)', fontSize: 24, fontWeight: 900, lineHeight: 1, letterSpacing: '-0.02em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
-  postureTelemetryMuted: { color: 'rgba(255,255,255,0.42)', fontSize: 19, letterSpacing: '-0.02em' },
-  postureTelemetryLabel: { color: '#6B7280', fontSize: 10, fontWeight: 950, lineHeight: 1, letterSpacing: '0.18em', textTransform: 'uppercase' },
-  supplyGraphic: { width: '100%', height: '100%', minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', marginBottom: 0 },
+  supplyGraphic: { width: '100%', height: '100%', minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', marginBottom: 0 },
   supplyWeakLink: { display: 'flex', alignItems: 'center', gap: 5, height: 18, marginTop: 14 },
   supplyWeakNodeDim: { width: 14, height: 14, borderRadius: 999, background: '#374151', display: 'block' },
   supplyWeakNodeHot: { position: 'relative', width: 14, height: 14, borderRadius: 999, display: 'block' },
   supplyWeakPulse: { position: 'absolute', inset: 0, borderRadius: 999, opacity: 0.2, animation: 'sparta-subtitle-pulse 1.6s ease-in-out infinite' },
   supplyWeakLine: { width: 34, height: 3, background: '#1F2937', display: 'block' },
-  supplyMiddle: { flex: '1 1 auto', minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: 4 },
+  supplyMiddle: { minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: 0 },
   supplyHeroLockup: { display: 'flex', alignItems: 'baseline', gap: 12, marginTop: 0, marginBottom: 6 },
   supplyState: { fontSize: 32, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.04em', textTransform: 'uppercase' },
   supplyRiskCount: { color: '#FFFFFF', fontSize: 36, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
   supplyRiskLabel: { color: 'rgba(255,255,255,0.58)', fontSize: 12, fontWeight: 950, lineHeight: 1.05, letterSpacing: '0.12em', textTransform: 'uppercase' },
-  supplyTelemetryRow: { height: 56, flex: '0 0 56px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', width: '100%', borderTop: '1px solid rgba(148,163,184,0.18)', paddingTop: 10, marginTop: 0, boxSizing: 'border-box' },
-  supplyTelemetryItem: { display: 'flex', flexDirection: 'column', gap: 4 },
-  supplyTelemetryValue: { color: 'rgba(255,255,255,0.84)', fontSize: 24, fontWeight: 900, lineHeight: 1, letterSpacing: '-0.02em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
-  supplyTelemetryLabel: { color: '#6B7280', fontSize: 10, fontWeight: 950, lineHeight: 1, letterSpacing: '0.16em', textTransform: 'uppercase' },
   threatMatrixGraphic: { position: 'relative', width: '100%', minHeight: 118, display: 'flex', flexDirection: 'column', justifyContent: 'center', marginBottom: 4, overflow: 'hidden' },
   threatMatrixGrid: {
     position: 'absolute',
