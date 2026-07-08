@@ -428,7 +428,7 @@ function EmbryVoiceMast({
   )
 }
 
-function KioskTileCard({ tile, active, onSelect }: { tile: KioskTile; active: boolean; onSelect: () => void }) {
+function KioskTileCard({ tile, onSelect }: { tile: KioskTile; onSelect: () => void }) {
   const Icon = iconForTile(tile.tab)
   const isVoid = tile.state === 'UNKNOWN' || tile.primaryMetric === 'UNKNOWN'
   const displayMetric = isVoid ? '--' : abbreviateKioskMetric(tile.primaryMetric)
@@ -454,7 +454,7 @@ function KioskTileCard({ tile, active, onSelect }: { tile: KioskTile; active: bo
         borderLeftColor: stripColor,
         background: '#050505',
         opacity: isVoid ? 0.72 : 1,
-        boxShadow: active ? `inset 0 0 0 3px ${stripColor}` : 'none',
+        boxShadow: 'none',
       }}
     >
       <header style={S.tileHeader}>
@@ -534,7 +534,6 @@ function TelemetryPill({
   const summaryTone = global === 'BLOCKED' ? 'BLOCKED' : global === 'DEGRADED' ? 'DEGRADED' : global === 'UNKNOWN' ? 'UNKNOWN' : 'READY'
   const visibleNotifications = notifications.slice(0, 3)
   const activeAlert = visibleNotifications[activeIndex % Math.max(1, visibleNotifications.length)] ?? notifications[0]
-  const alertStyle = activeAlert ? stateStyle[activeAlert.state] : stateStyle[global]
   const AlertIcon = activeAlert?.state === 'READY' ? Check : AlertTriangle
   const signalFill = global === 'READY' ? '#22C55E' : '#FACC15'
   const signalText = '#050505'
@@ -691,7 +690,6 @@ export function SpartaKioskDistanceView({
           <KioskTileCard
             key={tile.tab}
             tile={tile}
-            active={tile.tab === activeTab}
             onSelect={() => selectPage(tile.tab)}
           />
         ))}
