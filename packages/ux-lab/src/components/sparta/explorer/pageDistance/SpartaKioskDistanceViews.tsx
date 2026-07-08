@@ -519,6 +519,10 @@ function EmbryVoiceMast({
         }
       `}</style>
       <div
+        aria-hidden="true"
+        style={S.embryAmbientBloom}
+      />
+      <div
         data-qid="embry:orb"
         data-embry-orb-state={sharedOrbState}
         style={{
@@ -1476,6 +1480,7 @@ const S: Record<string, CSSProperties> = {
     bottom: 28,
     width: 320,
     border: '1px solid rgba(55, 65, 81, 0.55)',
+    borderTop: '1px solid rgba(30, 64, 175, 0.34)',
     borderLeft: `4px solid #1F2937`,
     borderRadius: '28px 28px 0 0',
     background: '#0A0A0C',
@@ -1492,6 +1497,18 @@ const S: Record<string, CSSProperties> = {
     placeItems: 'center',
     boxSizing: 'border-box',
     overflow: 'visible',
+    position: 'relative',
+    zIndex: 1,
+    filter: 'drop-shadow(0 0 46px rgba(59, 130, 246, 0.18))',
+  },
+  embryAmbientBloom: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: 320,
+    pointerEvents: 'none',
+    background: 'radial-gradient(ellipse at top, rgba(30, 64, 175, 0.24) 0%, rgba(23, 37, 84, 0.08) 42%, rgba(10, 10, 12, 0) 76%)',
   },
   voiceState: { fontSize: 52, fontWeight: 950, lineHeight: 0.9, letterSpacing: '0.14em', textAlign: 'center', color: '#FFFFFF' },
   heardLine: { color: C.secondary, fontSize: 22, fontWeight: 740, lineHeight: 1.12, textAlign: 'center' },
@@ -1504,7 +1521,7 @@ const S: Record<string, CSSProperties> = {
     border: '2px solid #1F2937',
     borderRadius: 999,
     background: '#111827',
-    color: '#60A5FA',
+    color: '#93C5FD',
     fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
     fontSize: 14,
     fontWeight: 900,
@@ -1551,7 +1568,7 @@ const S: Record<string, CSSProperties> = {
     textTransform: 'uppercase',
   },
   voiceTeleprompterPrompt: {
-    color: '#FFFFFF',
+    color: '#EFF6FF',
     fontSize: 46,
     fontWeight: 560,
     lineHeight: 1.08,
@@ -1570,7 +1587,7 @@ const S: Record<string, CSSProperties> = {
     width: '100%',
     height: '100%',
     borderRadius: 999,
-    background: 'rgba(59, 130, 246, 0.58)',
+    background: 'rgba(59, 130, 246, 0.42)',
     transformOrigin: 'left center',
     animation: 'sparta-voice-prompt-timer 7s linear both',
   },
