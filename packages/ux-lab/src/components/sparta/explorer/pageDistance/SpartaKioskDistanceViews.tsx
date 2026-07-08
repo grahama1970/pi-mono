@@ -23,6 +23,7 @@ type KioskTile = {
   primaryMetric: string
   primaryLabel: string
   secondaryLine: string
+  nextAction: string
   voiceCommand: string
   sourceStatus: 'authoritative' | 'missing' | 'stale'
 }
@@ -88,9 +89,16 @@ function formatCount(value: number | undefined | null): string {
   return Number.isFinite(n) && n > 0 ? n.toLocaleString() : 'UNKNOWN'
 }
 
-function truncate(text: string, max: number): string {
-  if (text.length <= max) return text
-  return `${text.slice(0, Math.max(0, max - 1)).trim()}...`
+function hasKnownCount(value: number | undefined | null): boolean {
+  const n = Number(value ?? 0)
+  return Number.isFinite(n) && n > 0
+}
+
+function sourceFreshness(sourceStatus: KioskTile['sourceStatus'], coverageHealth: CoverageHealthSnapshot | null | undefined): string {
+  if (sourceStatus === 'missing') return 'Freshness: UNKNOWN - fail closed'
+  if (sourceStatus === 'stale') return 'Freshness: STALE - fail closed'
+  const generated = coverageHealth?.generated_at ?? coverageHealth?.monitorClosure?.generated_at ?? coverageHealth?.supervisor?.heartbeat_at
+  return generated ? `Freshness: monitor-sparta ${generated}` : 'Freshness: UNKNOWN - fail closed'
 }
 
 function qualityGapTotal(health: CoverageHealthSnapshot | null | undefined): number {
@@ -131,6 +139,7 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
       primaryMetric: monitor,
       primaryLabel: 'monitor',
       secondaryLine: gaps > 0 ? `${gaps.toLocaleString()} quality gaps` : healthMissing ? 'missing health' : 'largest gap clear',
+      nextAction: gaps > 0 ? 'Open coverage gaps' : 'Review coverage health',
       voiceCommand: 'Show Coverage',
       sourceStatus,
     }
@@ -138,8 +147,6 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
 
   if (tab === 'QRAs') {
     const corpus = counts.qrasTotal || counts.qras
-    const reviewQueue = 2290
-    const missingEvidence = 38
     return {
       tab,
       qid: 'sparta:kiosk:tile:qras',
@@ -147,8 +154,9 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
       stateReason,
       primaryMetric: formatCount(corpus),
       primaryLabel: 'corpus',
-      secondaryLine: `${(reviewQueue + missingEvidence).toLocaleString()} need action`,
-      voiceCommand: 'Show QRAs',
+      secondaryLine: hasKnownCount(corpus) ? 'review queue needs action' : 'count unknown - fail closed',
+      nextAction: 'Open QRA review queue',
+      voiceCommand: 'Open QRA review queue',
       sourceStatus,
     }
   }
@@ -162,6 +170,7 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
       primaryMetric: formatCount(counts.controls),
       primaryLabel: 'controls',
       secondaryLine: 'mapping gaps',
+      nextAction: 'Open control mappings',
       voiceCommand: 'Show Controls',
       sourceStatus,
     }
@@ -173,11 +182,12 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
       qid: 'sparta:kiosk:tile:sources',
       state,
       stateReason,
-      primaryMetric: counts.knowledge > 0 ? formatCount(counts.knowledge) : 'SRC',
-      primaryLabel: counts.knowledge > 0 ? 'source chunks' : 'lineage',
-      secondaryLine: 'lineage blockers',
+      primaryMetric: hasKnownCount(counts.knowledge) ? formatCount(counts.knowledge) : 'UNKNOWN',
+      primaryLabel: hasKnownCount(counts.knowledge) ? 'source chunks' : 'sources',
+      secondaryLine: hasKnownCount(counts.knowledge) ? 'lineage blockers' : 'source count unknown',
+      nextAction: 'Open source lineage',
       voiceCommand: 'Show Sources',
-      sourceStatus,
+      sourceStatus: hasKnownCount(counts.knowledge) ? sourceStatus : 'missing',
     }
   }
 
@@ -190,6 +200,7 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
       primaryMetric: formatCount(counts.urls),
       primaryLabel: 'urls',
       secondaryLine: 'stale / quarantine',
+      nextAction: 'Open URL quarantine',
       voiceCommand: 'Show URLs',
       sourceStatus,
     }
@@ -201,11 +212,12 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
       qid: 'sparta:kiosk:tile:threat-matrix',
       state,
       stateReason,
-      primaryMetric: 'MAP',
+      primaryMetric: hasKnownCount(counts.relationships) ? formatCount(counts.relationships) : 'UNKNOWN',
       primaryLabel: 'relationships',
       secondaryLine: 'top unmapped risk',
+      nextAction: 'Open threat mapping',
       voiceCommand: 'Show Threats',
-      sourceStatus,
+      sourceStatus: hasKnownCount(counts.relationships) ? sourceStatus : 'missing',
     }
   }
 
@@ -215,9 +227,10 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
       qid: 'sparta:kiosk:tile:posture',
       state,
       stateReason,
-      primaryMetric: state === 'DEGRADED' ? 'DEG' : state,
+      primaryMetric: state,
       primaryLabel: 'signoff state',
       secondaryLine: 'top blocker',
+      nextAction: 'Open posture blocker',
       voiceCommand: 'Show Posture',
       sourceStatus,
     }
@@ -228,11 +241,12 @@ function buildTile(tab: TabName, counts: CollectionCounts, coverageHealth: Cover
     qid: 'sparta:kiosk:tile:supply-chain',
     state,
     stateReason,
-    primaryMetric: 'SCRM',
-    primaryLabel: 'readiness',
-    secondaryLine: 'dependency blocker',
+    primaryMetric: state === 'UNKNOWN' ? 'UNKNOWN' : 'SUPPLY',
+    primaryLabel: 'supply chain',
+    secondaryLine: state === 'UNKNOWN' ? 'source contract missing' : 'dependency blocker',
+    nextAction: 'Open supply chain risk',
     voiceCommand: 'Show Supply Chain',
-    sourceStatus,
+    sourceStatus: state === 'UNKNOWN' ? 'missing' : sourceStatus,
   }
 }
 
@@ -254,11 +268,24 @@ function topBlocker(tiles: KioskTile[]): KioskTile {
     ?? tiles[0]
 }
 
+function operatorBlocker(tile: KioskTile): string {
+  if (tile.sourceStatus === 'missing') return `${tile.tab} source contract is missing.`
+  if (tile.tab === 'QRAs') return 'COTS/QID backlog blocks QRA readiness.'
+  if (tile.state === 'READY') return `${tile.tab} is ready for review.`
+  if (tile.state === 'UNKNOWN') return `${tile.tab} readiness is unknown.`
+  return `${tile.tab} needs repair before review.`
+}
+
 function KioskStateChip({ state, qid, compact = false }: { state: KioskState; qid?: string; compact?: boolean }) {
   const s = stateStyle[state]
-  const label = compact
-    ? ({ READY: 'OK', DEGRADED: 'DEG', BLOCKED: 'BLK', UNKNOWN: 'UNK' } satisfies Record<KioskState, string>)[state]
-    : state
+  const icon = compact
+    ? {
+        READY: <Check size={12} strokeWidth={3} />,
+        DEGRADED: <AlertTriangle size={12} strokeWidth={2.6} />,
+        BLOCKED: <Square size={10} fill="currentColor" strokeWidth={0} />,
+        UNKNOWN: <HelpCircle size={12} strokeWidth={2.6} />,
+      }[state]
+    : s.icon
   return (
     <span
       data-qid={qid}
@@ -272,14 +299,14 @@ function KioskStateChip({ state, qid, compact = false }: { state: KioskState; qi
         border: `2px solid ${s.border}`,
         background: s.bg,
         color: s.fg,
-        fontSize: compact ? 14 : 26,
+        fontSize: compact ? 12 : 26,
         lineHeight: 1,
         fontWeight: 850,
         letterSpacing: '0.04em',
       }}
     >
-      {!compact ? s.icon : null}
-      {label}
+      {icon}
+      {state}
     </span>
   )
 }
@@ -288,14 +315,16 @@ function EmbryVoiceMast({
   mode,
   activeTab,
   selectedTarget,
+  voiceState: voiceStateProp,
   onSelectPage,
 }: {
   mode: PageDistanceMode
   activeTab: TabName
   selectedTarget?: string
+  voiceState?: VoiceState
   onSelectPage: (tab: TabName) => void
 }) {
-  const voiceState: VoiceState = mode === '5ft' ? 'LISTENING' : 'READY'
+  const voiceState: VoiceState = voiceStateProp ?? (mode === '5ft' ? 'SPEAKING' : 'READY')
   const s = voiceStyle[voiceState]
   const mastStyle: CSSProperties = mode === '5ft'
     ? {
@@ -315,7 +344,7 @@ function EmbryVoiceMast({
     : S.embryMast
   const commands: Array<{ label: string; qid: string; tab?: TabName }> = [
     { label: 'What blocks readiness?', qid: 'embry:command-chip:readiness' },
-    { label: 'Show QRAs', qid: 'embry:command-chip:qras', tab: 'QRAs' },
+    { label: 'Open QRA review queue', qid: 'embry:command-chip:qras', tab: 'QRAs' },
     { label: 'Show Coverage', qid: 'embry:command-chip:coverage', tab: 'Coverage' },
     { label: 'Show URLs', qid: 'embry:command-chip:urls', tab: 'URLs' },
     { label: 'Show Posture', qid: 'embry:command-chip:posture', tab: 'Posture' },
@@ -374,6 +403,7 @@ function EmbryVoiceMast({
 
 function KioskTileCard({ tile, active, onSelect }: { tile: KioskTile; active: boolean; onSelect: () => void }) {
   const s = stateStyle[tile.state]
+  const wordMetric = /[A-Za-z]/.test(tile.primaryMetric) && tile.primaryMetric.length > 6
   return (
     <button
       type="button"
@@ -392,11 +422,11 @@ function KioskTileCard({ tile, active, onSelect }: { tile: KioskTile; active: bo
         <KioskStateChip state={tile.state} compact />
       </header>
       <div style={S.metricWrap}>
-        <div style={S.primaryMetric}>{truncate(tile.primaryMetric, 14)}</div>
-        <div style={S.primaryLabel}>{truncate(tile.primaryLabel, 18)}</div>
+        <div style={{ ...S.primaryMetric, fontSize: wordMetric ? 38 : S.primaryMetric.fontSize }}>{tile.primaryMetric}</div>
+        <div style={S.primaryLabel}>{tile.primaryLabel}</div>
       </div>
-      <div style={{ ...S.secondaryLine, color: s.fg }}>{truncate(tile.secondaryLine, 34)}</div>
-      <div style={S.voiceAction}>{truncate(tile.voiceCommand, 22)}</div>
+      <div style={{ ...S.secondaryLine, color: s.fg }}>{tile.secondaryLine}</div>
+      <div style={S.voiceAction}>{tile.nextAction}</div>
     </button>
   )
 }
@@ -447,7 +477,7 @@ export function SpartaKioskDistanceView({
             <span>{activeTile.primaryMetric}</span>
             <strong>{activeTile.primaryLabel}</strong>
           </div>
-          <div style={S.freshness}>Freshness: {activeTile.sourceStatus === 'authoritative' ? 'contract backed' : activeTile.sourceStatus}</div>
+          <div style={S.freshness}>{sourceFreshness(activeTile.sourceStatus, coverageHealth)}</div>
         </header>
         <main style={S.triageBody}>
           <section data-qid="sparta:triage:transcript" style={S.transcriptPanel}>
@@ -457,28 +487,28 @@ export function SpartaKioskDistanceView({
             <TranscriptBlock
               qid="sparta:triage:embry-says"
               label="EMBRY SAYS"
-              text={`${activeTile.tab} is ${activeTile.state.toLowerCase()}. ${activeTile.primaryMetric} ${activeTile.primaryLabel}. ${activeTile.secondaryLine}. Next action: ${activeTile.voiceCommand}.`}
+              text={`The ${activeTile.tab} page is ${activeTile.state.toLowerCase()}. ${activeTile.primaryMetric} ${activeTile.primaryLabel}. ${activeTile.secondaryLine}. Next action: ${activeTile.nextAction}.`}
             />
           </section>
           <section style={S.triageRail} aria-label="Selected page actions">
-            <EmbryVoiceMast mode="5ft" activeTab={activeTile.tab} selectedTarget={activeTile.qid} onSelectPage={selectPage} />
+            <EmbryVoiceMast mode="5ft" activeTab={activeTile.tab} selectedTarget={activeTile.qid} voiceState="SPEAKING" onSelectPage={selectPage} />
             <div data-qid="sparta:triage:top-blockers" style={S.actionPanel}>
               <div style={S.panelLabel}>Top blockers</div>
               <ol style={S.blockerList}>
                 <li>{activeTile.secondaryLine}</li>
-                <li>{truncate(activeTile.stateReason, 58)}</li>
-                <li>Evidence policy: {activeTile.state === 'READY' ? 'ANSWER' : activeTile.state === 'UNKNOWN' ? 'CLARIFY' : 'DEFLECT / REPAIR'}</li>
+                <li>{operatorBlocker(activeTile)}</li>
+                <li>Evidence policy: {activeTile.state === 'READY' ? 'ANSWER' : activeTile.state === 'UNKNOWN' ? 'CLARIFY' : 'DEFLECT - repair required'}</li>
               </ol>
             </div>
             <button
               type="button"
               data-qid="sparta:triage:primary-action"
               data-qs-action="TRIAGE_PRIMARY_ACTION"
-              title={`Open ${activeTile.tab} lean-in`}
+              title={activeTile.nextAction}
               onClick={() => setMode('lean-in')}
               style={S.primaryAction}
             >
-              Lean-in proof chain
+              {activeTile.nextAction}
             </button>
           </section>
         </main>
@@ -499,7 +529,7 @@ export function SpartaKioskDistanceView({
         </div>
         <div style={S.globalRight}>
           <KioskStateChip state={global} />
-          <div data-qid="sparta:kiosk:freshness" style={S.freshness}>Freshness: {coverageHealth?.stale ? 'stale - fail closed' : coverageHealth ? 'contract backed' : 'unknown - fail closed'}</div>
+          <div data-qid="sparta:kiosk:freshness" style={S.freshness}>{sourceFreshness(blocker.sourceStatus, coverageHealth)}</div>
           <div data-qid="sparta:kiosk:next-action" style={S.nextAction}>Say "Embry, what blocks readiness?"</div>
         </div>
       </div>
@@ -529,11 +559,13 @@ function TranscriptBlock({ qid, label, text }: { qid: string; label: string; tex
 
 const S: Record<string, CSSProperties> = {
   root: {
-    position: 'relative',
+    position: 'fixed',
+    inset: 0,
+    zIndex: 1000,
     flex: 1,
     minHeight: 0,
-    width: '100%',
-    height: '100%',
+    width: '100vw',
+    height: '100vh',
     overflow: 'hidden',
     background: C.surfaceRoot,
     color: C.text,
@@ -542,15 +574,15 @@ const S: Record<string, CSSProperties> = {
   },
   globalBanner: {
     position: 'absolute',
-    left: 24,
-    top: 18,
-    right: 340,
-    height: 136,
+    left: 28,
+    top: 24,
+    right: 376,
+    height: 152,
     border: `2px solid ${C.border}`,
     borderRadius: 8,
     background: C.surfacePanel,
     display: 'grid',
-    gridTemplateColumns: '1fr 320px',
+    gridTemplateColumns: '1fr 360px',
     gap: 18,
     padding: '14px 20px',
     boxSizing: 'border-box',
@@ -560,7 +592,7 @@ const S: Record<string, CSSProperties> = {
   globalRight: { display: 'grid', alignContent: 'center', justifyItems: 'end', gap: 12 },
   kicker: {
     color: C.muted,
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 850,
     letterSpacing: '0.1em',
     textTransform: 'uppercase',
@@ -568,36 +600,34 @@ const S: Record<string, CSSProperties> = {
   },
   globalVerdict: {
     marginTop: 6,
-    fontSize: 46,
+    fontSize: 54,
     fontWeight: 900,
     lineHeight: 0.95,
     letterSpacing: '-0.02em',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis',
   },
   blockerSentence: {
     marginTop: 8,
     color: C.text,
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 760,
     lineHeight: 1.05,
-    whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    overflowWrap: 'anywhere',
   },
-  freshness: { color: C.secondary, fontSize: 20, fontWeight: 760, lineHeight: 1.05 },
-  nextAction: { color: C.text, fontSize: 22, fontWeight: 820, lineHeight: 1.08 },
+  freshness: { color: C.secondary, fontSize: 16, fontWeight: 760, lineHeight: 1.12 },
+  nextAction: { color: C.text, fontSize: 20, fontWeight: 820, lineHeight: 1.08 },
   grid: {
     position: 'absolute',
-    left: 24,
-    top: 166,
-    right: 340,
-    bottom: 24,
+    left: 28,
+    top: 196,
+    right: 376,
+    bottom: 28,
     display: 'grid',
     gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
     gridTemplateRows: 'repeat(2, minmax(0, 1fr))',
-    gap: 14,
+    gap: 16,
   },
   tile: {
     minWidth: 0,
@@ -614,26 +644,26 @@ const S: Record<string, CSSProperties> = {
     cursor: 'pointer',
     overflow: 'hidden',
   },
-  tileHeader: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 },
-  tileTitle: { color: C.text, fontSize: 28, fontWeight: 850, lineHeight: 1.05 },
-  metricWrap: { alignSelf: 'center', minWidth: 0 },
-  primaryMetric: { color: C.text, fontSize: 52, fontWeight: 900, lineHeight: 0.95, letterSpacing: '-0.02em' },
-  primaryLabel: { marginTop: 6, color: C.secondary, fontSize: 22, fontWeight: 780, lineHeight: 1.05, textTransform: 'uppercase' },
-  secondaryLine: { fontSize: 22, fontWeight: 820, lineHeight: 1.08, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
-  voiceAction: { color: C.secondary, fontSize: 20, fontWeight: 780, lineHeight: 1.05 },
+  tileHeader: { display: 'grid', gridTemplateColumns: '1fr', alignItems: 'start', justifyItems: 'start', gap: 6, minWidth: 0 },
+  tileTitle: { color: C.text, fontSize: 28, fontWeight: 850, lineHeight: 1.05, minWidth: 0 },
+  metricWrap: { alignSelf: 'center', minWidth: 0, overflowWrap: 'anywhere' },
+  primaryMetric: { color: C.text, fontSize: 48, fontWeight: 900, lineHeight: 0.98, letterSpacing: '0' },
+  primaryLabel: { marginTop: 6, color: C.secondary, fontSize: 20, fontWeight: 780, lineHeight: 1.05, textTransform: 'uppercase' },
+  secondaryLine: { fontSize: 20, fontWeight: 820, lineHeight: 1.12, overflowWrap: 'anywhere' },
+  voiceAction: { color: C.secondary, fontSize: 18, fontWeight: 780, lineHeight: 1.08, overflowWrap: 'anywhere' },
   embryMast: {
     position: 'absolute',
-    top: 18,
-    right: 24,
-    bottom: 24,
-    width: 292,
+    top: 24,
+    right: 28,
+    bottom: 28,
+    width: 320,
     border: `2px solid ${C.border}`,
     borderRadius: 8,
     background: C.surfacePanel,
     display: 'grid',
     gridTemplateRows: 'auto auto auto 1fr auto',
     justifyItems: 'center',
-    gap: 12,
+    gap: 14,
     padding: '18px 16px',
     boxSizing: 'border-box',
     overflow: 'hidden',
@@ -649,13 +679,13 @@ const S: Record<string, CSSProperties> = {
   heardLine: { color: C.secondary, fontSize: 22, fontWeight: 740, lineHeight: 1.12, textAlign: 'center' },
   voiceChipGrid: { width: '100%', display: 'grid', gap: 10, alignContent: 'start' },
   voiceChip: {
-    minHeight: 48,
+    minHeight: 50,
     width: '100%',
     borderRadius: 8,
     border: `2px solid ${C.border}`,
     background: C.surfaceCard,
     color: C.text,
-    fontSize: 24,
+    fontSize: 23,
     fontWeight: 820,
     lineHeight: 1,
     cursor: 'pointer',
@@ -663,23 +693,23 @@ const S: Record<string, CSSProperties> = {
   selectedTarget: { width: '100%', color: C.secondary, fontSize: 20, fontWeight: 740, lineHeight: 1.15, textAlign: 'center' },
   triageHeader: {
     position: 'absolute',
-    left: 24,
-    top: 18,
-    right: 24,
-    height: 112,
+    left: 28,
+    top: 24,
+    right: 28,
+    height: 128,
     border: `2px solid ${C.border}`,
     borderRadius: 8,
     background: C.surfacePanel,
     display: 'grid',
-    gridTemplateColumns: '1fr auto 220px 280px',
+    gridTemplateColumns: '1fr auto 240px 360px',
     alignItems: 'center',
     gap: 24,
     padding: '16px 24px',
     boxSizing: 'border-box',
   },
-  triageTitle: { margin: 0, color: C.text, fontSize: 58, fontWeight: 900, lineHeight: 0.95 },
+  triageTitle: { margin: 0, color: C.text, fontSize: 64, fontWeight: 900, lineHeight: 0.95 },
   headerMetric: { display: 'grid', gap: 4, justifyItems: 'end', color: C.text },
-  triageBody: { position: 'absolute', left: 24, right: 24, top: 146, bottom: 24, display: 'grid', gridTemplateColumns: '65fr 35fr', gap: 24, overflow: 'hidden' },
+  triageBody: { position: 'absolute', left: 28, right: 28, top: 176, bottom: 28, display: 'grid', gridTemplateColumns: '65fr 35fr', gap: 24, overflow: 'hidden' },
   transcriptPanel: { border: `2px solid ${C.border}`, borderRadius: 8, background: C.surfacePanel, padding: 24, display: 'grid', gap: 18, alignContent: 'start', overflow: 'hidden' },
   transcriptBlock: { minWidth: 0 },
   transcriptLabel: { color: C.muted, fontSize: 26, fontWeight: 850, letterSpacing: '0.1em', lineHeight: 1, marginBottom: 8 },
@@ -687,7 +717,7 @@ const S: Record<string, CSSProperties> = {
   triageRail: { position: 'relative', minWidth: 0, minHeight: 0, display: 'grid', gridTemplateRows: '1fr auto auto', gap: 16, overflow: 'hidden' },
   actionPanel: { border: `2px solid ${C.border}`, borderRadius: 8, background: C.surfacePanel, padding: 20, overflow: 'hidden' },
   panelLabel: { color: C.muted, fontSize: 22, fontWeight: 850, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 12 },
-  blockerList: { margin: 0, paddingLeft: 26, color: C.text, fontSize: 28, fontWeight: 720, lineHeight: 1.16 },
+  blockerList: { margin: 0, paddingLeft: 26, color: C.text, fontSize: 26, fontWeight: 720, lineHeight: 1.16 },
   primaryAction: {
     minHeight: 72,
     borderRadius: 8,
