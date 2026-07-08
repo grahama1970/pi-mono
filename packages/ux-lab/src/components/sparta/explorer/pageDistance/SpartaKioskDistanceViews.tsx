@@ -647,6 +647,8 @@ function KioskTileCard({ tile, onSelect }: { tile: KioskTile; onSelect: () => vo
           <PostureTelemetryGraphic stripColor={stripColor} />
         ) : tile.tab === 'Supply Chain' ? (
           <SupplyChainTelemetryGraphic stripColor={stripColor} />
+        ) : tile.tab === 'Sources' && isVoid ? (
+          <SourcesStandbyGraphic stripColor={stripColor} />
         ) : tile.tab === 'Threat Matrix' ? (
           <ThreatMatrixGraphic stripColor={stripColor} state={visualState} />
         ) : (
@@ -656,7 +658,7 @@ function KioskTileCard({ tile, onSelect }: { tile: KioskTile; onSelect: () => vo
             </div>
           </>
         )}
-        {tile.tab === 'Posture' || tile.tab === 'Supply Chain' ? null : (
+        {tile.tab === 'Posture' || tile.tab === 'Supply Chain' || (tile.tab === 'Sources' && isVoid) ? null : (
           <div style={{ ...S.metricTitle, color: isVoid ? '#6B7280' : labelColor, fontSize: titleFontSize }}>{tile.tab}</div>
         )}
       </div>
@@ -728,6 +730,16 @@ function SupplyWeakLinkSignal({ stripColor }: { stripColor: string }) {
       </span>
       <span style={S.supplyWeakLine} />
       <span style={S.supplyWeakNodeDim} />
+    </div>
+  )
+}
+
+function SourcesStandbyGraphic({ stripColor }: { stripColor: string }) {
+  return (
+    <div style={S.sourcesStandbyGraphic} aria-hidden="true">
+      <div style={{ ...S.sourcesGhostRing, borderColor: `${stripColor}55` }} />
+      <div style={S.sourcesStandbyText}>STANDBY</div>
+      <div style={S.sourcesStandbyLabel}>SOURCES</div>
     </div>
   )
 }
@@ -1583,6 +1595,20 @@ const S: Record<string, CSSProperties> = {
   metricWrap: { alignSelf: 'center', minWidth: 0, display: 'flex', alignItems: 'center', overflowWrap: 'anywhere' },
   primaryMetric: { color: C.text, fontSize: 68, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.035em', whiteSpace: 'nowrap' },
   metricTitle: { marginTop: 10, fontSize: 34, fontWeight: 950, lineHeight: 1, letterSpacing: '0.04em', textTransform: 'uppercase', overflowWrap: 'normal', wordBreak: 'normal' },
+  sourcesStandbyGraphic: { position: 'relative', width: '100%', minHeight: 124, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', overflow: 'hidden' },
+  sourcesGhostRing: {
+    position: 'absolute',
+    right: 6,
+    top: 2,
+    width: 76,
+    height: 76,
+    border: '3px dashed rgba(107, 114, 128, 0.34)',
+    borderRadius: 999,
+    opacity: 0.55,
+    animation: 'sparta-subtitle-pulse 3.6s ease-in-out infinite',
+  },
+  sourcesStandbyText: { position: 'relative', zIndex: 1, color: 'rgba(255,255,255,0.24)', fontSize: 31, fontWeight: 950, lineHeight: 0.94, letterSpacing: '0.01em', textTransform: 'uppercase' },
+  sourcesStandbyLabel: { position: 'relative', zIndex: 1, marginTop: 9, color: 'rgba(148,163,184,0.48)', fontSize: 25, fontWeight: 950, lineHeight: 1, letterSpacing: '0.06em', textTransform: 'uppercase' },
   postureGraphic: { width: '100%', minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', marginBottom: 4 },
   postureHero: { display: 'flex', flexDirection: 'column', gap: 7, marginTop: 2 },
   postureState: { fontSize: 32, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.045em', textTransform: 'uppercase' },
@@ -1642,7 +1668,7 @@ const S: Record<string, CSSProperties> = {
     border: '1px solid rgba(55, 65, 81, 0.55)',
     borderTop: '1px solid rgba(30, 64, 175, 0.34)',
     borderLeft: `4px solid #1F2937`,
-    borderRadius: '28px 28px 0 0',
+    borderRadius: 28,
     background: '#0A0A0C',
     display: 'grid',
     gridTemplateRows: 'auto 1fr',
@@ -1726,9 +1752,9 @@ const S: Record<string, CSSProperties> = {
     minHeight: 34,
     padding: '0 18px',
     borderRadius: 999,
-    border: '1px solid rgba(30, 64, 175, 0.44)',
-    background: '#1A1A24',
-    color: '#60A5FA',
+    border: '1px solid rgba(255, 255, 255, 0.22)',
+    background: 'rgba(255, 255, 255, 0.10)',
+    color: '#FFFFFF',
     fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
     fontSize: 15,
     fontWeight: 900,
@@ -1738,8 +1764,8 @@ const S: Record<string, CSSProperties> = {
   },
   voiceTeleprompterLabel: {
     marginTop: 42,
-    marginBottom: 24,
-    color: '#6B7280',
+    marginBottom: 36,
+    color: '#8B96A6',
     fontSize: 16,
     fontWeight: 900,
     letterSpacing: '0.18em',
