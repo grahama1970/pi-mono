@@ -746,6 +746,7 @@ function ThreatMatrixGraphic({ stripColor, state }: { stripColor: string; state:
         </div>
       </div>
       <div style={S.bottomBaseLabel}>THREAT MATRIX</div>
+      <div style={{ ...S.threatMatrixCoordinate, color: stripColor }}>UNMAPPED · ID×ACCESS</div>
     </div>
   )
 }
@@ -1653,6 +1654,7 @@ const S: Record<string, CSSProperties> = {
   },
   threatMatrixMetric: { position: 'relative', zIndex: 1, color: '#FFFFFF', fontSize: 68, fontWeight: 950, lineHeight: 0.88, letterSpacing: '-0.055em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
   threatMatrixDenominator: { color: 'rgba(255,255,255,0.42)', fontSize: 56, letterSpacing: '-0.06em' },
+  threatMatrixCoordinate: { position: 'absolute', zIndex: 1, right: 0, bottom: 4, fontSize: 11, fontWeight: 950, lineHeight: 1, letterSpacing: '0.12em', textTransform: 'uppercase', whiteSpace: 'nowrap', opacity: 0.78 },
   primaryLabel: { marginTop: 0, color: C.secondary, fontSize: 20, fontWeight: 850, lineHeight: 1.05, textTransform: 'uppercase', letterSpacing: '0.025em' },
   secondaryLine: {
     alignSelf: 'stretch',
