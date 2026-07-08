@@ -1,0 +1,119 @@
+{
+  "ok": true,
+  "mocked": false,
+  "live": true,
+  "url": "http://localhost:3002/#sparta-explorer/qras",
+  "outputDir": "/tmp/sparta-distance-embry-events",
+  "assertions": [
+    {
+      "label": "idle event moves QRAs to 10ft",
+      "expected": "10ft",
+      "observed": "10ft",
+      "ok": true
+    },
+    {
+      "label": "10ft exposes view-state pin controls",
+      "selector": "[data-qid='sparta:kiosk:view-state-controls'] [data-qid='sparta:kiosk:distance:pin']",
+      "ok": true
+    },
+    {
+      "label": "voice listening event moves QRAs to 5ft",
+      "expected": "5ft",
+      "observed": "5ft",
+      "ok": true
+    },
+    {
+      "label": "5ft exposes view-state pin controls",
+      "selector": "[data-qid='sparta:triage:view-state-controls'] [data-qid='sparta:triage:distance:pin']",
+      "ok": true
+    },
+    {
+      "label": "mouse movement moves QRAs to lean-in",
+      "expected": "lean-in",
+      "observed": "lean-in",
+      "ok": true
+    },
+    {
+      "label": "voice speaking event moves QRAs back to 5ft",
+      "expected": "5ft",
+      "observed": "5ft",
+      "ok": true
+    },
+    {
+      "label": "keydown moves QRAs to lean-in",
+      "expected": "lean-in",
+      "observed": "lean-in",
+      "ok": true
+    },
+    {
+      "label": "lean-in exposes view-state pin controls",
+      "selector": "[data-qid='sparta:chat:distance-switcher'] [data-qid='sparta:chat:distance:pin']",
+      "ok": true
+    },
+    {
+      "label": "manual triage selection prepares pinned design state",
+      "expected": "5ft",
+      "observed": "5ft",
+      "ok": true
+    },
+    {
+      "label": "pin button locks view state",
+      "expected": "true",
+      "observed": "true",
+      "ok": true
+    },
+    {
+      "label": "pinned view ignores idle, mouse, and key automation",
+      "expected": "5ft",
+      "observed": "5ft",
+      "ok": true
+    },
+    {
+      "label": "pin button unlocks view state",
+      "expected": "false",
+      "observed": "false",
+      "ok": true
+    },
+    {
+      "label": "unlocked view resumes idle automation",
+      "expected": "10ft",
+      "observed": "10ft",
+      "ok": true
+    }
+  ],
+  "observedEvents": [
+    {
+      "mode": "10ft",
+      "source": "idle-event"
+    },
+    {
+      "mode": "5ft",
+      "source": "voice:listening"
+    },
+    {
+      "mode": "lean-in",
+      "source": "pointer"
+    },
+    {
+      "mode": "5ft",
+      "source": "voice:speaking"
+    },
+    {
+      "mode": "lean-in",
+      "source": "keyboard"
+    },
+    {
+      "mode": "10ft",
+      "source": "idle-event"
+    }
+  ],
+  "screenshots": [
+    "/tmp/sparta-distance-embry-events/01-idle-10ft.png",
+    "/tmp/sparta-distance-embry-events/02-listening-5ft.png",
+    "/tmp/sparta-distance-embry-events/03-pointer-lean-in.png",
+    "/tmp/sparta-distance-embry-events/04-speaking-5ft.png",
+    "/tmp/sparta-distance-embry-events/05-key-lean-in.png",
+    "/tmp/sparta-distance-embry-events/06-pinned-5ft.png",
+    "/tmp/sparta-distance-embry-events/07-unpinned-idle-10ft.png"
+  ]
+}

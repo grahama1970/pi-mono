@@ -1,5 +1,5 @@
-import type { CSSProperties, ReactNode } from 'react'
-import { AlertTriangle, Boxes, Check, Globe, HelpCircle, Layers, Mic, Network, Square, Target, Workflow } from 'lucide-react'
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { AlertTriangle, Boxes, Check, Globe, HelpCircle, Layers, Mic, MoreHorizontal, Network, Square, Target, Workflow } from 'lucide-react'
 import { useRegisterAction } from '../../../../hooks/useRegisterAction'
 import type { CollectionCounts } from '../../../../hooks/useSpartaCollections'
 import type { TabName } from '../SpartaExplorer'
@@ -527,7 +527,106 @@ function readinessNotifications(tiles: KioskTile[]): KioskTile[] {
   if (active.length === 0) return tiles.slice(0, 1)
   return [...active]
     .sort((a, b) => notificationPriority(a.state) - notificationPriority(b.state))
-    .slice(0, 2)
+    .slice(0, 3)
+}
+
+function TelemetryPill({
+  global,
+  notifications,
+  moreNotificationCount,
+}: {
+  global: KioskState
+  notifications: KioskTile[]
+  moreNotificationCount: number
+}) {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const rootRef = useRef<HTMLDivElement | null>(null)
+  const activeCount = notifications.filter((tile) => tile.state !== 'READY').length + moreNotificationCount
+  const summaryTone = global === 'BLOCKED' ? 'BLOCKED' : global === 'DEGRADED' ? 'DEGRADED' : global === 'UNKNOWN' ? 'UNKNOWN' : 'READY'
+  const summaryText = global === 'READY'
+    ? 'ALL SYSTEMS READY'
+    : `${Math.max(1, activeCount)} SYSTEM${Math.max(1, activeCount) === 1 ? '' : 'S'} ${summaryTone}`
+  const toneColor = global === 'READY' ? '#34D399' : global === 'BLOCKED' ? '#FB7185' : global === 'DEGRADED' ? '#F2B84B' : '#94A3B8'
+  const visibleNotifications = notifications.slice(0, 3)
+
+  useEffect(() => {
+    if (!isExpanded) return
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setIsExpanded(false)
+    }
+    window.addEventListener('pointerdown', handlePointerDown)
+    return () => window.removeEventListener('pointerdown', handlePointerDown)
+  }, [isExpanded])
+
+  return (
+    <div ref={rootRef} data-qid="sparta:kiosk:telemetry-pill-root" style={S.telemetryRoot}>
+      <style>{`
+        @keyframes sparta-telemetry-reveal {
+          from { opacity: 0; transform: translateX(-50%) translateY(-6px) scale(0.96); }
+          to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+        }
+      `}</style>
+      <button
+        type="button"
+        data-qid="sparta:kiosk:telemetry-pill"
+        data-qs-action="KIOSK_TOGGLE_TELEMETRY"
+        title={isExpanded ? 'Hide SPARTA notifications' : 'Show SPARTA notifications'}
+        aria-expanded={isExpanded}
+        onClick={() => setIsExpanded((value) => !value)}
+        style={S.telemetryPill}
+      >
+        <span style={{ ...S.telemetryPulse, background: toneColor, boxShadow: `0 0 18px ${toneColor}88` }} />
+        <span style={S.telemetryText}>{summaryText}</span>
+        <MoreHorizontal size={18} strokeWidth={2.6} aria-hidden="true" />
+      </button>
+      {isExpanded ? (
+        <div data-qid="sparta:kiosk:telemetry-dropdown" style={S.telemetryDropdown}>
+          <div data-qid="sparta:kiosk:telemetry-stack" style={S.telemetryStack}>
+            {visibleNotifications.map((tile, index) => {
+              const ns = stateStyle[tile.state]
+              const NotificationIcon = tile.state === 'READY' ? Check : AlertTriangle
+              return (
+                <div
+                  key={tile.tab}
+                  data-qid={`sparta:kiosk:notification:${index + 1}`}
+                  style={{
+                    ...S.telemetryCard,
+                    zIndex: 10 - index,
+                    transform: `translateY(${index * 12}px) scale(${1 - index * 0.04})`,
+                    opacity: 1 - index * 0.2,
+                  }}
+                >
+                  <div style={S.telemetryCardMeta}>
+                    <span style={S.telemetrySource}>
+                      <span style={{ ...S.telemetryIcon, color: ns.fg, background: `${ns.fg}18` }}>
+                        <NotificationIcon size={16} strokeWidth={2.8} />
+                      </span>
+                      {index === 0 ? 'CURRENT' : 'RECENT'} · {tile.tab}
+                    </span>
+                    <span>{index === 0 ? 'NOW' : 'RECENT'}</span>
+                  </div>
+                  <div data-qid={index === 0 ? 'sparta:kiosk:top-blocker' : undefined} style={S.telemetryCardTitle}>
+                    {global === 'READY' ? 'All monitored pages ready' : tile.secondaryLine}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          {moreNotificationCount > 0 ? (
+            <button
+              type="button"
+              data-qid="sparta:kiosk:notification:more"
+              data-qs-action="KIOSK_SHOW_OLDER_NOTIFICATIONS"
+              title={`${moreNotificationCount} older notifications`}
+              style={S.telemetryMoreButton}
+            >
+              {moreNotificationCount} Older Notifications
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  )
 }
 
 export function SpartaKioskDistanceView({
@@ -625,62 +724,11 @@ export function SpartaKioskDistanceView({
       <div data-qid="sparta:kiosk:view-state-controls" style={S.viewStateDock}>
         <PageDistanceModeSwitcher compact qidPrefix="sparta:kiosk:distance" />
       </div>
-      <div
-        data-qid="sparta:kiosk:global-readiness"
-        style={S.globalBanner}
-      >
-        <div
-          style={{
-            ...S.annunciatorLeft,
-            borderLeftColor: global === 'READY' ? '#34D399' : global === 'BLOCKED' ? '#FB7185' : global === 'DEGRADED' ? '#F2B84B' : '#94A3B8',
-          }}
-        >
-          <span data-qid="sparta:kiosk:live-led" aria-label="Live monitor feed" style={S.liveLed}>
-            <span style={S.liveLedPulse} />
-            <span style={S.liveLedCore} />
-          </span>
-          <div>
-            <div style={S.annunciatorKicker}>SPARTA NOTIFICATIONS</div>
-            <div style={S.annunciatorVerdict}>{global === 'READY' ? 'Review ready' : `Review ${global.toLowerCase()}`}</div>
-            <div style={S.annunciatorSubcopy}>Current and recent operational alerts</div>
-          </div>
-        </div>
-        <div style={S.annunciatorStackZone}>
-          <div data-qid="sparta:kiosk:notification-stack" style={S.notificationStack}>
-            {notifications.map((tile, index) => {
-              const ns = stateStyle[tile.state]
-              const NotificationIcon = tile.state === 'READY' ? Check : AlertTriangle
-              return (
-                <div
-                  key={tile.tab}
-                  data-qid={`sparta:kiosk:notification:${index + 1}`}
-                  style={{
-                    ...S.notificationItem,
-                    borderColor: index === 0 ? `${ns.fg}88` : 'rgba(148, 163, 184, 0.22)',
-                    background: index === 0 ? 'rgba(15, 23, 42, 0.92)' : 'rgba(15, 23, 42, 0.58)',
-                  }}
-                >
-                  <span style={{ ...S.notificationIcon, background: `${ns.fg}22`, color: ns.fg }}>
-                    <NotificationIcon size={index === 0 ? 24 : 20} strokeWidth={2.8} />
-                  </span>
-                  <span style={S.notificationCopy}>
-                    <span style={S.notificationMeta}>{index === 0 ? 'Current' : 'Recent'} · {tile.tab}</span>
-                    <span data-qid={index === 0 ? 'sparta:kiosk:top-blocker' : undefined} style={S.notificationText}>
-                      {global === 'READY' ? 'All monitored pages ready' : tile.secondaryLine}
-                    </span>
-                  </span>
-                  <span style={S.notificationTime}>{index === 0 ? 'now' : 'recent'}</span>
-                </div>
-              )
-            })}
-            {moreNotificationCount > 0 ? (
-              <div data-qid="sparta:kiosk:notification:more" style={S.notificationMore}>
-                +{moreNotificationCount} MORE IN QUEUE
-              </div>
-            ) : null}
-          </div>
-        </div>
+      <div data-qid="sparta:kiosk:global-readiness" style={S.kioskTitleBar}>
+        <div style={S.kioskTitleKicker}>SPARTA EXPLORER</div>
+        <div style={S.kioskTitleText}>10ft readiness board</div>
       </div>
+      <TelemetryPill global={global} notifications={notifications} moreNotificationCount={moreNotificationCount} />
       <div data-qid="sparta:kiosk:grid" style={S.grid}>
         {tiles.map((tile) => (
           <KioskTileCard
@@ -730,17 +778,166 @@ const S: Record<string, CSSProperties> = {
     justifyContent: 'center',
     pointerEvents: 'auto',
   },
+  kioskTitleBar: {
+    position: 'absolute',
+    top: 18,
+    left: 28,
+    zIndex: 1010,
+    minWidth: 260,
+    display: 'grid',
+    gap: 5,
+  },
+  kioskTitleKicker: {
+    color: '#8FB7DA',
+    fontSize: 13,
+    fontWeight: 900,
+    letterSpacing: '0.22em',
+    lineHeight: 1,
+    textTransform: 'uppercase',
+  },
+  kioskTitleText: {
+    color: C.text,
+    fontSize: 22,
+    fontWeight: 850,
+    lineHeight: 1,
+    letterSpacing: '-0.01em',
+    textTransform: 'uppercase',
+  },
+  telemetryRoot: {
+    position: 'fixed',
+    top: 14,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: 1250,
+    display: 'grid',
+    justifyItems: 'center',
+    pointerEvents: 'auto',
+  },
+  telemetryPill: {
+    minHeight: 40,
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 12,
+    padding: '0 20px',
+    borderRadius: 999,
+    border: '1px solid rgba(255, 255, 255, 0.10)',
+    background: 'rgba(28, 28, 30, 0.90)',
+    color: '#D4D4D8',
+    boxShadow: '0 8px 28px rgba(0, 0, 0, 0.46)',
+    backdropFilter: 'blur(12px)',
+    WebkitBackdropFilter: 'blur(12px)',
+    cursor: 'pointer',
+    transition: 'background 180ms ease, transform 220ms cubic-bezier(0.23, 1, 0.32, 1)',
+  },
+  telemetryPulse: {
+    width: 9,
+    height: 9,
+    borderRadius: '50%',
+    flex: '0 0 auto',
+    animation: 'sparta-live-ping 1.8s ease-out infinite',
+  },
+  telemetryText: {
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    fontSize: 12,
+    fontWeight: 900,
+    letterSpacing: '0.12em',
+    lineHeight: 1,
+    textTransform: 'uppercase',
+  },
+  telemetryDropdown: {
+    position: 'absolute',
+    top: 50,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: 410,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+    transformOrigin: 'top center',
+    animation: 'sparta-telemetry-reveal 180ms cubic-bezier(0.23, 1, 0.32, 1)',
+    zIndex: 1260,
+  },
+  telemetryStack: {
+    position: 'relative',
+    width: '100%',
+    height: 126,
+    perspective: 900,
+  },
+  telemetryCard: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    padding: 14,
+    borderRadius: 18,
+    border: '1px solid rgba(255, 255, 255, 0.08)',
+    background: 'rgba(28, 28, 30, 0.96)',
+    boxShadow: '0 16px 40px rgba(0, 0, 0, 0.62)',
+    backdropFilter: 'blur(14px)',
+    WebkitBackdropFilter: 'blur(14px)',
+    boxSizing: 'border-box',
+    transformOrigin: 'top center',
+  },
+  telemetryCardMeta: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+    color: '#A1A1AA',
+    fontSize: 11,
+    fontWeight: 900,
+    lineHeight: 1,
+    letterSpacing: '0.09em',
+    textTransform: 'uppercase',
+    marginBottom: 7,
+  },
+  telemetrySource: {
+    minWidth: 0,
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 8,
+  },
+  telemetryIcon: {
+    width: 26,
+    height: 26,
+    borderRadius: 8,
+    display: 'inline-grid',
+    placeItems: 'center',
+    flex: '0 0 auto',
+  },
+  telemetryCardTitle: {
+    color: '#FAFAFA',
+    fontSize: 16,
+    fontWeight: 900,
+    lineHeight: 1.18,
+    letterSpacing: '0',
+  },
+  telemetryMoreButton: {
+    minHeight: 34,
+    alignSelf: 'center',
+    padding: '0 16px',
+    border: '1px solid rgba(255, 255, 255, 0.07)',
+    borderRadius: 999,
+    background: 'rgba(28, 28, 30, 0.94)',
+    color: '#D4D4D8',
+    fontSize: 12,
+    fontWeight: 850,
+    letterSpacing: '0.02em',
+    cursor: 'pointer',
+    backdropFilter: 'blur(12px)',
+    WebkitBackdropFilter: 'blur(12px)',
+  },
   globalBanner: {
     position: 'absolute',
-    left: 0,
+    left: 28,
     top: 0,
-    right: 348,
+    right: 376,
     height: 176,
     border: '0',
     borderRadius: 0,
     display: 'flex',
     alignItems: 'stretch',
-    padding: 12,
+    padding: '8px 0',
     boxSizing: 'border-box',
     overflow: 'hidden',
     color: '#FFFFFF',
@@ -766,7 +963,7 @@ const S: Record<string, CSSProperties> = {
     minWidth: 0,
     height: '100%',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
     gap: 14,
     background: 'transparent',
@@ -774,15 +971,28 @@ const S: Record<string, CSSProperties> = {
     padding: '0 0 0 14px',
     boxSizing: 'border-box',
   },
-  notificationStack: { flex: 1, minWidth: 0, display: 'grid', alignContent: 'center', gap: 10 },
+  notificationStack: {
+    position: 'relative',
+    flex: 1,
+    minWidth: 0,
+    height: '100%',
+    display: 'grid',
+    alignContent: 'start',
+    gap: 10,
+    paddingRight: 58,
+    boxSizing: 'border-box',
+    overflow: 'hidden',
+  },
   notificationItem: {
+    position: 'relative',
     minHeight: 58,
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
     gap: 12,
     border: '1px solid rgba(148, 163, 184, 0.22)',
     borderRadius: 6,
-    padding: '9px 12px',
+    padding: '9px 78px 9px 12px',
     boxSizing: 'border-box',
     boxShadow: 'none',
   },
@@ -796,6 +1006,7 @@ const S: Record<string, CSSProperties> = {
     boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.10)',
   },
   notificationCopy: {
+    flex: '1 1 auto',
     minWidth: 0,
     display: 'grid',
     gap: 3,
@@ -819,8 +1030,10 @@ const S: Record<string, CSSProperties> = {
     textTransform: 'uppercase',
   },
   notificationTime: {
+    position: 'absolute',
+    top: 13,
+    right: 14,
     flex: '0 0 auto',
-    alignSelf: 'start',
     color: '#94A3B8',
     fontSize: 14,
     fontWeight: 850,
@@ -828,12 +1041,23 @@ const S: Record<string, CSSProperties> = {
     textTransform: 'uppercase',
   },
   notificationMore: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    width: 46,
+    height: 30,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 2,
+    border: '1px solid rgba(148, 163, 184, 0.24)',
+    borderRadius: 6,
+    background: 'rgba(15, 23, 42, 0.88)',
     color: '#94A3B8',
     fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-    fontSize: 18,
+    fontSize: 13,
     fontWeight: 900,
-    letterSpacing: '0.06em',
-    paddingLeft: 58,
+    letterSpacing: '0.02em',
   },
   notificationFreshness: {
     color: '#64748B',
@@ -909,7 +1133,7 @@ const S: Record<string, CSSProperties> = {
   grid: {
     position: 'absolute',
     left: 28,
-    top: 196,
+    top: 112,
     right: 376,
     bottom: 28,
     display: 'grid',
