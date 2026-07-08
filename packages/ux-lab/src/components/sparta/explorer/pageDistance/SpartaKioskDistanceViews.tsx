@@ -470,6 +470,7 @@ function EmbryVoiceMast({
   const s = voiceStyle[voiceState]
   const sharedOrbState = sharedOrbStateByVoiceState[voiceState]
   const orbLabel = orbLabelByVoiceState[voiceState]
+  const [promptIndex, setPromptIndex] = useState(0)
   const mastStyle: CSSProperties = mode === '5ft'
     ? {
         ...S.embryMast,
@@ -494,6 +495,15 @@ function EmbryVoiceMast({
     { label: 'Show Posture', qid: 'embry:command-chip:posture', tab: 'Posture' },
     { label: 'Open top blocker', qid: 'embry:command-chip:top-blocker' },
   ]
+  const activePrompt = commands[promptIndex % commands.length]
+
+  useEffect(() => {
+    if (mode === '5ft') return
+    const interval = window.setInterval(() => {
+      setPromptIndex((current) => (current + 1) % commands.length)
+    }, 7000)
+    return () => window.clearInterval(interval)
+  }, [commands.length, mode])
 
   return (
     <aside data-qid="sparta:kiosk:embry-mast" style={mastStyle} aria-label="Embry voice control">
@@ -501,6 +511,11 @@ function EmbryVoiceMast({
         @keyframes sparta-live-ping {
           0% { transform: scale(0.72); opacity: 0.78; }
           78%, 100% { transform: scale(2.15); opacity: 0; }
+        }
+        @keyframes sparta-voice-prompt-timer {
+          0% { transform: scaleX(0); opacity: 0.18; }
+          12% { opacity: 0.56; }
+          100% { transform: scaleX(1); opacity: 0.56; }
         }
       `}</style>
       <div
@@ -532,7 +547,19 @@ function EmbryVoiceMast({
         </div>
       ) : null}
       {mode !== '5ft' ? (
-        <div style={S.voiceChipGrid} aria-label="Embry voice shortcuts">
+        <div data-qid="embry:teleprompter" style={S.voiceTeleprompter} aria-label="Embry suggested voice command">
+          <div style={S.voiceTeleprompterAffordance}>Say "Embry"</div>
+          <div style={S.voiceTeleprompterLabel}>Try asking</div>
+          <div data-qid="embry:teleprompter-prompt" style={S.voiceTeleprompterPrompt}>
+            "{activePrompt.label}"
+          </div>
+          <div style={S.voiceTeleprompterTimer}>
+            <div key={activePrompt.qid} style={S.voiceTeleprompterTimerFill} />
+          </div>
+        </div>
+      ) : null}
+      {mode !== '5ft' ? (
+        <div style={S.voiceActionRegistry} aria-label="Embry voice shortcuts">
           {commands.map((command) => (
             <button
               key={command.qid}
@@ -1453,7 +1480,7 @@ const S: Record<string, CSSProperties> = {
     borderRadius: '28px 28px 0 0',
     background: '#111115',
     display: 'grid',
-    gridTemplateRows: 'auto auto 1fr',
+    gridTemplateRows: 'auto 1fr',
     justifyItems: 'center',
     gap: 12,
     padding: '20px 20px 22px',
@@ -1485,6 +1512,75 @@ const S: Record<string, CSSProperties> = {
     letterSpacing: '0.08em',
     textTransform: 'uppercase',
     textAlign: 'center',
+  },
+  voiceTeleprompter: {
+    width: '100%',
+    minHeight: 320,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 44,
+    textAlign: 'center',
+  },
+  voiceTeleprompterAffordance: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 34,
+    padding: '0 18px',
+    borderRadius: 999,
+    border: '1px solid rgba(30, 64, 175, 0.44)',
+    background: '#1A1A24',
+    color: '#60A5FA',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    fontSize: 15,
+    fontWeight: 900,
+    letterSpacing: '0.14em',
+    lineHeight: 1,
+    textTransform: 'uppercase',
+  },
+  voiceTeleprompterLabel: {
+    marginTop: 42,
+    marginBottom: 20,
+    color: '#6B7280',
+    fontSize: 13,
+    fontWeight: 900,
+    letterSpacing: '0.18em',
+    lineHeight: 1,
+    textTransform: 'uppercase',
+  },
+  voiceTeleprompterPrompt: {
+    color: '#FFFFFF',
+    fontSize: 29,
+    fontWeight: 360,
+    lineHeight: 1.24,
+    letterSpacing: '0.01em',
+    padding: '0 12px',
+  },
+  voiceTeleprompterTimer: {
+    width: 64,
+    height: 4,
+    marginTop: 34,
+    borderRadius: 999,
+    overflow: 'hidden',
+    background: '#1A1A20',
+  },
+  voiceTeleprompterTimerFill: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 999,
+    background: 'rgba(59, 130, 246, 0.58)',
+    transformOrigin: 'left center',
+    animation: 'sparta-voice-prompt-timer 7s linear both',
+  },
+  voiceActionRegistry: {
+    position: 'absolute',
+    width: 1,
+    height: 1,
+    overflow: 'hidden',
+    clipPath: 'inset(50%)',
+    whiteSpace: 'nowrap',
   },
   voiceChipGrid: { width: '100%', display: 'grid', gap: 10, alignContent: 'start', marginTop: 28 },
   voiceChip: {
