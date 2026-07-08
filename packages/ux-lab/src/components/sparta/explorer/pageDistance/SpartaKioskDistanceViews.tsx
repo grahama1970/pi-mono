@@ -521,12 +521,16 @@ function EmbryVoiceMast({
           phaseSpeedMs={650}
         />
       </div>
-      <div data-qid="embry:voice-state" style={{ ...S.voiceState, color: mode === '5ft' ? s.fg : '#FFFFFF', fontSize: mode === '5ft' ? 34 : S.voiceState.fontSize }}>
-        {orbLabel}
-      </div>
-      <div data-qid="embry:heard-line" style={mode === '5ft' ? { ...S.heardLine, fontSize: 18 } : S.voicePrompt}>
-        {mode === '5ft' ? `Heard: show ${activeTab}` : 'Say "Embry" then a command'}
-      </div>
+      {mode === '5ft' ? (
+        <div data-qid="embry:voice-state" style={{ ...S.voiceState, color: s.fg, fontSize: 34 }}>
+          {orbLabel}
+        </div>
+      ) : null}
+      {mode === '5ft' ? (
+        <div data-qid="embry:heard-line" style={{ ...S.heardLine, fontSize: 18 }}>
+          Heard: show {activeTab}
+        </div>
+      ) : null}
       {mode !== '5ft' ? (
         <div style={S.voiceChipGrid} aria-label="Embry voice shortcuts">
           {commands.map((command) => (
@@ -1444,12 +1448,12 @@ const S: Record<string, CSSProperties> = {
     right: 28,
     bottom: 28,
     width: 320,
-    border: '0',
+    border: '1px solid rgba(55, 65, 81, 0.55)',
     borderLeft: `4px solid #1F2937`,
-    borderRadius: 0,
-    background: '#000000',
+    borderRadius: '28px 28px 0 0',
+    background: '#111115',
     display: 'grid',
-    gridTemplateRows: 'auto auto auto 1fr',
+    gridTemplateRows: 'auto auto 1fr',
     justifyItems: 'center',
     gap: 12,
     padding: '20px 20px 22px',
@@ -1482,7 +1486,7 @@ const S: Record<string, CSSProperties> = {
     textTransform: 'uppercase',
     textAlign: 'center',
   },
-  voiceChipGrid: { width: '100%', display: 'grid', gap: 10, alignContent: 'start' },
+  voiceChipGrid: { width: '100%', display: 'grid', gap: 10, alignContent: 'start', marginTop: 28 },
   voiceChip: {
     minHeight: 58,
     width: '100%',
