@@ -2153,8 +2153,14 @@ export function EmbryVoiceLabRoute(): JSX.Element {
       source?.disconnect()
       muteGain?.disconnect()
       stream?.getTracks().forEach((track) => track.stop())
-      if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ type: 'stop' }))
-      socket?.close()
+      if (socket?.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: 'stop' }))
+        window.setTimeout(() => {
+          if (socket?.readyState === WebSocket.OPEN) socket.close()
+        }, 2500)
+      } else {
+        socket?.close()
+      }
       void audioContext?.close().catch(() => undefined)
     }
 
