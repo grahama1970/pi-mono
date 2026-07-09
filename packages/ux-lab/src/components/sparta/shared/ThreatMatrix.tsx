@@ -15,7 +15,7 @@
  *     <ThreatMatrix.Detail />
  *   </ThreatMatrix.Provider>
  */
-import { createContext, use, useState, useMemo, useCallback, useRef, useEffect, type ReactNode } from 'react'
+import { createContext, use, useState, useMemo, useCallback, useRef, useEffect, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react'
 import { Flame, Grid3X3, Network, GitBranch, AlertTriangle, FileWarning, Shield, Download } from 'lucide-react'
 import { forceSimulation, forceLink, forceManyBody, forceCollide, forceX, forceY } from 'd3-force'
 import type { SimulationNodeDatum, SimulationLinkDatum } from 'd3-force'
@@ -666,6 +666,13 @@ interface TacticalGraphLink {
 
 type GraphSceneMode = 'path' | 'tactic' | 'all'
 
+interface GraphContextMenuState {
+  isVisible: boolean
+  x: number
+  y: number
+  nodeId: string | null
+}
+
 const TACTIC_ZONE_COLORS: Record<string, string> = {
   REC: 'rgba(56, 189, 248, 0.02)',
   RD: 'rgba(251, 146, 60, 0.02)',
@@ -676,6 +683,135 @@ const TACTIC_ZONE_COLORS: Record<string, string> = {
   LM: 'rgba(250, 204, 21, 0.015)',
   EXF: 'rgba(45, 212, 191, 0.02)',
   IMP: 'rgba(232, 121, 249, 0.02)',
+}
+
+function TacticalContextMenu({ x, y, nodeId, isVisible, onClose, onAction }: {
+  x: number
+  y: number
+  nodeId: string | null
+  isVisible: boolean
+  onClose: () => void
+  onAction: (action: 'ISOLATE' | 'PIN' | 'COPY', nodeId: string) => void
+}) {
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!isVisible) return
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) onClose()
+    }
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isVisible, onClose])
+
+  if (!isVisible || !nodeId) return null
+
+  const actionRows: Array<{ action: 'ISOLATE' | 'PIN' | 'COPY'; label: string; qid: string; title: string; tone: 'yellow' | 'white' | 'muted' }> = [
+    { action: 'ISOLATE', label: 'Isolate Kill Chain', qid: 'threat-matrix:graph:context-isolate', title: `Isolate the kill chain for ${nodeId}`, tone: 'yellow' },
+    { action: 'PIN', label: 'Pin Node Marker', qid: 'threat-matrix:graph:context-pin', title: `Pin a marker on ${nodeId}`, tone: 'white' },
+    { action: 'COPY', label: 'Copy Telemetry', qid: 'threat-matrix:graph:context-copy', title: `Copy telemetry id ${nodeId}`, tone: 'muted' },
+  ]
+
+  return (
+    <div
+      ref={menuRef}
+      data-qid="threat-matrix:graph:context-menu"
+      role="menu"
+      aria-label={`Tactical graph actions for ${nodeId}`}
+      style={{
+        position: 'absolute',
+        zIndex: 60,
+        top: y,
+        left: x,
+        width: 196,
+        background: 'rgba(10,10,12,0.96)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        borderRadius: 3,
+        boxShadow: '0 0 15px rgba(0,0,0,0.8)',
+        overflow: 'hidden',
+        backdropFilter: 'blur(10px)',
+        pointerEvents: 'auto',
+      }}
+    >
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        gap: 8,
+        padding: '7px 10px',
+        background: '#121214',
+        borderBottom: '1px solid rgba(255,255,255,0.1)',
+        color: 'rgba(255,255,255,0.4)',
+        fontSize: 9,
+        fontWeight: 900,
+        letterSpacing: '0.14em',
+        textTransform: 'uppercase',
+      }}>
+        <span>Target</span>
+        <span style={{ color: 'rgba(255,255,255,0.82)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{nodeId}</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', padding: '4px 0' }}>
+        {actionRows.map((row, index) => (
+          <button
+            key={row.action}
+            type="button"
+            role="menuitem"
+            data-qid={row.qid}
+            data-qs-action={`GRAPH_CONTEXT_${row.action}`}
+            data-qs-params={JSON.stringify({ nodeId })}
+            title={row.title}
+            onClick={() => {
+              onAction(row.action, nodeId)
+              onClose()
+            }}
+            style={{
+              minHeight: 34,
+              border: 0,
+              borderTop: index === 2 ? '1px solid rgba(255,255,255,0.05)' : 0,
+              background: 'transparent',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0 10px',
+              cursor: 'pointer',
+              color: row.tone === 'yellow' ? 'rgba(250,204,21,0.86)' : row.tone === 'white' ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.42)',
+              fontSize: 10,
+              fontWeight: 800,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              textAlign: 'left',
+            }}
+            onPointerEnter={(event) => {
+              event.currentTarget.style.background = 'rgba(255,255,255,0.05)'
+              event.currentTarget.style.color = row.tone === 'yellow' ? '#FACC15' : 'rgba(255,255,255,0.9)'
+            }}
+            onPointerLeave={(event) => {
+              event.currentTarget.style.background = 'transparent'
+              event.currentTarget.style.color = row.tone === 'yellow' ? 'rgba(250,204,21,0.86)' : row.tone === 'white' ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.42)'
+            }}
+          >
+            <span>{row.label}</span>
+            {row.action !== 'COPY' && (
+              <span style={{
+                width: 6,
+                height: 6,
+                borderRadius: 999,
+                background: row.tone === 'yellow' ? 'rgba(250,204,21,0.32)' : 'rgba(255,255,255,0.14)',
+              }} />
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic = null, lockedTactic = null, setHoveredTactic, setLockedTactic, onSelect }: {
@@ -691,6 +827,9 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
   const containerRef = useRef<HTMLDivElement>(null)
   const [positions, setPositions] = useState<Map<string, { x: number; y: number }>>(new Map())
   const [hovered, setHovered] = useState<string | null>(null)
+  const [isolatedNodeId, setIsolatedNodeId] = useState<string | null>(null)
+  const [pinnedNodeIds, setPinnedNodeIds] = useState<Set<string>>(() => new Set())
+  const [contextMenu, setContextMenu] = useState<GraphContextMenuState>({ isVisible: false, x: 0, y: 0, nodeId: null })
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
   const [viewport, setViewport] = useState({ x: 0, y: 0, k: 1 })
   const [forcePulse, setForcePulse] = useState(0)
@@ -700,6 +839,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
   ), [])
   const activeTactic = hoveredTactic ?? lockedTactic
+  const spotlightNodeId = hovered ?? isolatedNodeId
 
   useRegisterAction('threat-matrix:graph:tactic-magnet', {
     app: 'sparta-explorer',
@@ -742,6 +882,30 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     action: 'GRAPH_SET_SCENE_MODE',
     label: 'Set threat graph scene mode',
     description: 'Switch between path, tactic, and diagnostic all-edge SPARTA graph scenes',
+  })
+  useRegisterAction('threat-matrix:graph:context-menu', {
+    app: 'sparta-explorer',
+    action: 'GRAPH_OPEN_CONTEXT_MENU',
+    label: 'Open threat graph context menu',
+    description: 'Open tactical node actions for the selected SPARTA graph node',
+  })
+  useRegisterAction('threat-matrix:graph:context-isolate', {
+    app: 'sparta-explorer',
+    action: 'GRAPH_CONTEXT_ISOLATE',
+    label: 'Isolate graph kill chain',
+    description: 'Lock the SPARTA graph spotlight to one selected node and its adjacent crosswalk path',
+  })
+  useRegisterAction('threat-matrix:graph:context-pin', {
+    app: 'sparta-explorer',
+    action: 'GRAPH_CONTEXT_PIN',
+    label: 'Pin graph node marker',
+    description: 'Pin or unpin a SPARTA graph node marker in the current scene',
+  })
+  useRegisterAction('threat-matrix:graph:context-copy', {
+    app: 'sparta-explorer',
+    action: 'GRAPH_CONTEXT_COPY',
+    label: 'Copy graph node telemetry',
+    description: 'Copy the selected SPARTA graph node id to the clipboard',
   })
 
   useEffect(() => {
@@ -1028,14 +1192,14 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
   }, [techniques.length, tactics, dimensions, graphData.nodes, visibleGraphLinks, reducedMotion, forcePulse, hoveredTactic, lockedTactic, nodeTactic])
 
   const adjacentNodeIds = useMemo(() => {
-    if (!hovered) return new Set<string>()
-    const ids = new Set<string>([hovered])
+    if (!spotlightNodeId) return new Set<string>()
+    const ids = new Set<string>([spotlightNodeId])
     for (const link of visibleGraphLinks) {
-      if (link.source === hovered) ids.add(link.target)
-      if (link.target === hovered) ids.add(link.source)
+      if (link.source === spotlightNodeId) ids.add(link.target)
+      if (link.target === spotlightNodeId) ids.add(link.source)
     }
     return ids
-  }, [visibleGraphLinks, hovered])
+  }, [visibleGraphLinks, spotlightNodeId])
 
   const techniqueByGraphId = useMemo(() => new Map(
     graphData.nodes
@@ -1077,6 +1241,33 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
       }
     })
   }
+
+  const closeContextMenu = useCallback(() => {
+    setContextMenu((current) => ({ ...current, isVisible: false }))
+  }, [])
+
+  const handleContextAction = useCallback((action: 'ISOLATE' | 'PIN' | 'COPY', nodeId: string) => {
+    if (action === 'ISOLATE') {
+      const node = nodeById.get(nodeId)
+      setIsolatedNodeId(nodeId)
+      setHovered(nodeId)
+      const tacticName = node ? nodeTactic(node) : null
+      if (tacticName) setLockedTactic?.(tacticName)
+      return
+    }
+    if (action === 'PIN') {
+      setPinnedNodeIds((current) => {
+        const next = new Set(current)
+        if (next.has(nodeId)) next.delete(nodeId)
+        else next.add(nodeId)
+        return next
+      })
+      return
+    }
+    if (action === 'COPY') {
+      void navigator.clipboard?.writeText(nodeId).catch(() => undefined)
+    }
+  }, [nodeById, nodeTactic, setLockedTactic])
 
   return (
     <div
@@ -1124,7 +1315,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
         onDoubleClick={() => setViewport({ x: 0, y: 0, k: 1 })}
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', touchAction: 'none', cursor: panRef.current ? 'grabbing' : 'grab' }}
       >
-        <g aria-hidden="true" data-graph-zone-layer="tactic-wash">
+        <g aria-hidden="true" data-graph-zone-layer="tactic-wash" style={{ pointerEvents: 'none' }}>
           {tactics.map((tactic, index) => {
             const columnWidth = dimensions.width / Math.max(tactics.length, 1)
             const x = index * columnWidth
@@ -1158,7 +1349,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
             const source = positions.get(link.source)
             const target = positions.get(link.target)
             if (!source || !target) return null
-            const isHot = hovered && (link.source === hovered || link.target === hovered)
+            const isHot = spotlightNodeId && (link.source === spotlightNodeId || link.target === spotlightNodeId)
             const isTacticHot = linkTouchesActiveTactic(link)
             const style = linkStyle(link.kind, Boolean(isHot))
             return (
@@ -1169,9 +1360,9 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
                 y1={source.y}
                 x2={target.x}
                 y2={target.y}
-                stroke={isTacticHot && !hovered ? 'rgba(250,204,21,0.34)' : style.stroke}
-                strokeWidth={isTacticHot && !hovered ? Math.max(style.width, 1.2) : style.width}
-                opacity={hovered ? (isHot ? 0.84 : 0.015) : sceneMode === 'all' ? 0.18 : isTacticHot ? 0.46 : 0.04}
+                stroke={isTacticHot && !spotlightNodeId ? 'rgba(250,204,21,0.34)' : style.stroke}
+                strokeWidth={isTacticHot && !spotlightNodeId ? Math.max(style.width, 1.2) : style.width}
+                opacity={spotlightNodeId ? (isHot ? 0.84 : 0.015) : sceneMode === 'all' ? 0.18 : isTacticHot ? 0.46 : 0.04}
               />
             )
           })}
@@ -1180,26 +1371,39 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
         {graphData.nodes.map((node) => {
           const pos = positions.get(node.id)
           if (!pos) return null
-          const isHovered = hovered === node.id
+          const isHovered = spotlightNodeId === node.id
+          const isPinned = pinnedNodeIds.has(node.id)
           const related = adjacentNodeIds.has(node.id)
-          const dimmed = hovered && !related
+          const dimmed = spotlightNodeId && !related
           const isTechnique = node.kind === 'technique'
           const tech = techniqueByGraphId.get(node.id)
           const stroke = nodeStroke(node, isHovered)
           const isHub = node.kind !== 'technique'
           const tacticMatch = nodeMatchesActiveTactic(node)
           const inScene = !sceneNodeIds || sceneNodeIds.has(node.id)
-          const tacticDimmed = activeTactic && !tacticMatch && !(hovered && related)
-          const sceneDimmed = sceneNodeIds && !inScene && !(hovered && related)
+          const tacticDimmed = activeTactic && !tacticMatch && !(spotlightNodeId && related)
+          const sceneDimmed = sceneNodeIds && !inScene && !(spotlightNodeId && related)
           const showLabel = (
             node.kind === 'tactic' ||
             node.kind === 'framework' ||
             node.kind === 'category' ||
             isHovered ||
-            (hovered && related) ||
+            isPinned ||
+            (spotlightNodeId && related) ||
             (tacticMatch && inScene)
           )
           const safeQid = node.id.replace(/[^a-zA-Z0-9_-]/g, '-')
+          const openContextMenu = (event: ReactMouseEvent<SVGGElement | SVGRectElement>) => {
+            event.preventDefault()
+            event.stopPropagation()
+            const bounds = containerRef.current?.getBoundingClientRect()
+            setContextMenu({
+              isVisible: true,
+              x: Math.min((bounds?.width ?? dimensions.width) - 212, Math.max(8, event.clientX - (bounds?.left ?? 0))),
+              y: Math.min((bounds?.height ?? dimensions.height) - 150, Math.max(8, event.clientY - (bounds?.top ?? 0))),
+              nodeId: node.id,
+            })
+          }
           return (
             <g
               key={node.id}
@@ -1218,6 +1422,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
               onFocus={() => setHovered(node.id)}
               onBlur={() => setHovered(null)}
               onClick={() => { if (tech) onSelect(tech) }}
+              onContextMenu={openContextMenu}
               tabIndex={isTechnique ? 0 : -1}
               role={isTechnique ? 'button' : 'img'}
               aria-label={tech ? `${tech.id}: ${tech.name}. ${tech.coverage} coverage.` : `${node.kind}: ${node.label}`}
@@ -1229,12 +1434,21 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
               }}
             >
               <title>{tech ? `${tech.id}: ${tech.name}` : `${node.kind}: ${node.label}`}</title>
+              <rect
+                x={-10}
+                y={-14}
+                width={isHub ? 92 : 104}
+                height={28}
+                fill="transparent"
+                pointerEvents="all"
+                onContextMenu={openContextMenu}
+              />
               {isHub ? (
                 <circle
                   r={node.kind === 'tactic' ? 10 : 7}
                   fill="#09090b"
                   stroke={stroke}
-                  strokeWidth={isHovered ? 2 : 1}
+                  strokeWidth={isHovered || isPinned ? 2 : 1}
                 />
               ) : (
                 <rect
@@ -1245,9 +1459,9 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
                   rx={2}
                   fill="#121214"
                   stroke={stroke}
-                  strokeWidth={isHovered ? 2 : 1}
+                  strokeWidth={isHovered || isPinned ? 2 : 1}
                   style={{
-                    filter: isHovered
+                    filter: isHovered || isPinned
                       ? 'drop-shadow(0 0 6px rgba(250,204,21,0.35))'
                       : tacticMatch && node.data?.evidenceVerdict !== 'none'
                         ? 'drop-shadow(0 0 5px rgba(250,204,21,0.18))'
@@ -1267,6 +1481,16 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
                 >
                   {node.label}
                 </text>
+              )}
+              {isPinned && (
+                <circle
+                  r={isHub ? 14 : 12}
+                  fill="none"
+                  stroke="rgba(250,204,21,0.62)"
+                  strokeDasharray="3 3"
+                  strokeWidth={1}
+                  pointerEvents="none"
+                />
               )}
             </g>
           )
@@ -1409,6 +1633,12 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
           </button>
         ))}
       </div>
+
+      <TacticalContextMenu
+        {...contextMenu}
+        onClose={closeContextMenu}
+        onAction={handleContextAction}
+      />
 
       {/* Legend */}
       <div style={{
