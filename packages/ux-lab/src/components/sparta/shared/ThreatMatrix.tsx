@@ -1724,6 +1724,7 @@ function Grid() {
               display: isGlance ? 'flex' : 'flex',
               flexDirection: isGlance ? 'row' : 'column',
               flexWrap: isGlance ? 'wrap' : 'nowrap',
+              justifyContent: isGlance ? 'center' : 'flex-start',
               gap: isGlance ? 4 : 2,
               alignContent: 'flex-start',
               paddingTop: 2,
