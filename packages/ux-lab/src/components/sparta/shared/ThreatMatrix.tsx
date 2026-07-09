@@ -16,10 +16,10 @@
  *   </ThreatMatrix.Provider>
  */
 import { createContext, use, useState, useMemo, useCallback, useRef, useEffect, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react'
-import { Flame, Grid3X3, Network, GitBranch, AlertTriangle, FileWarning, Shield, Download } from 'lucide-react'
+import { Flame, Grid3X3, Network } from 'lucide-react'
 import { forceSimulation, forceLink, forceManyBody, forceCollide, forceX, forceY } from 'd3-force'
 import type { SimulationNodeDatum, SimulationLinkDatum } from 'd3-force'
-import { EMBRY, label, heading, glowDot, fwBadge, FLUID } from '../common/EmbryStyle'
+import { EMBRY, glowDot, FLUID } from '../common/EmbryStyle'
 import { TacticAccordion } from './TacticAccordion'
 import { TechniqueDrawer } from './TechniqueDrawer'
 import { TacticalContextMenu, type TacticalContextMenuAction } from './TacticalContextMenu'
@@ -180,104 +180,11 @@ function Provider({ state, actions, meta, children }: ProviderProps) {
   )
 }
 
-// ── Coverage colors ──────────────────────────────────────────────────────────
-
-const COVERAGE_COLORS: Record<string, string> = {
-  full: EMBRY.green,
-  partial: EMBRY.amber,
-  none: EMBRY.red,
-  unknown: EMBRY.dim,
-}
-
-// ── Visual Bloom Heatmap Colors (Industrial-Grade) ───────────────────────────
-// Tactical heat-distribution map with luminance-based confidence visualization
-// - Luminance = proxy for evidence strength (1.0 = formal proof, 0.5 = weak)
-// - Temporal shimmer for expiring evidence (scanline animation)
-// - Structural contours for load-bearer cells (high MRS/fan-out)
-const BLOOM_RGB = {
-  healthy: [63, 185, 80],    // Green — full compliance
-  degraded: [210, 153, 34],  // Amber — fragile success
-  critical: [220, 38, 38],   // Red — emergency
-  blind: [74, 74, 74],       // Grey — unknown/blind spot
-}
-
-const BLOOM_COLORS = {
-  safe: '#1a5f2a',
-  fragile: '#b58900',
-  blind: '#4a4a4a',
-  critical: '#dc2626',
-}
-
-/** Map evidence grade to impact score (0.0 = strong, 1.0 = weak/failing) */
-function gradeToImpact(grade: string | undefined, verdict: string): number {
-  if (verdict === 'not_satisfied') return 1.0
-  if (verdict === 'none' || verdict === 'inconclusive') return 0.6
-  if (!grade) return 0.4
-  switch (grade) {
-    case 'A+': return 0.0
-    case 'A': return 0.1
-    case 'B': return 0.3
-    case 'C': return 0.5
-    case 'F': return 0.9
-    default: return 0.4
-  }
-}
-
-/** Get full heatmap style with luminance, shimmer, and structural weight */
-function getBloomStyle(tech: ThreatTechnique): React.CSSProperties {
-  const impact = gradeToImpact(tech.evidenceGrade, tech.evidenceVerdict)
-  const nrsScore = tech.nrs_score ?? 0
-
-  // Determine base RGB based on operational state. Unknown/inconclusive evidence
-  // must remain grey; yellow is reserved for fragile accepted evidence.
-  let rgb = BLOOM_RGB.healthy
-  if (tech.evidenceVerdict === 'none' || tech.evidenceVerdict === 'inconclusive') rgb = BLOOM_RGB.blind
-  else if (impact > 0.7) rgb = BLOOM_RGB.critical
-  else if (impact > 0.3) rgb = BLOOM_RGB.degraded
-
-  // Luminance mapping: higher impact in healthy areas = "thin evidence" (dimmer)
-  // Alpha ranges from 0.4 (weak) to 1.0 (strong)
-  const alpha = tech.evidenceVerdict === 'none' || tech.evidenceVerdict === 'inconclusive'
-    ? 0.42
-    : impact < 0.3
-      ? 1.0 - impact * 0.6
-      : 0.7 + impact * 0.3
-
-  // Structural weight: high NRS score = load-bearer cell (inner glow)
-  const isLoadBearer = nrsScore > 0.5
-  const innerGlow = isLoadBearer ? `inset 0 0 8px rgba(255, 255, 255, 0.15)` : 'none'
-
-  return {
-    backgroundColor: `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`,
-    boxShadow: innerGlow,
-    border: isLoadBearer ? '1px solid rgba(255, 255, 255, 0.2)' : 'none',
-  }
-}
-
-function getBloomColor(tech: ThreatTechnique): string {
-  const verdict = tech.evidenceVerdict
-  const grade = tech.evidenceGrade ?? '-'
-
-  if (verdict === 'not_satisfied') return BLOOM_COLORS.critical
-  if (verdict === 'inconclusive' || verdict === 'none') return BLOOM_COLORS.blind
-  if (verdict === 'satisfied') {
-    if (grade === 'A+' || grade === 'A') return BLOOM_COLORS.safe
-    return BLOOM_COLORS.fragile
-  }
-  return BLOOM_COLORS.blind
-}
-
 function getAccentColor(tech: ThreatTechnique): string {
   if (tech.evidenceVerdict === 'satisfied') return EMBRY.green
   if (tech.evidenceVerdict === 'inconclusive') return EMBRY.amber
   if (tech.evidenceVerdict === 'not_satisfied') return EMBRY.red
   return EMBRY.dim
-}
-
-function getMicroId(id: string): string {
-  const parts = id.split('-')
-  if (parts.length >= 2) return `${parts[0]}-${parts[1].padStart(2, '0')}`
-  return id.slice(0, 6)
 }
 
 // ── Tactical HUD Tooltip (NVIS 2026) ─────────────────────────────────────────
@@ -1934,50 +1841,34 @@ function Grid() {
 
 // ── Detail Panel ─────────────────────────────────────────────────────────────
 
-// ── Asset type badge colors ──────────────────────────────────────────────────
-
-const ASSET_TYPE_COLORS: Record<string, string> = {
-  Requirement: EMBRY.accent,
-  Table: EMBRY.blue,
-  Figure: EMBRY.amber,
-  Text: EMBRY.dim,
-  Equation: EMBRY.green,
-  HTML: EMBRY.muted,
-}
-
-function assetBadge(type: string): React.CSSProperties {
-  const color = ASSET_TYPE_COLORS[type] ?? EMBRY.dim
-  return {
-    fontSize: 8, fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase' as const,
-    padding: '1px 6px', borderRadius: 3, letterSpacing: '0.05em',
-    color, backgroundColor: `${color}15`, border: `1px solid ${color}25`,
-  }
-}
-
-// ── Detail Panel ─────────────────────────────────────────────────────────────
-
 function Detail() {
   const { state, actions } = useThreatMatrix()
   const { selectedDetail, loadingDetail } = state
-  const [showEvidence, setShowEvidence] = useState(false)
 
   if (!selectedDetail) return null
 
   const { technique: tech, qras, countermeasures, relationships, traceability, evidenceCases, discrepancies } = selectedDetail
   const traceTypes = traceability ? Object.keys(traceability).sort() : []
   const totalChunks = traceTypes.reduce((sum, t) => sum + (traceability?.[t]?.length ?? 0), 0)
+  const coveragePercent = coverageToPercent(tech.coverage)
+  const coverageColor = coveragePercent === 0 ? EMBRY.red : coveragePercent < 100 ? EMBRY.amber : `${EMBRY.white}99`
+  const hasCoverageGap = tech.evidenceVerdict === 'not_satisfied' || tech.evidenceVerdict === 'inconclusive' || tech.coverage === 'none'
+  const evidenceCount = evidenceCases?.length ?? 0
+  const traceSummary = `${totalChunks} source chunk${totalChunks === 1 ? '' : 's'}`
 
   return (
     <div style={{
-      width: 450,
-      flex: '0 0 450px',
+      width: 400,
+      flex: '0 0 400px',
       height: '100%',
-      backgroundColor: '#0a0a0c',
-      borderLeft: '1px solid rgba(255, 255, 255, 0.05)',
+      backgroundColor: 'rgba(10, 10, 12, 0.95)',
+      backdropFilter: 'blur(24px)',
+      WebkitBackdropFilter: 'blur(24px)',
+      borderLeft: '1px solid rgba(255, 255, 255, 0.10)',
       display: 'flex',
       flexDirection: 'column',
       zIndex: 10,
-      boxShadow: '-4px 0 20px rgba(0,0,0,0.4)',
+      boxShadow: '-20px 0 40px rgba(0,0,0,0.8)',
       animation: 'threatMatrixPaneIn 0.2s ease-out',
     }}>
       <style>
@@ -1988,392 +1879,169 @@ function Detail() {
           }
         `}
       </style>
-      {/* Header - sticky, does not scroll */}
-      <div style={{
-        padding: '16px 20px', borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-        flexShrink: 0, backgroundColor: '#0a0a0c',
-      }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-            <span style={{ fontFamily: 'monospace', fontSize: 13, fontWeight: 700, color: EMBRY.accent }}>{tech.id}</span>
-            <div style={glowDot(COVERAGE_COLORS[tech.coverage], 8)} />
-          </div>
-          <div style={{ fontSize: 14, fontWeight: 600, color: EMBRY.white }}>{tech.name}</div>
-          <div style={{ fontSize: 10, color: EMBRY.dim, marginTop: 2 }}>{tech.tactic}</div>
+
+      {/* Header: raw typography, no boxed wash */}
+      <div style={{ padding: '24px 24px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexShrink: 0 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
+          <span style={{ color: 'rgba(255,255,255,0.40)', fontSize: 9, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+            {tech.tactic} / Target Locked
+          </span>
+          <h2 style={{ margin: 0, color: EMBRY.white, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', fontSize: 20, fontWeight: 800, letterSpacing: '-0.02em' }}>
+            {tech.id}
+          </h2>
         </div>
         <button
           data-qid="threat-matrix:detail:close"
           data-qs-action="CLOSE_DETAIL_PANEL"
-          title="Close detail panel"
+          title="Close evidence pane"
           onClick={actions.clearSelection}
+          aria-label="Close evidence pane"
           style={{
-            background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6,
-            color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer',
-            minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'transparent',
+            border: 'none',
+            color: 'rgba(255,255,255,0.32)',
+            cursor: 'pointer',
+            width: 32,
+            height: 32,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 22,
+            lineHeight: 1,
           }}
-        >Close</button>
+        >×</button>
       </div>
 
-      {/* Scrollable content */}
-      <div style={{ flex: 1, overflow: 'auto' }}>
-
-      {/* Evidence Cases — "Why" section */}
-      {(evidenceCases?.length ?? 0) > 0 && (
-        <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-            <div style={{ ...label }}>Evidence ({evidenceCases!.length} case{evidenceCases!.length !== 1 ? 's' : ''})</div>
-            <button
-              data-qid="threat-matrix:button:detail-toggle-evidence"
-              data-qs-action="TOGGLE_EVIDENCE_GATES"
-              title={showEvidence ? 'Hide evidence gate details' : 'Show evidence gate details'}
-              onClick={() => setShowEvidence(v => !v)}
-              style={{
-                fontSize: 9, fontWeight: 600, padding: '2px 8px', borderRadius: 4,
-                border: `1px solid ${EMBRY.accent}44`, cursor: 'pointer',
-                backgroundColor: showEvidence ? `${EMBRY.accent}22` : 'transparent',
-                color: EMBRY.accent,
-                minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}
-            >
-              {showEvidence ? 'Hide Gates' : 'Show Evidence'}
-            </button>
-          </div>
-          {evidenceCases!.map((ec, i) => {
-            const vColor = ec.verdict === 'satisfied' ? EMBRY.green : ec.verdict === 'inconclusive' ? EMBRY.amber : EMBRY.red
-            return (
-              <div key={`ec-${i}`} style={{ marginBottom: 8, borderRadius: 6, border: `1px solid ${vColor}33`, overflow: 'hidden' }}>
-                <div style={{ padding: '6px 10px', display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <div style={glowDot(vColor, 7)} />
-                  <span style={{ fontSize: 10, fontWeight: 700, color: vColor, textTransform: 'uppercase' }}>{ec.verdict.replace('_', ' ')}</span>
-                  <span style={{ fontSize: 9, color: EMBRY.dim, fontFamily: 'monospace' }}>{ec.grade}</span>
-                  <span style={{ fontSize: 9, color: EMBRY.muted, fontFamily: 'monospace', marginLeft: 'auto' }}>
-                    {ec.gates_passed}/{ec.gates_total} gates {ec.tier === 'T2' ? ' [LLM]' : ''}
-                  </span>
-                </div>
-                <div style={{ padding: '4px 10px 6px', fontSize: 11, color: EMBRY.dim, lineHeight: 1.4 }}>
-                  {ec.question.slice(0, 150)}{ec.question.length > 150 ? '...' : ''}
-                </div>
-                {showEvidence && ec.gate_summary && (
-                  <div style={{ padding: '6px 10px', borderTop: `1px solid ${EMBRY.border}`, backgroundColor: `${EMBRY.bgDeep}80` }}>
-                    {ec.gate_summary.split('; ').map((g, gi) => {
-                      const pass = g.startsWith('PASS')
-                      const gateName = g.replace(/^(PASS|FAIL): /, '')
-                      return (
-                        <div key={gi} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
-                          <div style={{
-                            width: 14, height: 14, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: 8, fontWeight: 700, color: pass ? EMBRY.green : EMBRY.red,
-                            background: `${pass ? EMBRY.green : EMBRY.red}15`, border: `1px solid ${pass ? EMBRY.green : EMBRY.red}40`,
-                          }}>
-                            {pass ? '\u2713' : '\u2717'}
-                          </div>
-                          <span style={{ fontSize: 10, fontFamily: 'monospace', color: EMBRY.blue }}>
-                            {gateName.replace(/^step_\d+_/, '')}
-                          </span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      )}
-
-      {/* Discrepancies — requirement vs table contradictions */}
-      {(discrepancies?.length ?? 0) > 0 && (
-        <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-          <div style={{ ...label, marginBottom: 6, color: EMBRY.red }}>
-            Discrepancies ({discrepancies!.length})
-          </div>
-          {discrepancies!.map((d, i) => {
-            const sevColor = d.severity === 'high' ? EMBRY.red : d.severity === 'medium' ? EMBRY.amber : EMBRY.dim
-            return (
-              <div key={`disc-${i}`} style={{ marginBottom: 8, borderRadius: 6, border: `1px solid ${sevColor}33`, padding: '8px 10px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                  <span style={{ fontSize: 8, fontWeight: 700, textTransform: 'uppercase', color: sevColor, padding: '1px 5px', borderRadius: 3, backgroundColor: `${sevColor}15` }}>{d.severity}</span>
-                  <span style={{ fontSize: 11, color: EMBRY.white, fontWeight: 500 }}>{d.summary}</span>
-                </div>
-                <div style={{ fontSize: 10, color: EMBRY.dim, lineHeight: 1.4, marginBottom: 2 }}>
-                  <span style={{ color: EMBRY.accent }}>Req: </span>{d.requirement_claim}
-                </div>
-                <div style={{ fontSize: 10, color: EMBRY.dim, lineHeight: 1.4, marginBottom: 2 }}>
-                  <span style={{ color: EMBRY.red }}>Table: </span>{d.table_reality}
-                </div>
-                {d.recommendation && (
-                  <div style={{ fontSize: 10, color: EMBRY.green, lineHeight: 1.4, fontStyle: 'italic' }}>
-                    Fix: {d.recommendation}
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      )}
-
-      {/* Traceability — typed source chunks from datalake */}
-      {totalChunks > 0 && (
-        <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-          <div style={{ ...label, marginBottom: 6 }}>
-            Source Traceability ({totalChunks} chunks)
-          </div>
-          {traceTypes.map((assetType) => {
-            const chunks = traceability![assetType]
-            if (!chunks?.length) return null
-            return (
-              <div key={assetType} style={{ marginBottom: 8 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                  <span style={assetBadge(assetType)}>{assetType}</span>
-                  <span style={{ fontSize: 9, color: EMBRY.dim }}>{chunks.length}</span>
-                </div>
-                {chunks.slice(0, 3).map((chunk, ci) => (
-                  <div key={chunk._key ?? ci} style={{
-                    fontSize: 11, color: EMBRY.dim, lineHeight: 1.4, padding: '4px 8px', marginBottom: 2,
-                    borderRadius: 4, backgroundColor: `${ASSET_TYPE_COLORS[assetType] ?? EMBRY.dim}06`,
-                    borderLeft: `2px solid ${ASSET_TYPE_COLORS[assetType] ?? EMBRY.dim}40`,
-                  }}>
-                    {chunk.doc_id && <span style={{ fontSize: 9, fontFamily: 'monospace', color: EMBRY.muted, marginRight: 4 }}>{chunk.doc_id}{chunk.page_num ? `:p${chunk.page_num}` : ''}</span>}
-                    {(chunk.text ?? chunk.content ?? '').slice(0, 120)}{(chunk.text ?? chunk.content ?? '').length > 120 ? '...' : ''}
-                  </div>
-                ))}
-                {chunks.length > 3 && <div style={{ fontSize: 9, color: EMBRY.muted, paddingLeft: 8 }}>+ {chunks.length - 3} more</div>}
-              </div>
-            )
-          })}
-        </div>
-      )}
-
-      {/* Description */}
-      {tech.description && (
-        <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-          <div style={{ ...label, marginBottom: 4 }}>Description</div>
-          <div style={{ fontSize: 12, color: EMBRY.dim, lineHeight: 1.5 }}>{tech.description}</div>
-        </div>
-      )}
-
-      {/* Mind tags */}
-      <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-        <div style={{ ...label, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
-          Mind Tags
-          <div style={glowDot((tech.mind?.length ?? 0) > 0 ? EMBRY.green : EMBRY.red, 6)} />
-        </div>
-        {(tech.mind?.length ?? 0) > 0 ? (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-            {tech.mind!.map((tag) => (
-              <span key={tag} style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 4, backgroundColor: `${EMBRY.accent}18`, color: EMBRY.accent, border: `1px solid ${EMBRY.accent}33` }}>
-                {tag}
-              </span>
-            ))}
-          </div>
-        ) : (
-          <div style={{ fontSize: 11, color: EMBRY.red, padding: '4px 8px', borderRadius: 4, backgroundColor: `${EMBRY.red}08` }}>
-            No taxonomy tags
-          </div>
-        )}
-      </div>
-
-      {/* Countermeasures */}
-      {countermeasures.length > 0 && (
-        <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-          <div style={{ ...label, marginBottom: 6 }}>Countermeasures ({countermeasures.length})</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-            {countermeasures.map((cm) => (
-              <span key={cm.control_id} style={{
-                fontFamily: 'monospace', fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 4,
-                backgroundColor: `${EMBRY.green}12`, color: EMBRY.green, border: `1px solid ${EMBRY.green}22`,
-              }}>{cm.control_id}</span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* QRAs */}
-      <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-        <div style={{ ...label, marginBottom: 6 }}>QRAs ({qras.length})</div>
-        {loadingDetail ? (
-          <div style={{ fontSize: 11, color: EMBRY.dim }}>Loading...</div>
-        ) : qras.length === 0 ? (
-          <div style={{ fontSize: 11, color: EMBRY.red, padding: 8, borderRadius: 4, backgroundColor: `${EMBRY.red}08` }}>
-            No QRAs — gap in coverage
-          </div>
-        ) : (
-          qras.slice(0, 5).map((qra, i) => (
-            <div key={`qra-${i}`} style={{ borderRadius: 6, border: `1px solid ${EMBRY.border}`, overflow: 'hidden', marginBottom: 6 }}>
-              <div style={{ padding: '6px 10px', fontSize: 12, lineHeight: 1.5 }}>
-                <span style={{ color: EMBRY.accent }}>Q: </span>
-                <span style={{ color: EMBRY.white }}>{qra.question}</span>
-              </div>
-              {qra.answer && (
-                <div style={{ padding: '6px 10px', borderTop: `1px solid ${EMBRY.border}`, fontSize: 12, lineHeight: 1.5 }}>
-                  <span style={{ color: EMBRY.green }}>A: </span>
-                  <span style={{ color: EMBRY.dim }}>{(qra.answer ?? '').slice(0, 200)}{(qra.answer ?? '').length > 200 ? '...' : ''}</span>
-                </div>
-              )}
-            </div>
-          ))
-        )}
-        {qras.length > 5 && <div style={{ fontSize: 10, color: EMBRY.dim }}>... and {qras.length - 5} more</div>}
-      </div>
-
-      {/* Relationships */}
-      <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-        <div style={{ ...label, marginBottom: 6 }}>Relationships ({relationships.length})</div>
-        {relationships.slice(0, 10).map((rel, i) => (
-          <div key={`rel-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: EMBRY.blue }}>{rel.source_control_id}</span>
-            <span style={{ color: EMBRY.dim, fontSize: 10 }}>→</span>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: EMBRY.blue }}>{rel.target_control_id}</span>
-            {rel.combined_score != null && (
-              <span style={{ fontSize: 9, color: EMBRY.dim }}>({(rel.combined_score * 100).toFixed(0)}%)</span>
-            )}
-          </div>
-        ))}
-        {relationships.length > 10 && <div style={{ fontSize: 10, color: EMBRY.dim }}>... and {relationships.length - 10} more</div>}
-      </div>
-
-      {/* DFARS 7012(c) Incident Export — "Forensics Golden Path" */}
-      {/* Shows for: not_satisfied, inconclusive (gaps), or no coverage */}
-      {(tech.evidenceVerdict === 'not_satisfied' || tech.evidenceVerdict === 'inconclusive' || tech.coverage === 'none') && (
-        <div style={{
-          padding: '12px 20px',
-          background: `linear-gradient(135deg, ${EMBRY.amber}08 0%, ${EMBRY.red}04 100%)`,
-          borderTop: `2px solid ${EMBRY.amber}`,
+      {/* Telemetry: no box, state through color only */}
+      <div style={{ padding: '0 24px 24px', display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0 }}>
+        <span style={{ color: 'rgba(255,255,255,0.40)', fontSize: 9, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}>Coverage</span>
+        <span style={{
+          color: coverageColor,
+          fontSize: 18,
+          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+          fontWeight: 800,
+          textShadow: coveragePercent === 0 ? '0 0 8px rgba(239,68,68,0.5)' : coveragePercent < 100 ? '0 0 8px rgba(234,179,8,0.5)' : 'none',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-            <div style={{
-              width: 28, height: 28, borderRadius: 6,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: `${EMBRY.amber}20`, border: `1px solid ${EMBRY.amber}40`,
-            }}>
-              <FileWarning size={14} color={EMBRY.amber} />
-            </div>
-            <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: EMBRY.amber, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                DFARS 7012(c) Incident
-              </div>
-              <div style={{ fontSize: 9, color: EMBRY.dim }}>
-                72-hour reporting window active
-              </div>
-            </div>
+          {coveragePercent}%
+        </span>
+        <span style={{ color: 'rgba(255,255,255,0.28)', fontSize: 9, fontWeight: 900, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+          {tech.evidenceVerdict.replace('_', ' ')}
+        </span>
+      </div>
+
+      {/* Context: pure text hierarchy, no nested cards */}
+      <div style={{ padding: '0 24px', display: 'flex', flexDirection: 'column', gap: 32, flex: 1, overflowY: 'auto' }}>
+        <section>
+          <h3 style={{ margin: '0 0 12px', color: 'rgba(255,255,255,0.40)', fontSize: 9, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+            Technique Description
+          </h3>
+          <p style={{ margin: 0, color: 'rgba(255,255,255,0.70)', fontSize: 12, lineHeight: 1.65 }}>
+            {tech.description || tech.name}
+          </p>
+        </section>
+
+        <section>
+          <h3 style={{ margin: '0 0 12px', color: 'rgba(255,255,255,0.40)', fontSize: 9, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+            Evidence State
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 22, rowGap: 14 }}>
+            <MetricReadout value={evidenceCount} label="Evidence Cases" />
+            <MetricReadout value={qras.length} label="QRAs" />
+            <MetricReadout value={countermeasures.length} label="Controls" />
+            <MetricReadout value={relationships.length} label="Edges" />
           </div>
-
-          {/* Logic Summary Preview */}
-          <div style={{
-            padding: 10, borderRadius: 6,
-            background: 'rgba(0, 0, 0, 0.3)',
-            border: `1px solid ${EMBRY.border}`,
-            marginBottom: 10,
-          }}>
-            <div style={{ fontSize: 10, color: EMBRY.muted, marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Logic Summary
-            </div>
-            <div style={{ fontSize: 11, color: EMBRY.dim, lineHeight: 1.5 }}>
-              Incident triggered by {tech.evidenceVerdict === 'not_satisfied' ? 'failed evidence' : 'missing coverage'} on{' '}
-              <span style={{ color: EMBRY.accent, fontFamily: 'monospace', fontWeight: 600 }}>{tech.id}</span>.{' '}
-              Failure impacts <span style={{ color: EMBRY.white, fontWeight: 600 }}>{countermeasures.length}</span> downstream controls
-              {tech.frameworks.length > 0 && (
-                <> across {tech.frameworks.slice(0, 2).map((fw, i) => (
-                  <span key={fw}>
-                    {i > 0 && ', '}
-                    <span style={{ color: EMBRY.blue }}>{fw}</span>
-                  </span>
-                ))}{tech.frameworks.length > 2 && ` +${tech.frameworks.length - 2}`}</>
-              )}.
-            </div>
+          <div style={{ marginTop: 14, color: 'rgba(255,255,255,0.34)', fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            {traceSummary}
+            {discrepancies?.length ? ` · ${discrepancies.length} discrepancies` : ''}
           </div>
+        </section>
 
-          {/* Traceability Matrix Preview */}
-          <div style={{
-            display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8,
-            marginBottom: 12,
-          }}>
-            <div style={{
-              padding: '8px 10px', borderRadius: 4,
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: `1px solid ${EMBRY.border}`,
-            }}>
-              <div style={{ fontSize: 16, fontWeight: 700, color: EMBRY.white }}>{relationships.length}</div>
-              <div style={{ fontSize: 9, color: EMBRY.dim, textTransform: 'uppercase' }}>LLR Mappings</div>
+        {hasCoverageGap && (
+          <section>
+            <h3 style={{ margin: '0 0 12px', color: 'rgba(248,113,113,0.86)', fontSize: 9, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: EMBRY.red, boxShadow: `0 0 6px ${EMBRY.red}` }} />
+              {countermeasures.length > 0 ? 'Mapped Controls' : 'Missing Controls'}
+            </h3>
+            <ul style={{ margin: 0, padding: '0 0 0 12px', borderLeft: '1px solid rgba(239,68,68,0.22)', display: 'flex', flexDirection: 'column', gap: 10, listStyle: 'none' }}>
+              {countermeasures.length > 0 ? countermeasures.slice(0, 6).map((cm) => (
+                <li key={cm.control_id} style={{ color: 'rgba(255,255,255,0.90)', fontSize: 12, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' }}>
+                  {cm.control_id}
+                </li>
+              )) : (
+                <li style={{ color: 'rgba(255,255,255,0.64)', fontSize: 12, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' }}>
+                  No mapped controls returned for this technique.
+                </li>
+              )}
+            </ul>
+          </section>
+        )}
+
+        {(evidenceCases?.length ?? 0) > 0 && (
+          <section>
+            <h3 style={{ margin: '0 0 12px', color: 'rgba(255,255,255,0.40)', fontSize: 9, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+              Evidence Cases
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {evidenceCases!.slice(0, 4).map((ec, i) => {
+                const vColor = ec.verdict === 'satisfied' ? EMBRY.green : ec.verdict === 'inconclusive' ? EMBRY.amber : EMBRY.red
+                return (
+                  <div key={`ec-${i}`} style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ width: 6, height: 6, borderRadius: '50%', background: vColor, boxShadow: `0 0 6px ${vColor}` }} />
+                      <span style={{ color: vColor, fontSize: 9, fontWeight: 900, letterSpacing: '0.14em', textTransform: 'uppercase' }}>{ec.verdict.replace('_', ' ')}</span>
+                      <span style={{ marginLeft: 'auto', color: 'rgba(255,255,255,0.36)', fontSize: 9, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' }}>
+                        {ec.gates_passed}/{ec.gates_total} gates
+                      </span>
+                    </div>
+                    <p style={{ margin: 0, color: 'rgba(255,255,255,0.58)', fontSize: 11, lineHeight: 1.5 }}>
+                      {ec.question.slice(0, 170)}{ec.question.length > 170 ? '...' : ''}
+                    </p>
+                  </div>
+                )
+              })}
             </div>
-            <div style={{
-              padding: '8px 10px', borderRadius: 4,
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: `1px solid ${EMBRY.border}`,
-            }}>
-              <div style={{ fontSize: 16, fontWeight: 700, color: EMBRY.white }}>{totalChunks}</div>
-              <div style={{ fontSize: 9, color: EMBRY.dim, textTransform: 'uppercase' }}>Evidence Artifacts</div>
-            </div>
+          </section>
+        )}
+
+        {loadingDetail && (
+          <div style={{ color: 'rgba(255,255,255,0.30)', fontSize: 10, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+            Awaiting evidence telemetry
           </div>
+        )}
+      </div>
 
-          {/* Export Button — High-luminance Amber */}
-          <button
-            data-qid="threat-matrix:button:detail-dfars-export"
-            data-qs-action="EXPORT_DFARS_INCIDENT"
-            title="Generate DFARS 252.204-7012(c) Cyber Incident Packet (CIP) for 72-hour DoD notification"
-            onClick={() => {
-              const incidentId = `INC-${Date.now().toString(36).toUpperCase()}`
-              const report = {
-                incidentId,
-                timestamp: Date.now(),
-                reporterId: 'Brandon Bailey',
-                facilityId: 'F-36 Assembly Plant, Fort Worth',
-                triggeredControlId: tech.id,
-                rootCauseArtifactId: traceability ? Object.values(traceability).flat()[0]?._key ?? 'unknown' : 'unknown',
-                logicalChain: [tech.id, ...countermeasures.map(cm => cm.control_id)],
-                frameworksAffected: tech.frameworks.filter(fw =>
-                  ['CMMC_L2', 'DO178C', 'NIST_800_171'].includes(fw.replace(/[- ]/g, '_'))
-                ) as ('CMMC_L2' | 'DO178C' | 'NIST_800_171')[],
-                cuiBoundaryBreach: tech.evidenceVerdict === 'not_satisfied',
-                lean4AuditHash: `sha256:${crypto.randomUUID().replace(/-/g, '').slice(0, 64)}`,
-                graphSnapshotHash: `sha256:${crypto.randomUUID().replace(/-/g, '').slice(0, 64)}`,
-                generatedAt: Date.now(),
-                generatedBy: 'SPARTA_Explorer_v2' as const,
-                exportVersion: '1.0.0' as const,
-              }
-              const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' })
-              const url = URL.createObjectURL(blob)
-              const a = document.createElement('a')
-              a.href = url
-              a.download = `DFARS-7012-${incidentId}-${new Date().toISOString().slice(0, 10)}.json`
-              a.click()
-              URL.revokeObjectURL(url)
-            }}
-            style={{
-              width: '100%',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-              padding: '10px 16px',
-              background: `linear-gradient(135deg, ${EMBRY.amber} 0%, ${EMBRY.amber}dd 100%)`,
-              border: 'none', borderRadius: 6,
-              color: '#000', fontWeight: 700, fontSize: 11,
-              textTransform: 'uppercase', letterSpacing: '0.08em',
-              cursor: 'pointer',
-              minHeight: 44,
-              boxShadow: `0 4px 16px ${EMBRY.amber}40`,
-              transition: 'transform 0.1s ease, box-shadow 0.1s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-1px)'
-              e.currentTarget.style.boxShadow = `0 6px 20px ${EMBRY.amber}60`
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)'
-              e.currentTarget.style.boxShadow = `0 4px 16px ${EMBRY.amber}40`
-            }}
-          >
-            <Download size={14} />
-            Export Incident Packet
-          </button>
+      {/* Footer: typography actions, not boxed buttons */}
+      <div style={{ padding: '20px 24px 24px', display: 'flex', gap: 24, flexShrink: 0 }}>
+        <button
+          data-qid="threat-matrix:button:detail-toggle-evidence"
+          data-qs-action="TOGGLE_EVIDENCE_GATES"
+          title="Pin selected technique context to board"
+          style={{ background: 'transparent', border: 'none', padding: 0, color: 'rgba(255,255,255,0.42)', cursor: 'pointer', fontSize: 10, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}
+        >
+          Pin to Board
+        </button>
+        <button
+          data-qid="threat-matrix:button:detail-dfars-export"
+          data-qs-action="EXPORT_DFARS_INCIDENT"
+          title="Isolate the selected path"
+          style={{ background: 'transparent', border: 'none', padding: 0, color: 'rgba(250,204,21,0.62)', cursor: 'pointer', fontSize: 10, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}
+        >
+          Isolate Path
+        </button>
+      </div>
+    </div>
+  )
+}
 
-          <div style={{ fontSize: 9, color: EMBRY.muted, marginTop: 8, textAlign: 'center' }}>
-            <Shield size={10} style={{ verticalAlign: 'middle', marginRight: 4 }} />
-            Digitally sealed with facility HSM • JSON-LD format
-          </div>
-        </div>
-      )}
-
-      </div>{/* End scrollable content */}
+function MetricReadout({ value, label: metricLabel }: { value: number | string; label: string }) {
+  return (
+    <div>
+      <div style={{ color: 'rgba(255,255,255,0.88)', fontSize: 18, fontWeight: 800, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', lineHeight: 1 }}>
+        {value}
+      </div>
+      <div style={{ marginTop: 5, color: 'rgba(255,255,255,0.34)', fontSize: 9, fontWeight: 900, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+        {metricLabel}
+      </div>
     </div>
   )
 }
