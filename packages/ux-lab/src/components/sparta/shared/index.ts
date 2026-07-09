@@ -27,3 +27,4 @@ export type {
 	ThreatTechnique,
 } from "./ThreatMatrix";
 export { ThreatMatrix } from "./ThreatMatrix";
+export type { TacticalEdge, TacticalNode, ThreatMatrixPayload } from "./types";

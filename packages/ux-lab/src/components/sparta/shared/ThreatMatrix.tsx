@@ -24,6 +24,7 @@ import { PostureHUD } from './PostureHUD'
 import { TacticAccordion } from './TacticAccordion'
 import { TechniqueDrawer } from './TechniqueDrawer'
 import { TacticalContextMenu, type TacticalContextMenuAction } from './TacticalContextMenu'
+import type { ThreatMatrixPayload } from './types'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
@@ -601,6 +602,7 @@ function cellTooltip(tech: ThreatTechnique): string {
 
 interface GraphNode extends SimulationNodeDatum {
   id: string
+  tactic: string
   kind: 'technique' | 'tactic' | 'framework' | 'category' | 'evidence' | 'control'
   label: string
   data?: ThreatTechnique
@@ -644,6 +646,12 @@ const TACTIC_ZONE_COLORS: Record<string, string> = {
   IMP: 'rgba(232, 121, 249, 0.02)',
 }
 
+function coverageToPercent(coverage: ThreatTechnique['coverage']): number {
+  if (coverage === 'full') return 100
+  if (coverage === 'partial') return 50
+  return 0
+}
+
 function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic = null, lockedTactic = null, setHoveredTactic, setLockedTactic, onSelect }: {
   techniques: ThreatTechnique[]
   tactics: ThreatTactic[]
@@ -670,6 +678,28 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
   ), [])
   const activeTactic = hoveredTactic ?? lockedTactic
   const spotlightNodeId = hovered ?? isolatedNodeId
+  const tacticPrefixByName = useMemo(() => new Map(tactics.map((tactic) => [tactic.name, tactic.prefix || tactic.name])), [tactics])
+  const tacticNameByPrefix = useMemo(() => new Map(tactics.map((tactic) => [tactic.prefix || tactic.name, tactic.name])), [tactics])
+  const tacticIndexByPrefix = useMemo(() => new Map(tactics.map((tactic, index) => [tactic.prefix || tactic.name, index])), [tactics])
+  const techniqueById = useMemo(() => new Map(techniques.map((tech) => [tech.id, tech])), [techniques])
+
+  const threatMatrixPayload = useMemo<ThreatMatrixPayload>(() => {
+    const nodes = techniques.map((tech) => ({
+      id: tech.id,
+      tactic: tacticPrefixByName.get(tech.tactic) ?? tech.id.split('-')[0] ?? tech.tactic,
+      name: tech.name,
+      coverage: coverageToPercent(tech.coverage),
+      category: tech.tactic,
+    }))
+    const nodeIds = new Set(nodes.map((node) => node.id))
+    const links = relationships.flatMap((rel) => {
+      const source = rel.source_control_id
+      const target = rel.target_control_id
+      if (!source || !target || !nodeIds.has(source) || !nodeIds.has(target)) return []
+      return [{ source, target }]
+    })
+    return { nodes, links }
+  }, [techniques, relationships, tacticPrefixByName])
 
   useRegisterAction('threat-matrix:graph:tactic-magnet', {
     app: 'sparta-explorer',
@@ -751,6 +781,8 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
   const graphData = useMemo(() => {
     const nodes = new Map<string, GraphNode>()
     const links: TacticalGraphLink[] = []
+    const payloadNodeById = new Map(threatMatrixPayload.nodes.map((node) => [node.id, node]))
+    const fallbackTactic = tactics[0]?.prefix || tactics[0]?.name || 'CENTER'
 
     const addNode = (node: GraphNode) => {
       if (!nodes.has(node.id)) nodes.set(node.id, node)
@@ -765,6 +797,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     for (const [index, tactic] of tactics.entries()) {
       addNode({
         id: `tactic:${tactic.name}`,
+        tactic: tactic.prefix || tactic.name,
         kind: 'tactic',
         label: tactic.prefix || tactic.name,
         lane: tactic.name,
@@ -781,10 +814,12 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     for (const tech of techniques) {
       const tacticIndex = tactics.findIndex((tactic) => tactic.name === tech.tactic)
       const techniqueId = `technique:${tech.id}`
+      const tacticPrefix = payloadNodeById.get(tech.id)?.tactic ?? tacticPrefixByName.get(tech.tactic) ?? fallbackTactic
       const laneOrdinal = tacticTechniqueOrdinals.get(tech.tactic) ?? 0
       tacticTechniqueOrdinals.set(tech.tactic, laneOrdinal + 1)
       addNode({
         id: techniqueId,
+        tactic: tacticPrefix,
         kind: 'technique',
         label: tech.id,
         data: tech,
@@ -799,25 +834,25 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
 
       for (const framework of tech.frameworks.slice(0, 4)) {
         const frameworkId = `framework:${framework}`
-        addNode({ id: frameworkId, kind: 'framework', label: framework, laneIndex: tacticIndex >= 0 ? tacticIndex : 0 })
+        addNode({ id: frameworkId, tactic: tacticPrefix, kind: 'framework', label: framework, laneIndex: tacticIndex >= 0 ? tacticIndex : 0 })
         addLink(frameworkId, techniqueId, 'crosswalk-framework')
       }
 
       for (const category of (tech.mind ?? []).slice(0, 3)) {
         const categoryId = `category:${category}`
-        addNode({ id: categoryId, kind: 'category', label: category, laneIndex: tacticIndex >= 0 ? tacticIndex : 0 })
+        addNode({ id: categoryId, tactic: tacticPrefix, kind: 'category', label: category, laneIndex: tacticIndex >= 0 ? tacticIndex : 0 })
         addLink(categoryId, techniqueId, 'control-category')
       }
 
       if (tech.evidenceCaseCount > 0 || tech.evidenceVerdict !== 'none') {
         const evidenceLabel = tech.evidenceVerdict === 'none' ? 'no evidence case' : tech.evidenceVerdict.replace('_', ' ')
         const evidenceId = `evidence:${tech.evidenceVerdict}`
-        addNode({ id: evidenceId, kind: 'evidence', label: evidenceLabel, laneIndex: tacticIndex >= 0 ? tacticIndex : 0 })
+        addNode({ id: evidenceId, tactic: tacticPrefix, kind: 'evidence', label: evidenceLabel, laneIndex: tacticIndex >= 0 ? tacticIndex : 0 })
         addLink(evidenceId, techniqueId, 'evidence-state')
       }
     }
 
-    const techniqueIdByControlId = new Map(techniques.map((tech) => [tech.id, `technique:${tech.id}`]))
+    const techniqueIdByControlId = new Map(threatMatrixPayload.nodes.map((node) => [node.id, `technique:${node.id}`]))
     for (const rel of relationships) {
       const sourceId = rel.source_control_id
       const targetId = rel.target_control_id
@@ -829,13 +864,15 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
 
       const sourceGraphId = sourceTechniqueNode ?? `control:${sourceId}`
       const targetGraphId = targetTechniqueNode ?? `control:${targetId}`
-      const anchorTechnique = techniques.find((tech) => tech.id === sourceId || tech.id === targetId)
+      const anchorTechnique = techniqueById.get(sourceId) ?? techniqueById.get(targetId)
       if (!anchorTechnique) continue
+      const anchorTactic = tacticPrefixByName.get(anchorTechnique.tactic) ?? fallbackTactic
 
       if (!sourceTechniqueNode) {
         const sourceFramework = rel.source_framework ? `${rel.source_framework} ` : ''
         addNode({
           id: sourceGraphId,
+          tactic: anchorTactic,
           kind: 'control',
           label: `${sourceFramework}${sourceId}`,
           lane: anchorTechnique.tactic,
@@ -846,6 +883,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
         const targetFramework = rel.target_framework ? `${rel.target_framework} ` : ''
         addNode({
           id: targetGraphId,
+          tactic: anchorTactic,
           kind: 'control',
           label: `${targetFramework}${targetId}`,
           lane: anchorTechnique.tactic,
@@ -856,7 +894,21 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     }
 
     return { nodes: Array.from(nodes.values()), links }
-  }, [techniques, tactics, relationships])
+  }, [techniques, tactics, relationships, tacticPrefixByName, techniqueById, threatMatrixPayload])
+
+  const tacticalGraphPayload = useMemo<ThreatMatrixPayload>(() => ({
+    nodes: graphData.nodes.map((node) => ({
+      id: node.id,
+      tactic: node.tactic,
+      name: node.data?.name ?? node.label,
+      coverage: node.data ? coverageToPercent(node.data.coverage) : 0,
+      category: node.kind,
+    })),
+    links: graphData.links.map((link) => ({
+      source: link.source,
+      target: link.target,
+    })),
+  }), [graphData])
 
   const tacticStats = useMemo(() => {
     const stats = new Map<string, { total: number; memoryEdges: number }>()
@@ -878,10 +930,8 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
   }, [tactics, techniques, relationships])
 
   const nodeTactic = useCallback((node: GraphNode): string | null => {
-    if (node.kind === 'tactic') return node.lane ?? node.label
-    if (node.data?.tactic) return node.data.tactic
-    return node.lane ?? null
-  }, [])
+    return tacticNameByPrefix.get(node.tactic) ?? node.data?.tactic ?? node.lane ?? null
+  }, [tacticNameByPrefix])
 
   const nodeById = useMemo(() => new Map(graphData.nodes.map((node) => [node.id, node])), [graphData.nodes])
 
@@ -944,7 +994,8 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     const graphBottom = Math.max(graphTop + 180, dimensions.height - 96)
     const graphHeight = Math.max(graphBottom - graphTop, 1)
     const laneX = (node: GraphNode) => {
-      const index = Math.max(0, Math.min(laneCount - 1, node.laneIndex ?? 0))
+      const explicitIndex = tacticIndexByPrefix.get(node.tactic)
+      const index = Math.max(0, Math.min(laneCount - 1, explicitIndex ?? node.laneIndex ?? 0))
       return lanePadding + laneWidth * index + laneWidth / 2
     }
     const targetX = (node: GraphNode) => {
@@ -1019,7 +1070,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     setPositions(nextPositions)
 
     return () => { simulation.stop() }
-  }, [techniques.length, tactics, dimensions, graphData.nodes, visibleGraphLinks, reducedMotion, forcePulse, hoveredTactic, lockedTactic, nodeTactic])
+  }, [techniques.length, tactics, dimensions, graphData.nodes, visibleGraphLinks, reducedMotion, forcePulse, hoveredTactic, lockedTactic, nodeTactic, tacticIndexByPrefix])
 
   const adjacentNodeIds = useMemo(() => {
     if (!spotlightNodeId) return new Set<string>()
@@ -1106,6 +1157,8 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
       data-graph-scene-mode={sceneMode}
       data-graph-visible-links={visibleGraphLinks.length}
       data-graph-total-links={graphData.links.length}
+      data-graph-payload-nodes={tacticalGraphPayload.nodes.length}
+      data-graph-payload-links={tacticalGraphPayload.links.length}
       style={{ flex: 1, position: 'relative', overflow: 'hidden', background: '#050505' }}
     >
       <svg
@@ -1239,6 +1292,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
               key={node.id}
               data-qid={`threat-matrix:graph:node-${safeQid}`}
               data-graph-node-id={node.id}
+              data-graph-node-tactic={node.tactic}
               data-graph-node-kind={node.kind}
               data-qs-action={isTechnique ? 'SELECT_TECHNIQUE_GRAPH_NODE' : 'INSPECT_RELATIONSHIP_HUB'}
               transform={`translate(${pos.x}, ${pos.y})`}
