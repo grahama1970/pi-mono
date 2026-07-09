@@ -1926,13 +1926,22 @@ function Detail() {
           <h3 style={{ margin: '0 0 12px', color: 'rgba(255,255,255,0.40)', fontSize: 9, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
             Evidence State
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 22, rowGap: 14 }}>
-            <MetricReadout value={evidenceCount} label="Evidence Cases" />
-            <MetricReadout value={qras.length} label="QRAs" />
-            <MetricReadout value={countermeasures.length} label="Controls" />
-            <MetricReadout value={relationships.length} label="Edges" />
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 6,
+            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+            fontSize: 10,
+            fontWeight: 800,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+          }}>
+            <MicroTelemetryRow label="Cases" value={evidenceCount} />
+            <MicroTelemetryRow label="QRAs" value={qras.length} />
+            <MicroTelemetryRow label="Controls" value={countermeasures.length} />
+            <MicroTelemetryRow label="Edges" value={relationships.length} terminal />
           </div>
-          <div style={{ marginTop: 14, color: 'rgba(255,255,255,0.34)', fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+          <div style={{ marginTop: 12, color: 'rgba(255,255,255,0.34)', fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             {traceSummary}
             {discrepancies?.length ? ` · ${discrepancies.length} discrepancies` : ''}
           </div>
@@ -2015,15 +2024,23 @@ function Detail() {
   )
 }
 
-function MetricReadout({ value, label: metricLabel }: { value: number | string; label: string }) {
+function MicroTelemetryRow({ label: rowLabel, value, terminal = false }: { label: string; value: number; terminal?: boolean }) {
+  const paddedValue = value.toString().padStart(2, '0')
   return (
-    <div>
-      <div style={{ color: 'rgba(255,255,255,0.88)', fontSize: 18, fontWeight: 800, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', lineHeight: 1 }}>
-        {value}
-      </div>
-      <div style={{ marginTop: 5, color: 'rgba(255,255,255,0.34)', fontSize: 9, fontWeight: 900, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-        {metricLabel}
-      </div>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 14,
+      paddingBottom: terminal ? 0 : 6,
+      borderBottom: terminal ? 'none' : '1px solid rgba(255,255,255,0.05)',
+      color: 'rgba(255,255,255,0.50)',
+      cursor: 'default',
+    }}>
+      <span>{rowLabel}</span>
+      <span style={{ color: 'rgba(255,255,255,0.88)', fontWeight: 900, fontVariantNumeric: 'tabular-nums' }}>
+        {paddedValue}
+      </span>
     </div>
   )
 }
