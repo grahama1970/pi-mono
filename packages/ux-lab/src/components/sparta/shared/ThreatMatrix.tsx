@@ -23,6 +23,7 @@ import { EMBRY, label, heading, glowDot, fwBadge, FLUID } from '../common/EmbryS
 import { PostureHUD } from './PostureHUD'
 import { TacticAccordion } from './TacticAccordion'
 import { TechniqueDrawer } from './TechniqueDrawer'
+import { TacticalContextMenu, type TacticalContextMenuAction } from './TacticalContextMenu'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 
@@ -227,15 +228,20 @@ function getBloomStyle(tech: ThreatTechnique): React.CSSProperties {
   const impact = gradeToImpact(tech.evidenceGrade, tech.evidenceVerdict)
   const nrsScore = tech.nrs_score ?? 0
 
-  // Determine base RGB based on impact thresholds
+  // Determine base RGB based on operational state. Unknown/inconclusive evidence
+  // must remain grey; yellow is reserved for fragile accepted evidence.
   let rgb = BLOOM_RGB.healthy
-  if (impact > 0.7) rgb = BLOOM_RGB.critical
+  if (tech.evidenceVerdict === 'none' || tech.evidenceVerdict === 'inconclusive') rgb = BLOOM_RGB.blind
+  else if (impact > 0.7) rgb = BLOOM_RGB.critical
   else if (impact > 0.3) rgb = BLOOM_RGB.degraded
-  else if (tech.evidenceVerdict === 'none' || tech.evidenceVerdict === 'inconclusive') rgb = BLOOM_RGB.blind
 
   // Luminance mapping: higher impact in healthy areas = "thin evidence" (dimmer)
   // Alpha ranges from 0.4 (weak) to 1.0 (strong)
-  const alpha = impact < 0.3 ? 1.0 - impact * 0.6 : 0.7 + impact * 0.3
+  const alpha = tech.evidenceVerdict === 'none' || tech.evidenceVerdict === 'inconclusive'
+    ? 0.42
+    : impact < 0.3
+      ? 1.0 - impact * 0.6
+      : 0.7 + impact * 0.3
 
   // Structural weight: high NRS score = load-bearer cell (inner glow)
   const isLoadBearer = nrsScore > 0.5
@@ -286,8 +292,10 @@ function TacticalHUD({ tech, position, visible }: TacticalHUDProps) {
   if (!visible) return null
 
   const accentColor = getAccentColor(tech)
-  const impactScore = gradeToImpact(tech.evidenceGrade, tech.evidenceVerdict)
-  const impactPct = Math.round((1 - impactScore) * 100)
+  const viewportWidth = typeof window === 'undefined' ? 1280 : window.innerWidth
+  const viewportHeight = typeof window === 'undefined' ? 720 : window.innerHeight
+  const left = Math.min(position.x + 14, Math.max(16, viewportWidth - 238))
+  const top = Math.min(position.y + 14, Math.max(16, viewportHeight - 118))
 
   return (
     <div
@@ -296,105 +304,56 @@ function TacticalHUD({ tech, position, visible }: TacticalHUDProps) {
       title={`Tactical HUD: ${tech.id}`}
       style={{
         position: 'fixed',
-        left: position.x + 16,
-        top: position.y - 8,
-        background: 'rgba(10, 12, 16, 0.92)',
-        backdropFilter: 'blur(20px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        borderTop: `2px solid ${accentColor}`,
-        padding: 14,
-        borderRadius: 4,
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)',
+        left,
+        top,
+        background: 'rgba(10, 10, 12, 0.94)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        border: '1px solid rgba(255, 255, 255, 0.10)',
+        borderLeft: `3px solid ${accentColor}`,
+        padding: '8px 10px',
+        borderRadius: 3,
+        boxShadow: '0 8px 22px rgba(0, 0, 0, 0.55)',
         color: '#e0e4e8',
         pointerEvents: 'none',
         zIndex: 9999,
-        minWidth: 240,
-        maxWidth: 300,
+        width: 220,
         fontFamily: 'Inter, system-ui, sans-serif',
       }}
     >
-      {/* Header */}
-      <div style={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#6e7681', marginBottom: 2 }}>
-        Control ID
-      </div>
-      <div style={{ fontSize: 16, fontWeight: 700, color: '#f0f6fc', marginBottom: 2 }}>
+      <div style={{ fontSize: 11, fontWeight: 800, color: '#f0f6fc', marginBottom: 3, fontFamily: 'monospace' }}>
         {tech.id}
       </div>
-      <div style={{ fontSize: 12, color: '#8b949e', marginBottom: 12, lineHeight: 1.4 }}>
+      <div style={{
+        fontSize: 11,
+        color: 'rgba(255,255,255,0.62)',
+        lineHeight: 1.25,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        marginBottom: 8,
+      }}>
         {tech.name}
       </div>
-
-      {/* Stats Grid */}
-      <div style={{
-        display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12,
-        borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: 12,
-      }}>
-        <div>
-          <div style={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#6e7681', marginBottom: 2 }}>
-            Verdict
-          </div>
-          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: accentColor }}>
-            {(tech.evidenceVerdict ?? 'unknown').replace('_', ' ')}
-          </div>
-        </div>
-        <div>
-          <div style={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#6e7681', marginBottom: 2 }}>
-            Evidence Score
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <div style={{
-              width: 60, height: 4, borderRadius: 2,
-              background: 'rgba(255, 255, 255, 0.1)',
-              overflow: 'hidden',
-            }}>
-              <div style={{
-                width: `${impactPct}%`, height: '100%',
-                background: accentColor,
-                borderRadius: 2,
-              }} />
-            </div>
-            <span style={{ fontSize: 10, fontFamily: 'monospace', color: '#8b949e' }}>{impactPct}%</span>
-          </div>
-        </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: 7 }}>
+        <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: accentColor }}>
+          {(tech.evidenceVerdict ?? 'unknown').replace('_', ' ')}
+        </span>
+        <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)' }}>
+          {tech.evidenceGrade ? `Grade ${tech.evidenceGrade}` : `${tech.evidenceCaseCount} Case${tech.evidenceCaseCount === 1 ? '' : 's'}`}
+        </span>
       </div>
-
-      {/* Grade Badge */}
-      {tech.evidenceGrade && (
-        <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{
-            fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 3,
-            color: accentColor, backgroundColor: `${accentColor}18`,
-            border: `1px solid ${accentColor}33`,
-          }}>
-            Grade {tech.evidenceGrade}
-          </span>
-          {tech.evidenceCaseCount > 0 && (
-            <span style={{ fontSize: 10, color: '#6e7681' }}>
-              {tech.evidenceCaseCount} evidence case{tech.evidenceCaseCount !== 1 ? 's' : ''}
-            </span>
-          )}
-        </div>
-      )}
-
-      {/* Frameworks / Taxonomy */}
       {tech.frameworks.length > 0 && (
-        <div style={{ marginTop: 10, paddingTop: 8, borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
-          <div style={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#6e7681', marginBottom: 4 }}>
-            Mapped Frameworks
-          </div>
-          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-            {tech.frameworks.slice(0, 4).map((fw) => (
-              <span key={fw} style={{
-                fontSize: 9, padding: '2px 6px', borderRadius: 3,
-                background: 'rgba(255, 255, 255, 0.06)',
-                color: '#8b949e',
-              }}>{fw}</span>
-            ))}
-            {tech.frameworks.length > 4 && (
-              <span style={{ fontSize: 9, color: '#6e7681' }}>+{tech.frameworks.length - 4}</span>
-            )}
-          </div>
+        <div style={{ marginTop: 6, display: 'flex', gap: 4 }}>
+          {tech.frameworks.slice(0, 2).map((fw) => (
+            <span key={fw} style={{
+              fontSize: 9,
+              padding: '1px 5px',
+              borderRadius: 3,
+              background: 'rgba(255, 255, 255, 0.08)',
+              color: 'rgba(255,255,255,0.45)',
+            }}>{fw}</span>
+          ))}
         </div>
       )}
     </div>
@@ -683,135 +642,6 @@ const TACTIC_ZONE_COLORS: Record<string, string> = {
   LM: 'rgba(250, 204, 21, 0.015)',
   EXF: 'rgba(45, 212, 191, 0.02)',
   IMP: 'rgba(232, 121, 249, 0.02)',
-}
-
-function TacticalContextMenu({ x, y, nodeId, isVisible, onClose, onAction }: {
-  x: number
-  y: number
-  nodeId: string | null
-  isVisible: boolean
-  onClose: () => void
-  onAction: (action: 'ISOLATE' | 'PIN' | 'COPY', nodeId: string) => void
-}) {
-  const menuRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!isVisible) return
-
-    const handlePointerDown = (event: PointerEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) onClose()
-    }
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
-    }
-
-    document.addEventListener('pointerdown', handlePointerDown)
-    document.addEventListener('keydown', handleKeyDown)
-    return () => {
-      document.removeEventListener('pointerdown', handlePointerDown)
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [isVisible, onClose])
-
-  if (!isVisible || !nodeId) return null
-
-  const actionRows: Array<{ action: 'ISOLATE' | 'PIN' | 'COPY'; label: string; qid: string; title: string; tone: 'yellow' | 'white' | 'muted' }> = [
-    { action: 'ISOLATE', label: 'Isolate Kill Chain', qid: 'threat-matrix:graph:context-isolate', title: `Isolate the kill chain for ${nodeId}`, tone: 'yellow' },
-    { action: 'PIN', label: 'Pin Node Marker', qid: 'threat-matrix:graph:context-pin', title: `Pin a marker on ${nodeId}`, tone: 'white' },
-    { action: 'COPY', label: 'Copy Telemetry', qid: 'threat-matrix:graph:context-copy', title: `Copy telemetry id ${nodeId}`, tone: 'muted' },
-  ]
-
-  return (
-    <div
-      ref={menuRef}
-      data-qid="threat-matrix:graph:context-menu"
-      role="menu"
-      aria-label={`Tactical graph actions for ${nodeId}`}
-      style={{
-        position: 'absolute',
-        zIndex: 60,
-        top: y,
-        left: x,
-        width: 196,
-        background: 'rgba(10,10,12,0.96)',
-        border: '1px solid rgba(255,255,255,0.1)',
-        borderRadius: 3,
-        boxShadow: '0 0 15px rgba(0,0,0,0.8)',
-        overflow: 'hidden',
-        backdropFilter: 'blur(10px)',
-        pointerEvents: 'auto',
-      }}
-    >
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        gap: 8,
-        padding: '7px 10px',
-        background: '#121214',
-        borderBottom: '1px solid rgba(255,255,255,0.1)',
-        color: 'rgba(255,255,255,0.4)',
-        fontSize: 9,
-        fontWeight: 900,
-        letterSpacing: '0.14em',
-        textTransform: 'uppercase',
-      }}>
-        <span>Target</span>
-        <span style={{ color: 'rgba(255,255,255,0.82)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{nodeId}</span>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', padding: '4px 0' }}>
-        {actionRows.map((row, index) => (
-          <button
-            key={row.action}
-            type="button"
-            role="menuitem"
-            data-qid={row.qid}
-            data-qs-action={`GRAPH_CONTEXT_${row.action}`}
-            data-qs-params={JSON.stringify({ nodeId })}
-            title={row.title}
-            onClick={() => {
-              onAction(row.action, nodeId)
-              onClose()
-            }}
-            style={{
-              minHeight: 34,
-              border: 0,
-              borderTop: index === 2 ? '1px solid rgba(255,255,255,0.05)' : 0,
-              background: 'transparent',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '0 10px',
-              cursor: 'pointer',
-              color: row.tone === 'yellow' ? 'rgba(250,204,21,0.86)' : row.tone === 'white' ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.42)',
-              fontSize: 10,
-              fontWeight: 800,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              textAlign: 'left',
-            }}
-            onPointerEnter={(event) => {
-              event.currentTarget.style.background = 'rgba(255,255,255,0.05)'
-              event.currentTarget.style.color = row.tone === 'yellow' ? '#FACC15' : 'rgba(255,255,255,0.9)'
-            }}
-            onPointerLeave={(event) => {
-              event.currentTarget.style.background = 'transparent'
-              event.currentTarget.style.color = row.tone === 'yellow' ? 'rgba(250,204,21,0.86)' : row.tone === 'white' ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.42)'
-            }}
-          >
-            <span>{row.label}</span>
-            {row.action !== 'COPY' && (
-              <span style={{
-                width: 6,
-                height: 6,
-                borderRadius: 999,
-                background: row.tone === 'yellow' ? 'rgba(250,204,21,0.32)' : 'rgba(255,255,255,0.14)',
-              }} />
-            )}
-          </button>
-        ))}
-      </div>
-    </div>
-  )
 }
 
 function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic = null, lockedTactic = null, setHoveredTactic, setLockedTactic, onSelect }: {
@@ -1246,7 +1076,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     setContextMenu((current) => ({ ...current, isVisible: false }))
   }, [])
 
-  const handleContextAction = useCallback((action: 'ISOLATE' | 'PIN' | 'COPY', nodeId: string) => {
+  const handleContextAction = useCallback((action: TacticalContextMenuAction, nodeId: string) => {
     if (action === 'ISOLATE') {
       const node = nodeById.get(nodeId)
       setIsolatedNodeId(nodeId)
