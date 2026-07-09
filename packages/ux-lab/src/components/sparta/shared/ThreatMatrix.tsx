@@ -1569,6 +1569,8 @@ function Grid() {
     : isMobile
       ? '1fr'
       : `repeat(auto-fit, minmax(280px, 1fr))`
+  const viewModeKinetics = 'opacity 0.18s ease, transform 0.18s ease, gap 0.18s ease, padding 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease'
+  const cellKinetics = 'opacity 0.16s ease, transform 0.16s ease, background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, color 0.16s ease'
 
   const glanceBlockStyle = (tech: ThreatTechnique, isSelected: boolean): React.CSSProperties => {
     const isCritical = tech.evidenceVerdict === 'not_satisfied'
@@ -1585,8 +1587,10 @@ function Grid() {
         : isWarning
           ? '0 0 8px rgba(234,179,8,0.30)'
           : 'none',
+      opacity: isSelected ? 1 : 0.94,
       cursor: 'pointer',
-      transition: 'transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease',
+      transition: cellKinetics,
+      willChange: 'transform, opacity',
     }
   }
 
@@ -1599,6 +1603,7 @@ function Grid() {
         background: '#050505',
         scrollbarWidth: 'thin',
         scrollbarColor: 'rgba(255, 255, 255, 0.2) transparent',
+        transition: viewModeKinetics,
       }}
     >
       <style>
@@ -1627,9 +1632,10 @@ function Grid() {
         style={{
           display: 'grid',
           gridTemplateColumns,
-          gap: isMobile ? FLUID.gridGap : 2,
-          padding: isMobile ? 0 : '2px 10px 10px',
+          gap: isMobile ? FLUID.gridGap : isGlance ? 8 : 2,
+          padding: isMobile ? 0 : isGlance ? '2px 12px 12px' : '2px 10px 10px',
           alignItems: 'start',
+          transition: viewModeKinetics,
         }}
       >
         {tacticNames.map((tactic) => (
@@ -1637,7 +1643,14 @@ function Grid() {
             key={tactic}
             data-qid={`threat-matrix:column:${tactic.replace(/[^a-zA-Z0-9_-]/g, '-')}`}
             data-qs-action="THREAT_MATRIX_COLUMN"
-            style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0, height: '100%' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: isGlance ? 4 : 2,
+              minWidth: 0,
+              height: '100%',
+              transition: viewModeKinetics,
+            }}
           >
             {(() => {
               const tacticMeta = state.tactics.find((item) => item.name === tactic)
@@ -1656,6 +1669,7 @@ function Grid() {
                     background: '#050505',
                     borderBottom: '1px solid rgba(255,255,255,0.08)',
                     textAlign: 'center',
+                    transition: viewModeKinetics,
                   }}
                 >
                   <div style={{ fontSize: 9, fontWeight: 800, color: EMBRY.white, marginBottom: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{tactic}</div>
@@ -1678,9 +1692,10 @@ function Grid() {
               justifyContent: isGlance ? 'center' : 'flex-start',
               gap: isGlance ? 4 : 2,
               alignContent: 'flex-start',
-              paddingTop: 2,
+              paddingTop: isGlance ? 4 : 2,
               paddingBottom: 12,
               minWidth: 0,
+              transition: viewModeKinetics,
             }}>
             {byTactic[tactic].map((tech) => {
             if (isGlance) {
@@ -1737,6 +1752,9 @@ function Grid() {
                   minHeight: 72,
                   display: 'flex',
                   flexDirection: 'column',
+                  opacity: isSelected || isHovered ? 1 : 0.96,
+                  transform: isHovered ? 'translateY(-1px)' : 'translateY(0)',
+                  willChange: 'transform, opacity',
                 }}
                 onMouseEnter={() => setHovered(tech.id)}
                 onMouseLeave={() => setHovered(null)}
