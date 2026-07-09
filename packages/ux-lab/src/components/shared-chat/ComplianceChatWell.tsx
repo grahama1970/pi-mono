@@ -785,7 +785,7 @@ export function ComplianceChatWell({
                   aria-pressed={voiceEnabled}
                   title={voiceEnabled ? `${voiceLabel}: enabled` : `${voiceLabel}: disabled`}
                   onClick={() => onVoiceToggle?.(!voiceEnabled)}
-                  disabled={disabled || composerDisabled || isStreaming}
+                  disabled={disabled || composerDisabled}
                   style={{
                     minWidth: voiceEnabled ? 76 : 44,
                     height: 44,
@@ -797,7 +797,7 @@ export function ComplianceChatWell({
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 6,
-                    cursor: disabled || composerDisabled || isStreaming ? 'not-allowed' : 'pointer',
+                    cursor: disabled || composerDisabled ? 'not-allowed' : 'pointer',
                   }}
                 >
                   {voiceEnabled ? <Mic size={17} strokeWidth={1.5} /> : <MicOff size={17} strokeWidth={1.5} />}

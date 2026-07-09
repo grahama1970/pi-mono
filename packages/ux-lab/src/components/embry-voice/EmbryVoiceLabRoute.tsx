@@ -183,7 +183,7 @@ function pcm16PacketFromFloat32(input: Float32Array, inputRate: number): { packe
   let peak = 0
   let sumSquares = 0
   for (let index = 0; index < samples.length; index += 1) {
-    const gained = Math.max(-1, Math.min(1, samples[index] * 3.2))
+    const gained = Math.max(-1, Math.min(1, samples[index]))
     const abs = Math.abs(gained)
     peak = Math.max(peak, abs)
     sumSquares += gained * gained
@@ -205,6 +205,11 @@ function pcm16PacketFromFloat32(input: Float32Array, inputRate: number): { packe
   new Uint8Array(packet, 4, metadataBytes.byteLength).set(metadataBytes)
   new Uint8Array(packet, 4 + metadataBytes.byteLength).set(new Uint8Array(pcm.buffer))
   return { packet, rmsDb, peakDb, frames: pcm.length }
+}
+
+function isNonSpeechTranscript(text: string): boolean {
+  const normalized = text.trim().toLowerCase()
+  return normalized === '[blank_audio]' || normalized === '[music]' || normalized === '[silence]' || normalized === '(music)'
 }
 
 function turnAuthorityForVoiceTurn(turn: VoiceTurn, createdAt: string): EmbryTurnAuthority {
@@ -2157,7 +2162,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
         socket.send(JSON.stringify({ type: 'stop' }))
         window.setTimeout(() => {
           if (socket?.readyState === WebSocket.OPEN) socket.close()
-        }, 2500)
+        }, 10000)
       } else {
         socket?.close()
       }
@@ -2169,9 +2174,9 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     try {
       stream = await navigator.mediaDevices.getUserMedia({
         audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true,
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false,
           channelCount: 1,
         },
       })
@@ -2209,19 +2214,25 @@ export function EmbryVoiceLabRoute(): JSX.Element {
           : typeof message.sentence === 'string'
             ? message.sentence.trim()
             : ''
+        const isFinalWithText = eventType === 'final' && Boolean(text)
+        const isFinalSpeechText = isFinalWithText && !isNonSpeechTranscript(text)
         setListenerTelemetry((current) => ({
           ...current,
-          state: eventType === 'final' && text ? 'transcribing' : current.state,
+          state: isFinalWithText ? (stopped ? 'idle' : 'transcribing') : current.state,
           lastEventType: eventType,
           realtimeTranscript: eventType === 'realtime' && text ? text : current.realtimeTranscript,
-          finalTranscript: eventType === 'final' && text ? text : current.finalTranscript,
+          finalTranscript: isFinalWithText ? text : current.finalTranscript,
         }))
-        if (eventType !== 'final' || !text || transcriptInFlight) return
+        if (eventType !== 'final' || !text || !isFinalSpeechText || transcriptInFlight) return
         transcriptInFlight = true
         setOrbStatusOverride('processing')
         void handleSend(text, { forceVoice: true }).finally(() => {
           transcriptInFlight = false
           if (!stopped) setOrbStatusOverride('listening')
+          else {
+            setListenerTelemetry((current) => ({ ...current, state: 'idle' }))
+            setOrbStatusOverride('idle')
+          }
         })
       }
 
