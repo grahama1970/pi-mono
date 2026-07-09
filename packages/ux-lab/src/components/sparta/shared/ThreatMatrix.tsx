@@ -664,6 +664,8 @@ interface TacticalGraphLink {
   kind: 'tactic-technique' | 'crosswalk-framework' | 'control-category' | 'evidence-state' | 'memory-crosswalk'
 }
 
+type GraphSceneMode = 'path' | 'tactic' | 'all'
+
 const TACTIC_ZONE_COLORS: Record<string, string> = {
   REC: 'rgba(56, 189, 248, 0.02)',
   RD: 'rgba(251, 146, 60, 0.02)',
@@ -692,6 +694,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
   const [viewport, setViewport] = useState({ x: 0, y: 0, k: 1 })
   const [forcePulse, setForcePulse] = useState(0)
+  const [sceneMode, setSceneMode] = useState<GraphSceneMode>('path')
   const panRef = useRef<{ pointerId: number; startX: number; startY: number; originX: number; originY: number } | null>(null)
   const reducedMotion = useMemo(() => (
     typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
@@ -733,6 +736,12 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     action: 'GRAPH_FORCE_PUSH',
     label: 'Force push threat graph',
     description: 'Reheat the SPARTA threat graph layout without changing the source data',
+  })
+  useRegisterAction('threat-matrix:graph:scene-mode', {
+    app: 'sparta-explorer',
+    action: 'GRAPH_SET_SCENE_MODE',
+    label: 'Set threat graph scene mode',
+    description: 'Switch between path, tactic, and diagnostic all-edge SPARTA graph scenes',
   })
 
   useEffect(() => {
@@ -880,6 +889,56 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     return node.lane ?? null
   }, [])
 
+  const nodeById = useMemo(() => new Map(graphData.nodes.map((node) => [node.id, node])), [graphData.nodes])
+
+  const linkTouchesActiveTactic = useCallback((link: TacticalGraphLink): boolean => {
+    if (!activeTactic) return false
+    const source = nodeById.get(link.source)
+    const target = nodeById.get(link.target)
+    return (source ? nodeTactic(source) === activeTactic : false) || (target ? nodeTactic(target) === activeTactic : false)
+  }, [activeTactic, nodeById, nodeTactic])
+
+  const nodeMatchesActiveTactic = useCallback((node: GraphNode): boolean => {
+    if (!activeTactic) return false
+    return nodeTactic(node) === activeTactic
+  }, [activeTactic, nodeTactic])
+
+  const sceneLinkIds = useMemo(() => {
+    if (sceneMode === 'all' || !activeTactic) return null
+
+    const kindRank: Record<TacticalGraphLink['kind'], number> = {
+      'tactic-technique': 0,
+      'memory-crosswalk': 1,
+      'control-category': 2,
+      'evidence-state': 3,
+      'crosswalk-framework': 4,
+    }
+    const maxLinks = sceneMode === 'path' ? 28 : 72
+    const candidates = graphData.links
+      .filter((link) => linkTouchesActiveTactic(link))
+      .sort((a, b) => {
+        const kindDelta = kindRank[a.kind] - kindRank[b.kind]
+        if (kindDelta !== 0) return kindDelta
+        return a.id.localeCompare(b.id)
+      })
+
+    return new Set(candidates.slice(0, maxLinks).map((link) => link.id))
+  }, [activeTactic, graphData.links, linkTouchesActiveTactic, sceneMode])
+
+  const visibleGraphLinks = useMemo(() => (
+    sceneLinkIds ? graphData.links.filter((link) => sceneLinkIds.has(link.id)) : graphData.links
+  ), [graphData.links, sceneLinkIds])
+
+  const sceneNodeIds = useMemo(() => {
+    if (!sceneLinkIds) return null
+    const ids = new Set<string>()
+    for (const link of visibleGraphLinks) {
+      ids.add(link.source)
+      ids.add(link.target)
+    }
+    return ids
+  }, [sceneLinkIds, visibleGraphLinks])
+
   useEffect(() => {
     if (techniques.length === 0 || dimensions.width < 100) return
 
@@ -933,7 +992,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
       y: targetY(node) + Math.cos((node.id.length + forcePulse) * 1.3) * 24,
     }))
 
-    const links: GraphLink[] = graphData.links.map((link) => ({ source: link.source, target: link.target, kind: link.kind }))
+    const links: GraphLink[] = visibleGraphLinks.map((link) => ({ source: link.source, target: link.target, kind: link.kind }))
 
     const simulation = forceSimulation<GraphNode>(nodes)
       .force('link', forceLink<GraphNode, GraphLink>(links)
@@ -966,37 +1025,23 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     setPositions(nextPositions)
 
     return () => { simulation.stop() }
-  }, [techniques.length, tactics, dimensions, graphData, reducedMotion, forcePulse, hoveredTactic, lockedTactic, nodeTactic])
+  }, [techniques.length, tactics, dimensions, graphData.nodes, visibleGraphLinks, reducedMotion, forcePulse, hoveredTactic, lockedTactic, nodeTactic])
 
   const adjacentNodeIds = useMemo(() => {
     if (!hovered) return new Set<string>()
     const ids = new Set<string>([hovered])
-    for (const link of graphData.links) {
+    for (const link of visibleGraphLinks) {
       if (link.source === hovered) ids.add(link.target)
       if (link.target === hovered) ids.add(link.source)
     }
     return ids
-  }, [graphData.links, hovered])
+  }, [visibleGraphLinks, hovered])
 
   const techniqueByGraphId = useMemo(() => new Map(
     graphData.nodes
       .filter((node): node is GraphNode & { data: ThreatTechnique } => node.kind === 'technique' && Boolean(node.data))
       .map((node) => [node.id, node.data])
   ), [graphData.nodes])
-
-  const nodeById = useMemo(() => new Map(graphData.nodes.map((node) => [node.id, node])), [graphData.nodes])
-
-  const linkTouchesActiveTactic = useCallback((link: TacticalGraphLink): boolean => {
-    if (!activeTactic) return false
-    const source = nodeById.get(link.source)
-    const target = nodeById.get(link.target)
-    return (source ? nodeTactic(source) === activeTactic : false) || (target ? nodeTactic(target) === activeTactic : false)
-  }, [activeTactic, nodeById, nodeTactic])
-
-  const nodeMatchesActiveTactic = useCallback((node: GraphNode): boolean => {
-    if (!activeTactic) return false
-    return nodeTactic(node) === activeTactic
-  }, [activeTactic, nodeTactic])
 
   const linkStyle = (kind: TacticalGraphLink['kind'], hot: boolean) => {
     if (hot) return { stroke: 'rgba(250, 204, 21, 0.62)', width: 1.5 }
@@ -1037,6 +1082,9 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     <div
       ref={containerRef}
       data-qid="threat-matrix:graph:tactical-node-graph"
+      data-graph-scene-mode={sceneMode}
+      data-graph-visible-links={visibleGraphLinks.length}
+      data-graph-total-links={graphData.links.length}
       style={{ flex: 1, position: 'relative', overflow: 'hidden', background: '#050505' }}
     >
       <svg
@@ -1106,7 +1154,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
         </g>
         <g transform={`translate(${viewport.x} ${viewport.y}) scale(${viewport.k})`}>
         <g aria-hidden="true">
-          {graphData.links.map((link) => {
+          {visibleGraphLinks.map((link) => {
             const source = positions.get(link.source)
             const target = positions.get(link.target)
             if (!source || !target) return null
@@ -1123,7 +1171,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
                 y2={target.y}
                 stroke={isTacticHot && !hovered ? 'rgba(250,204,21,0.34)' : style.stroke}
                 strokeWidth={isTacticHot && !hovered ? Math.max(style.width, 1.2) : style.width}
-                opacity={hovered ? (isHot ? 0.8 : 0.02) : activeTactic ? (isTacticHot ? 0.4 : 0.05) : 1}
+                opacity={hovered ? (isHot ? 0.84 : 0.015) : sceneMode === 'all' ? 0.18 : isTacticHot ? 0.46 : 0.04}
               />
             )
           })}
@@ -1140,14 +1188,16 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
           const stroke = nodeStroke(node, isHovered)
           const isHub = node.kind !== 'technique'
           const tacticMatch = nodeMatchesActiveTactic(node)
+          const inScene = !sceneNodeIds || sceneNodeIds.has(node.id)
           const tacticDimmed = activeTactic && !tacticMatch && !(hovered && related)
+          const sceneDimmed = sceneNodeIds && !inScene && !(hovered && related)
           const showLabel = (
             node.kind === 'tactic' ||
             node.kind === 'framework' ||
             node.kind === 'category' ||
             isHovered ||
             (hovered && related) ||
-            tacticMatch
+            (tacticMatch && inScene)
           )
           const safeQid = node.id.replace(/[^a-zA-Z0-9_-]/g, '-')
           return (
@@ -1160,7 +1210,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
               transform={`translate(${pos.x}, ${pos.y})`}
               style={{
                 cursor: isTechnique ? 'pointer' : 'default',
-                opacity: dimmed ? 0.1 : tacticDimmed ? 0.15 : 1,
+                opacity: dimmed ? 0.1 : sceneDimmed ? 0.07 : tacticDimmed ? 0.15 : 1,
                 transition: 'opacity 0.15s ease',
               }}
               onPointerEnter={() => setHovered(node.id)}
@@ -1325,25 +1375,30 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
         }}
       >
         {[
+          { text: 'PATH', qid: 'threat-matrix:graph:scene-path', action: 'GRAPH_SET_SCENE_MODE', params: { mode: 'path' }, onClick: () => setSceneMode('path'), title: 'Show the bounded active crosswalk path scene', active: sceneMode === 'path' },
+          { text: 'TACTIC', qid: 'threat-matrix:graph:scene-tactic', action: 'GRAPH_SET_SCENE_MODE', params: { mode: 'tactic' }, onClick: () => setSceneMode('tactic'), title: 'Show a wider active tactic scene', active: sceneMode === 'tactic' },
+          { text: 'ALL', qid: 'threat-matrix:graph:scene-all', action: 'GRAPH_SET_SCENE_MODE', params: { mode: 'all' }, onClick: () => setSceneMode('all'), title: 'Diagnostic mode: show every graph edge', active: sceneMode === 'all' },
           { text: '+', qid: 'threat-matrix:graph:control-zoom-in', action: 'GRAPH_ZOOM_IN', onClick: () => updateZoom(viewport.k * 1.18, { x: dimensions.width / 2, y: dimensions.height / 2 }), title: 'Zoom in threat graph' },
           { text: '-', qid: 'threat-matrix:graph:control-zoom-out', action: 'GRAPH_ZOOM_OUT', onClick: () => updateZoom(viewport.k * 0.82, { x: dimensions.width / 2, y: dimensions.height / 2 }), title: 'Zoom out threat graph' },
           { text: '0', qid: 'threat-matrix:graph:control-reset', action: 'GRAPH_RESET_VIEW', onClick: () => setViewport({ x: 0, y: 0, k: 1 }), title: 'Reset graph view' },
           { text: 'PUSH', qid: 'threat-matrix:graph:control-force-push', action: 'GRAPH_FORCE_PUSH', onClick: () => { setViewport({ x: 0, y: 0, k: 1 }); setForcePulse((value) => value + 1) }, title: 'Force push graph layout' },
-        ].map(({ text, qid, action, onClick, title }) => (
+        ].map(({ text, qid, action, params, onClick, title, active }) => (
           <button
             key={qid}
             type="button"
             data-qid={qid}
             data-qs-action={action}
+            data-qs-params={params ? JSON.stringify(params) : undefined}
             onClick={onClick}
             title={title}
+            aria-pressed={active ?? undefined}
             style={{
-              minWidth: text === 'PUSH' ? 46 : 28,
+              minWidth: text === 'PUSH' || text === 'TACTIC' ? 54 : text === 'PATH' || text === 'ALL' ? 42 : 28,
               height: 28,
               borderRadius: 2,
-              border: '1px solid rgba(250,204,21,0.28)',
-              background: 'rgba(250,204,21,0.06)',
-              color: 'rgba(250,204,21,0.86)',
+              border: active ? '1px solid rgba(250,204,21,0.62)' : '1px solid rgba(250,204,21,0.28)',
+              background: active ? 'rgba(250,204,21,0.16)' : 'rgba(250,204,21,0.06)',
+              color: active ? '#FACC15' : 'rgba(250,204,21,0.86)',
               fontSize: 10,
               fontWeight: 900,
               letterSpacing: '0.08em',
