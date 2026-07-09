@@ -4,7 +4,7 @@
  * Shows: connection status, project context, agent control, and project-specific items.
  * Every project view should render this as the last child in its flex-column layout.
  */
-import { EMBRY, glowDot } from './EmbryStyle'
+import { EMBRY } from './EmbryStyle'
 import { AgentControl } from './AgentControl'
 
 interface StatusItem {
@@ -45,18 +45,20 @@ export function StatusBar({
   const statusColor = loading ? EMBRY.amber : error ? EMBRY.red : connected ? EMBRY.green : EMBRY.red
   const statusText = loading ? 'loading...' : error ? 'error' : connected ? connectionLabel : 'disconnected'
   const isSubtle = variant === 'subtle'
+  const subtleText = 'rgba(255, 255, 255, 0.32)'
+  const subtleFaint = 'rgba(255, 255, 255, 0.16)'
 
   return (
     <div style={{
       display: 'flex', alignItems: 'center', gap: 10,
-      height: isSubtle ? 32 : 24, flexShrink: 0,
-      padding: isSubtle ? '0 16px' : '0 10px',
-      background: isSubtle ? '#050505' : '#1a2721',
-      borderTop: isSubtle ? '1px solid rgba(255, 255, 255, 0.05)' : `1px solid ${EMBRY.border}`,
-      fontSize: isSubtle ? 9 : 10, fontFamily: 'JetBrains Mono, monospace',
-      color: isSubtle ? 'rgba(255, 255, 255, 0.4)' : EMBRY.dim,
+      height: isSubtle ? 24 : 24, flexShrink: 0,
+      padding: isSubtle ? '0 14px' : '0 10px',
+      background: isSubtle ? '#030303' : '#1a2721',
+      borderTop: isSubtle ? '1px solid rgba(255, 255, 255, 0.035)' : `1px solid ${EMBRY.border}`,
+      fontSize: isSubtle ? 8.5 : 10, fontFamily: 'JetBrains Mono, monospace',
+      color: isSubtle ? subtleText : EMBRY.dim,
       textTransform: isSubtle ? 'uppercase' : undefined,
-      letterSpacing: isSubtle ? '0.12em' : undefined,
+      letterSpacing: isSubtle ? '0.14em' : undefined,
       fontWeight: isSubtle ? 800 : undefined,
     }}>
       {/* Connection status */}
@@ -70,30 +72,30 @@ export function StatusBar({
         }
       >
         <span style={{
-          width: isSubtle ? 6 : 6,
-          height: isSubtle ? 6 : 6,
+          width: isSubtle ? 5 : 6,
+          height: isSubtle ? 5 : 6,
           borderRadius: '50%',
           background: 'currentColor',
           flexShrink: 0,
           boxShadow: isSubtle && connected ? '0 0 8px rgba(34, 197, 94, 0.6)' : undefined,
         }} />
-        <span style={{ color: isSubtle ? 'rgba(255, 255, 255, 0.4)' : 'currentColor' }}>{statusText}</span>
+        <span style={{ color: isSubtle ? subtleText : 'currentColor' }}>{statusText}</span>
       </span>
 
       {/* Left items */}
       {items.map((item, i) => (
         <span key={i} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           {isSubtle ? (
-            <span style={{ color: 'rgba(255, 255, 255, 0.2)' }}>|</span>
+            <span style={{ color: subtleFaint }}>|</span>
           ) : (
             <span style={{ width: 1, height: 12, background: EMBRY.border }} />
           )}
           {item.value ? (
-            <span style={{ color: item.color || (isSubtle ? 'rgba(255, 255, 255, 0.4)' : EMBRY.dim) }}>
-              <span style={{ color: isSubtle ? 'rgba(255, 255, 255, 0.4)' : EMBRY.muted }}>{item.label}</span> {item.value}
+            <span style={{ color: item.color || (isSubtle ? subtleText : EMBRY.dim) }}>
+              <span style={{ color: isSubtle ? subtleText : EMBRY.muted }}>{item.label}</span> {item.value}
             </span>
           ) : (
-            <span style={{ color: item.color || (isSubtle ? 'rgba(255, 255, 255, 0.4)' : EMBRY.dim) }}>{item.label}</span>
+            <span style={{ color: item.color || (isSubtle ? subtleText : EMBRY.dim) }}>{item.label}</span>
           )}
         </span>
       ))}
@@ -103,20 +105,20 @@ export function StatusBar({
 
       {/* Right items */}
       {rightItems.map((item, i) => (
-        <span key={i} style={{ color: item.color || (isSubtle ? 'rgba(255, 255, 255, 0.4)' : EMBRY.muted) }}>
+        <span key={i} style={{ color: item.color || (isSubtle ? subtleText : EMBRY.muted) }}>
           {item.label}{item.value ? `: ${item.value}` : ''}
         </span>
       ))}
 
       {/* Agent control — always present, with label */}
       {isSubtle ? (
-        <span style={{ color: 'rgba(255, 255, 255, 0.2)' }}>|</span>
+        <span style={{ color: subtleFaint }}>|</span>
       ) : (
         <span style={{ width: 1, height: 12, background: EMBRY.border }} />
       )}
       <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
         <AgentControl projectId={projectId} compact />
-        <span style={{ color: isSubtle ? 'rgba(255, 255, 255, 0.4)' : EMBRY.muted, fontSize: 9 }}>agent</span>
+        <span style={{ color: isSubtle ? subtleText : EMBRY.muted, fontSize: isSubtle ? 8 : 9 }}>agent</span>
       </span>
     </div>
   )
