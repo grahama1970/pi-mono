@@ -31,7 +31,8 @@ function readCoverageHealthCache(): CoverageHealthSnapshot | null {
 function readInitialThreatMatrixViewMode(): ThreatMatrixState['viewMode'] {
   if (typeof window === 'undefined') return 'standard'
   const mode = new URLSearchParams(window.location.search).get('matrixView')
-  return mode === 'graph' || mode === 'bloom' || mode === 'edges' || mode === 'standard' ? mode : 'standard'
+  if (mode === 'bloom') return 'glance'
+  return mode === 'graph' || mode === 'glance' || mode === 'edges' || mode === 'standard' ? mode : 'standard'
 }
 
 const SPARTA_TACTICS: ThreatTactic[] = [

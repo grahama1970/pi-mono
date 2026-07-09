@@ -99,8 +99,8 @@ export interface TechniqueDetail {
   discrepancies?: Array<{ severity: string; summary: string; requirement_claim: string; table_reality: string; recommendation: string }>
 }
 
-/** View modes for the threat matrix */
-export type ViewMode = 'standard' | 'bloom' | 'graph' | 'edges'
+/** View modes for the threat matrix. `bloom` is accepted as a legacy alias for GLANCE. */
+export type ViewMode = 'standard' | 'glance' | 'bloom' | 'graph' | 'edges'
 
 export interface ThreatMatrixState {
   tactics: ThreatTactic[]
@@ -109,7 +109,7 @@ export interface ThreatMatrixState {
   showSubtechniques: boolean
   selectedDetail: TechniqueDetail | null
   loadingDetail: boolean
-  /** Current view mode: standard (cards), bloom (color grid), graph (D3 nodes) */
+  /** Current view mode: standard (cards), glance (text-free heatmap), graph (D3 nodes) */
   viewMode?: ViewMode
   /** Condensed view: cells show ID + dot only (9-col survives on laptops) */
   condensedView?: boolean
@@ -370,7 +370,7 @@ function Header() {
   // Register actions for QID compliance (4-attribute rule)
   useRegisterAction('threat-matrix:input:datalake-selector', { app: 'sparta-explorer', action: 'SELECT_DATALAKE', label: 'Select Datalake', description: 'Select datalake for traceability overlay' })
   useRegisterAction('threat-matrix:button:view-standard', { app: 'sparta-explorer', action: 'SET_VIEW_STANDARD', label: 'Standard View', description: 'Show full detail cards' })
-  useRegisterAction('threat-matrix:button:view-bloom', { app: 'sparta-explorer', action: 'SET_VIEW_BLOOM', label: 'Bloom View', description: 'Visual color grid for risk scan' })
+  useRegisterAction('threat-matrix:button:view-glance', { app: 'sparta-explorer', action: 'SET_VIEW_GLANCE', label: 'Glance View', description: 'Text-free tactical heatmap for rapid scan' })
   useRegisterAction('threat-matrix:button:view-graph', { app: 'sparta-explorer', action: 'SET_VIEW_GRAPH', label: 'Graph View', description: 'Node graph connections' })
   useRegisterAction('threat-matrix:button:condensed-toggle', { app: 'sparta-explorer', action: 'TOGGLE_CONDENSED', label: 'Condensed View', description: 'Show only IDs and status' })
   useRegisterAction('threat-matrix:button:subtechniques-toggle', { app: 'sparta-explorer', action: 'TOGGLE_SUBTECHNIQUES', label: 'Toggle Subtechniques', description: 'Show or hide subtechniques' })
@@ -460,15 +460,15 @@ function Header() {
               <Grid3X3 size={18} strokeWidth={1.5} />
             </button>
             <button
-              data-qid="threat-matrix:button:view-bloom"
-              data-qs-action="SET_VIEW_BLOOM"
-              onClick={() => actions.setViewMode!('bloom')}
-              title="Bloom view — color-coded risk heatmap for rapid scan"
+              data-qid="threat-matrix:button:view-glance"
+              data-qs-action="SET_VIEW_GLANCE"
+              onClick={() => actions.setViewMode!('glance')}
+              title="GLANCE view — text-free tactical heatmap"
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 width: 44, height: 44, minWidth: 44, minHeight: 44, borderRadius: 8, border: 'none', cursor: 'pointer',
-                backgroundColor: state.viewMode === 'bloom' ? `${EMBRY.amber}22` : 'transparent',
-                color: state.viewMode === 'bloom' ? EMBRY.amber : EMBRY.dim,
+                backgroundColor: state.viewMode === 'glance' || state.viewMode === 'bloom' ? `${EMBRY.amber}22` : 'transparent',
+                color: state.viewMode === 'glance' || state.viewMode === 'bloom' ? EMBRY.amber : EMBRY.dim,
               }}
             >
               <Flame size={18} strokeWidth={1.5} />
@@ -529,48 +529,8 @@ function Header() {
 // ── Tactic Strip ─────────────────────────────────────────────────────────────
 
 function TacticStrip() {
-  const { state } = useThreatMatrix()
-
-  const stats = useMemo(() => {
-    const s: Record<string, { total: number; covered: number; partial: number; gap: number }> = {}
-    for (const t of state.tactics) s[t.name] = { total: 0, covered: 0, partial: 0, gap: 0 }
-    for (const t of state.techniques) {
-      const bucket = s[t.tactic]
-      if (!bucket) continue
-      bucket.total++
-      if (t.evidenceVerdict === 'satisfied') bucket.covered++
-      else if (t.evidenceVerdict === 'inconclusive') bucket.partial++
-      else bucket.gap++
-    }
-    return s
-  }, [state.tactics, state.techniques])
-
-  if (state.viewMode === 'graph') return null
-
-  return (
-    <div style={{ display: 'flex', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
-      {state.tactics.map((tactic) => {
-        const s = stats[tactic.name] ?? { total: 0, covered: 0, partial: 0, gap: 0 }
-        const pct = s.total > 0 ? Math.round((s.covered / s.total) * 100) : 0
-        return (
-          <div key={tactic.id} style={{ flex: 1, minWidth: 0, padding: '8px 10px', borderRight: `1px solid ${EMBRY.border}`, textAlign: 'center', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: EMBRY.white, marginBottom: 2 }}>{tactic.name}</div>
-            <div style={{ fontSize: 8, color: EMBRY.dim }}>{tactic.prefix} · {s.total} tech</div>
-            <div style={{ marginTop: 'auto' }}>
-              <div style={{ display: 'flex', height: 3, borderRadius: 2, overflow: 'hidden', marginTop: 4 }}>
-                {s.total > 0 && <>
-                  <div style={{ width: `${(s.covered / s.total) * 100}%`, backgroundColor: EMBRY.green }} />
-                  <div style={{ width: `${(s.partial / s.total) * 100}%`, backgroundColor: EMBRY.amber }} />
-                  <div style={{ width: `${(s.gap / s.total) * 100}%`, backgroundColor: EMBRY.red }} />
-                </>}
-              </div>
-              <div style={{ fontSize: 8, color: pct === 100 ? EMBRY.green : EMBRY.dim, marginTop: 2 }} title="Evidence case coverage: % of techniques with SATISFIED verdicts">{s.total > 0 && s.covered + s.partial + s.gap > 0 ? `${pct}%` : '—'} <span style={{ opacity: 0.5 }}>coverage</span></div>
-            </div>
-          </div>
-        )
-      })}
-    </div>
-  )
+  // Headers are rendered inside each grid column so column math cannot drift.
+  return null
 }
 
 function gradeTooltip(grade: string, verdict: string, caseCount: number, name: string): string {
@@ -1564,6 +1524,7 @@ function Grid() {
   const [hudTech, setHudTech] = useState<ThreatTechnique | null>(null)
   const [hudPosition, setHudPosition] = useState({ x: 0, y: 0 })
   const { isDesktop, isTablet, isMobile } = useMediaQuery()
+  const isGlance = state.viewMode === 'glance' || state.viewMode === 'bloom' || state.condensedView
 
   const tacticNames = state.tactics.map((t) => t.name)
   const byTactic: Record<string, ThreatTechnique[]> = {}
@@ -1571,6 +1532,19 @@ function Grid() {
   for (const tech of state.techniques) {
     if (byTactic[tech.tactic]) byTactic[tech.tactic].push(tech)
   }
+  const tacticStats = useMemo(() => {
+    const stats: Record<string, { total: number; covered: number; partial: number; gap: number }> = {}
+    for (const tactic of state.tactics) stats[tactic.name] = { total: 0, covered: 0, partial: 0, gap: 0 }
+    for (const tech of state.techniques) {
+      const bucket = stats[tech.tactic]
+      if (!bucket) continue
+      bucket.total += 1
+      if (tech.evidenceVerdict === 'satisfied') bucket.covered += 1
+      else if (tech.evidenceVerdict === 'inconclusive') bucket.partial += 1
+      else bucket.gap += 1
+    }
+    return stats
+  }, [state.tactics, state.techniques])
 
   if (state.loading) {
     return (
@@ -1645,6 +1619,26 @@ function Grid() {
       ? '1fr'
       : `repeat(auto-fit, minmax(280px, 1fr))`
 
+  const glanceBlockStyle = (tech: ThreatTechnique, isSelected: boolean): React.CSSProperties => {
+    const isCritical = tech.evidenceVerdict === 'not_satisfied'
+    const isWarning = tech.evidenceVerdict === 'inconclusive'
+    const color = isCritical ? EMBRY.red : isWarning ? EMBRY.amber : '#121214'
+    return {
+      width: 13,
+      height: 13,
+      borderRadius: 2,
+      border: isSelected ? '1px solid rgba(250,204,21,0.9)' : '1px solid rgba(255,255,255,0.07)',
+      background: color,
+      boxShadow: isCritical
+        ? '0 0 8px rgba(239,68,68,0.38)'
+        : isWarning
+          ? '0 0 8px rgba(234,179,8,0.30)'
+          : 'none',
+      cursor: 'pointer',
+      transition: 'transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease',
+    }
+  }
+
   return (
     <div
       className="sparta-threat-matrix-scroll"
@@ -1688,63 +1682,78 @@ function Grid() {
         }}
       >
         {tacticNames.map((tactic) => (
-          <div key={tactic} style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
-            {byTactic[tactic].map((tech) => {
-            // ── Visual Bloom Mode: Industrial-grade tactical heatmap ──
-            if (state.viewMode === 'bloom') {
-              const bloomStyle = getBloomStyle(tech)
-              const isSelected = state.selectedDetail?.technique.id === tech.id
-              const isHot = tech.evidenceVerdict === 'not_satisfied' || tech.evidenceGrade === 'C' || tech.evidenceGrade === 'F'
-              const isLoadBearer = (tech.nrs_score ?? 0) > 0.5
+          <div
+            key={tactic}
+            data-qid={`threat-matrix:column:${tactic.replace(/[^a-zA-Z0-9_-]/g, '-')}`}
+            data-qs-action="THREAT_MATRIX_COLUMN"
+            style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0, height: '100%' }}
+          >
+            {(() => {
+              const tacticMeta = state.tactics.find((item) => item.name === tactic)
+              const s = tacticStats[tactic] ?? { total: 0, covered: 0, partial: 0, gap: 0 }
+              const pct = s.total > 0 ? Math.round((s.covered / s.total) * 100) : 0
               return (
                 <div
+                  data-qid={`threat-matrix:column-header:${tacticMeta?.prefix ?? tactic}`}
+                  data-qs-action="THREAT_MATRIX_COLUMN_HEADER"
+                  style={{
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 5,
+                    minHeight: 52,
+                    padding: '9px 10px 8px',
+                    background: '#050505',
+                    borderBottom: '1px solid rgba(255,255,255,0.08)',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div style={{ fontSize: 9, fontWeight: 800, color: EMBRY.white, marginBottom: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{tactic}</div>
+                  <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 6 }}>{tacticMeta?.prefix ?? tactic} · {s.total} tech</div>
+                  <div style={{ display: 'flex', height: 3, borderRadius: 2, overflow: 'hidden' }}>
+                    {s.total > 0 && <>
+                      <div style={{ width: `${(s.covered / s.total) * 100}%`, backgroundColor: EMBRY.green }} />
+                      <div style={{ width: `${(s.partial / s.total) * 100}%`, backgroundColor: EMBRY.amber }} />
+                      <div style={{ width: `${(s.gap / s.total) * 100}%`, backgroundColor: EMBRY.red }} />
+                    </>}
+                  </div>
+                  <div style={{ fontSize: 8, color: pct === 100 ? EMBRY.green : EMBRY.dim, marginTop: 2 }} title="Evidence case coverage: % of techniques with SATISFIED verdicts">{s.total > 0 ? `${pct}%` : '—'} <span style={{ opacity: 0.5 }}>coverage</span></div>
+                </div>
+              )
+            })()}
+            <div style={{
+              display: isGlance ? 'flex' : 'flex',
+              flexDirection: isGlance ? 'row' : 'column',
+              flexWrap: isGlance ? 'wrap' : 'nowrap',
+              gap: isGlance ? 4 : 2,
+              alignContent: 'flex-start',
+              paddingTop: 2,
+              paddingBottom: 12,
+              minWidth: 0,
+            }}>
+            {byTactic[tactic].map((tech) => {
+            if (isGlance) {
+              const isSelected = state.selectedDetail?.technique.id === tech.id
+              return (
+                <button
                   key={tech.id}
-                  data-qid={`threat-matrix:button:bloom-cell-${tech.id}`}
-                  data-qs-action="SELECT_TECHNIQUE_BLOOM"
+                  type="button"
+                  data-qid={`threat-matrix:button:glance-cell-${tech.id}`}
+                  data-qs-action="SELECT_TECHNIQUE_GLANCE"
                   title={`${tech.id}: ${tech.name} — ${tech.evidenceVerdict?.replace('_', ' ') ?? 'no verdict'}`}
+                  aria-label={`${tech.id}: ${tech.name}`}
                   onClick={() => actions.selectTechnique(tech)}
                   onMouseEnter={(e) => {
                     setHudTech(tech)
                     setHudPosition({ x: e.clientX, y: e.clientY })
-                    if (isHot) e.currentTarget.style.transform = 'scale(1.08)'
+                    e.currentTarget.style.transform = 'scale(1.28)'
                   }}
                   onMouseMove={(e) => setHudPosition({ x: e.clientX, y: e.clientY })}
                   onMouseLeave={(e) => {
                     setHudTech(null)
-                    e.currentTarget.style.transform = isSelected ? 'scale(1.05)' : 'scale(1)'
+                    e.currentTarget.style.transform = 'scale(1)'
                   }}
-                  style={{
-                    height: 44,
-                    minWidth: 44,
-                    position: 'relative',
-                    cursor: 'pointer',
-                    transition: 'transform 0.15s, box-shadow 0.15s, filter 0.15s',
-                    transform: isSelected ? 'scale(1.05)' : 'scale(1)',
-                    borderRadius: 2,
-                    ...bloomStyle,
-                    // Override box-shadow for selection state
-                    boxShadow: isSelected
-                      ? `0 0 12px ${bloomStyle.backgroundColor}, ${bloomStyle.boxShadow}`
-                      : bloomStyle.boxShadow,
-                    // Critical pulse filter
-                    filter: isHot ? 'brightness(1.1)' : 'none',
-                  }}
-                >
-                  {/* Micro-ID: Semantic Progressive Disclosure */}
-                  <span style={{
-                    position: 'absolute',
-                    bottom: 2,
-                    right: 4,
-                    fontSize: 7,
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    color: 'rgba(255, 255, 255, 0.6)',
-                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.8)',
-                    pointerEvents: 'none',
-                  }}>
-                    {tech.id.split('.').pop()}
-                  </span>
-                </div>
+                  style={glanceBlockStyle(tech, isSelected)}
+                />
               )
             }
 
@@ -1837,6 +1846,7 @@ function Grid() {
               </div>
             )
             })}
+            </div>
           </div>
         ))}
       </div>

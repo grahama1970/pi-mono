@@ -450,7 +450,7 @@ export function ChatTab() {
 
   // ── Threat matrix state/actions/meta ───────────────────────────────
 
-  const [matrixViewMode, setMatrixViewMode] = useState<'standard' | 'bloom' | 'graph' | 'edges'>('standard')
+  const [matrixViewMode, setMatrixViewMode] = useState<'standard' | 'glance' | 'bloom' | 'graph' | 'edges'>('standard')
 
   const matrixState: ThreatMatrixState = {
     tactics: SPARTA_TACTICS, techniques, loading: matrixLoading,
@@ -574,7 +574,7 @@ export function ChatTab() {
               }, [piChat])}
               onClarifyClick={useCallback((q: string) => handleSend(q, 'natural'), [handleSend])}
               onRunEvidenceCase={handleRunEvidenceCase}
-              evidenceCaseLoading={evidenceCaseLoading}
+              evidenceCaseLoading={Boolean(evidenceCaseLoading)}
               onNavigateMatrix={useCallback(() => setVizMode('matrix'), [])}
               skills={skills}
               starterQuestions={starterQuestions}
@@ -594,7 +594,7 @@ export function ChatTab() {
                 }
               }, [handleSend])}
               isStreaming={piChat.isStreaming}
-              streamingSteps={piChat.streamingSteps}
+              streamingSteps={piChat.streamingSteps as any}
             />
             <PersonaPlexVoiceTracePanel className="mt-4" />
           </div>
