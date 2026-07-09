@@ -278,7 +278,6 @@ function Header() {
   useRegisterAction('threat-matrix:button:view-standard', { app: 'sparta-explorer', action: 'SET_VIEW_STANDARD', label: 'Standard View', description: 'Show full detail cards' })
   useRegisterAction('threat-matrix:button:view-glance', { app: 'sparta-explorer', action: 'SET_VIEW_GLANCE', label: 'Glance View', description: 'Text-free tactical heatmap for rapid scan' })
   useRegisterAction('threat-matrix:button:view-graph', { app: 'sparta-explorer', action: 'SET_VIEW_GRAPH', label: 'Graph View', description: 'Node graph connections' })
-  useRegisterAction('threat-matrix:button:condensed-toggle', { app: 'sparta-explorer', action: 'TOGGLE_CONDENSED', label: 'Condensed View', description: 'Show only IDs and status' })
   useRegisterAction('threat-matrix:button:subtechniques-toggle', { app: 'sparta-explorer', action: 'TOGGLE_SUBTECHNIQUES', label: 'Toggle Subtechniques', description: 'Show or hide subtechniques' })
 
   const satisfied = techniques.filter((t) => t.evidenceVerdict === 'satisfied').length
@@ -351,7 +350,7 @@ function Header() {
             }}
           >
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: EMBRY.red, boxShadow: `0 0 8px ${EMBRY.red}` }} />
-            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>Pipeline Degraded: Coverage Indeterminate</span>
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>Coverage Indeterminate</span>
           </div>
         ) : null}
       </div>
@@ -455,23 +454,6 @@ function Header() {
                 <Network size={16} strokeWidth={1.5} />
               </button>
             </div>
-          )}
-          {actions.toggleCondensedView && (
-            <button
-              data-qid="threat-matrix:button:condensed-toggle"
-              data-qs-action="TOGGLE_CONDENSED"
-              onClick={actions.toggleCondensedView}
-              title="Condensed View — show only IDs and status"
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                width: 32, height: 32, minWidth: 32, minHeight: 32, flex: '0 0 32px', borderRadius: 5,
-                border: `1px solid ${EMBRY.border}`, cursor: 'pointer',
-                backgroundColor: state.condensedView ? `${EMBRY.blue}22` : 'transparent',
-                color: state.condensedView ? EMBRY.blue : EMBRY.dim,
-              }}
-            >
-              <Grid3X3 size={15} strokeWidth={1.5} />
-            </button>
           )}
           <button
             data-qid="threat-matrix:button:subtechniques-toggle"
