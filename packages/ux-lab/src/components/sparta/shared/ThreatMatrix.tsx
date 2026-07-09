@@ -1569,28 +1569,51 @@ function Grid() {
     : isMobile
       ? '1fr'
       : `repeat(auto-fit, minmax(280px, 1fr))`
-  const viewModeKinetics = 'opacity 0.18s ease, transform 0.18s ease, gap 0.18s ease, padding 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease'
-  const cellKinetics = 'opacity 0.16s ease, transform 0.16s ease, background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, color 0.16s ease'
+  const viewModeKinetics = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out, gap 0.3s ease-in-out, padding 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, min-height 0.3s ease-in-out'
+  const textKinetics = isGlance ? 'opacity 0.15s ease-out' : 'opacity 0.15s ease-out 0.15s'
 
-  const glanceBlockStyle = (tech: ThreatTechnique, isSelected: boolean): React.CSSProperties => {
+  const kineticNodeStyle = (tech: ThreatTechnique, isSelected: boolean, isHovered: boolean): React.CSSProperties => {
     const isCritical = tech.evidenceVerdict === 'not_satisfied'
     const isWarning = tech.evidenceVerdict === 'inconclusive'
-    const color = isCritical ? EMBRY.red : isWarning ? EMBRY.amber : '#121214'
+    const activeColor = '#FACC15'
+    const stateColor = isCritical ? EMBRY.red : isWarning ? EMBRY.amber : '#121214'
+    const stateGlow = isCritical
+      ? '0 0 8px rgba(239,68,68,0.38)'
+      : isWarning
+        ? '0 0 8px rgba(234,179,8,0.30)'
+        : 'none'
+
     return {
-      width: 13,
-      height: 13,
-      borderRadius: 2,
-      border: isSelected ? '1px solid rgba(250,204,21,0.9)' : '1px solid rgba(255,255,255,0.07)',
-      background: color,
-      boxShadow: isCritical
-        ? '0 0 8px rgba(239,68,68,0.38)'
-        : isWarning
-          ? '0 0 8px rgba(234,179,8,0.30)'
-          : 'none',
-      opacity: isSelected ? 1 : 0.94,
+      position: 'relative',
+      overflow: 'hidden',
+      textAlign: 'left',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: isGlance ? 'center' : 'flex-start',
+      width: isGlance ? 13 : '100%',
+      height: isGlance ? 13 : 'auto',
+      minHeight: isGlance ? 13 : 72,
+      padding: isGlance ? 0 : '10px 12px',
+      borderRadius: isGlance ? 2 : 2,
+      borderTop: isGlance ? `1px solid ${isSelected ? 'rgba(250,204,21,0.9)' : 'rgba(255,255,255,0.07)'}` : 0,
+      borderRight: isGlance ? `1px solid ${isSelected ? 'rgba(250,204,21,0.9)' : 'rgba(255,255,255,0.07)'}` : 0,
+      borderBottom: isGlance ? `1px solid ${isSelected ? 'rgba(250,204,21,0.9)' : 'rgba(255,255,255,0.07)'}` : 0,
+      borderLeft: isGlance
+        ? `1px solid ${isSelected ? 'rgba(250,204,21,0.9)' : 'rgba(255,255,255,0.07)'}`
+        : isSelected ? `3px solid ${activeColor}` : '3px solid transparent',
+      background: isGlance
+        ? stateColor
+        : isSelected
+          ? 'rgba(255, 255, 255, 0.10)'
+          : isHovered
+            ? 'rgba(255, 255, 255, 0.15)'
+            : '#121214',
+      boxShadow: isGlance ? stateGlow : 'none',
+      opacity: isSelected || isHovered ? 1 : isGlance ? 0.94 : 0.96,
+      transform: isHovered ? (isGlance ? 'scale(1.28)' : 'translateY(-1px)') : 'scale(1) translateY(0)',
       cursor: 'pointer',
-      transition: cellKinetics,
-      willChange: 'transform, opacity',
+      transition: viewModeKinetics,
+      willChange: 'width, height, min-height, transform, opacity',
     }
   }
 
@@ -1698,68 +1721,43 @@ function Grid() {
               transition: viewModeKinetics,
             }}>
             {byTactic[tactic].map((tech) => {
-            if (isGlance) {
-              const isSelected = state.selectedDetail?.technique.id === tech.id
-              return (
-                <button
-                  key={tech.id}
-                  type="button"
-                  data-qid={`threat-matrix:button:glance-cell-${tech.id}`}
-                  data-qs-action="SELECT_TECHNIQUE_GLANCE"
-                  title={`${tech.id}: ${tech.name} — ${tech.evidenceVerdict?.replace('_', ' ') ?? 'no verdict'}`}
-                  aria-label={`${tech.id}: ${tech.name}`}
-                  onClick={() => actions.selectTechnique(tech)}
-                  onMouseEnter={(e) => {
-                    setHudTech(tech)
-                    setHudPosition({ x: e.clientX, y: e.clientY })
-                    e.currentTarget.style.transform = 'scale(1.28)'
-                  }}
-                  onMouseMove={(e) => setHudPosition({ x: e.clientX, y: e.clientY })}
-                  onMouseLeave={(e) => {
-                    setHudTech(null)
-                    e.currentTarget.style.transform = 'scale(1)'
-                  }}
-                  style={glanceBlockStyle(tech, isSelected)}
-                />
-              )
-            }
-
-            // ── Standard Mode: full detail cards ──
             const isHovered = hovered === tech.id
             const isSelected = state.selectedDetail?.technique.id === tech.id
             const activeColor = '#FACC15'
             return (
-              <div
+              <button
                 key={tech.id}
-                data-qid={`threat-matrix:button:cell-${tech.id}`}
-                data-qs-action="SELECT_TECHNIQUE"
+                type="button"
+                data-qid={isGlance ? `threat-matrix:button:glance-cell-${tech.id}` : `threat-matrix:button:cell-${tech.id}`}
+                data-qs-action={isGlance ? 'SELECT_TECHNIQUE_GLANCE' : 'SELECT_TECHNIQUE'}
                 title={cellTooltip(tech)}
-                style={{
-                  padding: '10px 12px',
-                  backgroundColor: isSelected
-                    ? 'rgba(255, 255, 255, 0.10)'
-                    : isHovered
-                      ? 'rgba(255, 255, 255, 0.15)'
-                      : '#121214',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.15s, color 0.15s, border-color 0.15s',
-                  borderTop: 0,
-                  borderRight: 0,
-                  borderBottom: 0,
-                  borderLeft: isSelected ? `3px solid ${activeColor}` : '3px solid transparent',
-                  borderRadius: 2,
-                  boxShadow: 'none',
-                  minHeight: 72,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  opacity: isSelected || isHovered ? 1 : 0.96,
-                  transform: isHovered ? 'translateY(-1px)' : 'translateY(0)',
-                  willChange: 'transform, opacity',
+                aria-label={`${tech.id}: ${tech.name}`}
+                style={kineticNodeStyle(tech, isSelected, isHovered)}
+                onMouseEnter={(e) => {
+                  setHovered(tech.id)
+                  if (isGlance) {
+                    setHudTech(tech)
+                    setHudPosition({ x: e.clientX, y: e.clientY })
+                  }
                 }}
-                onMouseEnter={() => setHovered(tech.id)}
-                onMouseLeave={() => setHovered(null)}
+                onMouseMove={(e) => {
+                  if (isGlance) setHudPosition({ x: e.clientX, y: e.clientY })
+                }}
+                onMouseLeave={() => {
+                  setHovered(null)
+                  setHudTech(null)
+                }}
                 onClick={() => actions.selectTechnique(tech)}
               >
+                <div style={{
+                  position: isGlance ? 'absolute' : 'relative',
+                  opacity: isGlance ? 0 : 1,
+                  pointerEvents: isGlance ? 'none' : 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  minWidth: 0,
+                  transition: textKinetics,
+                }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
                   <span style={{ fontSize: 10, fontWeight: 700, color: isSelected ? activeColor : EMBRY.white, fontFamily: 'monospace' }}>{tech.id}</span>
                   {/* Evidence case verdict indicator */}
@@ -1813,7 +1811,8 @@ function Grid() {
                     </span>
                   )}
                 </div>
-              </div>
+                </div>
+              </button>
             )
             })}
             </div>
