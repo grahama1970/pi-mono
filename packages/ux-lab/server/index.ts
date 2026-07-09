@@ -9895,7 +9895,7 @@ function dreamStageForPath(path: string): { id: string; title: string } {
   if (lower.includes('script') || lower.includes('timed_transcript') || lower.includes('transcript')) return { id: 'script-transcript', title: 'Script and Transcript' }
   if (lower.includes('storyboard')) return { id: 'storyboard', title: 'Storyboard' }
   if (lower.includes('panel') || lower.includes('keyframe') || /shot_\d+/.test(lower)) return { id: 'panels', title: 'Panels and Scene Images' }
-  if (lower.includes('provider_packet') || lower.includes('kling') || lower.includes('dream_packet') || lower.includes('dream_request')) return { id: 'kling-packet', title: 'Kling Packet and Provider Gate' }
+  if (lower.includes('video_provider') || lower.includes('video_scene_contract') || lower.includes('provider_scorecard') || lower.includes('provider_registry') || lower.includes('fal_api') || lower.includes('provider_packet') || lower.includes('kling') || lower.includes('dream_packet') || lower.includes('dream_request')) return { id: 'video-provider', title: 'Video Provider and Routing Gate' }
   if (lower.includes('review') || lower.includes('validation') || lower.includes('status') || lower.includes('receipt')) return { id: 'review-receipts', title: 'Reviewer Checks and Receipts' }
   if (lower.includes('final_video') || lower.includes('final_audio') || lower.includes('response.json')) return { id: 'provider-response', title: 'Provider Response and Final Media' }
   return { id: 'other-artifacts', title: 'Other Source Artifacts' }
@@ -9957,9 +9957,9 @@ const DREAM_PREFLIGHT_PHASES: Array<{
   },
   {
     id: 'phase_09_kling_optimized_packet',
-    title: 'Kling-Optimized Scene Packet',
-    summary: 'Panel-specific Kling JSON, provider packet, prompt, locks, and media staging receipts.',
-    matches: (path) => /kling|provider_packet|provider_request|referenced_artifacts|dream_packet|dream_prompt|local_staging|publication/i.test(path),
+    title: 'Video Provider Scene Packet',
+    summary: 'Provider-neutral scene packet, selected provider routing, prompt, locks, and media staging receipts.',
+    matches: (path) => /video_provider|video_scene_contract|provider_scorecard|provider_registry|fal_api|kling|provider_packet|provider_request|referenced_artifacts|dream_packet|dream_prompt|local_staging|publication/i.test(path),
   },
   {
     id: 'phase_10_creator_reviewer_gate',
@@ -9969,8 +9969,8 @@ const DREAM_PREFLIGHT_PHASES: Array<{
   },
   {
     id: 'phase_11_kling_response',
-    title: 'Kling Response and Returned Media',
-    summary: 'Kling API response, task id, polling receipts, downloaded media, ffprobe/frame sheets, and post-Kling review.',
+    title: 'Provider Response and Returned Media',
+    summary: 'Provider API response, task id, polling receipts, downloaded media, ffprobe/frame sheets, and post-provider review.',
     matches: (path) => /response\.json|kling_response|task|poll|download|final_video|ffprobe|final_audio/i.test(path),
   },
 ]
@@ -10025,6 +10025,18 @@ function buildDreamPreflightStages(runRoot: string, files: string[]): DreamStage
       const rel = file.startsWith(`${runRoot}/`) ? file.slice(runRoot.length + 1) : file
       return phase.matches(rel)
     })
+    if (phase.id === 'phase_09_kling_optimized_packet') {
+      matched.sort((a, b) => {
+        const aRel = a.startsWith(`${runRoot}/`) ? a.slice(runRoot.length + 1) : a
+        const bRel = b.startsWith(`${runRoot}/`) ? b.slice(runRoot.length + 1) : b
+        const priority = (rel: string) => rel.includes('phase_09_video_provider/')
+          ? 0
+          : rel.includes('phase_08_media_lock/')
+            ? 1
+            : 2
+        return priority(aRel) - priority(bRel) || aRel.localeCompare(bRel)
+      })
+    }
     if (phase01IdeaEvidence.artifactPath && !matched.includes(phase01IdeaEvidence.artifactPath)) {
       matched.push(phase01IdeaEvidence.artifactPath)
     }
@@ -10068,7 +10080,7 @@ function buildDreamPreflightStages(runRoot: string, files: string[]): DreamStage
   })
 }
 
-async function listDreamFiles(root: string, maxFiles = 600): Promise<string[]> {
+async function listDreamFiles(root: string, maxFiles = 2000): Promise<string[]> {
   const files: string[] = []
   const isStudioVisibleEntry = (name: string) => {
     if (!name || name.startsWith('.')) return false
@@ -10334,7 +10346,7 @@ function summarizeDreamStages(runRoot: string, files: string[]): DreamStageSumma
     'script-transcript',
     'storyboard',
     'panels',
-    'kling-packet',
+    'video-provider',
     'review-receipts',
     'provider-response',
     'other-artifacts',
