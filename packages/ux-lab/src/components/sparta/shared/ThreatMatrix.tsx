@@ -20,7 +20,6 @@ import { Flame, Grid3X3, Network, GitBranch, AlertTriangle, FileWarning, Shield,
 import { forceSimulation, forceLink, forceManyBody, forceCollide, forceX, forceY } from 'd3-force'
 import type { SimulationNodeDatum, SimulationLinkDatum } from 'd3-force'
 import { EMBRY, label, heading, glowDot, fwBadge, FLUID } from '../common/EmbryStyle'
-import { PostureHUD } from './PostureHUD'
 import { TacticAccordion } from './TacticAccordion'
 import { TechniqueDrawer } from './TechniqueDrawer'
 import { TacticalContextMenu, type TacticalContextMenuAction } from './TacticalContextMenu'
@@ -380,147 +379,210 @@ function Header() {
   const notSatisfied = techniques.filter((t) => t.evidenceVerdict === 'not_satisfied').length
   const noCase = techniques.filter((t) => t.evidenceVerdict === 'none').length
 
+  const statusItems = [
+    { color: EMBRY.green, count: satisfied, label: 'Satisfied', qid: 'satisfied' },
+    { color: EMBRY.amber, count: inconclusive, label: 'Inconclusive', qid: 'inconclusive' },
+    { color: EMBRY.red, count: notSatisfied, label: 'Not Satisfied', qid: 'not-satisfied' },
+    { color: EMBRY.dim, count: noCase, label: 'No Case', qid: 'no-case' },
+  ]
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
-      {/* Sticky Posture HUD */}
-      <PostureHUD
-        satisfied={satisfied}
-        inconclusive={inconclusive}
-        notSatisfied={notSatisfied}
-        noCase={noCase}
-        techniqueCount={techniques.length}
-        tacticCount={state.tactics.length}
-        activeDatalake={meta.activeDatalake}
-      />
-
-      {meta.analysisPipelineDegraded ? (
-        <div
-          data-qid="threat-matrix:banner:degraded"
-          style={{
-            padding: '8px 16px',
-            borderTop: '1px solid rgba(250, 204, 21, 0.2)',
-            borderBottom: '1px solid rgba(250, 204, 21, 0.2)',
-            background: 'rgba(250, 204, 21, 0.1)',
-            color: '#FACC15',
-            fontSize: 11,
-            fontWeight: 800,
-            letterSpacing: '0.04em',
-            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-          }}
-        >
-          Coverage analysis unavailable — pipeline degraded. Zero-percent bars are indeterminate, not verified absence of coverage.
-          {meta.boundEvidenceCaseId ? ` Active evidence case ${meta.boundEvidenceCaseId} is not matrix-bound yet.` : ''}
-        </div>
-      ) : null}
-
-      {/* Controls row */}
-      <div style={{
-        padding: '8px 16px',
-        borderBottom: `1px solid ${EMBRY.border}`,
-        display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+    <div
+      data-qid="posture-hud:container"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        flexShrink: 0,
         gap: 8,
+        padding: '10px 16px',
+        borderBottom: `1px solid ${EMBRY.border}`,
         backgroundColor: EMBRY.bgHeader,
-      }}>
-        {/* Datalake selector */}
-        {meta.datalakes && meta.datalakes.length > 0 && (
-          <select
-            data-qid="threat-matrix:input:datalake-selector"
-            data-qs-action="SELECT_DATALAKE"
-            title="Select datalake for traceability overlay"
-            value={meta.activeDatalake ?? ''}
-            onChange={(e) => actions.selectDatalake?.(e.target.value)}
-            style={{
-              fontSize: 10, padding: '8px 12px', borderRadius: 6,
-              border: `1px solid ${EMBRY.border}`, cursor: 'pointer',
-              backgroundColor: EMBRY.bgDeep, color: EMBRY.white,
-              minHeight: 44,
-            }}
-          >
-            <option value="">SPARTA Catalog Only</option>
-            {meta.datalakes.map((dl) => (
-              <option key={dl.id} value={dl.id}>{dl.name}</option>
-            ))}
-          </select>
-        )}
-        {/* View Mode Selector: Standard | Bloom | Graph */}
-        {actions.setViewMode && (
-          <div style={{ display: 'flex', gap: 2, padding: 2, borderRadius: 8, backgroundColor: `${EMBRY.bgDeep}80` }}>
-            <button
-              data-qid="threat-matrix:button:view-standard"
-              data-qs-action="SET_VIEW_STANDARD"
-              onClick={() => actions.setViewMode!('standard')}
-              title="Grid view — full cards with details"
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                width: 44, height: 44, minWidth: 44, minHeight: 44, borderRadius: 8, border: 'none', cursor: 'pointer',
-                backgroundColor: (state.viewMode ?? 'standard') === 'standard' ? `${EMBRY.accent}22` : 'transparent',
-                color: (state.viewMode ?? 'standard') === 'standard' ? EMBRY.accent : EMBRY.dim,
-              }}
-            >
-              <Grid3X3 size={18} strokeWidth={1.5} />
-            </button>
-            <button
-              data-qid="threat-matrix:button:view-glance"
-              data-qs-action="SET_VIEW_GLANCE"
-              onClick={() => actions.setViewMode!('glance')}
-              title="GLANCE view — text-free tactical heatmap"
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                width: 44, height: 44, minWidth: 44, minHeight: 44, borderRadius: 8, border: 'none', cursor: 'pointer',
-                backgroundColor: state.viewMode === 'glance' || state.viewMode === 'bloom' ? `${EMBRY.amber}22` : 'transparent',
-                color: state.viewMode === 'glance' || state.viewMode === 'bloom' ? EMBRY.amber : EMBRY.dim,
-              }}
-            >
-              <Flame size={18} strokeWidth={1.5} />
-            </button>
-            <button
-              data-qid="threat-matrix:button:view-graph"
-              data-qs-action="SET_VIEW_GRAPH"
-              onClick={() => actions.setViewMode!('graph')}
-              title="Graph view — control → requirement → proof connections"
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                width: 44, height: 44, minWidth: 44, minHeight: 44, borderRadius: 8, border: 'none', cursor: 'pointer',
-                backgroundColor: state.viewMode === 'graph' ? `${EMBRY.green}22` : 'transparent',
-                color: state.viewMode === 'graph' ? EMBRY.green : EMBRY.dim,
-              }}
-            >
-              <Network size={18} strokeWidth={1.5} />
-            </button>
+      }}
+    >
+      {/* Row 1: identity and fail-closed state */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, minWidth: 0 }}>
+          <div style={{ fontSize: 15, fontWeight: 900, color: EMBRY.white, whiteSpace: 'nowrap' }}>
+            SPARTA Threat Matrix
           </div>
-        )}
-        {actions.toggleCondensedView && (
-          <button
-            data-qid="threat-matrix:button:condensed-toggle"
-            data-qs-action="TOGGLE_CONDENSED"
-            onClick={actions.toggleCondensedView}
-            title="Condensed View — show only IDs and status"
+          <div style={{
+            fontSize: 10,
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '0.12em',
+            color: EMBRY.dim,
+            whiteSpace: 'nowrap',
+          }}>
+            {techniques.length} Techniques / {state.tactics.length} Tactics
+            {meta.activeDatalake && <span style={{ color: EMBRY.accent }}> · {meta.activeDatalake}</span>}
+          </div>
+        </div>
+
+        {meta.analysisPipelineDegraded ? (
+          <div
+            data-qid="threat-matrix:banner:degraded"
+            title={[
+              'Pipeline degraded: coverage indeterminate.',
+              meta.boundEvidenceCaseId ? `Active evidence case ${meta.boundEvidenceCaseId} is not matrix-bound yet.` : '',
+            ].filter(Boolean).join(' ')}
             style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              width: 44, height: 44, minWidth: 44, minHeight: 44, flex: '0 0 44px', borderRadius: 8,
-              border: `1px solid ${EMBRY.border}`, cursor: 'pointer',
-              backgroundColor: state.condensedView ? `${EMBRY.blue}22` : 'transparent',
-              color: state.condensedView ? EMBRY.blue : EMBRY.dim,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              minWidth: 0,
+              padding: '5px 10px',
+              borderRadius: 3,
+              border: '1px solid rgba(239, 68, 68, 0.24)',
+              background: 'rgba(239, 68, 68, 0.10)',
+              color: '#F87171',
+              fontSize: 9,
+              fontWeight: 900,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              whiteSpace: 'nowrap',
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
             }}
           >
-            <Grid3X3 size={16} strokeWidth={1.5} />
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: EMBRY.red, boxShadow: `0 0 8px ${EMBRY.red}` }} />
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>Pipeline Degraded: Coverage Indeterminate</span>
+          </div>
+        ) : null}
+      </div>
+
+      {/* Row 2: flattened legend and anchored controls */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, minWidth: 0, flexWrap: 'wrap' }}>
+          {statusItems.map(({ color, count, label: statusLabel, qid }) => (
+            <div
+              key={qid}
+              data-qid={`posture-hud:status:${qid}`}
+              title={`${count} ${statusLabel}`}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                color: EMBRY.dim,
+                fontSize: 10,
+                fontWeight: 800,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <span style={{ width: 8, height: 8, background: `${color}22`, border: `1px solid ${color}99`, borderRadius: 2 }} />
+              <span>{count} {statusLabel}</span>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, flexShrink: 0 }}>
+          {meta.datalakes && meta.datalakes.length > 0 && (
+            <select
+              data-qid="threat-matrix:input:datalake-selector"
+              data-qs-action="SELECT_DATALAKE"
+              title="Select datalake for traceability overlay"
+              value={meta.activeDatalake ?? ''}
+              onChange={(e) => actions.selectDatalake?.(e.target.value)}
+              style={{
+                fontSize: 10,
+                fontWeight: 800,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                padding: '5px 9px',
+                borderRadius: 3,
+                border: `1px solid ${EMBRY.border}`,
+                cursor: 'pointer',
+                backgroundColor: EMBRY.bgDeep,
+                color: `${EMBRY.white}cc`,
+                minHeight: 32,
+              }}
+            >
+              <option value="">SPARTA Catalog Only</option>
+              {meta.datalakes.map((dl) => (
+                <option key={dl.id} value={dl.id}>{dl.name}</option>
+              ))}
+            </select>
+          )}
+          {actions.setViewMode && (
+            <div style={{ display: 'flex', gap: 2, padding: 2, borderRadius: 6, backgroundColor: `${EMBRY.bgDeep}80` }}>
+              <button
+                data-qid="threat-matrix:button:view-standard"
+                data-qs-action="SET_VIEW_STANDARD"
+                onClick={() => actions.setViewMode!('standard')}
+                title="Grid view — full cards with details"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  width: 32, height: 32, minWidth: 32, minHeight: 32, borderRadius: 5, border: 'none', cursor: 'pointer',
+                  backgroundColor: (state.viewMode ?? 'standard') === 'standard' ? `${EMBRY.accent}22` : 'transparent',
+                  color: (state.viewMode ?? 'standard') === 'standard' ? EMBRY.accent : EMBRY.dim,
+                }}
+              >
+                <Grid3X3 size={16} strokeWidth={1.5} />
+              </button>
+              <button
+                data-qid="threat-matrix:button:view-glance"
+                data-qs-action="SET_VIEW_GLANCE"
+                onClick={() => actions.setViewMode!('glance')}
+                title="GLANCE view — text-free tactical heatmap"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  width: 32, height: 32, minWidth: 32, minHeight: 32, borderRadius: 5, border: 'none', cursor: 'pointer',
+                  backgroundColor: state.viewMode === 'glance' || state.viewMode === 'bloom' ? `${EMBRY.amber}22` : 'transparent',
+                  color: state.viewMode === 'glance' || state.viewMode === 'bloom' ? EMBRY.amber : EMBRY.dim,
+                }}
+              >
+                <Flame size={16} strokeWidth={1.5} />
+              </button>
+              <button
+                data-qid="threat-matrix:button:view-graph"
+                data-qs-action="SET_VIEW_GRAPH"
+                onClick={() => actions.setViewMode!('graph')}
+                title="Graph view — control → requirement → proof connections"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  width: 32, height: 32, minWidth: 32, minHeight: 32, borderRadius: 5, border: 'none', cursor: 'pointer',
+                  backgroundColor: state.viewMode === 'graph' ? `${EMBRY.green}22` : 'transparent',
+                  color: state.viewMode === 'graph' ? EMBRY.green : EMBRY.dim,
+                }}
+              >
+                <Network size={16} strokeWidth={1.5} />
+              </button>
+            </div>
+          )}
+          {actions.toggleCondensedView && (
+            <button
+              data-qid="threat-matrix:button:condensed-toggle"
+              data-qs-action="TOGGLE_CONDENSED"
+              onClick={actions.toggleCondensedView}
+              title="Condensed View — show only IDs and status"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                width: 32, height: 32, minWidth: 32, minHeight: 32, flex: '0 0 32px', borderRadius: 5,
+                border: `1px solid ${EMBRY.border}`, cursor: 'pointer',
+                backgroundColor: state.condensedView ? `${EMBRY.blue}22` : 'transparent',
+                color: state.condensedView ? EMBRY.blue : EMBRY.dim,
+              }}
+            >
+              <Grid3X3 size={15} strokeWidth={1.5} />
+            </button>
+          )}
+          <button
+            data-qid="threat-matrix:button:subtechniques-toggle"
+            data-qs-action="TOGGLE_SUBTECHNIQUES"
+            title={showSubtechniques ? 'Hide sub-techniques' : 'Show sub-techniques'}
+            onClick={actions.toggleSubtechniques}
+            style={{
+              fontSize: 10, fontWeight: 800, padding: '6px 10px', borderRadius: 5,
+              letterSpacing: '0.08em', textTransform: 'uppercase',
+              border: `1px solid ${EMBRY.border}`, cursor: 'pointer',
+              backgroundColor: showSubtechniques ? `${EMBRY.accent}22` : 'transparent',
+              color: showSubtechniques ? EMBRY.accent : EMBRY.dim,
+              minHeight: 32,
+            }}
+          >
+            {showSubtechniques ? 'Hide' : 'Show'} Sub
           </button>
-        )}
-        <button
-          data-qid="threat-matrix:button:subtechniques-toggle"
-          data-qs-action="TOGGLE_SUBTECHNIQUES"
-          title={showSubtechniques ? 'Hide sub-techniques' : 'Show sub-techniques'}
-          onClick={actions.toggleSubtechniques}
-          style={{
-            fontSize: 10, fontWeight: 600, padding: '8px 12px', borderRadius: 8,
-            border: `1px solid ${EMBRY.border}`, cursor: 'pointer',
-            backgroundColor: showSubtechniques ? `${EMBRY.accent}22` : 'transparent',
-            color: showSubtechniques ? EMBRY.accent : EMBRY.dim,
-            minHeight: 44,
-          }}
-        >
-          {showSubtechniques ? 'Hide' : 'Show'} Sub
-        </button>
+        </div>
       </div>
     </div>
   )
