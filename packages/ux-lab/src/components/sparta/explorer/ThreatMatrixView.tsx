@@ -15,6 +15,11 @@ import { PageDistanceRoot, usePageDistanceMode } from './pageDistance/PageDistan
 import { deriveCoveragePagePurposeState, type CoverageHealthSnapshot } from './pagePurposeContracts'
 import { ThreatMatrixDistanceShell } from './pageDistance/ThreatMatrixDistanceViews'
 import { useMatrixCuration } from './matrixCurationContext'
+import {
+  aggregateTechniqueEvidence,
+  isOperationalRelationshipEdge,
+  type TechniqueEvidenceAggregate,
+} from '../shared/threatMatrixSemantics'
 
 const DAEMON = MEMORY_API_ROOT
 const COVERAGE_HEALTH_CACHE_KEY = 'sparta.coverageHealth.lastPayload'
@@ -94,7 +99,7 @@ export function ThreatMatrixView() {
   const [selectedDetail, setSelectedDetail] = useState<TechniqueDetail | null>(null)
   const [loadingDetail, setLoadingDetail] = useState(false)
   const [activeDatalake, setActiveDatalake] = useState<string>('')
-  const [evidenceMap, setEvidenceMap] = useState<Map<string, { verdict: string; grade: string; count: number }>>(new Map())
+  const [evidenceMap, setEvidenceMap] = useState<Map<string, TechniqueEvidenceAggregate>>(new Map())
   const [graphRelationships, setGraphRelationships] = useState<ThreatRelationship[]>([])
   const [graphHoveredTactic, setGraphHoveredTactic] = useState<string | null>(null)
   const [graphLockedTactic, setGraphLockedTactic] = useState<string | null>('Reconnaissance')
@@ -227,6 +232,8 @@ export function ThreatMatrixView() {
   // crosswalk/control edges created by the evidence-case and SPARTA pipelines.
   useEffect(() => {
     const relationshipFields = [
+      '_id',
+      '_key',
       'source_control_id',
       'target_control_id',
       'source_framework',
@@ -234,6 +241,10 @@ export function ThreatMatrixView() {
       'relationship_type',
       'edge_type',
       'combined_score',
+      'review_state',
+      'source_artifact_ids',
+      'superseded',
+      'rejected',
     ]
     Promise.all([
       post('/list', {
@@ -259,10 +270,9 @@ export function ThreatMatrixView() {
       const relationships: ThreatRelationship[] = []
       for (const res of results) {
         for (const rel of ((res.documents ?? []) as ThreatRelationship[])) {
-          if (!rel.source_control_id || !rel.target_control_id) continue
-          const key = `${rel.source_control_id}->${rel.target_control_id}`
-          if (seen.has(key)) continue
-          seen.add(key)
+          if (!isOperationalRelationshipEdge(rel)) continue
+          if (seen.has(rel._id!)) continue
+          seen.add(rel._id!)
           relationships.push(rel)
         }
       }
@@ -279,30 +289,24 @@ export function ThreatMatrixView() {
 
     post('/list', { collection: 'evidence_cases', limit: 500 }).then((res) => {
       const docs = (res.documents ?? []) as Array<Record<string, unknown>>
-      const verdictMap = new Map<string, { verdict: string; grade: string; count: number }>()
+      const casesByTechnique = new Map<string, Array<{ verdict?: string; grade?: string }>>()
 
       for (const doc of docs) {
         const controlIds = (doc.control_ids as string[]) ?? []
-        const verdict = (doc.verdict as string) ?? 'not_satisfied'
-        const grade = (doc.grade as string) ?? 'F'
+        const verdict = typeof doc.verdict === 'string' ? doc.verdict : undefined
+        const grade = typeof doc.grade === 'string' ? doc.grade : undefined
 
         for (const cid of controlIds) {
           if (!SPARTA_TACTICS.some((t) => cid.startsWith(t.prefix + '-'))) continue
-          const existing = verdictMap.get(cid)
-          if (!existing) {
-            verdictMap.set(cid, { verdict, grade, count: 1 })
-          } else {
-            existing.count++
-            if (verdict === 'satisfied' && existing.verdict !== 'satisfied') {
-              existing.verdict = verdict; existing.grade = grade
-            } else if (verdict === 'inconclusive' && existing.verdict === 'not_satisfied') {
-              existing.verdict = verdict; existing.grade = grade
-            }
-          }
+          const cases = casesByTechnique.get(cid) ?? []
+          cases.push({ verdict, grade })
+          casesByTechnique.set(cid, cases)
         }
       }
 
-      setEvidenceMap(verdictMap)
+      setEvidenceMap(new Map(
+        Array.from(casesByTechnique, ([techniqueId, cases]) => [techniqueId, aggregateTechniqueEvidence(cases)]),
+      ))
     })
   }, [activeDatalake])
 
@@ -315,7 +319,7 @@ export function ThreatMatrixView() {
     })
     .map((t) => {
       const ev = evidenceMap.get(t.control_id)
-      const verdict = activeDatalake && ev ? ev.verdict : 'none'
+      const verdict = activeDatalake && ev ? ev.aggregateVerdict : 'none'
       const coverage: 'full' | 'partial' | 'none' | 'unknown' = verdict === 'satisfied' ? 'full'
         : verdict === 'inconclusive' ? 'partial'
         : verdict === 'not_satisfied' ? 'none'
@@ -327,8 +331,9 @@ export function ThreatMatrixView() {
         tactic: tacticForTechnique(t.control_id) ?? 'Unknown',
         coverage,
         evidenceVerdict: (verdict as 'satisfied' | 'inconclusive' | 'not_satisfied' | 'none'),
-        evidenceCaseCount: ev?.count ?? 0,
-        evidenceGrade: ev?.grade,
+        evidenceCaseCount: ev?.caseCount ?? 0,
+        evidenceGrade: ev?.conflicting ? undefined : ev?.grades[0],
+        evidenceAggregate: ev,
         issueCount: t.weaknesses?.length ?? 0,
         frameworks: ['SPARTA'],
         mind: t.mind,
@@ -372,13 +377,16 @@ export function ThreatMatrixView() {
     // Discrepancy findings for this control
     const discDocs = (discResult.documents ?? []) as Array<Record<string, unknown>>
     const discrepancies = discDocs
-      .filter((d: any) => d.control_id === tech.id || (d.tags ?? []).includes(`control:${tech.id}`))
-      .map((d: any) => ({
-        severity: d.severity ?? 'low',
-        summary: d.summary ?? '',
-        requirement_claim: d.requirement_claim ?? '',
-        table_reality: d.table_reality ?? '',
-        recommendation: d.recommendation ?? '',
+      .filter((document) => {
+        const tags = Array.isArray(document.tags) ? document.tags : []
+        return document.control_id === tech.id || tags.includes(`control:${tech.id}`)
+      })
+      .map((document) => ({
+        severity: String(document.severity ?? 'low'),
+        summary: String(document.summary ?? ''),
+        requirement_claim: String(document.requirement_claim ?? ''),
+        table_reality: String(document.table_reality ?? ''),
+        recommendation: String(document.recommendation ?? ''),
       }))
 
     setSelectedDetail({

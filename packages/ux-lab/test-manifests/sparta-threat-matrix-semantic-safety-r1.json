@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "app": "SPARTA Threat Matrix Semantic Safety R1",
+  "base_url": "http://127.0.0.1:3003",
+  "surfaces": [
+    {
+      "name": "threat-matrix-no-case-and-keyboard",
+      "path": "/?chatMode=drilldown&entityProof5=1783440079222#sparta-explorer/threat-matrix",
+      "wait_ready": "[data-qid='threat-matrix:button:cell-REC-0001']",
+      "qid_compliance": false,
+      "elements": [
+        {
+          "name": "semantic-safety",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "All-no-case state separates unassessed techniques from failures",
+              "assert_visible": "[data-qid='posture-hud:status:no-case']",
+              "assert_text": "85 NO CASE",
+              "assert_absent": "[data-qid='threat-matrix:action:export-dfars-incident']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:button:cell-REC-0001']",
+              "description": "Open an unassessed technique with its existing native button action",
+              "assert_visible": "[data-qid='threat-matrix:detail:incident-assessment']"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:detail:close']",
+              "description": "Close the detail pane before keyboard traversal"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:button:cell-REC-0001']",
+              "description": "Establish the first technique as the traversal origin"
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:detail:close']",
+              "description": "Return focus to the selected native technique button"
+            },
+            {
+              "action": "key",
+              "key": "Tab",
+              "description": "Move keyboard focus to the next technique"
+            },
+            {
+              "action": "screenshot",
+              "description": "The next technique displays a strong focus-visible outline",
+              "assert_focus_visible": "[data-qid='threat-matrix:button:cell-REC-0002']"
+            },
+            {
+              "action": "key",
+              "key": "Enter",
+              "description": "Activate the focused technique with Enter",
+              "assert_visible": "[data-qid='threat-matrix:detail:temporal-state']"
+            },
+            {
+              "action": "screenshot",
+              "description": "Selected no-case detail shows unknown temporal state and incident assessment not run",
+              "assert_visible": "[data-qid='threat-matrix:detail:incident-assessment']",
+              "assert_absent": "[data-qid='threat-matrix:action:export-dfars-incident']"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "threat-matrix-persisted-edge-only-graph",
+      "path": "/?chatMode=drilldown&entityProof5=1783440079222#sparta-explorer/threat-matrix",
+      "wait_ready": "[data-qid='threat-matrix:button:view-graph']",
+      "qid_compliance": false,
+      "elements": [
+        {
+          "name": "persisted-edge-only",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='threat-matrix:button:view-graph']",
+              "description": "Open graph mode"
+            },
+            {
+              "action": "wait",
+              "target": "[data-qid='threat-matrix:graph:empty-relationships']",
+              "timeout_ms": 5000,
+              "description": "Graph fails closed when no verified persisted edge IDs are available"
+            },
+            {
+              "action": "screenshot",
+              "description": "Tactic lanes remain visible without synthetic graph lines",
+              "assert_visible": "[data-qid='threat-matrix:graph:empty-relationships']",
+              "assert_count": {
+                "selector": "[data-graph-edge-id]",
+                "min": 0,
+                "max": 0
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

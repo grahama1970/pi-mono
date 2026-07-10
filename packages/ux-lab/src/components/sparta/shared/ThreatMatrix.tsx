@@ -26,6 +26,13 @@ import { TacticalContextMenu, type TacticalContextMenuAction } from './TacticalC
 import type { ThreatMatrixPayload } from './types'
 import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import {
+  calculateTacticStats,
+  isOperationalRelationshipEdge,
+  normalizeRelationshipType,
+  type SourceTemporalState,
+  type TechniqueEvidenceAggregate,
+} from './threatMatrixSemantics'
 
 // ── Context Interface ────────────────────────────────────────────────────────
 
@@ -42,6 +49,10 @@ export interface ThreatTechnique {
   evidenceCaseCount: number
   /** Grade from evidence case (A+, A, B, C, F) */
   evidenceGrade?: string
+  /** Fail-closed aggregate when multiple evidence cases reference this technique. */
+  evidenceAggregate?: TechniqueEvidenceAggregate
+  /** Source-provided temporal state. Missing state remains unknown. */
+  temporal?: SourceTemporalState
   issueCount: number
   frameworks: string[]
   mind?: string[]
@@ -49,6 +60,8 @@ export interface ThreatTechnique {
 }
 
 export interface ThreatRelationship {
+  _id?: string
+  _key?: string
   source_control_id?: string
   target_control_id?: string
   source_framework?: string
@@ -56,6 +69,10 @@ export interface ThreatRelationship {
   relationship_type?: string
   edge_type?: string
   combined_score?: number
+  review_state?: string
+  source_artifact_ids?: string[]
+  superseded?: boolean
+  rejected?: boolean
 }
 
 export interface ThreatTactic {
@@ -533,7 +550,8 @@ interface TacticalGraphLink {
   id: string
   source: string
   target: string
-  kind: 'tactic-technique' | 'crosswalk-framework' | 'control-category' | 'evidence-state' | 'memory-crosswalk'
+  kind: 'memory-crosswalk'
+  relationshipType: string
 }
 
 type GraphSceneMode = 'path' | 'tactic' | 'all'
@@ -699,21 +717,9 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
       if (!nodes.has(node.id)) nodes.set(node.id, node)
     }
 
-    const addLink = (source: string, target: string, kind: TacticalGraphLink['kind']) => {
-      const id = `${kind}:${source}->${target}`
+    const addLink = (id: string, source: string, target: string, relationshipType: string) => {
       if (!nodes.has(source) || !nodes.has(target) || links.some((link) => link.id === id)) return
-      links.push({ id, source, target, kind })
-    }
-
-    for (const [index, tactic] of tactics.entries()) {
-      addNode({
-        id: `tactic:${tactic.name}`,
-        tactic: tactic.prefix || tactic.name,
-        kind: 'tactic',
-        label: tactic.prefix || tactic.name,
-        lane: tactic.name,
-        laneIndex: index,
-      })
+      links.push({ id, source, target, kind: 'memory-crosswalk', relationshipType })
     }
 
     const tacticTechniqueTotals = new Map<string, number>()
@@ -740,34 +746,13 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
         laneTotal: tacticTechniqueTotals.get(tech.tactic) ?? 1,
       })
 
-      const tacticId = `tactic:${tech.tactic}`
-      if (nodes.has(tacticId)) addLink(tacticId, techniqueId, 'tactic-technique')
-
-      for (const framework of tech.frameworks.slice(0, 4)) {
-        const frameworkId = `framework:${framework}`
-        addNode({ id: frameworkId, tactic: tacticPrefix, kind: 'framework', label: framework, laneIndex: tacticIndex >= 0 ? tacticIndex : 0 })
-        addLink(frameworkId, techniqueId, 'crosswalk-framework')
-      }
-
-      for (const category of (tech.mind ?? []).slice(0, 3)) {
-        const categoryId = `category:${category}`
-        addNode({ id: categoryId, tactic: tacticPrefix, kind: 'category', label: category, laneIndex: tacticIndex >= 0 ? tacticIndex : 0 })
-        addLink(categoryId, techniqueId, 'control-category')
-      }
-
-      if (tech.evidenceCaseCount > 0 || tech.evidenceVerdict !== 'none') {
-        const evidenceLabel = tech.evidenceVerdict === 'none' ? 'no evidence case' : tech.evidenceVerdict.replace('_', ' ')
-        const evidenceId = `evidence:${tech.evidenceVerdict}`
-        addNode({ id: evidenceId, tactic: tacticPrefix, kind: 'evidence', label: evidenceLabel, laneIndex: tacticIndex >= 0 ? tacticIndex : 0 })
-        addLink(evidenceId, techniqueId, 'evidence-state')
-      }
     }
 
     const techniqueIdByControlId = new Map(threatMatrixPayload.nodes.map((node) => [node.id, `technique:${node.id}`]))
     for (const rel of relationships) {
       const sourceId = rel.source_control_id
       const targetId = rel.target_control_id
-      if (!sourceId || !targetId) continue
+      if (!isOperationalRelationshipEdge(rel) || !sourceId || !targetId) continue
 
       const sourceTechniqueNode = techniqueIdByControlId.get(sourceId)
       const targetTechniqueNode = techniqueIdByControlId.get(targetId)
@@ -801,7 +786,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
           laneIndex: tactics.findIndex((tactic) => tactic.name === anchorTechnique.tactic),
         })
       }
-      addLink(sourceGraphId, targetGraphId, 'memory-crosswalk')
+      addLink(rel._id, sourceGraphId, targetGraphId, normalizeRelationshipType(rel.relationship_type ?? rel.edge_type))
     }
 
     return { nodes: Array.from(nodes.values()), links }
@@ -861,21 +846,10 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
   const sceneLinkIds = useMemo(() => {
     if (sceneMode === 'all' || !activeTactic) return null
 
-    const kindRank: Record<TacticalGraphLink['kind'], number> = {
-      'tactic-technique': 0,
-      'memory-crosswalk': 1,
-      'control-category': 2,
-      'evidence-state': 3,
-      'crosswalk-framework': 4,
-    }
     const maxLinks = sceneMode === 'path' ? 28 : 72
     const candidates = graphData.links
       .filter((link) => linkTouchesActiveTactic(link))
-      .sort((a, b) => {
-        const kindDelta = kindRank[a.kind] - kindRank[b.kind]
-        if (kindDelta !== 0) return kindDelta
-        return a.id.localeCompare(b.id)
-      })
+      .sort((a, b) => a.id.localeCompare(b.id))
 
     return new Set(candidates.slice(0, maxLinks).map((link) => link.id))
   }, [activeTactic, graphData.links, linkTouchesActiveTactic, sceneMode])
@@ -953,8 +927,8 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
     const simulation = forceSimulation<GraphNode>(nodes)
       .force('link', forceLink<GraphNode, GraphLink>(links)
         .id((d) => d.id)
-        .distance((link) => link.kind === 'memory-crosswalk' ? 100 : link.kind === 'tactic-technique' ? 72 : 108)
-        .strength((link) => link.kind === 'memory-crosswalk' ? 0.06 : link.kind === 'tactic-technique' ? 0.1 : 0.05))
+        .distance(100)
+        .strength(0.06))
       .force('charge', forceManyBody<GraphNode>().strength((node) => node.kind === 'technique' ? -170 : -230))
       .force('collide', forceCollide<GraphNode>((node) => node.kind === 'technique' ? 20 : node.kind === 'control' ? 23 : 25).iterations(3))
       .force('x', forceX<GraphNode>((node) => targetX(node)).strength(activeTactic ? 0.85 : 0.82))
@@ -1001,11 +975,7 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
 
   const linkStyle = (kind: TacticalGraphLink['kind'], hot: boolean) => {
     if (hot) return { stroke: 'rgba(250, 204, 21, 0.62)', width: 1.5 }
-    if (kind === 'control-category') return { stroke: 'rgba(255,255,255,0.035)', width: 1 }
-    if (kind === 'memory-crosswalk') return { stroke: 'rgba(255,255,255,0.045)', width: 1 }
-    if (kind === 'evidence-state') return { stroke: 'rgba(255,255,255,0.035)', width: 1 }
-    if (kind === 'crosswalk-framework') return { stroke: 'rgba(255,255,255,0.03)', width: 1 }
-    return { stroke: 'rgba(255,255,255,0.03)', width: 1 }
+    return { stroke: 'rgba(255,255,255,0.045)', width: 1 }
   }
 
   const nodeStroke = (node: GraphNode, active: boolean) => {
@@ -1149,7 +1119,9 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
             return (
               <line
                 key={link.id}
+                data-graph-edge-id={link.id}
                 data-graph-edge-kind={link.kind}
+                data-graph-relationship-type={link.relationshipType}
                 x1={source.x}
                 y1={source.y}
                 x2={target.x}
@@ -1292,6 +1264,16 @@ function TechniqueGraph({ techniques, tactics, relationships = [], hoveredTactic
         })}
         </g>
       </svg>
+
+      {graphData.links.length === 0 && (
+        <div
+          data-qid="threat-matrix:graph:empty-relationships"
+          role="status"
+          style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', maxWidth: 460, padding: '12px 16px', background: 'rgba(5,5,5,0.88)', border: '1px solid rgba(255,255,255,0.10)', color: 'rgba(255,255,255,0.58)', fontSize: 11, fontWeight: 900, letterSpacing: '0.10em', textAlign: 'center', textTransform: 'uppercase', pointerEvents: 'none' }}
+        >
+          No evidence-bound relationship edges are available for this scope.
+        </div>
+      )}
 
       <div
         data-qid="threat-matrix:graph:tactic-magnets"
@@ -1483,19 +1465,10 @@ function Grid() {
   for (const tech of state.techniques) {
     if (byTactic[tech.tactic]) byTactic[tech.tactic].push(tech)
   }
-  const tacticStats = useMemo(() => {
-    const stats: Record<string, { total: number; covered: number; partial: number; gap: number }> = {}
-    for (const tactic of state.tactics) stats[tactic.name] = { total: 0, covered: 0, partial: 0, gap: 0 }
-    for (const tech of state.techniques) {
-      const bucket = stats[tech.tactic]
-      if (!bucket) continue
-      bucket.total += 1
-      if (tech.evidenceVerdict === 'satisfied') bucket.covered += 1
-      else if (tech.evidenceVerdict === 'inconclusive') bucket.partial += 1
-      else bucket.gap += 1
-    }
-    return stats
-  }, [state.tactics, state.techniques])
+  const tacticStats = useMemo(
+    () => calculateTacticStats(state.tactics, state.techniques),
+    [state.tactics, state.techniques],
+  )
 
   if (state.loading) {
     return (
@@ -1649,6 +1622,12 @@ function Grid() {
           .sparta-threat-matrix-scroll::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.28) !important;
           }
+          .threat-matrix-technique-cell:focus-visible {
+            outline: 3px solid #22d3ee;
+            outline-offset: -3px;
+            position: relative;
+            z-index: 2;
+          }
         `}
       </style>
       <div
@@ -1677,8 +1656,8 @@ function Grid() {
           >
             {(() => {
               const tacticMeta = state.tactics.find((item) => item.name === tactic)
-              const s = tacticStats[tactic] ?? { total: 0, covered: 0, partial: 0, gap: 0 }
-              const pct = s.total > 0 ? Math.round((s.covered / s.total) * 100) : 0
+              const s = tacticStats[tactic] ?? { total: 0, satisfied: 0, inconclusive: 0, notSatisfied: 0, noCase: 0 }
+              const assessed = s.satisfied + s.inconclusive + s.notSatisfied
               return (
                 <div
                   data-qid={`threat-matrix:column-header:${tacticMeta?.prefix ?? tactic}`}
@@ -1699,12 +1678,18 @@ function Grid() {
                   <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 6 }}>{tacticMeta?.prefix ?? tactic} · {s.total} tech</div>
                   <div style={{ display: 'flex', height: 3, borderRadius: 2, overflow: 'hidden' }}>
                     {s.total > 0 && <>
-                      <div style={{ width: `${(s.covered / s.total) * 100}%`, backgroundColor: EMBRY.green }} />
-                      <div style={{ width: `${(s.partial / s.total) * 100}%`, backgroundColor: EMBRY.amber }} />
-                      <div style={{ width: `${(s.gap / s.total) * 100}%`, backgroundColor: EMBRY.red }} />
+                      <div style={{ width: `${(s.satisfied / s.total) * 100}%`, backgroundColor: EMBRY.green }} />
+                      <div style={{ width: `${(s.inconclusive / s.total) * 100}%`, backgroundColor: EMBRY.amber }} />
+                      <div style={{ width: `${(s.notSatisfied / s.total) * 100}%`, backgroundColor: EMBRY.red }} />
+                      <div style={{ width: `${(s.noCase / s.total) * 100}%`, backgroundColor: 'rgba(148,163,184,0.32)' }} />
                     </>}
                   </div>
-                  <div style={{ fontSize: 8, color: pct === 100 ? EMBRY.green : EMBRY.dim, marginTop: 2 }} title="Evidence case coverage: % of techniques with SATISFIED verdicts">{s.total > 0 ? `${pct}%` : '—'} <span style={{ opacity: 0.5 }}>coverage</span></div>
+                  <div
+                    style={{ fontSize: 8, color: assessed === s.total && s.total > 0 ? EMBRY.green : EMBRY.dim, marginTop: 2 }}
+                    title={`${s.satisfied} satisfied · ${s.inconclusive} inconclusive · ${s.notSatisfied} not satisfied · ${s.noCase} no case`}
+                  >
+                    {assessed} / {s.total} <span style={{ opacity: 0.72 }}>assessed</span>
+                  </div>
                 </div>
               )
             })()}
@@ -1728,10 +1713,11 @@ function Grid() {
               <button
                 key={tech.id}
                 type="button"
+                className="threat-matrix-technique-cell"
                 data-qid={isGlance ? `threat-matrix:button:glance-cell-${tech.id}` : `threat-matrix:button:cell-${tech.id}`}
                 data-qs-action={isGlance ? 'SELECT_TECHNIQUE_GLANCE' : 'SELECT_TECHNIQUE'}
                 title={cellTooltip(tech)}
-                aria-label={`${tech.id}: ${tech.name}`}
+                aria-label={`${tech.id}, ${tech.name}, ${tech.evidenceVerdict === 'none' ? 'no case' : tech.evidenceVerdict.replace('_', ' ')}`}
                 style={kineticNodeStyle(tech, isSelected, isHovered)}
                 onMouseEnter={(e) => {
                   setHovered(tech.id)
@@ -1850,10 +1836,24 @@ function Detail() {
   const traceTypes = traceability ? Object.keys(traceability).sort() : []
   const totalChunks = traceTypes.reduce((sum, t) => sum + (traceability?.[t]?.length ?? 0), 0)
   const coveragePercent = coverageToPercent(tech.coverage)
-  const coverageColor = coveragePercent === 0 ? EMBRY.red : coveragePercent < 100 ? EMBRY.amber : `${EMBRY.white}99`
-  const hasCoverageGap = tech.evidenceVerdict === 'not_satisfied' || tech.evidenceVerdict === 'inconclusive' || tech.coverage === 'none'
+  const coverageColor = tech.evidenceVerdict === 'none'
+    ? 'rgba(148,163,184,0.58)'
+    : tech.evidenceVerdict === 'not_satisfied'
+      ? EMBRY.red
+      : tech.evidenceVerdict === 'inconclusive'
+        ? EMBRY.amber
+        : EMBRY.green
+  const coverageLabel = tech.evidenceVerdict === 'none' ? 'NO CASE' : `${coveragePercent}%`
+  const verdictLabel = tech.evidenceVerdict === 'none' ? 'UNASSESSED' : tech.evidenceVerdict.replace('_', ' ')
+  const coverageTextShadow = tech.evidenceVerdict === 'not_satisfied'
+    ? '0 0 8px rgba(239,68,68,0.5)'
+    : tech.evidenceVerdict === 'inconclusive'
+      ? '0 0 8px rgba(234,179,8,0.5)'
+      : 'none'
+  const hasCoverageGap = tech.evidenceVerdict === 'not_satisfied' || tech.evidenceVerdict === 'inconclusive'
   const evidenceCount = evidenceCases?.length ?? 0
   const traceSummary = `${totalChunks} source chunk${totalChunks === 1 ? '' : 's'}`
+  const temporalKnown = Boolean(tech.temporal?.observedAt && tech.temporal.sourceEventId)
 
   return (
     <div style={{
@@ -1919,12 +1919,12 @@ function Detail() {
           fontSize: 18,
           fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
           fontWeight: 800,
-          textShadow: coveragePercent === 0 ? '0 0 8px rgba(239,68,68,0.5)' : coveragePercent < 100 ? '0 0 8px rgba(234,179,8,0.5)' : 'none',
+          textShadow: coverageTextShadow,
         }}>
-          {coveragePercent}%
+          {coverageLabel}
         </span>
         <span style={{ color: 'rgba(255,255,255,0.28)', fontSize: 9, fontWeight: 900, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-          {tech.evidenceVerdict.replace('_', ' ')}
+          {verdictLabel}
         </span>
       </div>
 
@@ -1961,6 +1961,37 @@ function Detail() {
           <div style={{ marginTop: 12, color: 'rgba(255,255,255,0.34)', fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             {traceSummary}
             {discrepancies?.length ? ` · ${discrepancies.length} discrepancies` : ''}
+          </div>
+        </section>
+
+        {tech.evidenceAggregate?.conflicting && (
+          <section data-qid="threat-matrix:detail:conflicting-evidence" role="status">
+            <h3 style={{ margin: '0 0 10px', color: EMBRY.amber, fontSize: 9, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+              Conflicting Evidence
+            </h3>
+            <div style={{ color: 'rgba(255,255,255,0.68)', fontSize: 11, lineHeight: 1.6, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', textTransform: 'uppercase' }}>
+              {tech.evidenceAggregate.caseCount} cases · {tech.evidenceAggregate.satisfiedCount} satisfied · {tech.evidenceAggregate.inconclusiveCount} inconclusive · {tech.evidenceAggregate.notSatisfiedCount} not satisfied
+            </div>
+          </section>
+        )}
+
+        <section data-qid="threat-matrix:detail:temporal-state">
+          <h3 style={{ margin: '0 0 10px', color: 'rgba(255,255,255,0.40)', fontSize: 9, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+            Temporal Evidence
+          </h3>
+          <div style={{ display: 'grid', gap: 6, color: temporalKnown ? 'rgba(255,255,255,0.68)' : EMBRY.amber, fontSize: 10, fontWeight: 800, letterSpacing: '0.10em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', textTransform: 'uppercase' }}>
+            <span>Temporal state: {temporalKnown ? tech.temporal?.freshness : 'unknown'}</span>
+            <span>Source timestamp: {temporalKnown ? tech.temporal?.observedAt : 'missing'}</span>
+          </div>
+        </section>
+
+        <section data-qid="threat-matrix:detail:incident-assessment">
+          <h3 style={{ margin: '0 0 10px', color: 'rgba(255,255,255,0.40)', fontSize: 9, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+            Incident Assessment
+          </h3>
+          <div style={{ display: 'grid', gap: 6, color: 'rgba(255,255,255,0.62)', fontSize: 10, fontWeight: 800, letterSpacing: '0.08em', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', textTransform: 'uppercase' }}>
+            <span style={{ color: EMBRY.dim }}>Status: not run</span>
+            <span>No authoritative incident assessment receipt is attached.</span>
           </div>
         </section>
 
@@ -2018,25 +2049,6 @@ function Detail() {
         )}
       </div>
 
-      {/* Footer: typography actions, not boxed buttons */}
-      <div style={{ padding: '20px 24px 24px', display: 'flex', gap: 24, flexShrink: 0 }}>
-        <button
-          data-qid="threat-matrix:button:detail-toggle-evidence"
-          data-qs-action="TOGGLE_EVIDENCE_GATES"
-          title="Pin selected technique context to board"
-          style={{ background: 'transparent', border: 'none', padding: 0, color: 'rgba(255,255,255,0.42)', cursor: 'pointer', fontSize: 10, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}
-        >
-          Pin to Board
-        </button>
-        <button
-          data-qid="threat-matrix:button:detail-dfars-export"
-          data-qs-action="EXPORT_DFARS_INCIDENT"
-          title="Isolate the selected path"
-          style={{ background: 'transparent', border: 'none', padding: 0, color: 'rgba(250,204,21,0.62)', cursor: 'pointer', fontSize: 10, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase' }}
-        >
-          Isolate Path
-        </button>
-      </div>
     </div>
   )
 }
