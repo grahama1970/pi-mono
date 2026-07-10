@@ -9963,6 +9963,12 @@ const DREAM_PREFLIGHT_PHASES: Array<{
     matches: (path) => /video_provider|video_scene_contract|provider_scorecard|provider_registry|fal_api|kling|provider_packet|provider_request|referenced_artifacts|dream_packet|dream_prompt|local_staging|publication/i.test(path),
   },
   {
+    id: 'phase_10_provider_contract',
+    title: 'Provider Contract',
+    summary: 'Provider request-body contract, payload hash, field mapping, media publication plan, cost, entitlement, async return, manual acceptance, and live-readiness blockers.',
+    matches: (path) => /phase_10_provider_contract|phase10_provider_contract|provider_contract|phase_09_video_provider\/video_provider_packet|phase_09_video_provider\/provider_registry_refresh_receipt|phase_09_video_provider\/video_provider_scorecard/i.test(path),
+  },
+  {
     id: 'phase_10_creator_reviewer_gate',
     title: 'Creator and Reviewer Gate',
     summary: 'Tau creator/reviewer receipts, validation reports, status, repair packets, and acceptance evidence.',
@@ -10035,6 +10041,24 @@ function buildDreamPreflightStages(runRoot: string, files: string[]): DreamStage
           : rel.includes('phase_08_media_lock/')
             ? 1
             : 2
+        return priority(aRel) - priority(bRel) || aRel.localeCompare(bRel)
+      })
+    }
+    if (phase.id === 'phase_10_provider_contract') {
+      matched.sort((a, b) => {
+        const aRel = a.startsWith(`${runRoot}/`) ? a.slice(runRoot.length + 1) : a
+        const bRel = b.startsWith(`${runRoot}/`) ? b.slice(runRoot.length + 1) : b
+        const priority = (rel: string) => rel.includes('phase_10_provider_contract/phase10_provider_contract.json')
+          ? 0
+          : rel.includes('phase_10_provider_contract/phase10_provider_contract_receipt.json')
+            ? 1
+            : rel.includes('phase_09_video_provider/video_provider_packet/')
+              ? 2
+              : rel.includes('phase_09_video_provider/provider_registry_refresh_receipt')
+                ? 3
+                : rel.includes('phase_09_video_provider/video_provider_scorecard')
+                  ? 4
+                  : 5
         return priority(aRel) - priority(bRel) || aRel.localeCompare(bRel)
       })
     }
