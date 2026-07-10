@@ -4,7 +4,7 @@ import { usePageDistanceMode } from '../explorer/pageDistance/PageDistanceMode'
 import { usePostureData } from '../../../hooks/usePostureData'
 import type { Family, RiskControl, BrokenTrace, ClaimReview } from '../../../hooks/usePostureData'
 import { EMBRY, card, label, heading } from '../common/EmbryStyle'
-import { GlobalPostureDashboard } from './GlobalPostureDashboard'
+import { Posture10FtAmbient } from './Posture10FtAmbient'
 
 type Props = {
   onNavigateToControl?: (id: string) => void
@@ -185,7 +185,7 @@ function PostureTab({ postureMode, onModeChange, selectedBlockerId, onSelectBloc
 
   if (postureMode === '10ft') {
     return (
-      <GlobalPostureDashboard
+      <Posture10FtAmbient
         criticalFindings={criticalFindings}
         openFindings={openFindings}
         evidenceFreshness={evidenceFreshness}

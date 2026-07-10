@@ -45,7 +45,7 @@ function MacroTelemetry({ label, value, status, tone, bordered = false }: {
   )
 }
 
-export function GlobalPostureDashboard({
+export function Posture10FtAmbient({
   criticalFindings,
   openFindings,
   evidenceFreshness,
