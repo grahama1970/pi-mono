@@ -109,10 +109,26 @@ type BrowserListenerTelemetry = {
   finalTranscript?: string
   realtimeTranscript?: string
   error?: string
+  authority?: string
+  receiptPath?: string
+  runId?: string
   rmsDb?: number
   peakDb?: number
   packetsSent?: number
   lastEventType?: string
+}
+
+type AuthoritativeListenerPayload = {
+  status?: string
+  usable_for_live_turn?: boolean
+  authority?: string
+  final_transcript?: string
+  turn_text?: string
+  receipt_path?: string
+  underlying_receipt_path?: string
+  run_id?: string
+  wake_detected?: boolean
+  error?: string
 }
 
 type TestSession = {
@@ -1798,7 +1814,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     app: 'ux-lab',
     action: 'EMBRY_VOICE_LISTEN_GLANCE',
     label: 'Toggle Embry listener',
-    description: 'Toggle live browser listening from the Embry Voice 10ft view',
+    description: 'Consume the authoritative Unix/PipeWire RealtimeSTT listener receipt from the Embry Voice 10ft view',
   })
 
   useEffect(() => {
@@ -2129,6 +2145,47 @@ export function EmbryVoiceLabRoute(): JSX.Element {
     return handleSend(typeof text === 'string' ? text : '')
   }, [handleSend])
 
+  const startAuthoritativeListenerTurn = useCallback(async () => {
+    if (isStreaming) return
+    setVoiceEnabled(true)
+    setOrbStatusOverride('listening')
+    setListenerTelemetry({
+      state: 'connecting',
+      authority: 'unix_pipewire_realtimestt_receipt',
+      packetsSent: undefined,
+    })
+    try {
+      const response = await fetch('/api/projects/embry-voice/listener/latest')
+      const payload = await response.json().catch(() => null) as AuthoritativeListenerPayload | null
+      if (!response.ok || payload?.usable_for_live_turn !== true) {
+        throw new Error(payload?.error || `Unix/PipeWire listener receipt is not usable for a live turn (HTTP ${response.status})`)
+      }
+      const turnText = (payload.turn_text || payload.final_transcript || '').replace(/^\s*embry[\s,.:;-]+/i, '').trim()
+      if (!turnText) throw new Error('Unix/PipeWire listener receipt did not contain a post-wake turn transcript')
+      setListenerTelemetry({
+        state: 'transcribing',
+        authority: payload.authority || 'unix_pipewire_realtimestt_receipt',
+        finalTranscript: payload.final_transcript,
+        receiptPath: payload.receipt_path || payload.underlying_receipt_path,
+        runId: payload.run_id,
+        lastEventType: payload.wake_detected ? 'wake_detected' : 'final_transcript',
+      })
+      setOrbStatusOverride('processing')
+      await handleSend(turnText, { forceVoice: true })
+      setListenerTelemetry((current) => ({ ...current, state: 'idle' }))
+      setOrbStatusOverride((current) => (current === 'processing' || current === 'listening' ? null : current))
+    } catch (error) {
+      setVoiceEnabled(false)
+      setListenerTelemetry((current) => ({
+        ...current,
+        state: 'error',
+        authority: current.authority || 'unix_pipewire_realtimestt_receipt',
+        error: error instanceof Error ? error.message : String(error),
+      }))
+      setOrbStatusOverride('idle')
+    }
+  }, [handleSend, isStreaming])
+
   const startBrowserListener = useCallback(async () => {
     if (browserListenerRef.current) return
     if (!navigator.mediaDevices?.getUserMedia) {
@@ -2281,11 +2338,11 @@ export function EmbryVoiceLabRoute(): JSX.Element {
 
   const handleVoiceToggle = useCallback((enabled: boolean) => {
     if (enabled) {
-      void startBrowserListener()
+      void startAuthoritativeListenerTurn()
       return
     }
     stopBrowserListener()
-  }, [startBrowserListener, stopBrowserListener])
+  }, [startAuthoritativeListenerTurn, stopBrowserListener])
 
   const replaySession = useCallback(async (session?: TestSession) => {
     const turnsToReplay = session
