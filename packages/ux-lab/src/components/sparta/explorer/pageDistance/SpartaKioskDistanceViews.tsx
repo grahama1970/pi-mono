@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
+import { Children, useEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import { AlertTriangle, Boxes, Check, Globe, HelpCircle, Layers, Network, ShieldCheck, Square, Target, Workflow } from 'lucide-react'
 import { useRegisterAction } from '../../../../hooks/useRegisterAction'
 import type { CollectionCounts } from '../../../../hooks/useSpartaCollections'
@@ -882,6 +882,10 @@ export function SpartaKioskDistanceView({
   })
 
   if (mode === 'lean-in') return <>{children}</>
+  if (mode === '10ft' && activeTab === 'Posture') {
+    const postureContent = Children.toArray(children).at(-1)
+    return <>{postureContent}</>
+  }
 
   const selectPage = (tab: TabName) => {
     onSelectTab(tab)
