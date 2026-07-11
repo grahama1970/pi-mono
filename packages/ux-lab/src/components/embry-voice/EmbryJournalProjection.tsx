@@ -5,6 +5,7 @@ import {
   type EmbryChatProjectionV1,
 } from '@agent-skills/ux-lab-ui'
 import type { ChatMessage } from '@agent-skills/ux-lab-ui/memory-turn'
+import { IdentityNode } from './IdentityNode'
 
 type LoadState =
   | { status: 'loading' }
@@ -69,7 +70,6 @@ export function EmbryJournalProjection({ sessionId, turnId }: { sessionId: strin
 
   useEffect(() => {
     const controller = new AbortController()
-    setState({ status: 'loading' })
     source.load({ sessionId, turnId, signal: controller.signal })
       .then((projection) => setState({ status: 'ready', projection }))
       .catch((error: unknown) => {
@@ -90,18 +90,38 @@ export function EmbryJournalProjection({ sessionId, turnId }: { sessionId: strin
       data-session-id={sessionId}
       data-turn-id={turnId}
       data-projection-sha256={state.projection.projection_sha256}
+      data-playback-authority-id={state.projection.playback?.authority_id ?? ''}
+      data-playback-final-state={state.projection.playback?.state ?? 'audio_ready'}
       className="h-full min-h-0 bg-[#121214] p-3"
     >
-      <SharedChatShell
-        projectionOnly
-        messages={toMessages(state.projection)}
-        projectLabel="Embry"
-        surface="embry-voice"
-        shellQid="embry:journal-projection:shell"
-        qid="embry:journal-projection:well"
-        showModeToggle={false}
-        showComposer={false}
-      />
+      <div className="grid h-full min-h-0 grid-cols-[84px_minmax(0,1fr)] gap-3">
+        <IdentityNode
+          compact
+          height={84}
+          orbSize={52}
+          showCopy={false}
+          voiceStatus="idle"
+          isStreaming={false}
+        />
+        <div
+          className="min-h-0"
+          data-qid="embry:journal-projection:playback-lineage"
+          data-requested-event-id={state.projection.playback?.events.find((event) => event.type === 'playback.requested')?.event_id ?? ''}
+          data-started-event-id={state.projection.playback?.events.find((event) => event.type === 'playback.started')?.event_id ?? ''}
+          data-ended-event-id={state.projection.playback?.events.find((event) => event.type === 'playback.ended')?.event_id ?? ''}
+        >
+          <SharedChatShell
+            projectionOnly
+            messages={toMessages(state.projection)}
+            projectLabel="Embry"
+            surface="embry-voice"
+            shellQid="embry:journal-projection:shell"
+            qid="embry:journal-projection:well"
+            showModeToggle={false}
+            showComposer={false}
+          />
+        </div>
+      </div>
     </section>
   )
 }
