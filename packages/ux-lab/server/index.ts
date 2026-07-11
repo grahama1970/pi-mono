@@ -29,6 +29,7 @@ import { existsSync, readFileSync, writeFileSync, realpathSync, createReadStream
 import { load as yamlLoad } from 'js-yaml'
 import { promisify } from 'util'
 import { listSkillsCatalog } from './skillsCatalog.js'
+import { createPersonaDreamRouter } from '/home/graham/workspace/experiments/agent-skills-main/skills/persona-dream/server/src/index.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -52,6 +53,15 @@ app.use(express.json({ limit: '10mb' }))
 
 // Auth: localhost bypasses, external requires access key
 app.use(authMiddleware)
+
+const personaDreamRouterOptions = {
+  reportRoots: ['/home/graham/workspace/experiments/agent-skills-main/skills/persona-dream/reports'],
+  outputRoots: ['/mnt/storage12tb/skills/persona-dream/outputs'],
+  assetRoots: ['/mnt/storage12tb/media/personas'],
+  repairEnqueueMode: 'explicit-post-only' as const,
+}
+app.use('/api/projects/dream-next', createPersonaDreamRouter(personaDreamRouterOptions))
+app.use('/api/projects/dream', createPersonaDreamRouter(personaDreamRouterOptions))
 
 // Key management endpoints (localhost-only, handled by authMiddleware passthrough)
 app.post('/api/auth/generate-key', (req, res) => {
@@ -12156,7 +12166,8 @@ async function buildChatterboxVoiceEnvelope(audioPath: string): Promise<{
   }
 }
 
-app.post('/api/projects/dream/voices/audition', async (req, res) => {
+// Retained temporarily for response-parity reference only. Persona Dream owns the public route.
+app.post('/api/_retired/persona-dream/voices/audition', async (req, res) => {
   try {
     const character = typeof req.body?.character === 'string' ? req.body.character.replace(/[^a-z0-9_-]/gi, '').toLowerCase() : ''
     const text = typeof req.body?.text === 'string' ? req.body.text.trim() : ''
@@ -12298,7 +12309,8 @@ app.get('/api/persona-media', async (req, res) => {
   } catch { res.status(404).send('not found') }
 })
 
-app.post('/api/projects/dream/brave-search', async (req, res) => {
+// Retained temporarily for response-parity reference only. Persona Dream owns the public route.
+app.post('/api/_retired/persona-dream/brave-search', async (req, res) => {
   try {
     const query = typeof req.body?.query === 'string' ? req.body.query.trim() : ''
     if (!query) return res.status(400).json({ error: 'query required' })

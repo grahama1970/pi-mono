@@ -295,6 +295,7 @@ export default defineConfig({
       // Import skill components directly — no duplication
       '@skills': resolve(__dirname, '../../.pi/skills'),
       '@agent-skills/ux-lab-ui': resolve(__dirname, '../../../agent-skills/skills/ux-lab/ui'),
+      '@agent-skills/persona-dream-ui': resolve(__dirname, '../../../agent-skills-main/skills/persona-dream/ui/src'),
       // Pi chat adapter — D-Bus bridge package
       '@pi-chat-adapter': resolve(__dirname, '../pi-chat-adapter/src'),
       // Map NVIS theme to EMBRY shim so skill components use Explorer's design system
