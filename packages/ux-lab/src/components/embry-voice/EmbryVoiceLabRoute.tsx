@@ -11,6 +11,7 @@ import type { EmbryTurnAuthority, EmbryVoiceAudioAuthority } from '@agent-skills
 import type { EmbryVoiceEnvelope } from '../../hooks/useEmbryPlaybackAudioLevel'
 import { useRegisterAction } from '../../hooks/useRegisterAction'
 import { classifyVoiceRun, summarizeVoiceReadiness, type VoiceReadinessSummary } from './embryVoiceReadiness'
+import { EmbryJournalProjection } from './EmbryJournalProjection'
 
 type AudioArtifact = {
   id: string
@@ -1761,7 +1762,31 @@ function memoryReasoningTraceForTurn(turn: VoiceTurn): NonNullable<ChatMessage['
   return steps
 }
 
+type EmbryVoiceRoute =
+  | { mode: 'sessions' }
+  | { mode: 'projection'; sessionId: string; turnId: string }
+  | { mode: 'projection-error'; message: string }
+
+function parseEmbryVoiceRoute(hash: string): EmbryVoiceRoute {
+  const [, query = ''] = hash.replace(/^#/, '').split('?', 2)
+  const params = new URLSearchParams(query)
+  if (params.get('mode') !== 'projection') return { mode: 'sessions' }
+  const sessionId = params.get('sessionId')?.trim() ?? ''
+  const turnId = params.get('turnId')?.trim() ?? ''
+  if (!sessionId || !turnId) return { mode: 'projection-error', message: 'Projection mode requires sessionId and turnId.' }
+  return { mode: 'projection', sessionId, turnId }
+}
+
 export function EmbryVoiceLabRoute(): JSX.Element {
+  const route = parseEmbryVoiceRoute(window.location.hash)
+  if (route.mode === 'projection') return <EmbryJournalProjection sessionId={route.sessionId} turnId={route.turnId} />
+  if (route.mode === 'projection-error') {
+    return <div data-qid="embry:journal-projection:parameter-error" className="h-full grid place-items-center bg-[#121214] text-red-300">{route.message}</div>
+  }
+  return <EmbryVoiceSessionLab />
+}
+
+function EmbryVoiceSessionLab(): JSX.Element {
   const [selectedRunId, setSelectedRunId] = useState<string>(initialVisibleTurn?.relatedRunIds[0] ?? sanityRuns[0]?.id ?? '')
   const [selectedTurnId, setSelectedTurnId] = useState<string>(initialVisibleTurn?.id ?? '')
   const [voiceEnabled, setVoiceEnabled] = useState(false)
@@ -1775,7 +1800,7 @@ export function EmbryVoiceLabRoute(): JSX.Element {
   const [lastTurnAuthority, setLastTurnAuthority] = useState<EmbryTurnAuthority | null>(null)
   const [directSpeakBusy, setDirectSpeakBusy] = useState(false)
   const [listenerTelemetry, setListenerTelemetry] = useState<BrowserListenerTelemetry>({ state: 'idle' })
-  const [distanceMode, setDistanceMode] = useState<EmbryVoiceDistanceMode>('10ft')
+  const [distanceMode, setDistanceMode] = useState<EmbryVoiceDistanceMode>('lean-in')
   const replayStopRef = useRef(false)
   const directSpeakBusyRef = useRef(false)
   const directPlaybackAudioRef = useRef<HTMLAudioElement | null>(null)

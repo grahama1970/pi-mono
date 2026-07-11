@@ -83,6 +83,7 @@ const CHATTERBOX_HOST_OUT_DIR = process.env.CHATTERBOX_HOST_OUT_DIR ?? '/tmp/cha
 const CHATTERBOX_HOST_REF_DIR = process.env.CHATTERBOX_HOST_REF_DIR ?? '/home/graham/workspace/experiments/chatterbox/persona_dream_voice_refs'
 const CHATTERBOX_CONTAINER_REF_DIR = process.env.CHATTERBOX_CONTAINER_REF_DIR ?? '/work/persona_dream_voice_refs'
 const EMBRY_VOICE_E2E_ROOT = process.env.EMBRY_VOICE_E2E_ROOT ?? '/mnt/storage12tb/skills/embry-voice-control/outputs/e2e'
+const EMBRY_VOICE_JOURNAL_URL = process.env.EMBRY_VOICE_JOURNAL_URL ?? 'http://127.0.0.1:8019'
 const BRAVE_SEARCH_API_KEY = process.env.BRAVE_SEARCH_API_KEY || process.env.BRAVE_API_KEY || ''
 const SCILLM_PROXY_KEY = process.env.SCILLM_API_KEY ?? process.env.SCILLM_MASTER_KEY ?? 'sk-dev-proxy-123'
 const SCILLM_PROJECT_ROOT = process.env.SCILLM_PROJECT_ROOT ?? '/home/graham/workspace/experiments/scillm'
@@ -11276,6 +11277,54 @@ app.get('/api/projects/embry-voice/health', (_req, res) => {
     listener: { status: 'not_exercised_by_health' },
     chat_ux: { status: 'configured', url: 'http://127.0.0.1:3002/#embry-voice' },
   })
+})
+
+app.get('/api/projects/embry/sessions/:sessionId/turns/:turnId/chat-projection', async (req, res) => {
+  const { sessionId, turnId } = req.params
+  if (!sessionId || !turnId) return res.status(422).json({ error: 'projection_identifiers_required' })
+  try {
+    const upstream = await fetch(
+      `${EMBRY_VOICE_JOURNAL_URL}/v1/sessions/${encodeURIComponent(sessionId)}/turns/${encodeURIComponent(turnId)}/chat-projection`,
+    )
+    const body = await upstream.text()
+    res.status(upstream.status).type(upstream.headers.get('content-type') ?? 'application/json').send(body)
+  } catch (error) {
+    res.status(503).json({ error: 'embry_journal_unavailable', detail: error instanceof Error ? error.message : String(error) })
+  }
+})
+
+async function proxyEmbryAudioArtifact(req: express.Request, res: express.Response, includeBody: boolean): Promise<void> {
+  const { sessionId, turnId, sha256 } = req.params
+  if (!sessionId || !turnId || !/^[a-f0-9]{64}$/.test(sha256)) {
+    res.status(422).json({ error: 'artifact_identifiers_invalid' })
+    return
+  }
+  try {
+    const upstream = await fetch(
+      `${EMBRY_VOICE_JOURNAL_URL}/v1/sessions/${encodeURIComponent(sessionId)}/turns/${encodeURIComponent(turnId)}/artifacts/${sha256}`,
+      { method: includeBody ? 'GET' : 'HEAD' },
+    )
+    res.status(upstream.status)
+    for (const header of ['content-type', 'content-length', 'etag', 'cache-control']) {
+      const value = upstream.headers.get(header)
+      if (value) res.setHeader(header, value)
+    }
+    if (!upstream.ok || !includeBody) {
+      res.send(includeBody ? await upstream.text() : undefined)
+      return
+    }
+    res.send(Buffer.from(await upstream.arrayBuffer()))
+  } catch (error) {
+    res.status(503).json({ error: 'embry_artifact_unavailable', detail: error instanceof Error ? error.message : String(error) })
+  }
+}
+
+app.get('/api/projects/embry/sessions/:sessionId/turns/:turnId/artifacts/:sha256', (req, res) => {
+  void proxyEmbryAudioArtifact(req, res, true)
+})
+
+app.head('/api/projects/embry/sessions/:sessionId/turns/:turnId/artifacts/:sha256', (req, res) => {
+  void proxyEmbryAudioArtifact(req, res, false)
 })
 
 app.get('/api/projects/embry-voice/listener/latest', async (_req, res) => {
