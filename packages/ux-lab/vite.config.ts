@@ -12,6 +12,8 @@ const resolveWorkspaceModule = (modulePath: string) => {
   return resolve(__dirname, '../../node_modules', modulePath)
 }
 
+const battleSpectatorRoot = realpathSync('/mnt/storage12tb/deployments/agent-skills/current/skills/battle/spectator')
+
 const uxLabApiPort = Number(process.env.UX_LAB_API_PORT ?? process.env.PORT ?? 3001)
 const uxLabApiTarget = `http://localhost:${uxLabApiPort}`
 const uxLabWsTarget = `ws://localhost:${uxLabApiPort}`
@@ -296,6 +298,7 @@ export default defineConfig({
       '@skills': resolve(__dirname, '../../.pi/skills'),
       '@agent-skills/ux-lab-ui': resolve(__dirname, '../../../agent-skills/skills/ux-lab/ui'),
       '@agent-skills/persona-dream-ui': resolve(__dirname, '../../../agent-skills-main/skills/persona-dream/ui/src'),
+      '@agent-skills/battle-spectator': resolve(battleSpectatorRoot, 'src'),
       // Pi chat adapter — D-Bus bridge package
       '@pi-chat-adapter': resolve(__dirname, '../pi-chat-adapter/src'),
       // Map NVIS theme to EMBRY shim so skill components use Explorer's design system
@@ -307,15 +310,32 @@ export default defineConfig({
       'react/jsx-runtime': resolveWorkspaceModule('react/jsx-runtime'),
       'react/jsx-dev-runtime': resolveWorkspaceModule('react/jsx-dev-runtime'),
       'framer-motion': resolveWorkspaceModule('framer-motion'),
+      '@radix-ui/react-dialog': resolveWorkspaceModule('@radix-ui/react-dialog'),
+      '@radix-ui/react-popover': resolveWorkspaceModule('@radix-ui/react-popover'),
+      '@radix-ui/react-slot': resolveWorkspaceModule('@radix-ui/react-slot'),
+      '@radix-ui/react-tabs': resolveWorkspaceModule('@radix-ui/react-tabs'),
+      '@radix-ui/react-toggle-group': resolveWorkspaceModule('@radix-ui/react-toggle-group'),
+      '@radix-ui/react-tooltip': resolveWorkspaceModule('@radix-ui/react-tooltip'),
+      'class-variance-authority': resolveWorkspaceModule('class-variance-authority'),
+      clsx: resolveWorkspaceModule('clsx'),
       'lucide-react': resolveWorkspaceModule('lucide-react'),
       d3: resolveWorkspaceModule('d3'),
       motion: resolveWorkspaceModule('motion'),
+      'ajv/dist/2020.js': resolveWorkspaceModule('ajv/dist/2020.js'),
+      'ajv-formats': resolveWorkspaceModule('ajv-formats'),
+      'pixi.js': resolveWorkspaceModule('pixi.js'),
+      'pixi-viewport': resolveWorkspaceModule('pixi-viewport'),
+      'sonner': resolveWorkspaceModule('sonner'),
+      'tailwind-merge': resolveWorkspaceModule('tailwind-merge'),
     },
     dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'framer-motion', 'motion', 'lucide-react', 'd3'],
   },
   server: {
     host: '127.0.0.1',
     port: 3000,
+    fs: {
+      allow: [resolve(__dirname, '../..'), battleSpectatorRoot],
+    },
     watch: {
       usePolling: process.env.UX_LAB_USE_POLLING !== '0',
       interval: Number(process.env.UX_LAB_WATCH_INTERVAL_MS ?? 1000),
