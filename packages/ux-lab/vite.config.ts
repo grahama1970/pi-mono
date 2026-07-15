@@ -12,7 +12,10 @@ const resolveWorkspaceModule = (modulePath: string) => {
   return resolve(__dirname, '../../node_modules', modulePath)
 }
 
-const battleSpectatorRoot = realpathSync('/mnt/storage12tb/deployments/agent-skills/current/skills/battle/spectator')
+const agentSkillsReleaseRoot = realpathSync('/mnt/storage12tb/deployments/agent-skills/current')
+const agentSkillsReleaseId = agentSkillsReleaseRoot.split('/').at(-1) ?? 'current'
+const battleSpectatorRoot = resolve(agentSkillsReleaseRoot, 'skills/battle/spectator')
+const deploymentCacheDir = resolve(__dirname, 'node_modules/.vite', `agent-skills-${agentSkillsReleaseId}`)
 
 const uxLabApiPort = Number(process.env.UX_LAB_API_PORT ?? process.env.PORT ?? 3001)
 const uxLabApiTarget = `http://localhost:${uxLabApiPort}`
@@ -291,6 +294,10 @@ function pdfLabSignoffsPlugin(): Plugin {
 }
 
 export default defineConfig({
+  cacheDir: deploymentCacheDir,
+  optimizeDeps: {
+    entries: ['index.html', 'src/components/battle/BattleArenaView.tsx'],
+  },
   plugins: [react(), tailwindcss(), chatterboxArtifactsPlugin(), tauDagLiveRunPlugin(), pdfLabSignoffsPlugin(), transportReviewBundlePlugin()],
   resolve: {
     alias: {
@@ -333,6 +340,9 @@ export default defineConfig({
   server: {
     host: '127.0.0.1',
     port: 3000,
+    warmup: {
+      clientFiles: ['./src/components/battle/BattleArenaView.tsx'],
+    },
     fs: {
       allow: [resolve(__dirname, '../..'), battleSpectatorRoot],
     },
