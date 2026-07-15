@@ -910,6 +910,7 @@ export default function PostureDashboard({ onNavigateToControl, onAnalyzeProofCh
   useRegisterAction('posture-proof-chain-drawer', { app: 'sparta-explorer', action: 'POSTURE_MACRO_PROOF_CHAIN', label: 'Posture PROOF CHAIN macro', description: 'Enter lean-in and open proof-chain drawer', tags: ['streamdeck', 'voice'] })
 
   const { loading, error, posture, traceability, assurance } = usePostureData()
+  const f36Projection = posture.f36Projection
   const [activeTab, setActiveTab] = useState<Exclude<Tab, 'Posture'>>('Traceability')
   const { mode: postureMode, setMode: setPostureMode } = usePageDistanceMode()
   const [selectedBlockerId, setSelectedBlockerId] = useState<string | null>(() => {
@@ -937,7 +938,34 @@ useEffect(() => {
       )}
 
       {!loading && !error && (
-        <PostureTab
+        <>
+          {f36Projection && (
+            <section
+              data-qid="posture:f36-shared-projection"
+              data-requirement-revision-id={f36Projection.requirement.requirement_revision_id}
+              data-projection-fingerprint={f36Projection.projection_fingerprint}
+              style={{
+                border: `1px solid ${EMBRY.amber}`,
+                background: 'rgba(255, 170, 0, 0.08)',
+                padding: 14,
+                display: 'grid',
+                gap: 6,
+              }}
+            >
+              <div style={{ ...label, color: EMBRY.amber }}>F-36 SHARED PROJECTION · AGENT CANDIDATE / INCONCLUSIVE</div>
+              <strong>{f36Projection.requirement.requirement_revision_id}</strong>
+              <div style={{ color: EMBRY.dim }}>
+                Family {f36Projection.engineering_qra_family.engineering_qra_family_id} · review {f36Projection.review_state} · accepted={String(f36Projection.accepted)} · {f36Projection.quarantine_state}
+              </div>
+              <div>
+                Counted once: assessed 1 · applicable 1 · pending review 1 · grounded numerator 0 · compliance credit 0
+              </div>
+              <code style={{ color: EMBRY.dim, fontSize: 10, overflowWrap: 'anywhere' }}>
+                projection fingerprint: {f36Projection.projection_fingerprint}
+              </code>
+            </section>
+          )}
+          <PostureTab
           {...posture}
           postureMode={postureMode}
           onModeChange={handleModeChange}
@@ -948,7 +976,8 @@ useEffect(() => {
           totalRelationships={traceability.totalRelationships}
           onNavigateToControl={onNavigateToControl}
           onAnalyzeProofChain={onAnalyzeProofChain}
-        />
+          />
+        </>
       )}
 
       {!loading && !error && postureMode === 'lean-in' && (

@@ -15,6 +15,7 @@ import { PageDistanceRoot, usePageDistanceMode } from './pageDistance/PageDistan
 import { deriveCoveragePagePurposeState, type CoverageHealthSnapshot } from './pagePurposeContracts'
 import { ThreatMatrixDistanceShell } from './pageDistance/ThreatMatrixDistanceViews'
 import { useMatrixCuration } from './matrixCurationContext'
+import { useF36ExplorerProjection } from '../../../hooks/usePostureData'
 
 const DAEMON = MEMORY_API_ROOT
 const COVERAGE_HEALTH_CACHE_KEY = 'sparta.coverageHealth.lastPayload'
@@ -93,8 +94,9 @@ export function ThreatMatrixView() {
   const [showSubtechniques, setShowSubtechniques] = useState(false)
   const [selectedDetail, setSelectedDetail] = useState<TechniqueDetail | null>(null)
   const [loadingDetail, setLoadingDetail] = useState(false)
-  const [activeDatalake, setActiveDatalake] = useState<string>('')
+  const [activeDatalake, setActiveDatalake] = useState<string>('f36')
   const [evidenceMap, setEvidenceMap] = useState<Map<string, { verdict: string; grade: string; count: number }>>(new Map())
+  const { projection: f36Projection, loading: f36ProjectionLoading, error: f36ProjectionError } = useF36ExplorerProjection()
   const [graphRelationships, setGraphRelationships] = useState<ThreatRelationship[]>([])
   const [graphHoveredTactic, setGraphHoveredTactic] = useState<string | null>(null)
   const [graphLockedTactic, setGraphLockedTactic] = useState<string | null>('Reconnaissance')
@@ -109,6 +111,10 @@ export function ThreatMatrixView() {
   const [proposalName, setProposalName] = useState('')
   const [proposalTactic, setProposalTactic] = useState(SPARTA_TACTICS[0]?.name ?? 'Reconnaissance')
   const [saveStatus, setSaveStatus] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (f36ProjectionError) setError(f36ProjectionError)
+  }, [f36ProjectionError])
 
   // Curation actions for Brandon
   const saveMatrixAmendment = useCallback(async () => {
@@ -270,10 +276,30 @@ export function ThreatMatrixView() {
     }).catch(() => setGraphRelationships([]))
   }, [])
 
-  // Load evidence verdicts from dedicated evidence_cases collection
+  // F-36 uses only the shared requirement-family projection. Generic evidence
+  // cases remain available for other datalakes but never promote this candidate.
   useEffect(() => {
     if (!activeDatalake) {
       setEvidenceMap(new Map())
+      return
+    }
+
+    if (activeDatalake === 'f36') {
+      if (f36ProjectionLoading || !f36Projection) {
+        setEvidenceMap(new Map())
+        return
+      }
+      const verdictMap = new Map<string, { verdict: string; grade: string; count: number }>()
+      for (const proof of f36Projection.path_resolution.path_proofs) {
+        for (const edge of proof.edges) {
+          verdictMap.set(edge.target_id, {
+            verdict: 'inconclusive',
+            grade: `Agent candidate · pending review · ${f36Projection.projection_fingerprint}`,
+            count: 1,
+          })
+        }
+      }
+      setEvidenceMap(verdictMap)
       return
     }
 
@@ -304,7 +330,7 @@ export function ThreatMatrixView() {
 
       setEvidenceMap(verdictMap)
     })
-  }, [activeDatalake])
+  }, [activeDatalake, f36Projection, f36ProjectionLoading])
 
   // Transform raw docs → ThreatTechnique[]
   const techniques: ThreatTechnique[] = rawTechniques
@@ -315,6 +341,7 @@ export function ThreatMatrixView() {
     })
     .map((t) => {
       const ev = evidenceMap.get(t.control_id)
+      const isReplayCandidate = activeDatalake === 'f36' && Boolean(ev) && Boolean(f36Projection)
       const verdict = activeDatalake && ev ? ev.verdict : 'none'
       const coverage: 'full' | 'partial' | 'none' | 'unknown' = verdict === 'satisfied' ? 'full'
         : verdict === 'inconclusive' ? 'partial'
@@ -322,8 +349,12 @@ export function ThreatMatrixView() {
         : 'unknown'
       return {
         id: t.control_id,
-        name: t.name,
-        description: t.description,
+        name: isReplayCandidate
+          ? `${t.name} · ${f36Projection!.requirement.requirement_id}`
+          : t.name,
+        description: isReplayCandidate
+          ? `Agent candidate / INCONCLUSIVE. ${f36Projection!.requirement.requirement_revision_id}; review=${f36Projection!.review_state}; accepted=false; fingerprint=${f36Projection!.projection_fingerprint}. Exact persisted paths are traceability only and provide zero compliance credit.`
+          : t.description,
         tactic: tacticForTechnique(t.control_id) ?? 'Unknown',
         coverage,
         evidenceVerdict: (verdict as 'satisfied' | 'inconclusive' | 'not_satisfied' | 'none'),
@@ -341,6 +372,26 @@ export function ThreatMatrixView() {
   const selectTechnique = useCallback(async (tech: ThreatTechnique) => {
     setLoadingDetail(true)
     setSelectedDetail({ technique: tech, qras: [], countermeasures: [], relationships: [] })
+
+    const candidateProofs = f36Projection?.path_resolution.path_proofs.filter((proof) =>
+      proof.edges.some((edge) => edge.target_id === tech.id),
+    ) ?? []
+    const candidateQras = candidateProofs.length && f36Projection ? [{
+      _key: f36Projection.source.family_evidence_case_snapshot_id,
+      question: f36Projection.engineering_qra_family.canonical_question,
+      answer: f36Projection.engineering_qra_family.canonical_answer,
+      verdict: f36Projection.evidence_verdict,
+      grade: 'Agent candidate',
+      requirement_id: f36Projection.requirement.requirement_id,
+      requirement_revision_id: f36Projection.requirement.requirement_revision_id,
+      engineering_qra_family_id: f36Projection.engineering_qra_family.engineering_qra_family_id,
+      review_state: f36Projection.review_state,
+      accepted: f36Projection.accepted,
+      projection_fingerprint: f36Projection.projection_fingerprint,
+      sparta_release_id: f36Projection.path_resolution.sparta_release_id,
+      sparta_release_hash: f36Projection.path_resolution.sparta_release_hash,
+      path_proofs: candidateProofs,
+    }] : []
 
     const [qraRes, relRes, traceRes, evidenceRes, discResult] = await Promise.all([
       post('/recall', { q: `${tech.id} ${tech.name}`, collections: ['sparta_qra'], k: 10, entities: [tech.id] }),
@@ -369,6 +420,19 @@ export function ThreatMatrixView() {
     // Evidence cases
     const allEvCases = (evidenceRes.cases ?? []) as EvidenceCase[]
 
+    const candidateRelationships = candidateProofs.flatMap((proof) => proof.edges.map((edge) => ({
+      source_control_id: edge.source_id,
+      target_control_id: edge.target_id,
+      source_framework: edge.source_framework,
+      target_framework: edge.target_framework,
+      relationship_type: edge.relationship_type,
+      persisted_edge_id: edge.persisted_edge_id,
+      direction: edge.direction,
+      path_signature: proof.path_signature,
+      authority_state: proof.authority_state,
+      projection_fingerprint: f36Projection?.projection_fingerprint,
+    })))
+
     // Discrepancy findings for this control
     const discDocs = (discResult.documents ?? []) as Array<Record<string, unknown>>
     const discrepancies = discDocs
@@ -383,15 +447,15 @@ export function ThreatMatrixView() {
 
     setSelectedDetail({
       technique: tech,
-      qras: qraRes.items ?? [],
-      relationships: rels as TechniqueDetail['relationships'],
+      qras: [...candidateQras, ...(qraRes.items ?? [])],
+      relationships: [...candidateRelationships, ...rels] as TechniqueDetail['relationships'],
       countermeasures: cmIds.map((id) => ({ control_id: id, name: id })),
       traceability,
       evidenceCases: allEvCases,
       discrepancies,
     })
     setLoadingDetail(false)
-  }, [])
+  }, [f36Projection])
 
   const clearSelection = useCallback(() => setSelectedDetail(null), [])
   const toggleSubtechniques = useCallback(() => setShowSubtechniques((s) => !s), [])

@@ -12,6 +12,9 @@ import { ProvenanceGraph } from '../provenance-graph/ProvenanceGraph'
 import type { ProvenanceNode, ProvenanceEdge } from '../provenance-graph/types'
 import { EMBRY } from '../common/EmbryStyle'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
+import { useF36ExplorerProjection } from '../../../hooks/usePostureData'
+import { PageDistanceRoot, usePageDistanceMode } from './pageDistance/PageDistanceMode'
+import { PageDistanceScroll, PageGlanceBand, PageMetricCard, PageMetricGrid, PageTriageList } from './pageDistance/PageDistanceGlance'
 
 // ── F-36 Golden Fixture: Minimal Scenario ────────────────────────────────
 // DO-178C DAL-A avionics supply chain with temporal evidence
@@ -210,6 +213,7 @@ export function SupplyChainView() {
   const [killedSuppliers, setKilledSuppliers] = useState<Set<string>>(new Set())
   const [selectedNode, setSelectedNode] = useState<ProvenanceNode | null>(null)
   const [showWorkflowGuide, setShowWorkflowGuide] = useState(true)
+  const { projection: f36Projection, loading: f36ProjectionLoading, error: f36ProjectionError } = useF36ExplorerProjection()
 
   // Register actions for QID compliance
   useRegisterAction('supply-chain:scenario-select', { app: 'sparta-explorer', action: 'SUPPLY_CHAIN_SELECT_SCENARIO', label: 'Select Scenario', description: 'Select a supply chain simulation scenario' })
@@ -235,7 +239,145 @@ export function SupplyChainView() {
     console.log('Export affected nodes:', affected.length, 'Rationale:', rationale)
   }, [])
 
+  const { mode: pageDistanceMode } = usePageDistanceMode()
+
+  if (f36ProjectionLoading) {
+    return (
+      <PageDistanceRoot qid="supply-chain-mode-root">
+        <div data-qid="supply-chain:f36-shared-projection-loading" style={{ padding: 24, color: EMBRY.dim }}>
+          Loading the authoritative replay-family projection…
+        </div>
+      </PageDistanceRoot>
+    )
+  }
+
+  if (f36ProjectionError || !f36Projection) {
+    return (
+      <PageDistanceRoot qid="supply-chain-mode-root">
+        <div data-qid="supply-chain:f36-shared-projection-error" style={{ padding: 24, color: EMBRY.red }}>
+          Supply Chain cannot project the replay family: {f36ProjectionError ?? 'projection unavailable'}
+        </div>
+      </PageDistanceRoot>
+    )
+  }
+
   return (
+    <PageDistanceRoot qid="supply-chain-mode-root">
+      <div
+        data-qid="supply-chain:f36-shared-projection"
+        data-requirement-revision-id={f36Projection.requirement.requirement_revision_id}
+        data-projection-fingerprint={f36Projection.projection_fingerprint}
+        style={{
+          height: '100%',
+          overflow: 'auto',
+          padding: 20,
+          background: EMBRY.bg,
+          color: EMBRY.white,
+          display: 'grid',
+          alignContent: 'start',
+          gap: 14,
+        }}
+      >
+        <section style={{ border: `1px solid ${EMBRY.amber}`, background: EMBRY.bgPanel, padding: 16 }}>
+          <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: '0.12em', color: EMBRY.amber }}>
+            SYNTHETIC F-36 REQUIREMENT PROVENANCE · AGENT CANDIDATE
+          </div>
+          <h2 style={{ margin: '8px 0 4px', fontSize: 18 }}>{f36Projection.requirement.requirement_revision_id}</h2>
+          <div style={{ color: EMBRY.dim, fontSize: 12 }}>
+            Component {f36Projection.requirement.primary_component_family_id} · family {f36Projection.engineering_qra_family.engineering_qra_family_id}
+          </div>
+          <p style={{ margin: '12px 0 0', lineHeight: 1.5 }}>
+            {f36Projection.engineering_qra_family.canonical_answer}
+          </p>
+        </section>
+
+        <section style={{ border: `1px solid ${EMBRY.border}`, background: EMBRY.bgPanel, padding: 16, display: 'grid', gap: 8 }}>
+          <strong style={{ color: EMBRY.amber }}>No reviewed supply-chain overlay</strong>
+          <span style={{ color: EMBRY.dim, lineHeight: 1.45 }}>
+            The persisted replay snapshot contains requirement, component, family, and candidate SPARTA path provenance but no supplier, part, SBOM, binary, distribution, or installation lineage. None is fabricated here.
+          </span>
+          <span>Evidence verdict: <strong>{f36Projection.evidence_verdict}</strong></span>
+          <span>Review: <strong>{f36Projection.review_state}</strong> · accepted={String(f36Projection.accepted)}</span>
+          <span>Overlay eligibility: <strong>{String(f36Projection.projection_eligibility.supply_chain_sparta_overlay)}</strong></span>
+          <span>Quarantine: <strong>{f36Projection.quarantine_state}</strong></span>
+        </section>
+
+        <section style={{ border: `1px solid ${EMBRY.border}`, background: EMBRY.bgPanel, padding: 16 }}>
+          <div style={{ fontSize: 11, fontWeight: 800, marginBottom: 8 }}>Persisted candidate path provenance</div>
+          {f36Projection.path_resolution.path_proofs.map((proof) => (
+            <div key={proof.path_signature} style={{ marginBottom: 8, paddingBottom: 8, borderBottom: `1px solid ${EMBRY.border}` }}>
+              <div>{proof.edges.map((edge) => edge.direction).join(' · ')}</div>
+              <code style={{ color: EMBRY.dim, fontSize: 10 }}>{proof.persisted_edge_ids.join(', ')}</code>
+              <div style={{ color: EMBRY.dim, fontSize: 10 }}>path {proof.path_signature}</div>
+            </div>
+          ))}
+          <div style={{ color: EMBRY.dim, fontSize: 10 }}>
+            SPARTA {f36Projection.path_resolution.sparta_release_id} · {f36Projection.path_resolution.sparta_release_hash}
+          </div>
+        </section>
+
+        <code style={{ color: EMBRY.dim, fontSize: 10, overflowWrap: 'anywhere' }}>
+          projection fingerprint: {f36Projection.projection_fingerprint}
+        </code>
+      </div>
+    </PageDistanceRoot>
+  )
+
+  /* Legacy fixture scenarios remain below for later non-authoritative demos. */
+  const supplierNodes = currentScenario.data.nodes.filter((n) => n.nodeClass === 'supplier')
+  const expiringSoon = supplierNodes.filter((n) => {
+    const validTo = n.temporal?.valid_to
+    if (!validTo) return false
+    const days = (validTo - Date.now()) / (24 * 60 * 60 * 1000)
+    return days <= 90
+  })
+
+  if (pageDistanceMode === '10ft') {
+    return (
+      <PageDistanceRoot qid="supply-chain-mode-root">
+        <PageDistanceScroll qid="supply-chain:view-glance">
+          <PageGlanceBand
+            mode="10ft"
+            question="Is the supply chain mission-ready?"
+            headline={killedSuppliers.size > 0 ? `${killedSuppliers.size} supplier kill-switch active` : 'No active supplier kills'}
+            lead={`Scenario ${currentScenario.label}: ${supplierNodes.length} suppliers · ${expiringSoon.length} expiring within 90 days.`}
+            tone={killedSuppliers.size > 0 || expiringSoon.length > 0 ? EMBRY.amber : EMBRY.green}
+            qid="supply-chain:glance-band"
+          >
+            <PageMetricGrid qid="supply-chain:glance-metrics">
+              <PageMetricCard qid="supply-chain:metric:suppliers" label="Suppliers" value={supplierNodes.length} />
+              <PageMetricCard qid="supply-chain:metric:expiring" label="Expiring ≤90d" value={expiringSoon.length} tone={expiringSoon.length ? EMBRY.amber : EMBRY.green} />
+              <PageMetricCard qid="supply-chain:metric:killed" label="Killed" value={killedSuppliers.size} tone={killedSuppliers.size ? EMBRY.red : EMBRY.green} />
+            </PageMetricGrid>
+          </PageGlanceBand>
+        </PageDistanceScroll>
+      </PageDistanceRoot>
+    )
+  }
+
+  if (pageDistanceMode === '5ft') {
+    return (
+      <PageDistanceRoot qid="supply-chain-mode-root">
+        <PageDistanceScroll qid="supply-chain:view-triage">
+          <PageGlanceBand mode="5ft" question="Which suppliers need attention?" headline={`${expiringSoon.length} suppliers expiring soon`} lead="Review expiry and kill-switch impact before mission signoff." tone={EMBRY.amber} qid="supply-chain:triage-band" />
+          <PageTriageList
+            qid="supply-chain:triage-queue"
+            title="Supplier attention queue"
+            items={expiringSoon.map((node) => ({
+              id: node.id,
+              primary: node.label,
+              secondary: `Tier ${node.supplier_tier ?? '?'} · DAL ${node.dal_level ?? '?'} · expires ${node.temporal?.valid_to ? new Date(node.temporal.valid_to).toLocaleDateString() : 'unknown'}`,
+              tone: killedSuppliers.has(node.supplier_id ?? node.id) ? EMBRY.red : EMBRY.amber,
+              onSelect: () => setSelectedNode(node),
+            }))}
+          />
+        </PageDistanceScroll>
+      </PageDistanceRoot>
+    )
+  }
+
+  return (
+    <PageDistanceRoot qid="supply-chain-mode-root">
     <div
       data-qid="supply-chain-view"
       style={{
@@ -418,6 +560,7 @@ export function SupplyChainView() {
         </div>
       )}
     </div>
+    </PageDistanceRoot>
   )
 }
 

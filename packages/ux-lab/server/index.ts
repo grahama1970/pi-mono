@@ -17,6 +17,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { authMiddleware, generateKey, listKeys, revokeAll } from './auth.js'
 import { buildQraReviewPatch, persistQraReview } from './qraReview.js'
+import { F36ExplorerProjectionError, loadF36ExplorerProjection } from './f36ExplorerProjection.js'
 import { createServer } from 'http'
 import { request as httpRequest } from 'http'
 import { request as httpsRequest } from 'https'
@@ -83,6 +84,22 @@ app.get('/api/auth/keys', (_req, res) => {
 app.post('/api/auth/revoke-all', (_req, res) => {
   const count = revokeAll()
   res.json({ revoked: count })
+})
+
+app.get('/api/f36/explorer-projection', async (_req, res) => {
+  try {
+    const projection = await loadF36ExplorerProjection()
+    res.setHeader('Cache-Control', 'no-store')
+    return res.json(projection)
+  } catch (error) {
+    if (error instanceof F36ExplorerProjectionError) {
+      return res.status(error.statusCode).json({ error: error.code, detail: error.message })
+    }
+    return res.status(500).json({
+      error: 'F36_PROJECTION_READ_FAILED',
+      detail: error instanceof Error ? error.message : String(error),
+    })
+  }
 })
 
 const MEMORY_SOCKET = '/run/user/1000/embry/memory.sock'
@@ -1764,6 +1781,7 @@ function parseEvidenceSolution(doc: any): any {
 }
 app.get('/api/posture/v2', async (_req, res) => {
   try {
+    const projection = await loadF36ExplorerProjection()
     const [evidenceCases, controls, rels] = await Promise.all([
       memoryListAll('lessons_v2', ['title', 'solution', 'tags', 'created_at'], { scope: 'evidence_case_labels' }),
       memoryListAll('sparta_controls', ['control_id', 'name', 'source_framework', 'nrs_score']),
@@ -1773,19 +1791,24 @@ app.get('/api/posture/v2', async (_req, res) => {
     const satisfied = cases.filter((c: any) => c.verdict === 'satisfied')
     const inconclusive = cases.filter((c: any) => c.verdict === 'inconclusive')
     const notSatisfied = cases.filter((c: any) => c.verdict === 'not_satisfied')
+    const projectionTargetIds = [...new Set(projection.path_resolution.path_proofs.flatMap((proof) => proof.edges.map((edge) => edge.target_id)))]
+    const totalCaseCount = cases.length + 1
     const controlsWithEvidence = new Set(cases.flatMap((c: any) => c.control_ids))
     const totalControls = controls.length
     const relSet = new Set(rels.flatMap((r: any) => [String(r.source_control_id), String(r.target_control_id)]))
-    const postureScore = cases.length ? Math.round((satisfied.length / cases.length) * 100) : 0
-    const complianceScore = cases.length ? Math.round(((satisfied.length + inconclusive.length * 0.5) / cases.length) * 100) : 0
-    const evidenceFreshness = cases.length ? Math.round((cases.filter((c: any) => (Date.now() / 1000 - (c.created_at || 0)) < 90 * 86400).length / cases.length) * 100) : 0
+    const postureScore = totalCaseCount ? Math.round((satisfied.length / totalCaseCount) * 100) : 0
+    const complianceScore = totalCaseCount ? Math.round(((satisfied.length + inconclusive.length * 0.5) / totalCaseCount) * 100) : 0
+    const freshCaseCount = cases.filter((c: any) => (Date.now() / 1000 - (c.created_at || 0)) < 90 * 86400).length + 1
+    const evidenceFreshness = totalCaseCount ? Math.round((freshCaseCount / totalCaseCount) * 100) : 0
     const fwMap = new Map<string, { name: string; total: number; satisfied: number; inconclusive: number; failed: number }>()
     for (const c of controls) { const fw = String(c.source_framework || 'Unknown'); if (!fwMap.has(fw)) fwMap.set(fw, { name: fw, total: 0, satisfied: 0, inconclusive: 0, failed: 0 }); const b = fwMap.get(fw)!; b.total += 1; if (controlsWithEvidence.has(String(c.control_id))) { const rc = cases.filter((ec: any) => ec.control_ids.includes(String(c.control_id))); if (rc.some((ec: any) => ec.verdict === 'satisfied') && !rc.some((ec: any) => ec.verdict === 'not_satisfied')) b.satisfied += 1; else if (rc.some((ec: any) => ec.verdict === 'not_satisfied')) b.failed += 1; else b.inconclusive += 1 } }
     const frameworks = [...fwMap.values()].map(f => ({ ...f, pct: f.total ? Math.round((f.satisfied / f.total) * 100) : 0 }))
+    frameworks.push({ name: 'F-36 requirement families', total: 1, satisfied: 0, inconclusive: 1, failed: 0, pct: 0 })
     const famMap = new Map<string, { family: string; total: number; satisfied: number; inconclusive: number; failed: number; noEvidence: number }>()
     for (const c of controls) { const cid = String(c.control_id || ''); const fam = cid.match(/^([A-Z]{2})[-_]/)?.[1] ?? (cid.slice(0, 2).toUpperCase() || 'UN'); if (!famMap.has(fam)) famMap.set(fam, { family: fam, total: 0, satisfied: 0, inconclusive: 0, failed: 0, noEvidence: 0 }); const b = famMap.get(fam)!; b.total += 1; if (!controlsWithEvidence.has(cid)) { b.noEvidence += 1; continue } const ec2 = cases.filter((ec: any) => ec.control_ids.includes(cid)); if (ec2.some((ec: any) => ec.verdict === 'satisfied') && !ec2.some((ec: any) => ec.verdict === 'not_satisfied')) b.satisfied += 1; else if (ec2.some((ec: any) => ec.verdict === 'not_satisfied')) b.failed += 1; else b.inconclusive += 1 }
     const families = [...famMap.values()].map(f => ({ ...f, pct: f.total ? Math.round((f.satisfied / f.total) * 100) : 0 })).sort((a, b) => a.family.localeCompare(b.family))
-    const riskControls = notSatisfied.map((ec: any, index: number) => {
+    families.unshift({ family: 'F36 replay family', total: 1, satisfied: 0, inconclusive: 1, failed: 0, noEvidence: 0, pct: 0 })
+    const genericRiskControls = notSatisfied.map((ec: any, index: number) => {
       const mappedControls = (ec.control_ids || []).map((cid: string) => {
         const ctrl = controls.find((c: any) => String(c.control_id) === cid)
         return {
@@ -1809,23 +1832,71 @@ app.get('/api/posture/v2', async (_req, res) => {
         primary_control_name: primaryControl?.name ?? '',
         primary_control_framework: primaryControl?.source_framework ?? '',
       }
-    }).slice(0, 10)
+    })
+    const riskControls = [{
+      control_id: projection.requirement.requirement_id,
+      finding_id: projection.source.family_evidence_case_snapshot_id,
+      name: 'Replay and Sequence-Abuse Detection — agent candidate',
+      source_framework: 'F-36 requirement family / local SPARTA v3.1 candidate paths',
+      verdict: 'inconclusive',
+      grade: 'Agent candidate',
+      question: projection.engineering_qra_family.canonical_question,
+      mapped_controls: projectionTargetIds,
+      projection_fingerprint: projection.projection_fingerprint,
+      requirement_revision_id: projection.requirement.requirement_revision_id,
+      engineering_qra_family_id: projection.engineering_qra_family.engineering_qra_family_id,
+      review_state: projection.review_state,
+      accepted: projection.accepted,
+      quarantine_state: projection.quarantine_state,
+      grounded_credit: 0,
+      compliance_credit: 0,
+    }, ...genericRiskControls].slice(0, 10)
     const controlsWithRel = controls.filter((c: any) => relSet.has(String(c.control_id))).length
     const relTypes: Record<string, number> = {}; for (const r of rels) { const t = String(r.relationship_type || 'unknown'); relTypes[t] = (relTypes[t] ?? 0) + 1 }
-    const reqToControl = cases.length ? Math.round((cases.filter((c: any) => c.control_ids.length > 0).length / cases.length) * 100) : 0
+    const reqToControl = totalCaseCount ? Math.round(((cases.filter((c: any) => c.control_ids.length > 0).length + 1) / totalCaseCount) * 100) : 0
     const controlToRel = totalControls ? Math.round((controlsWithRel / totalControls) * 100) : 0
     const controlToEvidence = totalControls ? Math.round((controlsWithEvidence.size / totalControls) * 100) : 0
-    const brokenTraces = [...notSatisfied.map((ec: any) => ({ trace: `Req -> ${ec.control_ids.slice(0, 3).join(', ')}`, defect: 'Failed evidence case', impact: `${ec.grade} grade — ${ec.gates_passed}/${ec.gates_total} gates`, fix: ec.question?.slice(0, 100) ?? '' })), ...inconclusive.slice(0, 4).map((ec: any) => ({ trace: `Req -> ${ec.control_ids.slice(0, 3).join(', ')}`, defect: 'Inconclusive evidence', impact: `${ec.grade} grade — ${ec.gates_passed}/${ec.gates_total} gates`, fix: ec.question?.slice(0, 100) ?? '' }))].slice(0, 8)
+    const brokenTraces = [{
+      trace: `${projection.requirement.requirement_revision_id} -> ${projectionTargetIds.join(', ')}`,
+      defect: 'Agent candidate pending human review',
+      impact: 'INCONCLUSIVE — traceability only; zero grounded/compliance credit',
+      fix: `Review persisted paths from ${projection.path_resolution.sparta_release_id}`,
+    }, ...notSatisfied.map((ec: any) => ({ trace: `Req -> ${ec.control_ids.slice(0, 3).join(', ')}`, defect: 'Failed evidence case', impact: `${ec.grade} grade — ${ec.gates_passed}/${ec.gates_total} gates`, fix: ec.question?.slice(0, 100) ?? '' })), ...inconclusive.slice(0, 4).map((ec: any) => ({ trace: `Req -> ${ec.control_ids.slice(0, 3).join(', ')}`, defect: 'Inconclusive evidence', impact: `${ec.grade} grade — ${ec.gates_passed}/${ec.gates_total} gates`, fix: ec.question?.slice(0, 100) ?? '' }))].slice(0, 8)
     const traceabilityScore = Math.round(reqToControl * 0.3 + controlToRel * 0.3 + controlToEvidence * 0.4)
     const contradictions = notSatisfied.filter((ec: any) => ec.control_ids.some((cid: string) => satisfied.some((s: any) => s.control_ids.includes(cid)))).length
-    const assuranceScore = cases.length ? Math.round(((satisfied.length + inconclusive.length * 0.5) / cases.length) * 100) : 0
+    const assuranceScore = totalCaseCount ? Math.round(((satisfied.length + inconclusive.length * 0.5) / totalCaseCount) * 100) : 0
     const avgGP = cases.length ? cases.reduce((s: number, c: any) => s + c.gates_passed, 0) / cases.length : 0
     const avgGT = cases.length ? cases.reduce((s: number, c: any) => s + c.gates_total, 0) / cases.length : 7
-    const claimsNeedingReview = [...notSatisfied, ...inconclusive].slice(0, 6).map((ec: any) => ({ question: ec.question?.slice(0, 120) ?? '', verdict: ec.verdict, grade: ec.grade, gates: `${ec.gates_passed}/${ec.gates_total}`, controls: ec.control_ids.slice(0, 5), gate_summary: ec.gate_summary ?? '' }))
+    const claimsNeedingReview = [{
+      question: projection.engineering_qra_family.canonical_question,
+      verdict: 'inconclusive',
+      grade: 'Agent candidate',
+      gates: 'persisted exact paths / human review pending',
+      controls: projectionTargetIds,
+      gate_summary: `Fingerprint ${projection.projection_fingerprint}; accepted=false; compliance credit=0`,
+    }, ...[...notSatisfied, ...inconclusive].slice(0, 5).map((ec: any) => ({ question: ec.question?.slice(0, 120) ?? '', verdict: ec.verdict, grade: ec.grade, gates: `${ec.gates_passed}/${ec.gates_total}`, controls: ec.control_ids.slice(0, 5), gate_summary: ec.gate_summary ?? '' }))]
     res.json({
-      posture: { postureScore, complianceScore, criticalFindings: notSatisfied.length, openFindings: notSatisfied.length + inconclusive.length, evidenceFreshness, totalCases: cases.length, frameworks, families, riskControls },
-      traceability: { traceabilityScore, mappedRequirements: cases.filter((c: any) => c.control_ids.length > 0).length, orphanRequirements: cases.filter((c: any) => c.control_ids.length === 0).length, totalControls, controlsWithEvidence: controlsWithEvidence.size, controlsWithRelationships: controlsWithRel, relationshipTypes: relTypes, totalRelationships: rels.length, coverageChain: { reqToControl, controlToRel, controlToEvidence }, brokenTraces },
-      assurance: { assuranceScore, supportedClaims: satisfied.length, partialClaims: inconclusive.length, unsupportedClaims: notSatisfied.length, contradictions, totalClaims: cases.length, evidenceQuality: { gatePassRate: Math.round((avgGP / avgGT) * 100), freshness: evidenceFreshness, completeness: reqToControl, authority: Math.round((satisfied.filter((c: any) => c.grade === 'A+').length / Math.max(satisfied.length, 1)) * 100) }, claimsNeedingReview },
+      projection_fingerprint: projection.projection_fingerprint,
+      posture: {
+        postureScore, complianceScore, criticalFindings: notSatisfied.length,
+        openFindings: notSatisfied.length + inconclusive.length + 1,
+        evidenceFreshness, totalCases: totalCaseCount, frameworks, families, riskControls,
+        f36Projection: {
+          projection_fingerprint: projection.projection_fingerprint,
+          requirement: projection.requirement,
+          engineering_qra_family: projection.engineering_qra_family,
+          evidence_verdict: projection.evidence_verdict,
+          review_state: projection.review_state,
+          accepted: projection.accepted,
+          quarantine_state: projection.quarantine_state,
+          binding_registry_state: projection.binding_registry_state,
+          projection_eligibility: projection.projection_eligibility,
+          posture: projection.posture,
+          authority: projection.authority,
+        },
+      },
+      traceability: { traceabilityScore, mappedRequirements: cases.filter((c: any) => c.control_ids.length > 0).length + 1, orphanRequirements: cases.filter((c: any) => c.control_ids.length === 0).length, totalControls, controlsWithEvidence: controlsWithEvidence.size, controlsWithRelationships: controlsWithRel, relationshipTypes: relTypes, totalRelationships: rels.length, coverageChain: { reqToControl, controlToRel, controlToEvidence }, brokenTraces },
+      assurance: { assuranceScore, supportedClaims: satisfied.length, partialClaims: inconclusive.length + 1, unsupportedClaims: notSatisfied.length, contradictions, totalClaims: totalCaseCount, evidenceQuality: { gatePassRate: Math.round((avgGP / avgGT) * 100), freshness: evidenceFreshness, completeness: reqToControl, authority: Math.round((satisfied.filter((c: any) => c.grade === 'A+').length / Math.max(satisfied.length, 1)) * 100) }, claimsNeedingReview },
     })
   } catch (err: any) {
     if (isMemoryUnavailableError(err)) return res.status(502).json({ error: 'Memory daemon unavailable' })
@@ -19404,6 +19475,333 @@ function tauChatIntentSummary(intent: JsonRecord): string {
   return type ? `Intent: ${type}` : 'Intent finalized'
 }
 
+type SpartaExplorerScopedProxyPost = (path: string, body?: object | null, timeoutMs?: number) => Promise<unknown>
+
+type SpartaExplorerScopedRoute = 'deflect' | 'non_sparta_memory' | 'non_sparta_lean'
+
+export interface SpartaExplorerScopedRouteInput {
+  question: string
+  allowOffTopic?: boolean
+  surface?: string
+  branchHint?: unknown
+  gateDepth?: unknown
+  matrixContext?: unknown
+  context?: unknown
+}
+
+export interface SpartaExplorerScopedRouteDeps {
+  proxyPostFn?: SpartaExplorerScopedProxyPost
+  fetchFn?: typeof fetch
+}
+
+export type SpartaExplorerScopedRouteResult =
+  | {
+      kind: 'continue'
+      intent: JsonRecord
+      intentAction: string
+      intentProfile: string | null
+    }
+  | {
+      kind: 'terminal'
+      intent: JsonRecord
+      intentAction: string
+      intentProfile: string | null
+      route: SpartaExplorerScopedRoute
+      responseAction: 'answer' | 'deflect'
+      content: string
+      nonSparta: boolean
+      routeReceipt: JsonRecord
+      routeData?: JsonRecord
+    }
+
+function tauChatQueryPlan(intent: JsonRecord): JsonRecord {
+  return tauChatRecord(intent.query_plan ?? intent.queryPlan ?? intent.query_spec ?? intent.querySpec)
+}
+
+function tauChatIntentAction(intent: JsonRecord): string {
+  const nestedIntent = tauChatRecord(intent.intent)
+  const value = tauChatString(intent.action)
+    ?? tauChatString(intent.intent_action)
+    ?? tauChatString(intent.intentAction)
+    ?? tauChatString(intent.route)
+    ?? tauChatString(intent.state)
+    ?? tauChatString(intent.status)
+    ?? tauChatString(intent.classification)
+    ?? tauChatString(nestedIntent.action)
+    ?? tauChatString(nestedIntent.route)
+    ?? tauChatString(nestedIntent.state)
+    ?? tauChatString(nestedIntent.status)
+    ?? tauChatString(nestedIntent.classification)
+  return value?.toUpperCase() ?? 'UNKNOWN'
+}
+
+function tauChatIntentProfile(intent: JsonRecord): string | null {
+  const queryPlan = tauChatQueryPlan(intent)
+  return tauChatString(queryPlan.profile)
+    ?? tauChatString(queryPlan.recall_profile)
+    ?? tauChatString(queryPlan.recallProfile)
+    ?? tauChatString(intent.profile)
+    ?? tauChatString(intent.recall_profile)
+    ?? tauChatString(intent.recallProfile)
+    ?? null
+}
+
+function tauChatIsSpartaScopedIntent(intent: JsonRecord, action: string, branchHint: unknown): boolean {
+  if (action === 'NO_MATCH' || action === 'OFF_TOPIC' || action === 'DEFLECT') return false
+  if (branchHint === 'evidence-case' || action === 'COMPLIANCE' || action === 'CLARIFY') return true
+  if (intent.content_type === 'evidence_case' || intent.render_style_id === 'evidence_case_panel') return true
+  const serialized = JSON.stringify({
+    query_plan: tauChatQueryPlan(intent),
+    tool_calls: intent.tool_calls,
+    entities: intent.entities,
+  }).toLowerCase()
+  return serialized.includes('create-evidence-case')
+    || serialized.includes('create_evidence_case')
+    || serialized.includes('sparta_controls')
+    || serialized.includes('sparta_qra')
+    || serialized.includes('sparta_relationships')
+}
+
+function tauChatIsProofIntent(intent: JsonRecord, profile: string | null): boolean {
+  if (profile === 'proof_retrieval') return true
+  const serialized = JSON.stringify({
+    query_plan: tauChatQueryPlan(intent),
+    tool_calls: intent.tool_calls,
+  }).toLowerCase()
+  return serialized.includes('lean4-prove')
+    || serialized.includes('lean4_prove')
+    || serialized.includes('formal_proof')
+}
+
+function tauChatScopedRouteReceipt(args: {
+  route: SpartaExplorerScopedRoute
+  allowOffTopic: boolean
+  intentAction: string
+  intentProfile: string | null
+  deflectCalls?: number
+  nonSpartaRecallCalls?: number
+  nonSpartaAnswerCalls?: number
+  leanCalls?: number
+}): JsonRecord {
+  return {
+    schema: 'sparta.explorer.scoped_route_receipt.v1',
+    surface: 'sparta-explorer',
+    scope: 'sparta-explorer',
+    route: args.route,
+    allow_off_topic: args.allowOffTopic,
+    memory_intent_action: args.intentAction,
+    memory_intent_profile: args.intentProfile,
+    calls: {
+      memory_intent: 1,
+      memory_deflect: args.deflectCalls ?? 0,
+      non_sparta_recall: args.nonSpartaRecallCalls ?? 0,
+      non_sparta_answer: args.nonSpartaAnswerCalls ?? 0,
+      lean4_prove: args.leanCalls ?? 0,
+      sparta_recall_after_intent: 0,
+      sparta_answer_after_intent: 0,
+      create_evidence_case: 0,
+    },
+    authority_claim_counts: {
+      sparta: 0,
+      evidence: 0,
+      crosswalk: 0,
+      posture: 0,
+    },
+  }
+}
+
+function tauChatLeanResultContent(result: JsonRecord): string {
+  return tauChatString(result.code)
+    || tauChatExtractContent(result)
+    || tauChatString(result.proof)
+    || tauChatString(result.theorem)
+    || tauChatString(result.detail)
+    || ''
+}
+
+/**
+ * Applies the Sparta Explorer scope policy before any SPARTA recall, answer,
+ * evidence-case, or Lean route can run. Memory remains the sole intent
+ * classifier; this function only enforces the Explorer's allow_off_topic flag.
+ */
+export async function routeSpartaExplorerScopedTurn(
+  input: SpartaExplorerScopedRouteInput,
+  deps: SpartaExplorerScopedRouteDeps = {},
+): Promise<SpartaExplorerScopedRouteResult> {
+  const proxy = deps.proxyPostFn ?? proxyPost
+  const fetchImpl = deps.fetchFn ?? fetch
+  const question = input.question.trim()
+  const allowOffTopic = input.allowOffTopic === true
+  const surface = tauChatString(input.surface) ?? 'sparta-explorer'
+
+  const intent = tauChatRecord(await proxy('/intent', {
+    q: question,
+    query: question,
+    text: question,
+    surface,
+    scope: 'sparta-explorer',
+    fast: true,
+    allow_off_topic: allowOffTopic,
+    branch_hint: input.branchHint,
+    gate_depth: input.gateDepth,
+    matrix_context: input.matrixContext,
+    context: input.context,
+  }))
+  const intentAction = tauChatIntentAction(intent)
+  const intentProfile = tauChatIntentProfile(intent)
+
+  if (tauChatIsSpartaScopedIntent(intent, intentAction, input.branchHint)) {
+    return { kind: 'continue', intent, intentAction, intentProfile }
+  }
+
+  if (!allowOffTopic || intentAction === 'DEFLECT') {
+    const deflect = tauChatRecord(await proxy('/deflect', {
+      q: question,
+      query: question,
+      text: question,
+      action: intentAction,
+      intent_action: intentAction,
+      intent,
+      surface,
+      scope: 'sparta-explorer',
+      allow_off_topic: allowOffTopic,
+      reason: allowOffTopic ? 'memory_deflect' : 'sparta_explorer_off_topic_disabled',
+    }))
+    const deflectText = tauChatExtractContent(deflect)
+      || 'This question is outside the current Sparta Explorer scope. Enable off-topic questions to use a separately labeled non-SPARTA capability.'
+    return {
+      kind: 'terminal',
+      intent,
+      intentAction,
+      intentProfile,
+      route: 'deflect',
+      responseAction: 'deflect',
+      content: deflectText.startsWith('SPARTA DEFLECTION') ? deflectText : `SPARTA DEFLECTION — ${deflectText}`,
+      nonSparta: false,
+      routeReceipt: tauChatScopedRouteReceipt({
+        route: 'deflect',
+        allowOffTopic,
+        intentAction,
+        intentProfile,
+        deflectCalls: 1,
+      }),
+      routeData: { action: 'DEFLECT', content: deflectText },
+    }
+  }
+
+  if (tauChatIsProofIntent(intent, intentProfile)) {
+    let result: JsonRecord = {}
+    let unavailableReason = ''
+    try {
+      const response = await fetchImpl('http://127.0.0.1:8604/prove', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          requirement: question,
+          tactics: [],
+          model: 'text',
+          max_retries: 3,
+          timeout: 60,
+        }),
+      })
+      const rawText = await response.text()
+      if (rawText.trim()) {
+        try {
+          result = tauChatRecord(JSON.parse(rawText))
+        } catch {
+          result = { content: rawText }
+        }
+      }
+      if (!response.ok) unavailableReason = `HTTP ${response.status}`
+      else if (result.prove_available === false) unavailableReason = 'prove backend unavailable'
+      else if (result.success === false || result.ok === false) {
+        const errors = Array.isArray(result.errors)
+          ? result.errors.map((value) => tauChatString(value)).filter(Boolean).join('; ')
+          : tauChatString(result.error)
+        unavailableReason = errors || tauChatLeanResultContent(result) || 'proof service returned no successful proof'
+      }
+    } catch (error) {
+      unavailableReason = error instanceof Error ? error.message : String(error)
+    }
+
+    const content = unavailableReason
+      ? `NON-SPARTA FORMAL CHECK — Lean4 proof service unavailable: ${unavailableReason}`
+      : `NON-SPARTA FORMAL CHECK — ${tauChatLeanResultContent(result) || 'The Lean4 service returned no proof result.'}`
+    return {
+      kind: 'terminal',
+      intent,
+      intentAction,
+      intentProfile,
+      route: 'non_sparta_lean',
+      responseAction: 'answer',
+      content,
+      nonSparta: true,
+      routeReceipt: tauChatScopedRouteReceipt({
+        route: 'non_sparta_lean',
+        allowOffTopic,
+        intentAction,
+        intentProfile,
+        leanCalls: 1,
+      }),
+      routeData: {
+        capability: 'lean4',
+        available: !unavailableReason,
+        prove_available: result.prove_available === true,
+        scillm_reachable: result.scillm_reachable === true,
+      },
+    }
+  }
+
+  const querySpec = tauChatQueryPlan(intent)
+  const recall = tauChatRecord(await proxy('/recall', {
+    q: question,
+    query: question,
+    text: question,
+    intent,
+    query_spec: querySpec,
+    profile: intentProfile ?? 'general_memory_recall',
+    scope: 'general',
+    surface: 'sparta-explorer-off-topic',
+  }))
+  const answer = tauChatRecord(await proxy('/answer', {
+    q: question,
+    query: question,
+    text: question,
+    intent,
+    recall,
+    query_spec: querySpec,
+    scope: 'general',
+    surface: 'sparta-explorer-off-topic',
+  }))
+  const answerText = tauChatExtractContent(answer)
+    || tauChatExtractContent(recall)
+    || 'Memory returned no non-SPARTA answer.'
+
+  return {
+    kind: 'terminal',
+    intent,
+    intentAction,
+    intentProfile,
+    route: 'non_sparta_memory',
+    responseAction: 'answer',
+    content: `NON-SPARTA MEMORY ANSWER — ${answerText}`,
+    nonSparta: true,
+    routeReceipt: tauChatScopedRouteReceipt({
+      route: 'non_sparta_memory',
+      allowOffTopic,
+      intentAction,
+      intentProfile,
+      nonSpartaRecallCalls: 1,
+      nonSpartaAnswerCalls: 1,
+    }),
+    routeData: {
+      capability: 'memory-general',
+      recall_item_count: tauChatArrayLength(recall.hits ?? recall.items ?? recall.results) ?? 0,
+      answer_available: Boolean(answerText),
+    },
+  }
+}
+
 function tauChatIsEvidenceIntent(intent: JsonRecord, branchHint: unknown, question: string): boolean {
   const queryPlan = tauChatRecord(intent.query_plan)
   const toolCalls = Array.isArray(intent.tool_calls) ? intent.tool_calls : []
@@ -19625,6 +20023,76 @@ app.post('/api/tau/chat/turn', async (req, res) => {
 
   try {
     addStep(tauChatStep({
+      id: 'finalizing-intent',
+      status: 'running',
+      liveStatusLabel: 'Tau: finalizing intent...',
+      detail: 'Memory /intent applies the Sparta Explorer scope policy before recall or evidence processing.',
+    }))
+    const scopedRoute = await routeSpartaExplorerScopedTurn({
+      question,
+      allowOffTopic: req.body?.allow_off_topic === true,
+      surface: tauChatString(req.body?.surface) ?? 'sparta-explorer',
+      branchHint,
+      gateDepth,
+      matrixContext,
+      context: requestContext,
+    })
+    addStep(tauChatStep({
+      id: 'finalizing-intent',
+      status: 'completed',
+      liveStatusLabel: 'Tau: finalizing intent...',
+      detail: `Intent: ${scopedRoute.intentAction}${scopedRoute.intentProfile ? ` (${scopedRoute.intentProfile})` : ''}`,
+      data: scopedRoute.kind === 'terminal'
+        ? { action: scopedRoute.intentAction, profile: scopedRoute.intentProfile, scope: 'sparta-explorer' }
+        : scopedRoute.intent,
+    }))
+
+    if (scopedRoute.kind === 'terminal') {
+      addStep(tauChatStep({
+        id: 'answering',
+        status: 'completed',
+        liveStatusLabel: scopedRoute.route === 'deflect' ? 'Tau: deflecting...' : 'Tau: answering outside SPARTA...',
+        detail: scopedRoute.route === 'deflect'
+          ? 'Memory scope policy selected deflection before SPARTA recall or evidence processing.'
+          : 'Memory scope policy selected a separately labeled non-SPARTA capability.',
+        data: scopedRoute.routeData,
+      }))
+      const thinkingTrace = tauChatTraceFromSteps(steps)
+      const message = {
+        role: 'assistant',
+        content: scopedRoute.content,
+        reasoningSteps: thinkingTrace,
+        thinkingTrace,
+        metadata: {
+          branch: 'compliance',
+          disclosureVariant: 'thinking',
+          source: 'tau-chat-turn',
+          tauBackend: true,
+          memoryBacked: scopedRoute.route !== 'non_sparta_lean',
+          responseAction: scopedRoute.responseAction,
+          scopedRoute: scopedRoute.route,
+          nonSparta: scopedRoute.nonSparta,
+          intentRoute: { action: scopedRoute.intentAction, profile: scopedRoute.intentProfile },
+          routeReceipt: scopedRoute.routeReceipt,
+          authorityClaims: { sparta: 0, evidence: 0, crosswalk: 0, posture: 0 },
+        },
+      }
+      return res.json({
+        ok: true,
+        branch: 'compliance',
+        response_action: scopedRoute.responseAction,
+        route: scopedRoute.route,
+        non_sparta: scopedRoute.nonSparta,
+        steps,
+        thinkingTrace,
+        message,
+        receipt: scopedRoute.routeReceipt,
+      })
+    }
+
+    const intent = scopedRoute.intent
+
+    addStep(tauChatStep({
       id: 'extracting-entities',
       status: 'running',
       liveStatusLabel: 'Tau: extracting entities...',
@@ -19648,7 +20116,7 @@ app.post('/api/tau/chat/turn', async (req, res) => {
       id: 'looking-in-memory',
       status: 'running',
       liveStatusLabel: 'Tau: looking in memory...',
-      detail: 'Memory /recall checks SPARTA training and prior evidence before intent finalization.',
+      detail: 'Memory /recall checks SPARTA training and prior evidence after scope routing.',
     }))
     const trainingRecall = tauChatRecord(await proxyPost('/recall', {
       q: question,
@@ -19736,31 +20204,6 @@ app.post('/api/tau/chat/turn', async (req, res) => {
         detail: 'No clarification needed',
       }))
     }
-
-    addStep(tauChatStep({
-      id: 'finalizing-intent',
-      status: 'running',
-      liveStatusLabel: 'Tau: finalizing intent...',
-      detail: 'Memory /intent chooses answer, deflect, clarify, or evidence-case policy.',
-    }))
-    const intent = tauChatRecord(await proxyPost('/intent', {
-      q: question,
-      query: question,
-      text: question,
-      entities,
-      recall: trainingRecall,
-      gates,
-      matrix_context: matrixContext,
-      surface: 'sparta-explorer',
-      scope: 'sparta',
-    }))
-    addStep(tauChatStep({
-      id: 'finalizing-intent',
-      status: 'completed',
-      liveStatusLabel: 'Tau: finalizing intent...',
-      detail: tauChatIntentSummary(intent),
-      data: intent,
-    }))
 
     if (tauChatIsEvidenceIntent(intent, branchHint, question)) {
       const branch: TauChatBranch = 'evidence-case'
@@ -20371,7 +20814,7 @@ const broadcast = (msg: any) => {
   for (const c of clients) { if (c.readyState === WebSocket.OPEN) c.send(data) }
 }
 broadcastWs = broadcast
-startSpartaCoveragePushBridge()
+if (process.env.UX_LAB_DISABLE_SERVER_LISTEN !== '1') startSpartaCoveragePushBridge()
 
 registerTestRunnerRoutes(app, broadcast)
 registerSpartaChatRoutes(app)
@@ -20431,11 +20874,13 @@ if (existsSync(distPath)) {
 const PORT = process.env.PORT ?? 3001
 const HOST = process.env.HOST ?? process.env.UX_LAB_HOST ?? '127.0.0.1'
 
-httpServer.listen(Number(PORT), HOST, () => {
-  console.log(`UX Lab API on http://${HOST}:${PORT}`)
-  console.log(`  Memory daemon: ${MEMORY_SOCKET}`)
-  console.log(`  scillm: ${SCILLM_URL}`)
-  console.log(`  artifacts: ${ARTIFACTS_ROOT}`)
-  console.log(`  PDF Lab artifacts: ${PDF_LAB_ARTIFACTS_ROOT}`)
-  console.log(`  Test runner: registered`)
-})
+if (process.env.UX_LAB_DISABLE_SERVER_LISTEN !== '1') {
+  httpServer.listen(Number(PORT), HOST, () => {
+    console.log(`UX Lab API on http://${HOST}:${PORT}`)
+    console.log(`  Memory daemon: ${MEMORY_SOCKET}`)
+    console.log(`  scillm: ${SCILLM_URL}`)
+    console.log(`  artifacts: ${ARTIFACTS_ROOT}`)
+    console.log(`  PDF Lab artifacts: ${PDF_LAB_ARTIFACTS_ROOT}`)
+    console.log(`  Test runner: registered`)
+  })
+}
