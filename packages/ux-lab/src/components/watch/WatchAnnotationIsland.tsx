@@ -448,6 +448,19 @@ function interpolateDetectorBbox(previous: NormalizedBbox, next: NormalizedBbox,
   ]
 }
 
+function bboxIntersectionOverUnion(a: NormalizedBbox, b: NormalizedBbox): number {
+  const x1 = Math.max(a[0], b[0])
+  const y1 = Math.max(a[1], b[1])
+  const x2 = Math.min(a[2], b[2])
+  const y2 = Math.min(a[3], b[3])
+  const intersection = Math.max(0, x2 - x1) * Math.max(0, y2 - y1)
+  if (intersection <= 0) return 0
+  const areaA = Math.max(0, a[2] - a[0]) * Math.max(0, a[3] - a[1])
+  const areaB = Math.max(0, b[2] - b[0]) * Math.max(0, b[3] - b[1])
+  const union = areaA + areaB - intersection
+  return union > 0 ? intersection / union : 0
+}
+
 function interpolateDetectorCandidate(
   rowIndex: number,
   previous: DetectorCandidate,
@@ -1057,22 +1070,36 @@ export function WatchAnnotationIsland({
   }, [detectorCandidates, row.index, session.playheadSeconds])
   const findSavedDetectorAssignment = useCallback((candidate: DetectorCandidate): DetectorCandidateAssignment | null => {
     let best: { distance: number; keyframe: WatchAnnotationKeyframe } | null = null
+    let bestGeometryFallback: { distance: number; iou: number; keyframe: WatchAnnotationKeyframe } | null = null
     for (const track of Object.values(session.tracks)) {
       for (const keyframe of track.keyframes) {
         const detectorRef = keyframe.detectorObservationRef
-        if (!detectorRef) continue
-        if (detectorRef.track_id !== candidate.trackId && detectorRef.detector_candidate_id !== candidate.id) continue
         const distance = Math.abs(keyframe.timeSeconds - candidate.timeSeconds)
-        if (distance > 0.35) continue
-        if (!best || distance < best.distance) best = { distance, keyframe }
+        if (detectorRef) {
+          if (detectorRef.track_id !== candidate.trackId && detectorRef.detector_candidate_id !== candidate.id) continue
+          if (distance > 0.35) continue
+          if (!best || distance < best.distance) best = { distance, keyframe }
+          continue
+        }
+        if (characterKey(keyframe.characterName) === 'unassigned' || distance > 0.35) continue
+        const iou = bboxIntersectionOverUnion(keyframe.bbox, candidate.bbox)
+        if (iou < 0.25) continue
+        if (
+          !bestGeometryFallback
+          || iou > bestGeometryFallback.iou
+          || (iou === bestGeometryFallback.iou && distance < bestGeometryFallback.distance)
+        ) {
+          bestGeometryFallback = { distance, iou, keyframe }
+        }
       }
     }
-    if (!best) return null
+    const savedKeyframe = best?.keyframe || bestGeometryFallback?.keyframe
+    if (!savedKeyframe) return null
     return {
-      characterName: best.keyframe.characterName,
-      actorName: best.keyframe.actorName,
+      characterName: savedKeyframe.characterName,
+      actorName: savedKeyframe.actorName,
       source: 'saved',
-      keyframe: best.keyframe,
+      keyframe: savedKeyframe,
     }
   }, [session.tracks])
 
