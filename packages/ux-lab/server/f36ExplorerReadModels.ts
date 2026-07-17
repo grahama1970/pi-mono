@@ -109,121 +109,9 @@ function deriveCandidateOverlays(canary: F36ExplorerProjection) {
       review_state: canary.review_state,
       accepted: canary.accepted,
       authority_state: proof.authority_state,
-      coverage_state: 'partial',
-      gap_state: 'candidate_pending_review',
-      exists_in_sparta_corpus: Boolean(target),
-      closure_action: 'review_candidate_path',
       compliance_credit: 0,
     }
   }).sort((a, b) => a.sparta_control_id.localeCompare(b.sparta_control_id))
-}
-
-const actorTemplates = [
-  {
-    actor_template_id: 'opportunistic_low_capability',
-    label: 'Opportunistic / script-kiddie',
-    capability: 'low',
-    intent: 'opportunistic disruption or exploration',
-    targeting: 'broad_non_specific',
-    authority: 'analytic_template_only',
-  },
-  {
-    actor_template_id: 'cybercriminal_or_contractor',
-    label: 'Cybercriminal / contractor',
-    capability: 'moderate',
-    intent: 'financial gain, access resale, or supply-chain leverage',
-    targeting: 'sector_or_program_opportunistic',
-    authority: 'analytic_template_only',
-  },
-  {
-    actor_template_id: 'insider_or_maintainer_misuse',
-    label: 'Insider / maintainer misuse',
-    capability: 'privileged_local_context',
-    intent: 'misuse, sabotage, unauthorized change, or coercion',
-    targeting: 'component_or_system_specific',
-    authority: 'analytic_template_only',
-  },
-  {
-    actor_template_id: 'advanced_persistent_or_state_aligned',
-    label: 'Advanced persistent / state-aligned',
-    capability: 'high',
-    intent: 'espionage, pre-positioning, mission degradation, or strategic effect',
-    targeting: 'specific_mission_program_or_supply_chain',
-    authority: 'analytic_template_only',
-  },
-]
-
-function actorApplicabilityForOverlay(overlay: ReturnType<typeof deriveCandidateOverlays>[number]) {
-  const shared = {
-    target_kind: 'candidate_control',
-    target_id: overlay.sparta_control_id,
-    target_name: overlay.sparta_control_name,
-    gap_state: overlay.gap_state,
-    classification_authority: 'analytic_template_only',
-    coverage_credit: 0,
-    source_refs: [
-      `sparta_control:${overlay.sparta_control_id}`,
-      `path_signature:${overlay.path_signature}`,
-      'nist:threat_source_capability_intent_targeting',
-    ],
-  }
-
-  const relevant = (actor_template_id: string, priority_band: string, basis_codes: string[]) => ({
-    ...shared,
-    actor_template_id,
-    applicability: 'RELEVANT',
-    priority_band,
-    basis_codes,
-  })
-  const unknown = (actor_template_id: string, basis_codes: string[] = ['no_actor_specific_evidence']) => ({
-    ...shared,
-    actor_template_id,
-    applicability: 'UNKNOWN',
-    priority_band: 'unranked',
-    basis_codes,
-  })
-
-  if (overlay.sparta_control_id === 'DE-0012') {
-    return [
-      unknown('opportunistic_low_capability', ['component_collusion_requires_coordination_beyond_basic_template']),
-      relevant('cybercriminal_or_contractor', 'P2', ['supply_chain_leverage', 'multi_component_coordination']),
-      relevant('insider_or_maintainer_misuse', 'P1', ['component_access', 'concealment_coordination']),
-      relevant('advanced_persistent_or_state_aligned', 'P1', ['stealthy_multi_component_coordination', 'mission_specific_targeting']),
-    ]
-  }
-  if (overlay.sparta_control_id === 'EX-0001.02') {
-    return [
-      unknown('opportunistic_low_capability', ['internal_bus_context_not_established_for_low_capability_actor']),
-      unknown('cybercriminal_or_contractor', ['no_financial_or_access_resale_basis_in_candidate_path']),
-      relevant('insider_or_maintainer_misuse', 'P1', ['internal_commanding_context', 'replay_or_sequence_abuse']),
-      relevant('advanced_persistent_or_state_aligned', 'P1', ['mission_degradation_potential', 'internal_bus_replay']),
-    ]
-  }
-  if (overlay.sparta_control_id === 'PER-0005') {
-    return [
-      unknown('opportunistic_low_capability', ['valid_credential_access_not_established_for_low_capability_actor']),
-      relevant('cybercriminal_or_contractor', 'P1', ['credentialed_access', 'access_resale_or_persistence']),
-      relevant('insider_or_maintainer_misuse', 'P1', ['privileged_account_context', 'credential_lifecycle_gap']),
-      relevant('advanced_persistent_or_state_aligned', 'P1', ['persistent_access', 'stealthy_follow_on_operations']),
-    ]
-  }
-  return actorTemplates.map((template) => unknown(template.actor_template_id, ['no_template_rule_for_candidate_control']))
-}
-
-function unknownRequirementBucket(count: number) {
-  return actorTemplates.map((template) => ({
-    target_kind: 'unclassified_requirement_bucket',
-    target_id: 'UNKNOWN_NO_SPARTA_TARGET',
-    target_name: 'F36 requirements without extracted SPARTA target',
-    actor_template_id: template.actor_template_id,
-    applicability: 'UNKNOWN',
-    priority_band: 'unranked',
-    basis_codes: ['no_extracted_sparta_target', 'do_not_infer_actor_priority_without_technique_mapping'],
-    source_refs: ['f36_requirements:r3_candidate'],
-    classification_authority: 'analytic_template_only',
-    coverage_credit: 0,
-    requirement_count: count,
-  }))
 }
 
 export async function loadF36ExplorerReadModels() {
@@ -289,53 +177,6 @@ export async function loadF36ExplorerReadModels() {
     candidate_overlays: candidateOverlays,
     counts,
   }))
-  const threatMatrixReconciliation = {
-    schema: 'f36.threat_matrix_reconciliation.v1',
-    basis: 'F36 candidate target controls reconciled against the loaded SPARTA corpus release',
-    sparta_release_id: canary.path_resolution.sparta_release_id,
-    sparta_release_hash: canary.path_resolution.sparta_release_hash,
-    status_counts: {
-      covered: 0,
-      partial: candidateOverlays.length,
-      missing_coverage: 0,
-      specified_absent_from_sparta_corpus: 0,
-      unspecified_requirements: counts.requirements_unmapped,
-    },
-    actor_templates: actorTemplates,
-    candidate_target_controls: candidateOverlays.map((overlay) => ({
-      requirement_id: overlay.requirement_id,
-      requirement_revision_id: overlay.requirement_revision_id,
-      component_family_id: overlay.component_family_id,
-      sparta_control_id: overlay.sparta_control_id,
-      sparta_control_name: overlay.sparta_control_name,
-      coverage_state: overlay.coverage_state,
-      gap_state: overlay.gap_state,
-      exists_in_sparta_corpus: overlay.exists_in_sparta_corpus,
-      review_state: overlay.review_state,
-      accepted: overlay.accepted,
-      authority_state: overlay.authority_state,
-      compliance_credit: overlay.compliance_credit,
-      closure_action: overlay.closure_action,
-      closure_target: overlay.path_signature,
-    })),
-    absent_from_sparta_corpus: [],
-    actor_applicability: [
-      ...candidateOverlays.flatMap(actorApplicabilityForOverlay),
-      ...unknownRequirementBucket(counts.requirements_unmapped),
-    ],
-    closure_backlog: [
-      {
-        gap_state: 'candidate_pending_review',
-        count: candidateOverlays.length,
-        next_action: 'Review each persisted candidate path; promote accepted paths to reviewed evidence or reject them with a reason.',
-      },
-      {
-        gap_state: 'f36_requirement_without_sparta_target',
-        count: counts.requirements_unmapped,
-        next_action: 'Extract and adjudicate SPARTA target controls for unmapped F36 requirements before treating them as matrix coverage gaps.',
-      },
-    ],
-  }
   const common = {
     projection_fingerprint: projectionFingerprint,
     counts_fingerprint: countsFingerprint,
@@ -371,7 +212,6 @@ export async function loadF36ExplorerReadModels() {
   const threatMatrix = {
     schema: 'f36.explorer_threat_matrix_read_model.v1',
     ...common,
-    reconciliation: threatMatrixReconciliation,
     candidate_overlays: candidateOverlays,
     reviewed_overlays: [],
     canary_projection: canary,

@@ -7,7 +7,7 @@
  *
  * Pattern: composition-patterns/state-decouple-implementation
  */
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { ThreatMatrix } from '../shared/ThreatMatrix'
 import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState, ThreatMatrixActions, ThreatMatrixMeta, DatalakeOption, TraceabilityChunk, EvidenceCase, ThreatRelationship } from '../shared/ThreatMatrix'
 import { API_ORIGIN, MEMORY_API_ROOT } from '../../../lib/apiBase'
@@ -116,28 +116,6 @@ export function ThreatMatrixView() {
   useEffect(() => {
     if (f36ProjectionError) setError(f36ProjectionError)
   }, [f36ProjectionError])
-
-  const matrixSourceTechniques = useMemo<RawTechnique[]>(() => {
-    const byId = new Map<string, RawTechnique>(
-      rawTechniques.map((technique) => [technique.control_id, technique]),
-    )
-    if (!f36Projection) return [...byId.values()]
-
-    for (const proof of f36Projection.path_resolution.path_proofs) {
-      for (const node of proof.nodes) {
-        if (node.source_framework.toUpperCase() !== 'SPARTA') continue
-        if (!byId.has(node.control_id)) {
-          byId.set(node.control_id, {
-            control_id: node.control_id,
-            name: node.name,
-            description: `Persisted local ${node.source_version} node in replay-family candidate path ${proof.path_signature}.`,
-          })
-        }
-      }
-    }
-
-    return [...byId.values()]
-  }, [rawTechniques, f36Projection])
 
   // Curation actions for Brandon
   const saveMatrixAmendment = useCallback(async () => {
@@ -356,10 +334,12 @@ export function ThreatMatrixView() {
   }, [activeDatalake, f36Projection, f36ProjectionLoading])
 
   // Transform raw docs → ThreatTechnique[]
-  const techniques: ThreatTechnique[] = matrixSourceTechniques
+  const techniques: ThreatTechnique[] = rawTechniques
     .filter((t) => {
       if (!tacticForTechnique(t.control_id)) return false
-      if (!showSubtechniques && t.control_id.includes('.')) return false
+      const isMappedF36Subtechnique = activeDatalake === 'f36'
+        && Boolean(f36ThreatMatrix?.candidate_overlays.some((overlay) => overlay.sparta_control_id === t.control_id))
+      if (!showSubtechniques && t.control_id.includes('.') && !isMappedF36Subtechnique) return false
       return true
     })
     .map((t) => {
@@ -376,7 +356,7 @@ export function ThreatMatrixView() {
           ? `${t.name} · ${f36Projection!.requirement.requirement_id}`
           : t.name,
         description: isReplayCandidate
-          ? `Agent candidate / INCONCLUSIVE. ${f36Projection!.requirement.requirement_revision_id}; family=${f36Projection!.engineering_qra_family.engineering_qra_family_id}; review=${f36Projection!.review_state}; accepted=false; fingerprint=${f36Projection!.projection_fingerprint}. Exact persisted paths are traceability only and provide zero compliance credit.`
+          ? `Agent candidate / INCONCLUSIVE. ${f36Projection!.requirement.requirement_revision_id}; review=${f36Projection!.review_state}; accepted=false; fingerprint=${f36Projection!.projection_fingerprint}. Exact persisted paths are traceability only and provide zero compliance credit.`
           : t.description,
         tactic: tacticForTechnique(t.control_id) ?? 'Unknown',
         coverage,
@@ -512,7 +492,7 @@ export function ThreatMatrixView() {
   }
 
   const meta: ThreatMatrixMeta = {
-    totalControls: techniques.length,
+    totalControls: rawTechniques.length,
     source: 'explorer',
     analysisPipelineDegraded,
     boundEvidenceCaseId: null,
@@ -520,7 +500,8 @@ export function ThreatMatrixView() {
     activeDatalake: activeDatalake || undefined,
   }
 
-  const { mode: pageDistanceMode, setMode: setPageDistanceMode } = usePageDistanceMode()
+  const { mode: pageDistanceMode } = usePageDistanceMode()
+
   // Compose the shared compound component
   return (
     <PageDistanceRoot qid="threat-matrix-mode-root">
@@ -528,15 +509,16 @@ export function ThreatMatrixView() {
       mode={pageDistanceMode}
       techniques={techniques}
       loading={loading}
-      analysisPipelineDegraded={analysisPipelineDegraded}
-      onSelectTechnique={(tech) => {
-        void selectTechnique(tech)
-        setPageDistanceMode('lean-in')
-      }}
+      onSelectTechnique={(tech) => { void selectTechnique(tech) }}
     >
     <ThreatMatrix.Provider state={state} actions={actions} meta={meta}>
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
-        {error && !f36Projection && (
+        {activeDatalake === 'f36' && f36ThreatMatrix && (
+          <div data-qid="threat-matrix:f36-corpus-coverage" data-projection-fingerprint={f36ThreatMatrix.projection_fingerprint} style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,170,0,0.4)', background: 'rgba(255,170,0,0.08)', color: '#e6edf3', fontSize: 12 }}>
+            <strong style={{ color: '#ffaa00' }}>F-36 candidate overlay</strong> · {f36ThreatMatrix.counts.requirements_total.toLocaleString()} requirements · {f36ThreatMatrix.candidate_overlays.length} visible candidate paths · 0 reviewed paths · 0 compliance credit
+          </div>
+        )}
+        {error && (
           <div style={{ padding: '12px 16px', backgroundColor: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', borderBottom: '1px solid rgba(239, 68, 68, 0.3)' }}>
             Error loading techniques: {error}
           </div>
@@ -624,39 +606,6 @@ export function ThreatMatrixView() {
             </div>
         </div> : null}
 
-        {f36Projection && activeDatalake === 'f36' && (
-          <div
-            data-qid="threat-matrix:f36-shared-projection"
-            data-requirement-revision-id={f36Projection.requirement.requirement_revision_id}
-            data-projection-fingerprint={f36Projection.projection_fingerprint}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
-              flexWrap: 'wrap',
-              padding: '8px 16px',
-              borderBottom: '1px solid rgba(255, 170, 0, 0.35)',
-              background: 'rgba(255, 170, 0, 0.08)',
-              fontSize: 11,
-            }}
-          >
-            <strong style={{ color: '#ffaa00' }}>
-              Agent candidate / {f36Projection.evidence_verdict}
-            </strong>
-            <span style={{ color: '#e6edf3' }}>
-              {f36Projection.requirement.requirement_revision_id}
-            </span>
-            <span style={{ color: '#9fb0bd' }}>
-              {f36Projection.engineering_qra_family.engineering_qra_family_id}
-            </span>
-            <span style={{ color: '#9fb0bd' }}>
-              pending review · accepted=false · grounded/compliance credit=0
-            </span>
-            <code style={{ color: '#9fb0bd', overflowWrap: 'anywhere' }}>
-              {f36Projection.projection_fingerprint}
-            </code>
-          </div>
-        )}
         <ThreatMatrix.Header />
         <div
           data-qid="threat-matrix:layout:squeeze"
