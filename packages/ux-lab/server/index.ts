@@ -18,6 +18,7 @@ import cookieParser from 'cookie-parser'
 import { authMiddleware, generateKey, listKeys, revokeAll } from './auth.js'
 import { buildQraReviewPatch, persistQraReview } from './qraReview.js'
 import { F36ExplorerProjectionError, loadF36ExplorerProjection } from './f36ExplorerProjection.js'
+import { F36ExplorerReadModelError, loadF36ExplorerReadModels } from './f36ExplorerReadModels.js'
 import { createServer } from 'http'
 import { request as httpRequest } from 'http'
 import { request as httpsRequest } from 'https'
@@ -101,6 +102,30 @@ app.get('/api/f36/explorer-projection', async (_req, res) => {
     })
   }
 })
+
+function sendF36ReadModelError(res: express.Response, error: unknown) {
+  if (error instanceof F36ExplorerReadModelError) {
+    return res.status(error.statusCode).json({ error: error.code, detail: error.message, live: false, mocked: false })
+  }
+  return res.status(500).json({ error: 'F36_READ_MODEL_FAILED', detail: error instanceof Error ? error.message : String(error), live: false, mocked: false })
+}
+
+for (const [path, key] of [
+  ['/api/f36/explorer/v1/projection', 'projection'],
+  ['/api/f36/explorer/v1/posture', 'posture'],
+  ['/api/f36/explorer/v1/threat-matrix', 'threatMatrix'],
+  ['/api/f36/explorer/v1/supply-chain', 'supplyChain'],
+] as const) {
+  app.get(path, async (_req, res) => {
+    try {
+      const models = await loadF36ExplorerReadModels()
+      res.setHeader('Cache-Control', 'no-store')
+      return res.json(models[key])
+    } catch (error) {
+      return sendF36ReadModelError(res, error)
+    }
+  })
+}
 
 const MEMORY_SOCKET = '/run/user/1000/embry/memory.sock'
 const MEMORY_HTTP_URL = process.env.MEMORY_HTTP_URL ?? 'http://127.0.0.1:8601'

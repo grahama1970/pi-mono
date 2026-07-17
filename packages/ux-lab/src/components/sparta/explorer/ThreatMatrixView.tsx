@@ -15,7 +15,7 @@ import { PageDistanceRoot, usePageDistanceMode } from './pageDistance/PageDistan
 import { deriveCoveragePagePurposeState, type CoverageHealthSnapshot } from './pagePurposeContracts'
 import { ThreatMatrixDistanceShell } from './pageDistance/ThreatMatrixDistanceViews'
 import { useMatrixCuration } from './matrixCurationContext'
-import { useF36ExplorerProjection } from '../../../hooks/usePostureData'
+import { useF36ThreatMatrixReadModel } from '../../../hooks/useF36ExplorerReadModels'
 
 const DAEMON = MEMORY_API_ROOT
 const COVERAGE_HEALTH_CACHE_KEY = 'sparta.coverageHealth.lastPayload'
@@ -96,7 +96,8 @@ export function ThreatMatrixView() {
   const [loadingDetail, setLoadingDetail] = useState(false)
   const [activeDatalake, setActiveDatalake] = useState<string>('f36')
   const [evidenceMap, setEvidenceMap] = useState<Map<string, { verdict: string; grade: string; count: number }>>(new Map())
-  const { projection: f36Projection, loading: f36ProjectionLoading, error: f36ProjectionError } = useF36ExplorerProjection()
+  const { data: f36ThreatMatrix, loading: f36ProjectionLoading, error: f36ProjectionError } = useF36ThreatMatrixReadModel()
+  const f36Projection = f36ThreatMatrix?.canary_projection ?? null
   const [graphRelationships, setGraphRelationships] = useState<ThreatRelationship[]>([])
   const [graphHoveredTactic, setGraphHoveredTactic] = useState<string | null>(null)
   const [graphLockedTactic, setGraphLockedTactic] = useState<string | null>('Reconnaissance')
@@ -336,7 +337,9 @@ export function ThreatMatrixView() {
   const techniques: ThreatTechnique[] = rawTechniques
     .filter((t) => {
       if (!tacticForTechnique(t.control_id)) return false
-      if (!showSubtechniques && t.control_id.includes('.')) return false
+      const isMappedF36Subtechnique = activeDatalake === 'f36'
+        && Boolean(f36ThreatMatrix?.candidate_overlays.some((overlay) => overlay.sparta_control_id === t.control_id))
+      if (!showSubtechniques && t.control_id.includes('.') && !isMappedF36Subtechnique) return false
       return true
     })
     .map((t) => {
@@ -510,6 +513,11 @@ export function ThreatMatrixView() {
     >
     <ThreatMatrix.Provider state={state} actions={actions} meta={meta}>
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
+        {activeDatalake === 'f36' && f36ThreatMatrix && (
+          <div data-qid="threat-matrix:f36-corpus-coverage" data-projection-fingerprint={f36ThreatMatrix.projection_fingerprint} style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,170,0,0.4)', background: 'rgba(255,170,0,0.08)', color: '#e6edf3', fontSize: 12 }}>
+            <strong style={{ color: '#ffaa00' }}>F-36 candidate overlay</strong> · {f36ThreatMatrix.counts.requirements_total.toLocaleString()} requirements · {f36ThreatMatrix.candidate_overlays.length} visible candidate paths · 0 reviewed paths · 0 compliance credit
+          </div>
+        )}
         {error && (
           <div style={{ padding: '12px 16px', backgroundColor: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', borderBottom: '1px solid rgba(239, 68, 68, 0.3)' }}>
             Error loading techniques: {error}

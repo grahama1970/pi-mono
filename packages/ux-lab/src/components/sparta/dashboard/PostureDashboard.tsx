@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useRegisterAction } from '../../../hooks/useRegisterAction'
 import { usePageDistanceMode } from '../explorer/pageDistance/PageDistanceMode'
 import { usePostureData } from '../../../hooks/usePostureData'
+import { useF36PostureReadModel } from '../../../hooks/useF36ExplorerReadModels'
 import type { Family, RiskControl, BrokenTrace, ClaimReview } from '../../../hooks/usePostureData'
 import { EMBRY, card, label, heading } from '../common/EmbryStyle'
 import { Posture10FtAmbient } from './Posture10FtAmbient'
@@ -910,7 +911,7 @@ export default function PostureDashboard({ onNavigateToControl, onAnalyzeProofCh
   useRegisterAction('posture-proof-chain-drawer', { app: 'sparta-explorer', action: 'POSTURE_MACRO_PROOF_CHAIN', label: 'Posture PROOF CHAIN macro', description: 'Enter lean-in and open proof-chain drawer', tags: ['streamdeck', 'voice'] })
 
   const { loading, error, posture, traceability, assurance } = usePostureData()
-  const f36Projection = posture.f36Projection
+  const { data: f36Posture, loading: f36Loading, error: f36Error } = useF36PostureReadModel()
   const [activeTab, setActiveTab] = useState<Exclude<Tab, 'Posture'>>('Traceability')
   const { mode: postureMode, setMode: setPostureMode } = usePageDistanceMode()
   const [selectedBlockerId, setSelectedBlockerId] = useState<string | null>(() => {
@@ -939,11 +940,12 @@ useEffect(() => {
 
       {!loading && !error && (
         <>
-          {f36Projection && (
+          {f36Loading && <section data-qid="posture:f36-corpus-loading" style={{ border: `1px solid ${EMBRY.border}`, padding: 14 }}>Loading live F-36 corpus posture...</section>}
+          {f36Error && <section data-qid="posture:f36-corpus-unavailable" style={{ border: `1px solid ${EMBRY.red}`, color: EMBRY.red, padding: 14 }}>F-36 corpus posture unavailable: {f36Error}</section>}
+          {f36Posture && (
             <section
-              data-qid="posture:f36-shared-projection"
-              data-requirement-revision-id={f36Projection.requirement.requirement_revision_id}
-              data-projection-fingerprint={f36Projection.projection_fingerprint}
+              data-qid="posture:f36-corpus-readiness"
+              data-projection-fingerprint={f36Posture.projection_fingerprint}
               style={{
                 border: `1px solid ${EMBRY.amber}`,
                 background: 'rgba(255, 170, 0, 0.08)',
@@ -952,16 +954,13 @@ useEffect(() => {
                 gap: 6,
               }}
             >
-              <div style={{ ...label, color: EMBRY.amber }}>F-36 SHARED PROJECTION · AGENT CANDIDATE / INCONCLUSIVE</div>
-              <strong>{f36Projection.requirement.requirement_revision_id}</strong>
-              <div style={{ color: EMBRY.dim }}>
-                Family {f36Projection.engineering_qra_family.engineering_qra_family_id} · review {f36Projection.review_state} · accepted={String(f36Projection.accepted)} · {f36Projection.quarantine_state}
-              </div>
-              <div>
-                Counted once: assessed 1 · applicable 1 · pending review 1 · grounded numerator 0 · compliance credit 0
-              </div>
+              <div style={{ ...label, color: EMBRY.amber }}>SYNTHETIC F-36 CORPUS · LIVE SOURCE · NON-OPERATIONAL</div>
+              <strong data-qid="posture:f36-readiness-verdict" style={{ fontSize: 24 }}>{f36Posture.readiness}</strong>
+              <div data-qid="posture:f36-corpus-counts">{f36Posture.counts.requirements_total.toLocaleString()} requirements · {f36Posture.counts.component_families_with_requirements} active component families · {f36Posture.counts.requirements_reviewed} reviewed</div>
+              <div data-qid="posture:f36-grounding-counts">Grounded 0 · accepted evidence cases 0 · candidate mapped {f36Posture.counts.requirements_candidate_mapped} · compliance credit 0</div>
+              <div style={{ color: EMBRY.dim }}>{f36Posture.reason_codes.join(' · ')}</div>
               <code style={{ color: EMBRY.dim, fontSize: 10, overflowWrap: 'anywhere' }}>
-                projection fingerprint: {f36Projection.projection_fingerprint}
+                projection fingerprint: {f36Posture.projection_fingerprint}
               </code>
             </section>
           )}
