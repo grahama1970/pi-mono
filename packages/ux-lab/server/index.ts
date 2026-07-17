@@ -23,7 +23,7 @@ import { createServer } from 'http'
 import { request as httpRequest } from 'http'
 import { request as httpsRequest } from 'https'
 import { createHash } from 'crypto'
-import { execFile, exec, spawn } from 'child_process'
+import { execFile, exec, spawn, ChildProcess } from 'child_process'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { readdir, readFile, writeFile, mkdir, unlink, stat, copyFile, rename as fsRename } from 'fs/promises'
@@ -173,6 +173,341 @@ const AGENT_SKILLS_ROOT = process.env.AGENT_SKILLS_ROOT ?? '/home/graham/workspa
 const PERSONAPLEX_RECEIPT_ROOT = resolve(AGENT_SKILLS_ROOT, 'receipts/memory_grounded_voice_answer')
 const PERSONAPLEX_RECEIPT_SCRIPT = resolve(AGENT_SKILLS_ROOT, 'tools/personaplex/run_memory_grounded_voice_answer_receipt.py')
 const PERSONAPLEX_ALLOWED_CASES = new Set(['embry_kai_boundary', 'horus_tember'])
+
+type ActiveEmbryPlayback = {
+  sessionId: string
+  turnId: string
+  generation: number
+  child: ChildProcess
+  exitPromise: Promise<PlaybackExitResult>
+  pid: number
+  ppid: number
+  procStartTicks: string
+  argv: string[]
+  sinkTarget: string
+  wavPath: string
+  wavSha256: string
+  startedAt: string
+}
+
+const activeEmbryPlaybackBySession = new Map<string, ActiveEmbryPlayback>()
+const playbackGenerationBySession = new Map<string, number>()
+
+type ProcIdentity = { ppid: string; starttime: string }
+type PlaybackExitResult = { code: number | null; signal: NodeJS.Signals | null }
+type TimedPlaybackExitResult = PlaybackExitResult & { timedOut: boolean }
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+function parseProcStat(content: string): { ppid: string; starttime: string } | null {
+  const closeParen = content.lastIndexOf(')')
+  if (closeParen === -1) return null
+  const after = content.slice(closeParen + 2).trimStart()
+  const parts = after.split(/\s+/)
+  if (parts.length < 20) return null
+  return {
+    ppid: parts[1] || '',
+    starttime: parts[19] || '',
+  }
+}
+
+async function readProcIdentity(pid: number): Promise<ProcIdentity> {
+  const statContent = await readFile(`/proc/${pid}/stat`, 'utf8')
+  const parsed = parseProcStat(statContent)
+  if (!parsed) throw new Error(`Could not parse /proc/${pid}/stat`)
+  return parsed
+}
+
+function waitForChildExit(child: ChildProcess): Promise<PlaybackExitResult> {
+  return new Promise((resolve) => {
+    child.once('exit', (code, signal) => resolve({ code, signal }))
+  })
+}
+
+async function ownedPlaybackIsAlive(record: ActiveEmbryPlayback): Promise<boolean> {
+  try {
+    process.kill(record.pid, 0)
+    const identity = await readProcIdentity(record.pid)
+    return identity.starttime === record.procStartTicks && identity.ppid === String(process.pid)
+  } catch {
+    return false
+  }
+}
+
+function cleanupKill(child: ChildProcess, signal: NodeJS.Signals): void {
+  try {
+    child.kill(signal)
+  } catch {}
+}
+
+async function startEmbryPlayback(input: {
+  sessionId: string
+  turnId: string
+  wavPath: string
+  wavSha256: string
+}): Promise<Record<string, unknown>> {
+  const { sessionId, turnId, wavPath, wavSha256 } = input
+  const sinkTarget = process.env.EMBRY_PLAYBACK_TARGET ?? '65'
+
+  const existing = activeEmbryPlaybackBySession.get(sessionId)
+  if (existing) {
+    if (await ownedPlaybackIsAlive(existing)) {
+      throw new Error(`Session ${sessionId} already has active playback for turn ${existing.turnId}`)
+    }
+    activeEmbryPlaybackBySession.delete(sessionId)
+  }
+
+  const argv = ['pw-play', '--target', sinkTarget, wavPath]
+  const child = spawn(argv[0], argv.slice(1), {
+    shell: false,
+    detached: false,
+    stdio: ['ignore', 'ignore', 'ignore'],
+    env: process.env,
+  })
+  const childErrorPromise = new Promise<Error>((resolve) => {
+    child.once('error', (error) => resolve(error))
+  })
+  const exitPromise = waitForChildExit(child)
+
+  const spawnProblem = await Promise.race([
+    childErrorPromise.then((error) => ({ type: 'error' as const, error })),
+    delay(25).then(() => null),
+  ])
+  if (spawnProblem) {
+    throw new Error(`Failed to start pw-play: ${spawnProblem.error.message}`)
+  }
+
+  const pid = child.pid
+  if (!pid) {
+    throw new Error('pw-play did not expose a child pid')
+  }
+  const ppid = process.pid
+  let procStartTicks = ''
+
+  try {
+    const parsed = await readProcIdentity(pid)
+    if (!parsed || parsed.ppid !== String(ppid)) {
+      cleanupKill(child, 'SIGTERM')
+      throw new Error(`Unexpected PPID in /proc/${pid}/stat: ${parsed?.ppid ?? 'unknown'}`)
+    }
+    procStartTicks = parsed.starttime
+  } catch (err) {
+    cleanupKill(child, 'SIGTERM')
+    throw new Error(`Failed to read or validate /proc/${pid}/stat: ${err instanceof Error ? err.message : String(err)}`)
+  }
+
+  let procArgv: string[] = []
+  try {
+    const cmdlineBuf = await readFile(`/proc/${pid}/cmdline`)
+    procArgv = cmdlineBuf.toString().split('\0').filter((s) => s.length > 0)
+  } catch (err) {
+    cleanupKill(child, 'SIGTERM')
+    throw new Error(`Failed to read /proc/${pid}/cmdline: ${err instanceof Error ? err.message : String(err)}`)
+  }
+
+  const earlyProblem = await Promise.race([
+    childErrorPromise.then((error) => ({ type: 'error' as const, error })),
+    exitPromise.then((exit) => ({ type: 'exit' as const, exit })),
+    delay(200).then(() => null),
+  ])
+
+  if (earlyProblem?.type === 'error') {
+    throw new Error(`pw-play errored during 200ms gate: ${earlyProblem.error.message}`)
+  }
+  if (earlyProblem?.type === 'exit') {
+    throw new Error(`pw-play exited immediately (code=${earlyProblem.exit.code}, signal=${earlyProblem.exit.signal})`)
+  }
+
+  try {
+    process.kill(pid, 0)
+  } catch {
+    throw new Error(`pw-play process ${pid} not alive after 200ms gate`)
+  }
+
+  const generation = (playbackGenerationBySession.get(sessionId) ?? 0) + 1
+  playbackGenerationBySession.set(sessionId, generation)
+
+  const startedAt = new Date().toISOString()
+  const record: ActiveEmbryPlayback = {
+    sessionId,
+    turnId,
+    generation,
+    child,
+    exitPromise,
+    pid,
+    ppid,
+    procStartTicks,
+    argv: procArgv.length > 0 ? procArgv : argv,
+    sinkTarget,
+    wavPath,
+    wavSha256: `sha256:${wavSha256}`,
+    startedAt,
+  }
+
+  exitPromise.then(() => {
+    const current = activeEmbryPlaybackBySession.get(sessionId)
+    if (current && current.generation === generation && current.child === child) {
+      activeEmbryPlaybackBySession.delete(sessionId)
+    }
+  })
+
+  activeEmbryPlaybackBySession.set(sessionId, record)
+
+  return {
+    schema: 'embry.voice.playback_started.v1',
+    live: true,
+    mocked: false,
+    owner_service: 'ux-lab-api.service',
+    owner_process_pid: ppid,
+    session_id: sessionId,
+    turn_id: turnId,
+    pid,
+    ppid,
+    proc_start_ticks: procStartTicks,
+    argv: procArgv.length > 0 ? procArgv : argv,
+    sink_target: sinkTarget,
+    wav_path: wavPath,
+    wav_sha256: `sha256:${wavSha256}`,
+    started_at: startedAt,
+  }
+}
+
+async function interruptEmbryPlayback(input: {
+  sessionId: string
+  expectedPlayingTurnId: string
+  interrupterTurnId: string
+  triggerEventId: string
+  triggerEventType: 'listener.audio_turn_started'
+  triggerSequence: number
+}): Promise<Record<string, unknown>> {
+  const { sessionId, expectedPlayingTurnId, interrupterTurnId, triggerEventId, triggerEventType, triggerSequence } = input
+
+  const record = activeEmbryPlaybackBySession.get(sessionId)
+  if (!record) {
+    throw new Error(`No active playback for session ${sessionId}`)
+  }
+
+  if (record.turnId !== expectedPlayingTurnId) {
+    throw new Error(`Active turn ${record.turnId} does not match expected ${expectedPlayingTurnId}`)
+  }
+
+  if (interrupterTurnId === record.turnId) {
+    throw new Error('Interrupter turn equals active turn')
+  }
+
+  if (triggerEventType !== 'listener.audio_turn_started') {
+    throw new Error(`Unsupported trigger event type: ${triggerEventType}`)
+  }
+  if (!Number.isSafeInteger(triggerSequence) || triggerSequence <= 0) {
+    throw new Error('trigger_sequence must be a positive integer')
+  }
+
+  let aliveBefore = false
+  try {
+    process.kill(record.pid, 0)
+    aliveBefore = true
+  } catch {
+    throw new Error(`Stored PID ${record.pid} is no longer alive`)
+  }
+
+  let identity: ProcIdentity
+  try {
+    identity = await readProcIdentity(record.pid)
+  } catch {
+    throw new Error(`Failed to read /proc/${record.pid}/stat for identity verification`)
+  }
+
+  if (identity.starttime !== record.procStartTicks) {
+    throw new Error(`/proc/${record.pid}/stat start time mismatch`)
+  }
+
+  if (identity.ppid !== String(process.pid)) {
+    throw new Error(`Child PPID ${identity.ppid} does not match owner ${process.pid}`)
+  }
+
+  const startTerminate = Date.now()
+  const exitPromise = record.exitPromise.then((exit): TimedPlaybackExitResult => ({ ...exit, timedOut: false }))
+  const timeoutPromise = delay(2000).then((): TimedPlaybackExitResult => ({ code: null, signal: null, timedOut: true }))
+  const killSent = record.child.kill('SIGTERM')
+  if (!killSent) {
+    throw new Error(`SIGTERM was not delivered to process ${record.pid}`)
+  }
+
+  const result = await Promise.race([exitPromise, timeoutPromise])
+  const terminationLatencyMs = Date.now() - startTerminate
+
+  if (result.timedOut) {
+    // SIGKILL for cleanup only; endpoint must return FAIL and non-200.
+    cleanupKill(record.child, 'SIGKILL')
+    throw new Error('SIGTERM did not terminate child within 2000ms')
+  }
+
+  const sigtermExitObserved = result.signal === 'SIGTERM' && result.code === null
+  const pwPlayHandledSigterm = result.signal === null && result.code === 1
+  if (!sigtermExitObserved && !pwPlayHandledSigterm) {
+    throw new Error(`Unexpected exit: code=${result.code}, signal=${result.signal}`)
+  }
+  const terminatedAt = new Date().toISOString()
+
+  let aliveAfter = false
+  try {
+    process.kill(record.pid, 0)
+    aliveAfter = true
+  } catch {
+    aliveAfter = false
+  }
+
+  if (aliveAfter) {
+    throw new Error(`Process ${record.pid} still alive after SIGTERM`)
+  }
+
+  let procIdentityAbsent = true
+  try {
+    await readFile(`/proc/${record.pid}/stat`, 'utf8')
+    procIdentityAbsent = false
+  } catch {
+    procIdentityAbsent = true
+  }
+
+  if (!procIdentityAbsent) {
+    throw new Error(`Old /proc identity for PID ${record.pid} is still present`)
+  }
+
+  const current = activeEmbryPlaybackBySession.get(sessionId)
+  if (current && current.generation === record.generation && current.child === record.child) {
+    activeEmbryPlaybackBySession.delete(sessionId)
+  }
+
+  return {
+    schema: 'embry.voice.playback_interrupt.v1',
+    status: 'PASS',
+    live: true,
+    mocked: false,
+    owner_service: 'ux-lab-api.service',
+    owner_process_pid: process.pid,
+    session_id: sessionId,
+    old_turn_id: record.turnId,
+    old_pid: record.pid,
+    old_ppid: record.ppid,
+    old_proc_start_ticks: record.procStartTicks,
+    interrupter_turn_id: interrupterTurnId,
+    trigger_event_id: triggerEventId,
+    trigger_event_type: triggerEventType,
+    trigger_sequence: triggerSequence,
+    alive_before: aliveBefore,
+    signal_requested: 'SIGTERM',
+    exit_code: result.code,
+    exit_signal: result.signal,
+    exit_matches_requested_signal: sigtermExitObserved,
+    exit_reason: sigtermExitObserved ? 'requested_signal' : 'pw_play_handled_sigterm',
+    alive_after: false,
+    proc_identity_absent_after: true,
+    termination_latency_ms: terminationLatencyMs,
+    terminated_at: terminatedAt,
+  }
+}
 
 function isActiveWatchAnnotationLifecycle(document: JsonRecord): boolean {
   return !['superseded', 'discarded', 'cleared', 'deleted'].includes(String(document.lifecycle_status ?? 'current'))
@@ -10935,18 +11270,31 @@ function buildEmbryInterruptPolicy(tone: string, requestedPolicy: JsonRecord | n
     interruptible: true,
     barge_in_action: 'cancel_old_turn',
     bargeInAction: 'cancel_old_turn',
-    duck_on_user_speech: true,
-    duckOnUserSpeech: true,
-    skip_stale_chunks: true,
-    skipStaleChunks: true,
+    duck_on_user_speech: false,
+    duckOnUserSpeech: false,
+    skip_stale_chunks: false,
+    skipStaleChunks: false,
     new_turn_wins: true,
     newTurnWins: true,
+    trigger_event: 'listener.audio_turn_started',
+    triggerEvent: 'listener.audio_turn_started',
+    implementation: 'whole_wav_pw_play_process_cancel_v1',
     acknowledgement_tone: oneAtATime ? 'one_at_a_time_interrupt' : 'interrupted',
     acknowledgementTone: oneAtATime ? 'one_at_a_time_interrupt' : 'interrupted',
     acknowledgement_text: oneAtATime ? 'Hey, one at a time?' : 'Okay, stopping that.',
     acknowledgementText: oneAtATime ? 'Hey, one at a time?' : 'Okay, stopping that.',
   }
-  return { ...defaults, ...(requestedInterruptPolicy || {}) }
+  return {
+    ...defaults,
+    ...(requestedInterruptPolicy || {}),
+    duck_on_user_speech: false,
+    duckOnUserSpeech: false,
+    skip_stale_chunks: false,
+    skipStaleChunks: false,
+    trigger_event: 'listener.audio_turn_started',
+    triggerEvent: 'listener.audio_turn_started',
+    implementation: 'whole_wav_pw_play_process_cancel_v1',
+  }
 }
 
 function buildEmbryVoicePolicy(params: {
@@ -11692,11 +12040,37 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       liveTurnStep('answering', 'Tau response', answerText ? 'completed' : 'failed', staticAnswer ? 'Tau used the static capital-of-France fallback after memory miss' : braveSearchResult?.status === 'ok' ? `Tau used ${braveSearchRoute} evidence from brave-search` : memoryCandidateReturned ? (shouldClarify ? 'Tau/memory selected a clarification route' : 'Tau/memory produced Embry response text') : 'Tau preserved the memory-first boundary and emitted a fallback response because no grounded memory answer was available', 'check'),
       liveTurnStep('embry-chatterbox-render', 'Chatterbox voice', audioPath ? 'completed' : voiceEnabled ? 'failed' : 'skipped', audioPath ? `Rendered ${audioPath}` : voiceEnabled ? (chatterboxError || 'Chatterbox did not render audio') : 'Voice disabled for this turn', 'mic'),
     ]
+
     const receiptDir = resolve(CHATTERBOX_HOST_OUT_DIR, 'ux-lab-embry-live')
     await mkdir(receiptDir, { recursive: true })
     const receiptPath = audioPath
       ? audioPath.replace(/\.wav$/i, '.json')
       : resolve(receiptDir, `${createdAt.replace(/[:.]/g, '-')}-${safeReceiptName(sessionId)}-${createHash('sha256').update(text).digest('hex').slice(0, 12)}.json`)
+
+    let playback: Record<string, unknown> | null = null
+    if (requestBody.physical_playback === true && audioPath && audioAuthority) {
+      try {
+        playback = await startEmbryPlayback({
+          sessionId,
+          turnId,
+          wavPath: audioPath,
+          wavSha256: String(audioAuthority.sha256 || ''),
+        })
+      } catch (err) {
+        return res.status(500).json({
+          status: 'error',
+          mocked: false,
+          live: true,
+          backend: 'tau-memory-chatterbox',
+          error: `playback failed: ${err instanceof Error ? err.message : String(err)}`,
+          answerText,
+          receiptPath,
+          receiptUrl: `/chatterbox-artifacts/${receiptPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`,
+          reasoningSteps,
+        })
+      }
+    }
+
     const receipt = {
       schema: 'ux_lab.embry_voice.live_turn_receipt.v1',
       created_at: createdAt,
@@ -11766,6 +12140,7 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
         voicePolicy,
         pauseStrategy: voicePolicy.pauseStrategy,
         interruptPolicy: voicePolicy.interruptPolicy,
+        playback: playback || null,
         live: true,
         mocked: false,
       },
@@ -11799,6 +12174,7 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       ttsRenderTextHash,
       audioPath: audioPath || null,
       audioUrl: audioUrl || null,
+      playback: playback || null,
       receiptPath,
       receiptUrl: `/chatterbox-artifacts/${receiptPath.replace(CHATTERBOX_HOST_OUT_DIR, '').replace(/^\/+/, '')}`,
       audioAuthority,
@@ -11869,6 +12245,55 @@ app.post('/api/projects/embry-voice/live-turn', async (req, res) => {
       mocked: false,
       live: true,
       backend: 'tau-memory-chatterbox',
+      error: err instanceof Error ? err.message : String(err),
+    })
+  }
+})
+
+app.post('/api/projects/embry-voice/interrupt', async (req, res) => {
+  try {
+    const requestBody = req.body && typeof req.body === 'object' ? req.body as JsonRecord : {}
+    const sessionId = typeof requestBody.session_id === 'string' && requestBody.session_id.trim()
+      ? requestBody.session_id.trim()
+      : ''
+    const expectedPlayingTurnId = typeof requestBody.expected_playing_turn_id === 'string' && requestBody.expected_playing_turn_id.trim()
+      ? requestBody.expected_playing_turn_id.trim()
+      : ''
+    const interrupterTurnId = typeof requestBody.interrupter_turn_id === 'string' && requestBody.interrupter_turn_id.trim()
+      ? requestBody.interrupter_turn_id.trim()
+      : ''
+    const triggerEventId = typeof requestBody.trigger_event_id === 'string' && requestBody.trigger_event_id.trim()
+      ? requestBody.trigger_event_id.trim()
+      : ''
+    const triggerEventType = typeof requestBody.trigger_event_type === 'string'
+      ? requestBody.trigger_event_type
+      : ''
+    const triggerSequence = typeof requestBody.trigger_sequence === 'number' ? requestBody.trigger_sequence : 0
+
+    if (!sessionId) return res.status(400).json({ schema: 'embry.voice.playback_interrupt.v1', status: 'FAIL', error: 'session_id required' })
+    if (!expectedPlayingTurnId) return res.status(400).json({ schema: 'embry.voice.playback_interrupt.v1', status: 'FAIL', error: 'expected_playing_turn_id required' })
+    if (!interrupterTurnId) return res.status(400).json({ schema: 'embry.voice.playback_interrupt.v1', status: 'FAIL', error: 'interrupter_turn_id required' })
+    if (!triggerEventId) return res.status(400).json({ schema: 'embry.voice.playback_interrupt.v1', status: 'FAIL', error: 'trigger_event_id required' })
+    if (triggerEventType !== 'listener.audio_turn_started') {
+      return res.status(400).json({ schema: 'embry.voice.playback_interrupt.v1', status: 'FAIL', error: 'trigger_event_type must be listener.audio_turn_started' })
+    }
+
+    const result = await interruptEmbryPlayback({
+      sessionId,
+      expectedPlayingTurnId,
+      interrupterTurnId,
+      triggerEventId,
+      triggerEventType: 'listener.audio_turn_started',
+      triggerSequence,
+    })
+    res.json(result)
+  } catch (err) {
+    const isTimeout = err instanceof Error && err.message.includes('SIGTERM did not terminate')
+    res.status(isTimeout ? 504 : 400).json({
+      schema: 'embry.voice.playback_interrupt.v1',
+      status: 'FAIL',
+      live: true,
+      mocked: false,
       error: err instanceof Error ? err.message : String(err),
     })
   }
