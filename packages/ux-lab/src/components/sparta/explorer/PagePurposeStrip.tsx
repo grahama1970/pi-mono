@@ -1,6 +1,7 @@
 import { AlertTriangle, CheckCircle2, ShieldAlert } from 'lucide-react'
 import { EMBRY, label } from '../common/EmbryStyle'
 import type { PagePurposeContract } from './pagePurposeContracts'
+import { useF36ThreatMatrixReadModel } from '../../../hooks/useF36ExplorerReadModels'
 
 const stateTone = {
   fail: { color: EMBRY.red, icon: ShieldAlert, text: 'fail' },
@@ -20,6 +21,12 @@ const telemetryLabel = {
 export function PagePurposeStrip({ contract }: { contract: PagePurposeContract }) {
   const tone = stateTone[contract.state] ?? stateTone.fail
   const Icon = tone.icon
+  const { data: f36ThreatMatrix } = useF36ThreatMatrixReadModel()
+  const f36Reconciliation = contract.id === 'threat-matrix' ? f36ThreatMatrix?.reconciliation : null
+  const f36ActorPriorityRows = f36Reconciliation?.actor_applicability
+    .filter((row) => row.target_kind === 'candidate_control' && row.applicability === 'RELEVANT')
+    .sort((a, b) => a.priority_band.localeCompare(b.priority_band) || a.target_id.localeCompare(b.target_id) || a.actor_template_id.localeCompare(b.actor_template_id)) ?? []
+  const f36UnknownTargetBucket = f36Reconciliation?.actor_applicability.find((row) => row.target_id === 'UNKNOWN_NO_SPARTA_TARGET')
 
   if (contract.id === 'threat-matrix') {
     const infoTitle = [
@@ -49,6 +56,7 @@ export function PagePurposeStrip({ contract }: { contract: PagePurposeContract }
           gap: 16,
           minHeight: 48,
           flexShrink: 0,
+          flexWrap: 'wrap',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
@@ -92,6 +100,24 @@ export function PagePurposeStrip({ contract }: { contract: PagePurposeContract }
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 10, minWidth: 0 }}>
+          {f36Reconciliation && (
+            <span
+              data-qid="threat-matrix:f36-gap-ledger"
+              data-classification-authority="analytic_template_only"
+              title={`Covered ${f36Reconciliation.status_counts.covered}; partial ${f36Reconciliation.status_counts.partial}; missing ${f36Reconciliation.status_counts.missing_coverage}; absent from SPARTA corpus ${f36Reconciliation.status_counts.specified_absent_from_sparta_corpus}; unclassified F36 requirements ${f36Reconciliation.status_counts.unspecified_requirements}. Actor applicability records ${f36Reconciliation.actor_applicability.length}.`}
+              style={{
+                ...telemetryLabel,
+                color: '#ffaa00',
+                background: 'rgba(255,170,0,0.1)',
+                border: '1px solid rgba(255,170,0,0.32)',
+                borderRadius: 4,
+                padding: '5px 8px',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              F36 gaps: covered {f36Reconciliation.status_counts.covered} · partial {f36Reconciliation.status_counts.partial} · missing {f36Reconciliation.status_counts.missing_coverage} · absent {f36Reconciliation.status_counts.specified_absent_from_sparta_corpus} · actors {f36Reconciliation.actor_applicability.length}
+            </span>
+          )}
           <span
             title={contract.stateReason}
             style={{
@@ -133,6 +159,70 @@ export function PagePurposeStrip({ contract }: { contract: PagePurposeContract }
             Evidence gated
           </span>
         </div>
+        {f36Reconciliation && (
+          <div
+            data-qid="threat-matrix:f36-actor-priority-ledger"
+            style={{
+              flexBasis: '100%',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gap: 6,
+              paddingTop: 2,
+            }}
+          >
+            {f36ActorPriorityRows.map((row) => (
+              <div
+                key={`${row.target_id}:${row.actor_template_id}`}
+                data-qid={`threat-matrix:f36-actor-priority:${row.target_id}:${row.actor_template_id}`}
+                title={`Basis: ${row.basis_codes.join(', ')}. Sources: ${row.source_refs.join(', ')}. Authority: ${row.classification_authority}; coverage credit ${row.coverage_credit}.`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 7,
+                  minHeight: 24,
+                  minWidth: 0,
+                  border: '1px solid rgba(255,170,0,0.2)',
+                  background: 'rgba(255,170,0,0.06)',
+                  borderRadius: 4,
+                  padding: '3px 7px',
+                  color: '#c9d5de',
+                  fontSize: 10,
+                  fontWeight: 800,
+                }}
+              >
+                <span style={{ color: row.priority_band === 'P1' ? '#ff6b6b' : '#ffaa00', fontWeight: 900 }}>{row.priority_band}</span>
+                <span style={{ color: EMBRY.white, fontWeight: 900 }}>{row.target_id}</span>
+                <span style={{ color: '#9fb0bd', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{row.actor_template_id.replaceAll('_', ' ')}</span>
+                <span style={{ marginLeft: 'auto', color: '#ffaa00', whiteSpace: 'nowrap' }}>zero credit</span>
+              </div>
+            ))}
+            {f36UnknownTargetBucket && (
+              <div
+                data-qid="threat-matrix:f36-actor-priority:UNKNOWN_NO_SPARTA_TARGET"
+                title={`Basis: ${f36UnknownTargetBucket.basis_codes.join(', ')}. Requirement count ${f36UnknownTargetBucket.requirement_count ?? 0}. Authority: ${f36UnknownTargetBucket.classification_authority}; coverage credit ${f36UnknownTargetBucket.coverage_credit}.`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 7,
+                  minHeight: 24,
+                  minWidth: 0,
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  background: 'rgba(255,255,255,0.04)',
+                  borderRadius: 4,
+                  padding: '3px 7px',
+                  color: '#9fb0bd',
+                  fontSize: 10,
+                  fontWeight: 800,
+                }}
+              >
+                <span style={{ color: '#9fb0bd', fontWeight: 900 }}>UNKNOWN</span>
+                <span style={{ color: EMBRY.white, fontWeight: 900 }}>NO_SPARTA_TARGET</span>
+                <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{(f36UnknownTargetBucket.requirement_count ?? 0).toLocaleString()} F-36 requirements unranked</span>
+                <span style={{ marginLeft: 'auto', color: '#ffaa00', whiteSpace: 'nowrap' }}>zero credit</span>
+              </div>
+            )}
+          </div>
+        )}
       </section>
     )
   }

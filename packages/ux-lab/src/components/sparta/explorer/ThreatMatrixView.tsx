@@ -7,7 +7,7 @@
  *
  * Pattern: composition-patterns/state-decouple-implementation
  */
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { ThreatMatrix } from '../shared/ThreatMatrix'
 import type { ThreatTechnique, ThreatTactic, TechniqueDetail, ThreatMatrixState, ThreatMatrixActions, ThreatMatrixMeta, DatalakeOption, TraceabilityChunk, EvidenceCase, ThreatRelationship } from '../shared/ThreatMatrix'
 import { API_ORIGIN, MEMORY_API_ROOT } from '../../../lib/apiBase'
@@ -116,6 +116,28 @@ export function ThreatMatrixView() {
   useEffect(() => {
     if (f36ProjectionError) setError(f36ProjectionError)
   }, [f36ProjectionError])
+
+  const matrixSourceTechniques = useMemo<RawTechnique[]>(() => {
+    const byId = new Map<string, RawTechnique>(
+      rawTechniques.map((technique) => [technique.control_id, technique]),
+    )
+    if (!f36Projection) return [...byId.values()]
+
+    for (const proof of f36Projection.path_resolution.path_proofs) {
+      for (const node of proof.nodes) {
+        if (node.source_framework.toUpperCase() !== 'SPARTA') continue
+        if (!byId.has(node.control_id)) {
+          byId.set(node.control_id, {
+            control_id: node.control_id,
+            name: node.name,
+            description: `Persisted local ${node.source_version} node in replay-family candidate path ${proof.path_signature}.`,
+          })
+        }
+      }
+    }
+
+    return [...byId.values()]
+  }, [rawTechniques, f36Projection])
 
   // Curation actions for Brandon
   const saveMatrixAmendment = useCallback(async () => {
@@ -334,12 +356,10 @@ export function ThreatMatrixView() {
   }, [activeDatalake, f36Projection, f36ProjectionLoading])
 
   // Transform raw docs → ThreatTechnique[]
-  const techniques: ThreatTechnique[] = rawTechniques
+  const techniques: ThreatTechnique[] = matrixSourceTechniques
     .filter((t) => {
       if (!tacticForTechnique(t.control_id)) return false
-      const isMappedF36Subtechnique = activeDatalake === 'f36'
-        && Boolean(f36ThreatMatrix?.candidate_overlays.some((overlay) => overlay.sparta_control_id === t.control_id))
-      if (!showSubtechniques && t.control_id.includes('.') && !isMappedF36Subtechnique) return false
+      if (!showSubtechniques && t.control_id.includes('.')) return false
       return true
     })
     .map((t) => {
@@ -356,7 +376,7 @@ export function ThreatMatrixView() {
           ? `${t.name} · ${f36Projection!.requirement.requirement_id}`
           : t.name,
         description: isReplayCandidate
-          ? `Agent candidate / INCONCLUSIVE. ${f36Projection!.requirement.requirement_revision_id}; review=${f36Projection!.review_state}; accepted=false; fingerprint=${f36Projection!.projection_fingerprint}. Exact persisted paths are traceability only and provide zero compliance credit.`
+          ? `Agent candidate / INCONCLUSIVE. ${f36Projection!.requirement.requirement_revision_id}; family=${f36Projection!.engineering_qra_family.engineering_qra_family_id}; review=${f36Projection!.review_state}; accepted=false; fingerprint=${f36Projection!.projection_fingerprint}. Exact persisted paths are traceability only and provide zero compliance credit.`
           : t.description,
         tactic: tacticForTechnique(t.control_id) ?? 'Unknown',
         coverage,
@@ -492,7 +512,7 @@ export function ThreatMatrixView() {
   }
 
   const meta: ThreatMatrixMeta = {
-    totalControls: rawTechniques.length,
+    totalControls: techniques.length,
     source: 'explorer',
     analysisPipelineDegraded,
     boundEvidenceCaseId: null,
@@ -500,7 +520,12 @@ export function ThreatMatrixView() {
     activeDatalake: activeDatalake || undefined,
   }
 
-  const { mode: pageDistanceMode } = usePageDistanceMode()
+  const { mode: pageDistanceMode, setMode: setPageDistanceMode } = usePageDistanceMode()
+  const f36Reconciliation = f36ThreatMatrix?.reconciliation
+  const f36ActorPriorityRows = f36Reconciliation?.actor_applicability
+    .filter((row) => row.target_kind === 'candidate_control' && row.applicability === 'RELEVANT')
+    .sort((a, b) => a.priority_band.localeCompare(b.priority_band) || a.target_id.localeCompare(b.target_id) || a.actor_template_id.localeCompare(b.actor_template_id))
+    .slice(0, 8) ?? []
 
   // Compose the shared compound component
   return (
@@ -509,16 +534,15 @@ export function ThreatMatrixView() {
       mode={pageDistanceMode}
       techniques={techniques}
       loading={loading}
-      onSelectTechnique={(tech) => { void selectTechnique(tech) }}
+      analysisPipelineDegraded={analysisPipelineDegraded}
+      onSelectTechnique={(tech) => {
+        void selectTechnique(tech)
+        setPageDistanceMode('lean-in')
+      }}
     >
     <ThreatMatrix.Provider state={state} actions={actions} meta={meta}>
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
-        {activeDatalake === 'f36' && f36ThreatMatrix && (
-          <div data-qid="threat-matrix:f36-corpus-coverage" data-projection-fingerprint={f36ThreatMatrix.projection_fingerprint} style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,170,0,0.4)', background: 'rgba(255,170,0,0.08)', color: '#e6edf3', fontSize: 12 }}>
-            <strong style={{ color: '#ffaa00' }}>F-36 candidate overlay</strong> · {f36ThreatMatrix.counts.requirements_total.toLocaleString()} requirements · {f36ThreatMatrix.candidate_overlays.length} visible candidate paths · 0 reviewed paths · 0 compliance credit
-          </div>
-        )}
-        {error && (
+        {error && !f36Projection && (
           <div style={{ padding: '12px 16px', backgroundColor: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', borderBottom: '1px solid rgba(239, 68, 68, 0.3)' }}>
             Error loading techniques: {error}
           </div>
@@ -606,6 +630,81 @@ export function ThreatMatrixView() {
             </div>
         </div> : null}
 
+        {f36Projection && activeDatalake === 'f36' && (
+          <div
+            data-qid="threat-matrix:f36-shared-projection"
+            data-requirement-revision-id={f36Projection.requirement.requirement_revision_id}
+            data-projection-fingerprint={f36Projection.projection_fingerprint}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              flexWrap: 'wrap',
+              padding: '8px 16px',
+              borderBottom: '1px solid rgba(255, 170, 0, 0.35)',
+              background: 'rgba(255, 170, 0, 0.08)',
+              fontSize: 11,
+            }}
+          >
+            <strong style={{ color: '#ffaa00' }}>
+              Agent candidate / {f36Projection.evidence_verdict}
+            </strong>
+            <span style={{ color: '#e6edf3' }}>
+              {f36Projection.requirement.requirement_revision_id}
+            </span>
+            <span style={{ color: '#9fb0bd' }}>
+              {f36Projection.engineering_qra_family.engineering_qra_family_id}
+            </span>
+            <span style={{ color: '#9fb0bd' }}>
+              pending review · accepted=false · grounded/compliance credit=0
+            </span>
+            <code style={{ color: '#9fb0bd', overflowWrap: 'anywhere' }}>
+              {f36Projection.projection_fingerprint}
+            </code>
+          </div>
+        )}
+        {f36Reconciliation && activeDatalake === 'f36' && (
+          <div
+            data-qid="threat-matrix:f36-gap-ledger"
+            data-classification-authority="analytic_template_only"
+            style={{
+              padding: '10px 16px',
+              borderBottom: '1px solid rgba(255,255,255,0.08)',
+              background: 'rgba(5, 8, 12, 0.94)',
+              display: 'grid',
+              gridTemplateColumns: 'minmax(220px, 0.9fr) minmax(280px, 1.3fr) minmax(240px, 1fr)',
+              gap: 12,
+              color: '#dbe7f0',
+              fontSize: 11,
+            }}
+          >
+            <div data-qid="threat-matrix:f36-gap-counts" style={{ display: 'grid', gap: 4 }}>
+              <div style={{ color: '#9fb0bd', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>Coverage ledger</div>
+              <div><strong style={{ color: '#3fb950' }}>{f36Reconciliation.status_counts.covered}</strong> covered · <strong style={{ color: '#ffaa00' }}>{f36Reconciliation.status_counts.partial}</strong> partial · <strong style={{ color: '#ff6b6b' }}>{f36Reconciliation.status_counts.missing_coverage}</strong> missing</div>
+              <div><strong style={{ color: '#ff6b6b' }}>{f36Reconciliation.status_counts.specified_absent_from_sparta_corpus}</strong> specified absent from SPARTA corpus</div>
+              <div><strong style={{ color: '#c9d5de' }}>{f36Reconciliation.status_counts.unspecified_requirements.toLocaleString()}</strong> F-36 requirements are not actor-ranked until a SPARTA target is extracted.</div>
+            </div>
+            <div data-qid="threat-matrix:f36-actor-priority" style={{ display: 'grid', gap: 4 }}>
+              <div style={{ color: '#9fb0bd', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>Actor-template priority</div>
+              {f36ActorPriorityRows.length ? f36ActorPriorityRows.map((row) => (
+                <div key={`${row.target_id}:${row.actor_template_id}`} data-qid={`threat-matrix:f36-actor:${row.target_id}:${row.actor_template_id}`} style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+                  <span style={{ color: row.priority_band === 'P1' ? '#ff6b6b' : '#ffaa00', fontWeight: 900, width: 22 }}>{row.priority_band}</span>
+                  <span style={{ color: '#ffffff', fontWeight: 900 }}>{row.target_id}</span>
+                  <span style={{ color: '#9fb0bd', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{row.actor_template_id.replaceAll('_', ' ')}</span>
+                </div>
+              )) : <div style={{ color: '#9fb0bd' }}>No actor-priority records are available.</div>}
+            </div>
+            <div data-qid="threat-matrix:f36-closure-actions" style={{ display: 'grid', gap: 4 }}>
+              <div style={{ color: '#9fb0bd', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>Closure actions</div>
+              {f36Reconciliation.closure_backlog.map((item) => (
+                <div key={item.gap_state} data-qid={`threat-matrix:f36-closure:${item.gap_state}`} style={{ color: '#c9d5de' }}>
+                  <strong style={{ color: '#ffffff' }}>{item.count.toLocaleString()}</strong> {item.gap_state.replaceAll('_', ' ')}: {item.next_action}
+                </div>
+              ))}
+              <div style={{ color: '#ffaa00', fontWeight: 800 }}>Analytic template only · coverage credit 0</div>
+            </div>
+          </div>
+        )}
         <ThreatMatrix.Header />
         <div
           data-qid="threat-matrix:layout:squeeze"
