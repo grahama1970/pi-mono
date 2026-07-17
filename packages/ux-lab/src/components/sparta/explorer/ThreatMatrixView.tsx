@@ -521,12 +521,6 @@ export function ThreatMatrixView() {
   }
 
   const { mode: pageDistanceMode, setMode: setPageDistanceMode } = usePageDistanceMode()
-  const f36Reconciliation = f36ThreatMatrix?.reconciliation
-  const f36ActorPriorityRows = f36Reconciliation?.actor_applicability
-    .filter((row) => row.target_kind === 'candidate_control' && row.applicability === 'RELEVANT')
-    .sort((a, b) => a.priority_band.localeCompare(b.priority_band) || a.target_id.localeCompare(b.target_id) || a.actor_template_id.localeCompare(b.actor_template_id))
-    .slice(0, 8) ?? []
-
   // Compose the shared compound component
   return (
     <PageDistanceRoot qid="threat-matrix-mode-root">
@@ -661,48 +655,6 @@ export function ThreatMatrixView() {
             <code style={{ color: '#9fb0bd', overflowWrap: 'anywhere' }}>
               {f36Projection.projection_fingerprint}
             </code>
-          </div>
-        )}
-        {f36Reconciliation && activeDatalake === 'f36' && (
-          <div
-            data-qid="threat-matrix:f36-gap-ledger"
-            data-classification-authority="analytic_template_only"
-            style={{
-              padding: '10px 16px',
-              borderBottom: '1px solid rgba(255,255,255,0.08)',
-              background: 'rgba(5, 8, 12, 0.94)',
-              display: 'grid',
-              gridTemplateColumns: 'minmax(220px, 0.9fr) minmax(280px, 1.3fr) minmax(240px, 1fr)',
-              gap: 12,
-              color: '#dbe7f0',
-              fontSize: 11,
-            }}
-          >
-            <div data-qid="threat-matrix:f36-gap-counts" style={{ display: 'grid', gap: 4 }}>
-              <div style={{ color: '#9fb0bd', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>Coverage ledger</div>
-              <div><strong style={{ color: '#3fb950' }}>{f36Reconciliation.status_counts.covered}</strong> covered · <strong style={{ color: '#ffaa00' }}>{f36Reconciliation.status_counts.partial}</strong> partial · <strong style={{ color: '#ff6b6b' }}>{f36Reconciliation.status_counts.missing_coverage}</strong> missing</div>
-              <div><strong style={{ color: '#ff6b6b' }}>{f36Reconciliation.status_counts.specified_absent_from_sparta_corpus}</strong> specified absent from SPARTA corpus</div>
-              <div><strong style={{ color: '#c9d5de' }}>{f36Reconciliation.status_counts.unspecified_requirements.toLocaleString()}</strong> F-36 requirements are not actor-ranked until a SPARTA target is extracted.</div>
-            </div>
-            <div data-qid="threat-matrix:f36-actor-priority" style={{ display: 'grid', gap: 4 }}>
-              <div style={{ color: '#9fb0bd', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>Actor-template priority</div>
-              {f36ActorPriorityRows.length ? f36ActorPriorityRows.map((row) => (
-                <div key={`${row.target_id}:${row.actor_template_id}`} data-qid={`threat-matrix:f36-actor:${row.target_id}:${row.actor_template_id}`} style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
-                  <span style={{ color: row.priority_band === 'P1' ? '#ff6b6b' : '#ffaa00', fontWeight: 900, width: 22 }}>{row.priority_band}</span>
-                  <span style={{ color: '#ffffff', fontWeight: 900 }}>{row.target_id}</span>
-                  <span style={{ color: '#9fb0bd', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{row.actor_template_id.replaceAll('_', ' ')}</span>
-                </div>
-              )) : <div style={{ color: '#9fb0bd' }}>No actor-priority records are available.</div>}
-            </div>
-            <div data-qid="threat-matrix:f36-closure-actions" style={{ display: 'grid', gap: 4 }}>
-              <div style={{ color: '#9fb0bd', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>Closure actions</div>
-              {f36Reconciliation.closure_backlog.map((item) => (
-                <div key={item.gap_state} data-qid={`threat-matrix:f36-closure:${item.gap_state}`} style={{ color: '#c9d5de' }}>
-                  <strong style={{ color: '#ffffff' }}>{item.count.toLocaleString()}</strong> {item.gap_state.replaceAll('_', ' ')}: {item.next_action}
-                </div>
-              ))}
-              <div style={{ color: '#ffaa00', fontWeight: 800 }}>Analytic template only · coverage credit 0</div>
-            </div>
           </div>
         )}
         <ThreatMatrix.Header />
